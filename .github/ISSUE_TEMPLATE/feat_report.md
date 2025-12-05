@@ -1,7 +1,7 @@
 ---
-name: 문서 작업 리포트
-about: 문서 관련 수정 또는 추가 작업 시 사용해 주세요
-title: "[✨ Feat] "
+name: 기능 개발 리포트
+about: 기능 개발 또는 기능 추가 개발 요청 시 사용해 주세요
+title: '[✨ Feat] '
 labels: ✨ Feat
 ---
 
