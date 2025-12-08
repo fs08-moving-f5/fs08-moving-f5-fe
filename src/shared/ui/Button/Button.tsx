@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -8,6 +9,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   design?: 'primary' | 'secondary';
   size?: 'xl' | 'lg' | 'md' | 'sm' | 'xs' | '2xs';
   disabled?: boolean;
+  isWriting?: boolean;
   onClick?: () => void;
 }
 
@@ -16,12 +18,13 @@ const Button = ({
   variant = 'solid',
   design = 'primary',
   size = 'xl',
+  isWriting = false,
   disabled = false,
   onClick,
   ...props
 }: ButtonProps) => {
   const baseStyles = `
-    flex justify-center items-center rounded-[16px] font-semibold leading-[26px] transition
+    flex justify-center items-center rounded-[16px] font-semibold leading-[26px] transition cursor-pointer
   `;
 
   const getSizeClasses = () => {
@@ -39,7 +42,7 @@ const Button = ({
       case '2xs':
         return 'max-w-[180px] min-h-[64px] text-[18px]';
       default:
-        return '';
+        return 'max-w-[640px] min-h-[60px] text-[18px]';
     }
   };
 
@@ -47,27 +50,27 @@ const Button = ({
     if (disabled) {
       return `
         bg-[var(--color-grayScale-300)]
-        text-[var(--color-grayScale-50)]
+        text-[var(--color-bg-100)]
       `;
     }
 
-    if (design === 'primary') {
-      return `
+    switch (design) {
+      case 'primary':
+        return `
+          bg-[var(--color-primary-orange-400)]
+          text-[var(--color-bg-100)]
+        `;
+      case 'secondary':
+        return `
+          bg-[var(--color-primary-orange-500)]
+          text-[var(--color-bg-100)]
+        `;
+      default:
+        return `
         bg-[var(--color-primary-orange-400)]
-        text-[var(--color-bg-100)]
-        hover:bg-[var(--color-primary-orange-500)]
-      `;
+          text-[var(--color-bg-100)]
+          `;
     }
-
-    if (design === 'secondary') {
-      return `
-        bg-[var(--color-primary-orange-500)]
-        text-[var(--color-bg-100)]
-        hover:bg-[var(--color-primary-orange-400)]
-      `;
-    }
-
-    return '';
   };
 
   const outlinedStyles = () => {
@@ -75,31 +78,30 @@ const Button = ({
       return `
         border border-[var(--color-grayScale-200)]
         text-[var(--color-grayScale-300)]
-        bg-transparent
-        shadow-[4px_4px_10px_rgba(195,217,242,0.20)]
+
       `;
     }
 
-    if (design === 'primary') {
-      return `
+    switch (design) {
+      case 'primary':
+        return `
+          border border-[var(--color-primary-orange-400)]
+          text-[var(--color-primary-orange-400)]
+        `;
+      case 'secondary':
+        return `
+          border border-[var(--color-primary-orange-400)]
+          bg-[var(--color-primary-orange-100)]
+          text-[var(--color-primary-orange-400)]
+          hover:bg-[var(--color-primary-orange-200)]
+        `;
+      default:
+        return `
         border border-[var(--color-primary-orange-400)]
         text-[var(--color-primary-orange-400)]
-        bg-transparent
-        shadow-[4px_4px_10px_rgba(195,217,242,0.20)]
+
       `;
     }
-
-    if (design === 'secondary') {
-      return `
-        border border-[var(--color-primary-orange-400)]
-        bg-[var(--color-primary-orange-100)]
-        text-[var(--color-primary-orange-400)]
-        shadow-[4px_4px_10px_rgba(195,217,242,0.20)]
-        hover:bg-[var(--color-primary-orange-200)]
-      `;
-    }
-
-    return '';
   };
 
   const variantClasses = variant === 'solid' ? solidStyles() : outlinedStyles();
@@ -107,11 +109,20 @@ const Button = ({
   return (
     <button
       disabled={disabled}
-      className={` ${baseStyles} ${getSizeClasses()} ${variantClasses} ${disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:opacity-90'} `}
+      className={` ${baseStyles} ${getSizeClasses()} ${variantClasses} ${disabled ? 'opacity-60' : 'hover:opacity-90'} `}
       onClick={onClick}
       {...props}
     >
-      {children}
+      <span>{children}</span>
+      {isWriting && (
+        <Image
+          src="/icons/writing.svg"
+          alt="writing icon"
+          width={24}
+          height={24}
+          className="ml-[6px]"
+        />
+      )}
     </button>
   );
 };
