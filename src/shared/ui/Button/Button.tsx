@@ -6,7 +6,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   variant?: 'solid' | 'outlined';
   design?: 'primary' | 'secondary';
-  size?: 'lg' | 'md';
+  size?: 'xl' | 'lg' | 'md' | 'sm' | 'xs' | '2xs';
   disabled?: boolean;
   onClick?: () => void;
 }
@@ -15,7 +15,7 @@ const Button = ({
   children,
   variant = 'solid',
   design = 'primary',
-  size = 'lg',
+  size = 'xl',
   disabled = false,
   onClick,
   ...props
@@ -24,8 +24,24 @@ const Button = ({
     flex justify-center items-center rounded-[16px] font-semibold leading-[26px] transition
   `;
 
-  const sizeClasses =
-    size === 'lg' ? 'max-w-[640px] min-h-[60px] text-[18px]' : 'max-w-[320px] min-h-[60px] text-[16px]';
+  const getSizeClasses = () => {
+    switch (size) {
+      case 'xl':
+        return 'max-w-[640px] min-h-[60px] text-[18px]';
+      case 'lg':
+        return 'max-w-[500px] min-h-[60px] text-[18px]';
+      case 'md':
+        return 'max-w-[320px] min-h-[64px] text-[16px]';
+      case 'sm':
+        return 'max-w-[254px] min-h-[54px] text-[16px]';
+      case 'xs':
+        return 'max-w-[200px] min-h-[60px] text-[18px]';
+      case '2xs':
+        return 'max-w-[180px] min-h-[64px] text-[18px]';
+      default:
+        return '';
+    }
+  };
 
   const solidStyles = () => {
     if (disabled) {
@@ -91,17 +107,13 @@ const Button = ({
   return (
     <button
       disabled={disabled}
-      className={`
-        ${baseStyles}
-        ${sizeClasses}
-        ${variantClasses}
-        ${disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:opacity-90'}
-      `}
+      className={` ${baseStyles} ${getSizeClasses()} ${variantClasses} ${disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:opacity-90'} `}
+      onClick={onClick}
       {...props}
     >
       {children}
     </button>
   );
-}
+};
 
 export default Button;
