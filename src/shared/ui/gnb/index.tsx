@@ -1,5 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
+import Menu from './Menu';
 
 interface User {
   role: 'guest' | 'user' | 'driver';
@@ -8,7 +12,7 @@ interface User {
 
 const menuByRole = {
   guest: [{ id: 1, label: '기사님 찾기', href: '/' }],
-  user: [
+  driver: [
     {
       id: 1,
       label: '받은 요청',
@@ -20,7 +24,7 @@ const menuByRole = {
       href: '/',
     },
   ],
-  driver: [
+  user: [
     {
       id: 1,
       label: '견적 요청',
@@ -40,9 +44,11 @@ const menuByRole = {
 };
 
 const GNB = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   // TODO: 로그인 기능 완성되면 API 요청해서 유저 정보 가져오기
   const user: User = {
-    role: 'user',
+    role: 'guest',
     name: '김가나',
   };
 
@@ -60,8 +66,8 @@ const GNB = () => {
         </Link>
         <div className="mobile:hidden tab:hidden flex items-center gap-10">
           {menuByRole[user.role].map((menu) => (
-            <Link key={menu.id} href={menu.href}>
-              <div className="text-black-500 text-2lg font-bold">{menu.label}</div>
+            <Link key={menu.id} href={menu.href} className="text-black-500 text-2lg font-bold">
+              {menu.label}
             </Link>
           ))}
         </div>
@@ -80,7 +86,7 @@ const GNB = () => {
       </div>
       <div className="mobile:flex tab:flex hidden items-center">
         {user.role === 'guest' && (
-          <button type="button">
+          <button type="button" onClick={() => setIsOpen(true)}>
             <Image src="icons/menu.svg" alt="menu" width={24} height={24} />
           </button>
         )}
@@ -92,12 +98,18 @@ const GNB = () => {
             <button type="button">
               <Image src="icons/profile.svg" alt="profile" width={24} height={24} />
             </button>
-            <button type="button">
+            <button type="button" onClick={() => setIsOpen(true)}>
               <Image src="icons/menu.svg" alt="menu" width={24} height={24} />
             </button>
           </div>
         )}
       </div>
+      <Menu
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        menuItems={user.role !== 'guest' ? menuByRole[user.role] : []}
+        role={user.role === 'guest' ? 'guest' : null}
+      />
     </div>
   );
 };
