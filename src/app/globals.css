@@ -34,7 +34,17 @@
 
   --color-line-100: #f2f2f2;
   --color-line-200: #e6e6e6;
+
+  /*
+  ================== Responsive Variables ==================
+  */
+  --breakpoint-sm: 480px; /* 모바일 */
+  --breakpoint-md: 768px; /* 태블릿 */
+  --breakpoint-lg: 1280px; /* PC (기본값) */
 }
+
+@custom-variant tab (@media (max-width: 1279px));
+@custom-variant mobile (@media (max-width: 767px));
 
 @layer utilities {
   .text-3xl {
