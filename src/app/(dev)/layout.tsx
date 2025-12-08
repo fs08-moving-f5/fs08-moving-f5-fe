@@ -1,3 +1,3 @@
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <div className="p-8 bg-[#dddddd] w-full h-screen">{children}</div>;
+  return <div className="h-screen w-full bg-[#dddddd] p-8">{children}</div>;
 }
