@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { ButtonHTMLAttributes, ReactNode } from 'react';
 import Image from 'next/image';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
   variant?: 'solid' | 'outlined';
   design?: 'primary' | 'secondary';
   size?: 'xl' | 'lg' | 'md' | 'sm' | 'xs' | '2xs';
