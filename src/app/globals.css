@@ -98,3 +98,16 @@ body {
   font-family: 'Pretendard', sans-serif;
   box-sizing: border-box;
 }
+
+.textAreaScroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.textAreaScroll::-webkit-scrollbar-thumb {
+  width: 4px;
+  background-color: var(--gray-gray-300, #ababab);
+  border-radius: 999px;
+  border: 10px soid #fff;
+  cursor: pointer;
+}

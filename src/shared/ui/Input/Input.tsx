@@ -6,6 +6,7 @@ import eyeInvisible from './eye-invisible.svg';
 import { useState } from 'react';
 
 interface InputProps {
+  name?: string;
   value?: string;
   errMsg?: string;
   placeholder?: string;
@@ -15,6 +16,7 @@ interface InputProps {
 }
 
 export default function Input({
+  name = '',
   value = '',
   errMsg = '',
   placeholder = '',
@@ -28,8 +30,8 @@ export default function Input({
   };
 
   const width = {
-    sm: 'w-[327px]',
-    md: 'w-[640px]',
+    sm: 'min-w-0 w-full max-w-[327px]',
+    md: 'min-w-0 w-full max-w-[640px]',
   };
   const borderType = {
     default:
@@ -38,14 +40,16 @@ export default function Input({
   };
   const shadow =
     'focus:shadow-[0_4px_4px_-1px_rgba(249,80,46,0.20),0_4px_4px_-1px_rgba(249,80,46,0.10)]';
-  const text =
-    'text-[18px] font-[400] text-[var(--color-black-400)] plaseholder-[var(--color-gray-400, #999)]';
+  const text = `text-[18px] font-[400] text-[var(--color-black-400)] plaseholder-[var(--color-gray-400, #999)]`;
   const inputStyle = `${borderType[errMsg ? 'error' : 'default']} ${shadow} ${text}`;
+
   return (
     <div className="flex flex-col gap-[4px]">
-      <div className={`relative flex h-[54px] items-center justify-start ${width[size]}`}>
+      <div className={`relative flex h-[54px] w-fit items-center justify-start ${width[size]}`}>
         <input
+          name={name}
           type={type === 'password' ? (isVisible ? 'text' : 'password') : 'text'}
+          value={value}
           placeholder={placeholder}
           onChange={onChange}
           className={`flex h-full w-full rounded-[16px] bg-[#fff] p-[14px] ${inputStyle}`}
@@ -64,7 +68,7 @@ export default function Input({
         )}
       </div>
       {errMsg && (
-        <div className="h-22px">
+        <div className="h-[22px] px-[8px]">
           <span className="text-[13px] font-[500] text-[var(--color-error)]">{errMsg}</span>
         </div>
       )}
