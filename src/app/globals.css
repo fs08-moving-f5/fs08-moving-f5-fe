@@ -1,11 +1,24 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/PretendardVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
 @theme {
+  /*
+  ================== Font Family ==================
+  */
+  --font-family-sans: 'Pretendard', sans-serif;
+
   /*
   ================== Color Variables ==================
   */
@@ -29,6 +42,9 @@
   --color-primary-orange-300: #fd947f;
   --color-primary-orange-400: #f9502e;
   --color-primary-orange-500: #f9502e;
+
+  --color-secondary-red-100: #ffeef0;
+  --color-secondary-red-200: #ff4f64;
 
   --color-bg-100: #fcfcfc;
   --color-bg-200: #f7f7f7;
