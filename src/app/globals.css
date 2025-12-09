@@ -8,11 +8,6 @@
   font-display: swap;
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme {
   /*
   ================== Font Family ==================
