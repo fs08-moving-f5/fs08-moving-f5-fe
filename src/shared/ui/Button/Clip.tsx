@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { showToast } from '@/shared/ui/sonner';
 
 interface ClipProps {
   size?: 'lg' | 'md' | 'sm';
@@ -39,9 +40,10 @@ const Clip = ({ size = 'lg' }: ClipProps) => {
   const handleClick = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      // 토스트나 알림 UI 연결
+      showToast({ kind: 'success', message: '링크가 복사되었습니다.' });
     } catch (error) {
       console.error('클립보드 복사 실패:', error);
+      showToast({ kind: 'error', message: '복사에 실패했습니다.' });
     }
   };
 
