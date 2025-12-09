@@ -2,13 +2,13 @@
 
 import clsx from 'clsx';
 
-interface RegionChipProps {
-  region: string;
+interface ActiveChipProps {
+  text: string;
   isActive: boolean;
   setIsActive: (isActive: boolean) => void;
 }
 
-const RegionChip = ({ region, isActive, setIsActive }: RegionChipProps) => {
+const ActiveChip = ({ text, isActive, setIsActive }: ActiveChipProps) => {
   const defaultStyle =
     'flex items-center justify-center py-[10px] px-5 rounded-[100px] text-2lg font-medium tab:py-[6px] tab:px-3 tab:text-md mobile:py-[6px] mobile:px-3 mobile:text-sm';
   const activeStyle =
@@ -25,9 +25,9 @@ const RegionChip = ({ region, isActive, setIsActive }: RegionChipProps) => {
       className={clsx(defaultStyle, isActive ? activeStyle : inactiveStyle, 'cursor-pointer')}
       onClick={handleClick}
     >
-      {region}
+      {text}
     </button>
   );
 };
 
-export default RegionChip;
+export default ActiveChip;

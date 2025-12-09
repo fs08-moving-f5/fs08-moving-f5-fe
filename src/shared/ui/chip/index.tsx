@@ -1,1 +1,2 @@
-export { default as RegionChip } from './RegionChip';
+export { default as ActiveChip } from './ActiveChip';
+export { default as MovingTypeChip } from './MovingTypeChip';
