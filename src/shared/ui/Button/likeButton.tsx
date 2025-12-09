@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 interface LikeButtonProps {
@@ -8,6 +8,29 @@ interface LikeButtonProps {
 }
 
 const LikeButton = ({ size = 'md' }: LikeButtonProps) => {
+  const [liked, setLiked] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleClick = () => {
+    if (loading) return;
+
+    setLiked((prev) => !prev);
+
+    try {
+      setLoading(true);
+      // 실제 API 호출
+      // await fetch('/api/like', {
+      //   method: 'POST',
+      //   body: JSON.stringify({ liked: !liked }),
+      // });
+    } catch (err) {
+      console.error(err);
+      setLiked((prev) => !prev);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const baseStyles = `flex items-center justify-center rounded-[16px] border border-[var(--color-line-200)] bg-[var(--color-grayScale-50)] hover:bg-[var(--color-grayScale-100)] transition cursor-pointer`;
 
   const getWrapperClasses = () => {
@@ -36,16 +59,25 @@ const LikeButton = ({ size = 'md' }: LikeButtonProps) => {
     }
   };
 
+  const getLabelText = () => {
+    if (liked) return '찜한 기사님';
+    return '기사님 찜하기';
+  };
+
   return (
-    <button className={`${baseStyles} ${getWrapperClasses()}`}>
+    <button
+      className={`${baseStyles} ${getWrapperClasses()}`}
+      onClick={handleClick}
+      disabled={loading}
+    >
       <Image
-        src="/icons/like.svg"
+        src={liked ? '/icons/liked.svg' : '/icons/like.svg'}
         alt="like icon"
         width={getIconSize().width}
         height={getIconSize().height}
       />
       {size === 'lg' && (
-        <span className="text-[18px] font-semibold text-[#000000]">기사님 찜하기</span>
+        <span className="text-[18px] font-semibold text-[#000000]">{getLabelText()}</span>
       )}
     </button>
   );
