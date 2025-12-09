@@ -1,6 +1,7 @@
 import Button from '@/shared/ui/Button/Button';
 import LikeButton from '@/shared/ui/Button/likeButton';
 import Clip from '@/shared/ui/Button/Clip';
+import ShareButton from '@/shared/ui/Button/ShareButton';
 
 const ButtonPage = () => {
   return (
@@ -45,6 +46,39 @@ const ButtonPage = () => {
             <Clip size="lg" />
             <Clip size="md" />
             <Clip size="sm" />
+          </div>
+
+          <div className="flex gap-[8px]">
+            <ShareButton
+              size="lg"
+              platform="kakao"
+              kakaoTitle="이 페이지의 제목"
+              kakaoDescription="이 페이지 설명"
+              kakaoImageUrl="https://example.com/thumb.png"
+              kakaoLink="https://example.com/page"
+            />
+            <ShareButton
+              size="md"
+              platform="kakao"
+              kakaoTitle="이 페이지의 제목"
+              kakaoDescription="이 페이지 설명"
+              kakaoImageUrl="https://example.com/thumb.png"
+              kakaoLink="https://example.com/page"
+            />
+            <ShareButton
+              size="sm"
+              platform="kakao"
+              kakaoTitle="이 페이지의 제목"
+              kakaoDescription="이 페이지 설명"
+              kakaoImageUrl="https://example.com/thumb.png"
+              kakaoLink="https://example.com/page"
+            />
+          </div>
+
+          <div className="flex gap-[8px]">
+            <ShareButton size="lg" platform="facebook" />
+            <ShareButton size="md" platform="facebook" />
+            <ShareButton size="sm" platform="facebook" />
           </div>
         </div>
       </div>
