@@ -13,7 +13,7 @@ interface TextAreaProps {
 export default function TextArea({
   name = '',
   value = '',
-  errMsg = value.length < 10 ? '10자 이상 입력해주세요' : '',
+  errMsg = value && value.length < 10 ? '10자 이상 입력해주세요' : '',
   placeholder = '최소 10자 이상 입력해주세요',
   onChange,
   size = 'md',

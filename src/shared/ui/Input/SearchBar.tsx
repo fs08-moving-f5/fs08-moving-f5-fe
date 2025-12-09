@@ -36,6 +36,10 @@ export default function SearchBar({ size = 'md', onSubmit }: SerarchBarProps) {
   };
   const text = `${textSize[size]} font-[400] text-[var(--color-black-400)] plaseholder-[var(--color-gray-400, #999)]`;
   const inputStyle = `${inputSize[size]} ${borderType} ${text}`;
+  const IconTranformL = {
+    sm: 'left-[16px]',
+    md: 'left-[24px]',
+  };
   const IconTranformR = {
     sm: 'right-[16px]',
     md: 'right-[24px]',
@@ -72,7 +76,7 @@ export default function SearchBar({ size = 'md', onSubmit }: SerarchBarProps) {
       <Image
         src={searchIcon[size]}
         alt="serchIcon"
-        className={`absolute left-[24px] block group-focus-within:hidden ${IconSize[size]}`}
+        className={`absolute block group-focus-within:hidden ${IconSize[size]} ${IconTranformL[size]}`}
       />
       <div
         className={`absolute hidden group-focus-within:flex ${IconGap[size]} ${IconTranformR[size]}`}
