@@ -3,6 +3,7 @@ import LikeButton from '@/shared/ui/Button/likeButton';
 import Clip from '@/shared/ui/Button/Clip';
 import ShareButton from '@/shared/ui/Button/ShareButton';
 import Filter from '@/shared/ui/Button/Filter';
+import CheckBox from '@/shared/ui/Button/CheckBox';
 
 const ButtonPage = () => {
   return (
@@ -81,8 +82,11 @@ const ButtonPage = () => {
             <ShareButton size="md" platform="facebook" />
             <ShareButton size="sm" platform="facebook" />
           </div>
-          <div>
+          <div className="flex gap-[8px]">
             <Filter />
+
+            <CheckBox shape="circle" />
+            <CheckBox shape="square" />
           </div>
         </div>
       </div>
