@@ -1,4 +1,5 @@
 import FindDriver from '@/shared/ui/card/FindDriver';
+import QuoteWait from '@/shared/ui/card/QuoteWait';
 
 export default function CardTestPage() {
   return (
@@ -31,6 +32,18 @@ export default function CardTestPage() {
           likeCount={421}
           movingType="home"
           isLiked={true}
+        />
+
+        <QuoteWait
+          driverName="이사왕 기사님"
+          driverImageUrl="https://i.namu.wiki/i/QhqqJ7IFrrniG4DQeWlM6-dRuKeEDXY__U7WOuo1JmaP6wg35_Xa3X_ndOJO9ivEHDqj1U3MYwxQRb9jcxUa01FYBz_pi1DWc_-CZMWW4HuO0jin4fImq9ylaNWB_qKk9h0EnxVMQmuXMokNXemfEA.webp"
+          rating={4.8}
+          reviewCount={256}
+          experience="5년"
+          moveCount="1280건"
+          movingType="office"
+          pickedDriver={true}
+          estimatePrice={250000}
         />
       </div>
     </div>
