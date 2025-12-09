@@ -36,8 +36,17 @@ const Clip = ({ size = 'lg' }: ClipProps) => {
     }
   };
 
+  const handleClick = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      // 토스트나 알림 UI 연결
+    } catch (error) {
+      console.error('클립보드 복사 실패:', error);
+    }
+  };
+
   return (
-    <button className={`${baseStyles} ${getWrapperClasses()}`}>
+    <button className={`${baseStyles} ${getWrapperClasses()}`} onClick={handleClick}>
       <Image
         src="/icons/clip.svg"
         alt="clip icon"
