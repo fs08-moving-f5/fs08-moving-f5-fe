@@ -48,14 +48,18 @@ export default function Input({
           type={type === 'password' ? (isVisible ? 'text' : 'password') : 'text'}
           placeholder={placeholder}
           onChange={onChange}
-          className={`bg-[var(--color-grayScale-50, #fffff)] flex h-full w-full rounded-[16px] p-[14px] ${inputStyle}`}
+          className={`flex h-full w-full rounded-[16px] bg-[#fff] p-[14px] ${inputStyle}`}
         />
         {type === 'password' && (
           <button
             onClick={handleClickEye}
             className="absolute right-[14px] h-[24px] w-[24px] cursor-pointer"
           >
-            <Image src={isVisible ? eyeVisible : eyeInvisible} alt="eyeIcon" />
+            <Image
+              src={isVisible ? eyeVisible : eyeInvisible}
+              alt="eyeIcon"
+              className="hover:brightness-50"
+            />
           </button>
         )}
       </div>

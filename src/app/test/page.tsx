@@ -1,6 +1,7 @@
 'use client';
 
 import Input from '@/shared/ui/Input/Input';
+import InputSearchBar from '@/shared/ui/Input/InputSearchBar';
 import { useState } from 'react';
 
 export default function Test({}) {
@@ -9,7 +10,7 @@ export default function Test({}) {
     setValue(e.target.value);
   };
   return (
-    <div>
+    <div className="h-[100vh] bg-white">
       <Input
         size="sm"
         type="password"
@@ -18,6 +19,7 @@ export default function Test({}) {
         placeholder="아무거나 입력"
         onChange={handleChange}
       />
+      <InputSearchBar />
     </div>
   );
 }
