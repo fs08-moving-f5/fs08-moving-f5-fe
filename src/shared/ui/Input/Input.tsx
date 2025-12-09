@@ -1,0 +1,69 @@
+'use client';
+import React from 'react';
+import Image from 'next/image';
+import eyeVisible from './eye-visible.svg';
+import eyeInvisible from './eye-invisible.svg';
+import { useState } from 'react';
+
+interface InputProps {
+  value?: string;
+  errMsg?: string;
+  placeholder?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  size?: 'sm' | 'md';
+  type?: 'text' | 'password';
+}
+
+export default function Input({
+  value = '',
+  errMsg = '',
+  placeholder = '',
+  onChange,
+  size = 'md',
+  type = 'text',
+}: InputProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const handleClickEye = () => {
+    setIsVisible(!isVisible);
+  };
+
+  const width = {
+    sm: 'w-[327px]',
+    md: 'w-[640px]',
+  };
+  const borderType = {
+    default:
+      'outline-none border border-[var(--color-line-200)] focus:border-[var(--color-primary-orange-400)]',
+    error: 'outline-none border border-[var(--color-error)]',
+  };
+  const shadow =
+    'focus:shadow-[0_4px_4px_-1px_rgba(249,80,46,0.20),0_4px_4px_-1px_rgba(249,80,46,0.10)]';
+  const text =
+    'text-[18px] font-[400] text-[var(--color-black-400)] plaseholder-[var(--color-gray-400, #999)]';
+  const inputStyle = `${borderType[errMsg ? 'error' : 'default']} ${shadow} ${text}`;
+  return (
+    <div className="flex flex-col gap-[4px]">
+      <div className={`relative flex h-[54px] items-center justify-start ${width[size]}`}>
+        <input
+          type={type === 'password' ? (isVisible ? 'text' : 'password') : 'text'}
+          placeholder={placeholder}
+          onChange={onChange}
+          className={`bg-[var(--color-grayScale-50, #fffff)] flex h-full w-full rounded-[16px] p-[14px] ${inputStyle}`}
+        />
+        {type === 'password' && (
+          <button
+            onClick={handleClickEye}
+            className="absolute right-[14px] h-[24px] w-[24px] cursor-pointer"
+          >
+            <Image src={isVisible ? eyeVisible : eyeInvisible} alt="eyeIcon" />
+          </button>
+        )}
+      </div>
+      {errMsg && (
+        <div className="h-22px">
+          <span className="text-[13px] font-[500] text-[var(--color-error)]">{errMsg}</span>
+        </div>
+      )}
+    </div>
+  );
+}
