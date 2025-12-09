@@ -1,5 +1,6 @@
 import Button from '@/shared/ui/Button/Button';
 import LikeButton from '@/shared/ui/Button/likeButton';
+import Clip from '@/shared/ui/Button/Clip';
 
 const ButtonPage = () => {
   return (
@@ -35,8 +36,16 @@ const ButtonPage = () => {
         </div>
         <div className="flex h-full w-full flex-col gap-[8px]">
           <LikeButton size="lg" />
-          <LikeButton size="md" />
-          <LikeButton size="sm" />
+          <div className="flex gap-[8px]">
+            <LikeButton size="md" />
+            <LikeButton size="sm" />
+          </div>
+
+          <div className="flex gap-[8px]">
+            <Clip size="lg" />
+            <Clip size="md" />
+            <Clip size="sm" />
+          </div>
         </div>
       </div>
     </div>
