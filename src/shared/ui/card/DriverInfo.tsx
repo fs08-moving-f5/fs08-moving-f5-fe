@@ -67,7 +67,7 @@ const DriverInfo = ({
             </strong>
           </div>
           {showLikeButton && (
-            <div className="tab:flex mobile:static tab:ml-auto mobile:ml-0 mobile:gap-1 tab:gap-1 hidden items-center gap-1.5">
+            <div className="tab:ml-auto mobile:ml-0 mobile:gap-1 tab:gap-1 flex items-center gap-1.5">
               <button onClick={onLikeClick} type="button" aria-label="좋아요">
                 <Image
                   src={isLiked ? '/icons/like-on.svg' : '/icons/like-off.svg'}
@@ -124,7 +124,13 @@ const DriverInfo = ({
 
       {/* 좋아요 (모바일) */}
       {showLikeButton && (
-        <div className="tab:hidden mobile:hidden mobile:ml-auto mobile:gap-1 tab:gap-1 absolute right-0 bottom-0 flex items-center gap-1.5">
+        <div
+          className={
+            type === 'quoteWait'
+              ? 'hidden'
+              : 'tab:hidden mobile:hidden mobile:ml-auto mobile:gap-1 tab:gap-1 absolute right-0 bottom-0 flex items-center gap-1.5'
+          }
+        >
           <button onClick={onLikeClick} type="button" aria-label="좋아요">
             <Image
               src={isLiked ? '/icons/like-on.svg' : '/icons/like-off.svg'}

@@ -45,6 +45,16 @@ export default function CardTestPage() {
           pickedDriver={true}
           estimatePrice={250000}
         />
+        <QuoteWait
+          driverName="이사왕 기사님"
+          rating={1.5}
+          reviewCount={555}
+          experience="1년"
+          moveCount="240건"
+          movingType="office"
+          pickedDriver={false}
+          estimatePrice={50000}
+        />
       </div>
     </div>
   );
