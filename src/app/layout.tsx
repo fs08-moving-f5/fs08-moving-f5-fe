@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { Viewport } from 'next';
 import Providers from './providers';
 import './globals.css';
+import { AppToaster } from '@/shared/ui/sonner';
 
 export const metadata: Metadata = {
   title: '무빙 Moving',
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className="antialiased">
         <Providers>{children}</Providers>
+        <AppToaster />
       </body>
     </html>
   );
