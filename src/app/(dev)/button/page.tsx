@@ -2,12 +2,13 @@ import Button from '@/shared/ui/Button/Button';
 import LikeButton from '@/shared/ui/Button/likeButton';
 import Clip from '@/shared/ui/Button/Clip';
 import ShareButton from '@/shared/ui/Button/ShareButton';
+import Filter from '@/shared/ui/Button/Filter';
 
 const ButtonPage = () => {
   return (
     <div className="developer-page min-h-screen bg-[var(--foreground)]">
       <div className="flex">
-        <div className="flex h-full w-full flex-col gap-[8px]">
+        <div className="m-[6px] flex h-full w-full flex-col gap-[8px]">
           <Button>기본 버튼</Button>
           <Button design="secondary">기본 버튼 2</Button>
           <Button disabled={true}>기본 버튼 비활성화</Button>
@@ -35,7 +36,7 @@ const ButtonPage = () => {
           <Button size="xs">기본 버튼 xs</Button>
           <Button size="2xs">기본 버튼 2xs</Button>
         </div>
-        <div className="flex h-full w-full flex-col gap-[8px]">
+        <div className="m-[6px] flex h-full w-full flex-col gap-[8px]">
           <LikeButton size="lg" />
           <div className="flex gap-[8px]">
             <LikeButton size="md" />
@@ -79,6 +80,9 @@ const ButtonPage = () => {
             <ShareButton size="lg" platform="facebook" />
             <ShareButton size="md" platform="facebook" />
             <ShareButton size="sm" platform="facebook" />
+          </div>
+          <div>
+            <Filter />
           </div>
         </div>
       </div>
