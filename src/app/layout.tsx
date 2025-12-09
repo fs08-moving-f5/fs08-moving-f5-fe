@@ -3,6 +3,7 @@ import type { Viewport } from 'next';
 import Providers from './providers';
 import './globals.css';
 import Script from 'next/script';
+import { AppToaster } from '@/shared/ui/sonner';
 
 export const metadata: Metadata = {
   title: '무빙 Moving',
@@ -28,6 +29,7 @@ export default function RootLayout({
           src="https://developers.kakao.com/sdk/js/kakao.min.js"
           strategy="afterInteractive"
         />
+        <AppToaster />
       </body>
     </html>
   );

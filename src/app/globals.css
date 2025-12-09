@@ -1,11 +1,19 @@
 @import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/PretendardVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 @theme {
+  /*
+  ================== Font Family ==================
+  */
+  --font-family-sans: 'Pretendard', sans-serif;
+
   /*
   ================== Color Variables ==================
   */
@@ -15,6 +23,8 @@
   --color-grayScale-300: #d9d9d9;
   --color-grayScale-400: #b3b3b3;
   --color-grayScale-500: #7a7a79;
+
+  --color-gray-100: #d9d9d9;
 
   --color-black-100: #61605e;
   --color-black-200: #474643;
@@ -27,6 +37,9 @@
   --color-primary-orange-300: #fd947f;
   --color-primary-orange-400: #f9502e;
   --color-primary-orange-500: #e04829;
+
+  --color-secondary-red-100: #ffeef0;
+  --color-secondary-red-200: #ff4f64;
 
   --color-bg-100: #fcfcfc;
   --color-bg-200: #f7f7f7;
@@ -85,6 +98,92 @@
   .text-xs {
     font-size: 12px;
     line-height: 20px;
+  }
+}
+
+@layer utilities {
+  @media (max-width: 1279px) {
+    .tab\:text-3xl {
+      font-size: 32px;
+      line-height: 42px;
+    }
+
+    .tab\:text-2xl {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    .tab\:text-xl {
+      font-size: 20px;
+      line-height: 32px;
+    }
+
+    .tab\:text-2lg {
+      font-size: 18px;
+      line-height: 26px;
+    }
+
+    .tab\:text-lg {
+      font-size: 16px;
+      line-height: 26px;
+    }
+
+    .tab\:text-md {
+      font-size: 14px;
+      line-height: 24px;
+    }
+
+    .tab\:text-sm {
+      font-size: 13px;
+      line-height: 22px;
+    }
+
+    .tab\:text-xs {
+      font-size: 12px;
+      line-height: 20px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .mobile\:text-3xl {
+      font-size: 32px;
+      line-height: 42px;
+    }
+
+    .mobile\:text-2xl {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    .mobile\:text-xl {
+      font-size: 20px;
+      line-height: 32px;
+    }
+
+    .mobile\:text-2lg {
+      font-size: 18px;
+      line-height: 26px;
+    }
+
+    .mobile\:text-lg {
+      font-size: 16px;
+      line-height: 26px;
+    }
+
+    .mobile\:text-md {
+      font-size: 14px;
+      line-height: 24px;
+    }
+
+    .mobile\:text-sm {
+      font-size: 13px;
+      line-height: 22px;
+    }
+
+    .mobile\:text-xs {
+      font-size: 12px;
+      line-height: 20px;
+    }
   }
 }
 
