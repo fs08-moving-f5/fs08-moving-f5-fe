@@ -197,6 +197,7 @@ body {
   color: var(--color-black-500);
   font-family: 'Pretendard', sans-serif;
   box-sizing: border-box;
+  word-break: keep-all;
 }
 
 .textAreaScroll::-webkit-scrollbar {

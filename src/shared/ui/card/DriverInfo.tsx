@@ -17,6 +17,11 @@ interface DriverInfoProps {
   type?: 'findDriver' | 'quoteWait';
 }
 
+interface SimpleDriverInfoProps {
+  driverName: string;
+  description?: string;
+}
+
 const DriverInfo = ({
   driverName,
   driverImageUrl,
@@ -149,4 +154,21 @@ const DriverInfo = ({
   );
 };
 
+const SimpleDriverInfo = ({ driverName, description }: SimpleDriverInfoProps) => {
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="flex gap-2">
+        <Image src="/icons/name.svg" alt="Driver Name Icon" width={20} height={20} />
+        <h3 className="text-black-500 mobile:text-lg tab:text-lg text-xl font-semibold">
+          {driverName}
+        </h3>
+      </div>
+      {description && (
+        <p className="text-grayScale-500 mobile:text-sm tab:text-sm text-md">{description}</p>
+      )}
+    </div>
+  );
+};
+
+export { SimpleDriverInfo };
 export default DriverInfo;

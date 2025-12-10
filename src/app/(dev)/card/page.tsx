@@ -1,6 +1,8 @@
+'use client';
 import FindDriver from '@/shared/ui/card/FindDriver';
 import QuoteWait from '@/shared/ui/card/QuoteWait';
 import Review from '@/shared/ui/card/Review';
+import ReviewCanWrite from '@/shared/ui/card/ReviewCanWrite';
 
 export default function CardTestPage() {
   return (
@@ -76,6 +78,32 @@ export default function CardTestPage() {
           date="2023-04-10"
           rating={5.0}
           content="최고의 서비스! 기사님이 정말 프로페셔널하시고, 모든 것이 완벽하게 진행되었습니다."
+        />
+
+        <ReviewCanWrite
+          driverName="박이사 기사님"
+          description="이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다."
+          movingType="small"
+          pickedDriver={true}
+          driverImageUrl="https://i.namu.wiki/i/QhqqJ7IFrrniG4DQeWlM6-dRuKeEDXY__U7WOuo1JmaP6wg35_Xa3X_ndOJO9ivEHDqj1U3MYwxQRb9jcxUa01FYBz_pi1DWc_-CZMWW4HuO0jin4fImq9ylaNWB_qKk9h0EnxVMQmuXMokNXemfEA.webp"
+          pickupAddress="서울시 강남구"
+          dropoffAddress="서울시 서초구"
+          movingDate="2024년 07월 01일 (월)"
+          estimatedPrice={350000}
+          onWriteReview={() => alert('리뷰 작성하기 클릭됨')}
+        />
+
+        <ReviewCanWrite
+          driverName="김캐리 기사님"
+          description="쌍마트랜스에서 1년간 근무한 신입 기사입니다."
+          movingType="home"
+          pickedDriver={false}
+          pickupAddress="서울시 도봉구"
+          dropoffAddress="서울시 구로구"
+          movingDate="2025년 05월 05일 (수)"
+          estimatedPrice={50000}
+          onWriteReview={() => alert('리뷰 작성하기 클릭됨')}
+          disabled={true}
         />
       </div>
     </div>
