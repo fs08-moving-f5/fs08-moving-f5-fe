@@ -26,12 +26,15 @@
 
   --color-gray-100: #d9d9d9;
   --color-gray-200: #c4c4c4;
+  --color-gray-300: #ababab;
 
   --color-black-100: #61605e;
   --color-black-200: #474643;
   --color-black-300: #302f2d;
   --color-black-400: #1e1e1e;
   --color-black-500: #111111;
+
+  --color-yellow-100: #ffc149;
 
   --color-primary-orange-100: #feeeea;
   --color-primary-orange-200: #fed8d0;

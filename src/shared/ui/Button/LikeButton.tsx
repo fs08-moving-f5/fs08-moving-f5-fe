@@ -71,7 +71,7 @@ const LikeButton = ({ size = 'md' }: LikeButtonProps) => {
       disabled={loading}
     >
       <Image
-        src={liked ? '/icons/liked.svg' : '/icons/like.svg'}
+        src={liked ? '/icons/like-on.svg' : '/icons/like-empty.svg'}
         alt="like icon"
         width={getIconSize().width}
         height={getIconSize().height}
