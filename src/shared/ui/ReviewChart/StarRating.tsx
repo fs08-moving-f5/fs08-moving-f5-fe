@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import Star from './Star';
+// import Star from './Star';
 
 interface StarRatingProps {
   type: 'get' | 'post';
@@ -23,29 +23,29 @@ const StarRating = ({ type = 'get', value, defaultValue = 0, onChange }: StarRat
 
   const displayedRating = isReadOnly ? (value ?? 0) : rating;
 
-  // const starElements = stars.map((star) => {
-  //   const isActive = star <= displayedRating;
-  //   const src = isActive ? '/icons/star.svg' : '/icons/star-off.svg';
-
-  //   return { star, src };
-  // });
-
   const starElements = stars.map((star) => {
-    let fill = 0;
+    const isActive = star <= displayedRating;
+    const src = isActive ? '/icons/star.svg' : '/icons/star-empty.svg';
 
-    if (isReadOnly) {
-      if (displayedRating >= star)
-        fill = 100; // 완전 채움
-      else if (displayedRating + 1 > star) {
-        const fractional = displayedRating - (star - 1); // 0~1
-        fill = Math.max(0, Math.min(100, fractional * 100));
-      }
-    } else {
-      fill = star <= displayedRating ? 100 : 0; // post에서는 기존 방식
-    }
-
-    return { star, fill };
+    return { star, src };
   });
+
+  // const starElements = stars.map((star) => {
+  //   let fill = 0;
+
+  //   if (isReadOnly) {
+  //     if (displayedRating >= star)
+  //       fill = 100; // 완전 채움
+  //     else if (displayedRating + 1 > star) {
+  //       const fractional = displayedRating - (star - 1); // 0~1
+  //       fill = Math.max(0, Math.min(100, fractional * 100));
+  //     }
+  //   } else {
+  //     fill = star <= displayedRating ? 100 : 0; // post에서는 기존 방식
+  //   }
+
+  //   return { star, fill };
+  // });
 
   const handleMouseDown = (star: number) => {
     if (isReadOnly) return;
@@ -79,14 +79,14 @@ const StarRating = ({ type = 'get', value, defaultValue = 0, onChange }: StarRat
       onMouseUp={stopDrag}
       onMouseLeave={stopDrag}
     >
-      {starElements.map(({ star, fill }) => (
+      {starElements.map(({ star, src }) => (
         <button
           key={star}
           className="p-1"
           onMouseDown={() => handleMouseDown(star)}
           onMouseMove={() => handleMouseMove(star)}
         >
-          <Star fill={fill} size={size} />
+          <Image src={src} alt="star icon" width={size} height={size} />
         </button>
       ))}
     </div>
