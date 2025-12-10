@@ -30,19 +30,19 @@ const Button = ({
   const getSizeClasses = () => {
     switch (size) {
       case 'xl':
-        return 'max-w-[640px] min-h-[60px] text-[18px]';
+        return 'max-w-[640px] min-h-[60px] text-[18px] w-full';
       case 'lg':
-        return 'max-w-[500px] min-h-[60px] text-[18px]';
+        return 'max-w-[500px] min-h-[60px] text-[18px] w-full';
       case 'md':
-        return 'max-w-[320px] min-h-[64px] text-[16px]';
+        return 'max-w-[320px] min-h-[64px] text-[16px] w-full';
       case 'sm':
-        return 'max-w-[254px] min-h-[54px] text-[16px]';
+        return 'max-w-[300px] min-h-[54px] text-[16px] w-full';
       case 'xs':
-        return 'max-w-[200px] min-h-[60px] text-[18px]';
+        return 'max-w-[200px] min-h-[60px] text-[18px] w-full';
       case '2xs':
-        return 'max-w-[180px] min-h-[64px] text-[18px]';
+        return 'max-w-[180px] min-h-[64px] text-[18px] w-full';
       default:
-        return 'max-w-[640px] min-h-[60px] text-[18px]';
+        return 'max-w-[640px] min-h-[60px] text-[18px] w-full';
     }
   };
 
