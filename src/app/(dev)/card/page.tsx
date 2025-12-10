@@ -1,5 +1,6 @@
 import FindDriver from '@/shared/ui/card/FindDriver';
 import QuoteWait from '@/shared/ui/card/QuoteWait';
+import Review from '@/shared/ui/card/Review';
 
 export default function CardTestPage() {
   return (
@@ -54,6 +55,27 @@ export default function CardTestPage() {
           movingType="office"
           pickedDriver={false}
           estimatePrice={50000}
+        />
+
+        <Review
+          userName="홍길동"
+          date="2023-06-15"
+          rating={1.3}
+          content="최악입니다. 절대 이사람 고용하지 마세요."
+        />
+
+        <Review
+          userName="김철수"
+          date="2023-05-20"
+          rating={4.6}
+          content="이사 과정에서 몇 가지 문제가 있었지만, 전반적으로 만족스러운 경험이었습니다."
+        />
+
+        <Review
+          userName="이영희"
+          date="2023-04-10"
+          rating={5.0}
+          content="최고의 서비스! 기사님이 정말 프로페셔널하시고, 모든 것이 완벽하게 진행되었습니다."
         />
       </div>
     </div>
