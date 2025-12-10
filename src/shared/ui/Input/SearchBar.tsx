@@ -1,11 +1,11 @@
 'use client';
 import React from 'react';
-import Image from 'next/image';
-import searhIcon_sm from './ic_search_sm.svg';
-import searhIcon_md from './ic_search_md.svg';
-import deleteIcon_sm from './ic_x_circle_sm.svg';
-import deleteIcon_md from './ic_x_circle_md.svg';
 import { useState } from 'react';
+import Image from 'next/image';
+const searhIcon_sm = '/img/SearchBar/ic_search_sm.svg';
+const searhIcon_md = '/img/SearchBar/ic_search_md.svg';
+const deleteIcon_sm = '/img/SearchBar/ic_x_circle_sm.svg';
+const deleteIcon_md = '/img/SearchBar/ic_x_circle_md.svg';
 
 interface SerarchBarProps {
   size?: 'sm' | 'md';
@@ -76,6 +76,8 @@ export default function SearchBar({ size = 'md', onSubmit }: SerarchBarProps) {
       <Image
         src={searchIcon[size]}
         alt="serchIcon"
+        width={36}
+        height={36}
         className={`absolute block group-focus-within:hidden ${IconSize[size]} ${IconTranformL[size]}`}
       />
       <div
@@ -89,6 +91,8 @@ export default function SearchBar({ size = 'md', onSubmit }: SerarchBarProps) {
           <Image
             src={deleteIcon[size]}
             alt="deleteIcon"
+            width={36}
+            height={36}
             className={`hover:brightness-95 ${IconSize[size]}`}
           />
         </button>
@@ -96,6 +100,8 @@ export default function SearchBar({ size = 'md', onSubmit }: SerarchBarProps) {
           <Image
             src={searchIcon[size]}
             alt="serchIcon"
+            width={36}
+            height={36}
             className={`hover:brightness-80 ${IconSize[size]}`}
           />
         </button>

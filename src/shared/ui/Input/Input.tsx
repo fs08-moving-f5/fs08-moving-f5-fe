@@ -1,9 +1,11 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import eyeVisible from './eye-visible.svg';
-import eyeInvisible from './eye-invisible.svg';
 import { useState } from 'react';
+
+//public 경로 기반
+const eyeVisible = '/img/Input/eye-visible.svg';
+const eyeInvisible = '/img/Input/eye-invisible.svg';
 
 interface InputProps {
   name?: string;
@@ -62,6 +64,8 @@ export default function Input({
             <Image
               src={isVisible ? eyeVisible : eyeInvisible}
               alt="eyeIcon"
+              width={24}
+              height={24}
               className="hover:brightness-50"
             />
           </button>
