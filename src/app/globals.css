@@ -49,6 +49,7 @@
   --color-line-100: #f2f2f2;
   --color-line-200: #e6e6e6;
 
+  --color-error: #ff4f64;
   /*
   ================== Responsive Variables ==================
   */
@@ -196,4 +197,17 @@ body {
   color: var(--color-black-500);
   font-family: 'Pretendard', sans-serif;
   box-sizing: border-box;
+}
+
+.textAreaScroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.textAreaScroll::-webkit-scrollbar-thumb {
+  width: 4px;
+  background-color: var(--gray-gray-300, #ababab);
+  border-radius: 999px;
+  border: 10px soid #fff;
+  cursor: pointer;
 }
