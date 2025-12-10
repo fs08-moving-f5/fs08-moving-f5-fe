@@ -7,7 +7,7 @@ import { ShareProps } from '@/shared/types/share';
 const ShareButton = (props: ShareProps) => {
   const { size = 'lg' } = props;
 
-  const baseStyles = `flex cursor-pointer items-center justify-center p-[14px] rounded-[16px] border transition`;
+  const baseStyles = `flex cursor-pointer items-center justify-center p-[14px] rounded-[16px] border border-none transition`;
 
   const getWrapperClasses = () => {
     switch (size) {
