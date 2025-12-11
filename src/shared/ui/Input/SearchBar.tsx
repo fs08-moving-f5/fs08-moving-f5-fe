@@ -2,10 +2,10 @@
 import React from 'react';
 import { useState } from 'react';
 import Image from 'next/image';
-const searhIcon_sm = '/img/SearchBar/ic_search_sm.svg';
-const searhIcon_md = '/img/SearchBar/ic_search_md.svg';
-const deleteIcon_sm = '/img/SearchBar/ic_x_circle_sm.svg';
-const deleteIcon_md = '/img/SearchBar/ic_x_circle_md.svg';
+const searhIcon_sm = '/icons/SearchBar/ic_search_sm.svg';
+const searhIcon_md = '/icons/SearchBar/ic_search_md.svg';
+const deleteIcon_sm = '/icons/SearchBar/ic_x_circle_sm.svg';
+const deleteIcon_md = '/icons/SearchBar/ic_x_circle_md.svg';
 
 interface SerarchBarProps {
   size?: 'sm' | 'md';
