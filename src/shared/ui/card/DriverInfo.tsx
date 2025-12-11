@@ -15,7 +15,7 @@ interface DriverInfoProps {
   onLikeClick?: () => void;
   showLikeButton?: boolean;
   size?: 'small' | 'medium' | 'large';
-  type?: 'findDriver' | 'quoteWait';
+  type?: 'findDriver' | 'estimateWait';
 }
 
 interface SimpleDriverInfoProps {
@@ -43,7 +43,7 @@ const DriverInfo = ({
 
   return (
     <section className="mobile:gap-2 tab:gap-3 flex items-center gap-4">
-      <div className={type === 'quoteWait' ? '' : 'tab:block hidden'}>
+      <div className={type === 'estimateWait' ? '' : 'tab:block hidden'}>
         <figure>
           <Image
             src={driverImageUrl ?? '/img/profile.png'}
@@ -57,7 +57,7 @@ const DriverInfo = ({
       <div className="mobile:gap-0.5 tab:gap-1 flex flex-1 flex-col gap-1">
         <div
           className={
-            type === 'quoteWait'
+            type === 'estimateWait'
               ? 'flex items-center justify-between gap-3'
               : 'flex items-center gap-3'
           }
@@ -75,13 +75,13 @@ const DriverInfo = ({
           </div>
           {showLikeButton && (
             <div className="tab:ml-auto mobile:ml-0">
-              <div className={type === 'quoteWait' ? '' : 'tab:block mobile:hidden hidden'}>
+              <div className={type === 'estimateWait' ? '' : 'tab:block mobile:hidden hidden'}>
                 <Like
                   likeCount={likeCount}
                   isLiked={isLiked}
                   onLikeClick={onLikeClick}
                   size={size}
-                  showCount={type === 'quoteWait'}
+                  showCount={type === 'estimateWait'}
                 />
               </div>
             </div>
@@ -124,7 +124,9 @@ const DriverInfo = ({
       {showLikeButton && (
         <div
           className={
-            type === 'quoteWait' ? 'hidden' : 'tab:hidden mobile:hidden absolute right-0 bottom-0'
+            type === 'estimateWait'
+              ? 'hidden'
+              : 'tab:hidden mobile:hidden absolute right-0 bottom-0'
           }
         >
           <Like

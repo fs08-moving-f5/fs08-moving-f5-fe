@@ -4,7 +4,7 @@ import { MovingTypeChip } from '../chip';
 import DriverInfo from './DriverInfo';
 import Button from '../Button/Button';
 
-interface QuoteWaitProps {
+interface EstimateWaitProps {
   driverName: string;
   driverImageUrl?: string;
   rating: number;
@@ -18,7 +18,7 @@ interface QuoteWaitProps {
   onConfirmClick?: () => void;
 }
 
-const QuoteWait = ({
+const EstimateWait = ({
   driverName,
   driverImageUrl,
   rating,
@@ -30,7 +30,7 @@ const QuoteWait = ({
   estimatePrice,
   onDetailClick,
   onConfirmClick,
-}: QuoteWaitProps) => {
+}: EstimateWaitProps) => {
   return (
     <article className="mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 mobile:max-w-[327px] w-full max-w-[558px] rounded-2xl bg-white p-6 shadow-md">
       <div className="mobile:gap-3 tab:gap-3 flex flex-col gap-4">
@@ -53,7 +53,7 @@ const QuoteWait = ({
               experience={experience}
               moveCount={moveCount}
               showLikeButton={true}
-              type="quoteWait"
+              type="estimateWait"
             />
           </section>
 
@@ -82,4 +82,4 @@ const QuoteWait = ({
   );
 };
 
-export default QuoteWait;
+export default EstimateWait;
