@@ -70,7 +70,7 @@ const DriverInfo = ({
               height={nameIconSize}
             />
             <strong className="text-black-500 mobile:text-md tab:text-md text-lg font-semibold">
-              {driverName}
+              {driverName} 기사님
             </strong>
           </div>
           {showLikeButton && (
@@ -148,7 +148,7 @@ const SimpleDriverInfo = ({ driverName, description }: SimpleDriverInfoProps) =>
       <div className="flex gap-2">
         <Image src="/icons/name.svg" alt="Driver Name Icon" width={20} height={20} />
         <h3 className="text-black-500 mobile:text-lg tab:text-lg text-xl font-semibold">
-          {driverName}
+          {driverName} 기사님
         </h3>
       </div>
       {description && (
