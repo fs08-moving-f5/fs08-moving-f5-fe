@@ -37,8 +37,8 @@ const FindDriver = ({
   const [liked, setLiked] = useState(isLiked);
 
   const handleLikeClick = () => {
-    setLiked(!liked);
     likeFunction?.();
+    setLiked(!liked);
   };
 
   return (
@@ -50,25 +50,29 @@ const FindDriver = ({
           </div>
         )}
         <div className="mobile:gap-4 tab:gap-4 flex flex-1 flex-row gap-6">
-          <figure className="tab:hidden">
-            <Image
-              src={driverImageUrl ?? '/img/profile.png'}
-              alt="Driver Img"
-              width={134}
-              height={134}
-            />
-          </figure>
+          <div className="tab:hidden">
+            <figure>
+              <Image
+                src={driverImageUrl ?? '/img/profile.png'}
+                alt="Driver Img"
+                width={134}
+                height={134}
+              />
+            </figure>
+          </div>
           <section className="flex-1">
             <header>
               <h3 className="text-black-500 mobile:mb-1 mobile:text-lg tab:mb-2 tab:text-lg mb-2 text-xl font-semibold">
                 {title}
               </h3>
-              <p className="text-black-200 mobile:hidden tab:mb-4 tab:text-md mb-5 text-lg">
-                {description}
-              </p>
+              <div className="mobile:hidden tab:block">
+                <p className="text-black-200 tab:mb-4 tab:text-md mb-5 text-lg">{description}</p>
+              </div>
             </header>
 
-            <hr className="mobile:hidden tab:block tab:mb-4 hidden border-gray-100" />
+            <div className="mobile:hidden tab:block hidden">
+              <hr className="tab:mb-4 border-gray-100" />
+            </div>
 
             <DriverInfo
               driverName={driverName}
