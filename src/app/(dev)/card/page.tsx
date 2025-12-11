@@ -1,7 +1,7 @@
 'use client';
 import FindDriver from '@/shared/ui/card/FindDriver';
-import QuoteDetail from '@/shared/ui/card/QuoteDetail';
-import QuoteWait from '@/shared/ui/card/QuoteWait';
+import EstimateDetail from '@/shared/ui/card/EstimateDetail';
+import EstimateWait from '@/shared/ui/card/EstimateWait';
 import Review from '@/shared/ui/card/Review';
 import ReviewCanWrite from '@/shared/ui/card/ReviewCanWrite';
 
@@ -38,7 +38,7 @@ export default function CardTestPage() {
           isLiked={true}
         />
 
-        <QuoteWait
+        <EstimateWait
           driverName="이사왕 기사님"
           driverImageUrl="https://i.namu.wiki/i/QhqqJ7IFrrniG4DQeWlM6-dRuKeEDXY__U7WOuo1JmaP6wg35_Xa3X_ndOJO9ivEHDqj1U3MYwxQRb9jcxUa01FYBz_pi1DWc_-CZMWW4HuO0jin4fImq9ylaNWB_qKk9h0EnxVMQmuXMokNXemfEA.webp"
           rating={4.8}
@@ -49,7 +49,7 @@ export default function CardTestPage() {
           pickedDriver={true}
           estimatePrice={250000}
         />
-        <QuoteWait
+        <EstimateWait
           driverName="이사왕 기사님"
           rating={1.5}
           reviewCount={555}
@@ -107,7 +107,7 @@ export default function CardTestPage() {
           disabled={true}
         />
 
-        <QuoteDetail
+        <EstimateDetail
           driverName="최고의 이사맨"
           driverImageUrl="https://i.namu.wiki/i/QhqqJ7IFrrniG4DQeWlM6-dRuKeEDXY__U7WOuo1JmaP6wg35_Xa3X_ndOJO9ivEHDqj1U3MYwxQRb9jcxUa01FYBz_pi1DWc_-CZMWW4HuO0jin4fImq9ylaNWB_qKk9h0EnxVMQmuXMokNXemfEA.webp"
           rating={4.9}
@@ -122,7 +122,7 @@ export default function CardTestPage() {
           isConfirmed={true}
         />
 
-        <QuoteDetail
+        <EstimateDetail
           driverName="신입 이사맨"
           rating={3.5}
           reviewCount={20}

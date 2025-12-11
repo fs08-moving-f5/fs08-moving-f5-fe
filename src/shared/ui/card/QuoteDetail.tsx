@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { MovingTypeChip } from '../chip';
 import DriverInfo from './DriverInfo';
 
-interface QuoteDetailProps {
+interface EstimateDetailProps {
   driverName: string;
   driverImageUrl?: string;
   rating: number;
@@ -18,7 +18,7 @@ interface QuoteDetailProps {
   isConfirmed?: boolean;
 }
 
-const QuoteDetail = ({
+const EstimateDetail = ({
   driverName,
   driverImageUrl,
   rating,
@@ -31,7 +31,7 @@ const QuoteDetail = ({
   pickedDriver = false,
   estimatePrice,
   isConfirmed = false,
-}: QuoteDetailProps) => {
+}: EstimateDetailProps) => {
   return (
     <article className="mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 mobile:max-w-[327px] w-full max-w-[660px] rounded-2xl bg-white p-6 shadow-md">
       <div className="mobile:gap-3 tab:gap-3 flex flex-col gap-4">
@@ -72,7 +72,7 @@ const QuoteDetail = ({
                 likeCount={likeCount}
                 isLiked={isLiked}
                 showLikeButton={true}
-                type="quoteWait"
+                type="estimateWait"
               />
             </div>
           </section>
@@ -105,4 +105,4 @@ const QuoteDetail = ({
   );
 };
 
-export default QuoteDetail;
+export default EstimateDetail;
