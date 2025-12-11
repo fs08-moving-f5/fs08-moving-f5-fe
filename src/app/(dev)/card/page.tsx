@@ -115,6 +115,7 @@ export default function CardTestPage() {
           experience="10년"
           moveCount="5000건"
           likeCount={200}
+          isLiked={true}
           movingType="home"
           pickedDriver={true}
           estimatePrice={300000}

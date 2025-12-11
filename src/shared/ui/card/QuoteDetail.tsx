@@ -11,6 +11,7 @@ interface QuoteDetailProps {
   experience: string;
   moveCount: string;
   likeCount?: number;
+  isLiked?: boolean;
   movingType?: 'small' | 'home' | 'office';
   pickedDriver?: boolean;
   estimatePrice: number;
@@ -25,6 +26,7 @@ const QuoteDetail = ({
   experience,
   moveCount,
   likeCount = 0,
+  isLiked = false,
   movingType,
   pickedDriver = false,
   estimatePrice,
@@ -59,17 +61,20 @@ const QuoteDetail = ({
               </p>
             </div>
 
-            <DriverInfo
-              driverName={driverName}
-              driverImageUrl={driverImageUrl}
-              rating={rating}
-              reviewCount={reviewCount}
-              experience={experience}
-              moveCount={moveCount}
-              likeCount={likeCount}
-              showLikeButton={true}
-              type="quoteWait"
-            />
+            <div className="rounded-xl border-1 border-gray-100 p-3">
+              <DriverInfo
+                driverName={driverName}
+                driverImageUrl={driverImageUrl}
+                rating={rating}
+                reviewCount={reviewCount}
+                experience={experience}
+                moveCount={moveCount}
+                likeCount={likeCount}
+                isLiked={isLiked}
+                showLikeButton={true}
+                type="quoteWait"
+              />
+            </div>
           </section>
 
           <hr className="border-gray-100" />
