@@ -1,5 +1,6 @@
 'use client';
 import FindDriver from '@/shared/ui/card/FindDriver';
+import QuoteDetail from '@/shared/ui/card/QuoteDetail';
 import QuoteWait from '@/shared/ui/card/QuoteWait';
 import Review from '@/shared/ui/card/Review';
 import ReviewCanWrite from '@/shared/ui/card/ReviewCanWrite';
@@ -104,6 +105,32 @@ export default function CardTestPage() {
           estimatedPrice={50000}
           onWriteReview={() => alert('리뷰 작성하기 클릭됨')}
           disabled={true}
+        />
+
+        <QuoteDetail
+          driverName="최고의 이사맨"
+          driverImageUrl="https://i.namu.wiki/i/QhqqJ7IFrrniG4DQeWlM6-dRuKeEDXY__U7WOuo1JmaP6wg35_Xa3X_ndOJO9ivEHDqj1U3MYwxQRb9jcxUa01FYBz_pi1DWc_-CZMWW4HuO0jin4fImq9ylaNWB_qKk9h0EnxVMQmuXMokNXemfEA.webp"
+          rating={4.9}
+          reviewCount={320}
+          experience="10년"
+          moveCount="5000건"
+          likeCount={200}
+          isLiked={true}
+          movingType="home"
+          pickedDriver={true}
+          estimatePrice={300000}
+          isConfirmed={true}
+        />
+
+        <QuoteDetail
+          driverName="신입 이사맨"
+          rating={3.5}
+          reviewCount={20}
+          experience="1년"
+          moveCount="100건"
+          movingType="office"
+          pickedDriver={false}
+          estimatePrice={80000}
         />
       </div>
     </div>

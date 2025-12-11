@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Like from '../like';
 
 interface DriverInfoProps {
   driverName: string;
@@ -39,19 +40,20 @@ const DriverInfo = ({
   const imageSize = size === 'large' ? 50 : size === 'medium' ? 40 : 32;
   const nameIconSize = size === 'large' ? 24 : size === 'medium' ? 20 : 18;
   const starIconSize = size === 'large' ? 20 : size === 'medium' ? 18 : 16;
-  const likeIconSize = size === 'large' ? 28 : size === 'medium' ? 24 : 20;
 
   return (
     <section className="mobile:gap-2 tab:gap-3 flex items-center gap-4">
-      <figure className={type === 'quoteWait' ? '' : 'tab:block hidden'}>
-        <Image
-          src={driverImageUrl ?? '/img/profile.png'}
-          alt="Driver Img"
-          width={imageSize}
-          height={imageSize}
-          className="rounded-xl"
-        />
-      </figure>
+      <div className={type === 'quoteWait' ? '' : 'tab:block hidden'}>
+        <figure>
+          <Image
+            src={driverImageUrl ?? '/img/profile.png'}
+            alt="Driver Img"
+            width={imageSize}
+            height={imageSize}
+            className="rounded-xl"
+          />
+        </figure>
+      </div>
       <div className="mobile:gap-0.5 tab:gap-1 flex flex-1 flex-col gap-1">
         <div
           className={
@@ -72,25 +74,16 @@ const DriverInfo = ({
             </strong>
           </div>
           {showLikeButton && (
-            <div className="tab:ml-auto mobile:ml-0 mobile:gap-1 tab:gap-1 flex items-center gap-1.5">
-              <button onClick={onLikeClick} type="button" aria-label="좋아요">
-                <Image
-                  src={isLiked ? '/icons/like-on.svg' : '/icons/like-off.svg'}
-                  alt="Like Icon"
-                  width={likeIconSize}
-                  height={likeIconSize}
-                  className="mobile:h-6 mobile:w-6 tab:h-6 tab:w-6"
+            <div className="tab:ml-auto mobile:ml-0">
+              <div className={type === 'quoteWait' ? '' : 'tab:block mobile:hidden hidden'}>
+                <Like
+                  likeCount={likeCount}
+                  isLiked={isLiked}
+                  onLikeClick={onLikeClick}
+                  size={size}
+                  showCount={type === 'quoteWait'}
                 />
-              </button>
-              <span
-                className={
-                  type === 'quoteWait'
-                    ? 'text-grayScale-500 mobile:text-md tab:text-md text-lg font-medium'
-                    : 'tab:block mobile:hidden text-grayScale-500 mobile:text-md tab:text-md hidden text-lg font-medium'
-                }
-              >
-                {likeCount}
-              </span>
+              </div>
             </div>
           )}
         </div>
@@ -131,23 +124,16 @@ const DriverInfo = ({
       {showLikeButton && (
         <div
           className={
-            type === 'quoteWait'
-              ? 'hidden'
-              : 'tab:hidden mobile:hidden mobile:ml-auto mobile:gap-1 tab:gap-1 absolute right-0 bottom-0 flex items-center gap-1.5'
+            type === 'quoteWait' ? 'hidden' : 'tab:hidden mobile:hidden absolute right-0 bottom-0'
           }
         >
-          <button onClick={onLikeClick} type="button" aria-label="좋아요">
-            <Image
-              src={isLiked ? '/icons/like-on.svg' : '/icons/like-off.svg'}
-              alt="Like Icon"
-              width={likeIconSize}
-              height={likeIconSize}
-              className="mobile:h-6 mobile:w-6 tab:h-6 tab:w-6"
-            />
-          </button>
-          <span className="text-grayScale-500 mobile:text-md tab:text-md text-lg font-medium">
-            {likeCount}
-          </span>
+          <Like
+            likeCount={likeCount}
+            isLiked={isLiked}
+            onLikeClick={onLikeClick}
+            size={size}
+            showCount={true}
+          />
         </div>
       )}
     </section>
