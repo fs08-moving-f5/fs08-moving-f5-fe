@@ -4,6 +4,7 @@ import EstimateDetail from '@/shared/ui/card/EstimateDetail';
 import EstimateWait from '@/shared/ui/card/EstimateWait';
 import Review from '@/shared/ui/card/Review';
 import ReviewCanWrite from '@/shared/ui/card/ReviewCanWrite';
+import ReviewWritten from '@/shared/ui/card/ReviewWritten';
 
 export default function CardTestPage() {
   return (
@@ -15,7 +16,7 @@ export default function CardTestPage() {
           driverImageUrl="https://i.namu.wiki/i/QhqqJ7IFrrniG4DQeWlM6-dRuKeEDXY__U7WOuo1JmaP6wg35_Xa3X_ndOJO9ivEHDqj1U3MYwxQRb9jcxUa01FYBz_pi1DWc_-CZMWW4HuO0jin4fImq9ylaNWB_qKk9h0EnxVMQmuXMokNXemfEA.webp"
           title="고객님의 물품을 안전하게 운송해 드립니다."
           description="이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다."
-          driverName="김코드 기사님"
+          driverName="김코드"
           rating={5.0}
           reviewCount={178}
           experience="7년"
@@ -28,7 +29,7 @@ export default function CardTestPage() {
         <FindDriver
           title="고객님의 물품을 안전하게 운송해 드립니다."
           description="이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다."
-          driverName="김코드 기사님"
+          driverName="김코드"
           rating={5.0}
           reviewCount={178}
           experience="2년"
@@ -39,7 +40,7 @@ export default function CardTestPage() {
         />
 
         <EstimateWait
-          driverName="이사왕 기사님"
+          driverName="이사왕"
           driverImageUrl="https://i.namu.wiki/i/QhqqJ7IFrrniG4DQeWlM6-dRuKeEDXY__U7WOuo1JmaP6wg35_Xa3X_ndOJO9ivEHDqj1U3MYwxQRb9jcxUa01FYBz_pi1DWc_-CZMWW4HuO0jin4fImq9ylaNWB_qKk9h0EnxVMQmuXMokNXemfEA.webp"
           rating={4.8}
           reviewCount={256}
@@ -50,7 +51,7 @@ export default function CardTestPage() {
           estimatePrice={250000}
         />
         <EstimateWait
-          driverName="이사왕 기사님"
+          driverName="이사왕"
           rating={1.5}
           reviewCount={555}
           experience="1년"
@@ -82,7 +83,7 @@ export default function CardTestPage() {
         />
 
         <ReviewCanWrite
-          driverName="박이사 기사님"
+          driverName="박이사"
           description="이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다."
           movingType="small"
           pickedDriver={true}
@@ -95,7 +96,7 @@ export default function CardTestPage() {
         />
 
         <ReviewCanWrite
-          driverName="김캐리 기사님"
+          driverName="김캐리"
           description="쌍마트랜스에서 1년간 근무한 신입 기사입니다."
           movingType="home"
           pickedDriver={false}
@@ -131,6 +132,32 @@ export default function CardTestPage() {
           movingType="office"
           pickedDriver={false}
           estimatePrice={80000}
+        />
+
+        <ReviewWritten
+          driverName="정이사"
+          description="이사업계 경력 5년으로 안전한 이사를 도와드리는 정이사입니다."
+          movingType="office"
+          pickedDriver={true}
+          driverImageUrl="https://i.namu.wiki/i/QhqqJ7IFrrniG4DQeWlM6-dRuKeEDXY__U7WOuo1JmaP6wg35_Xa3X_ndOJO9ivEHDqj1U3MYwxQRb9jcxUa01FYBz_pi1DWc_-CZMWW4HuO0jin4fImq9ylaNWB_qKk9h0EnxVMQmuXMokNXemfEA.webp"
+          pickupAddress="서울시 마포구"
+          dropoffAddress="서울시 영등포구"
+          movingDate="2024년 08월 15일 (목)"
+          rating={4.7}
+          reviewContent="정이사 기사님과 함께한 이사는 정말 만족스러웠습니다. 시간 약속도 잘 지켜주시고, 물건들도 안전하게 옮겨주셔서 감사했습니다. 다음에도 꼭 다시 이용하고 싶습니다!"
+          reviewDate="2024-08-16"
+        />
+
+        <ReviewWritten
+          driverName="최이사"
+          movingType="small"
+          pickedDriver={false}
+          pickupAddress="서울시 송파구"
+          dropoffAddress="서울시 강동구"
+          movingDate="2024년 09월 10일 (화)"
+          rating={3.9}
+          reviewContent="이사 과정에서 몇 가지 아쉬운 점이 있었지만, 전반적으로는 괜찮았습니다. 기사님이 친절하셨고, 물건들도 무사히 도착했습니다. 다만, 약속된 시간보다 조금 늦게 도착한 점은 개선되었으면 좋겠습니다."
+          reviewDate="2024-09-11"
         />
       </div>
     </div>
