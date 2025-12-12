@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import Menu from './Menu';
+import DropdownProfile from '../dropdown/DropdownProfile';
 
 interface User {
   role: 'guest' | 'user' | 'driver';
@@ -48,12 +49,12 @@ const GNB = () => {
 
   // TODO: 로그인 기능 완성되면 API 요청해서 유저 정보 가져오기
   const user: User = {
-    role: 'guest',
+    role: 'user',
     name: '김가나',
   };
 
   return (
-    <div className="mobile:h-[54px] mobile:py-[10px] tab:py-[19px] tab:px-[72px] mobile:px-[24px] tab:h-]54px] flex h-[88px] w-full items-center justify-between bg-white px-[160px] py-[26px]">
+    <div className="mobile:h-[54px] mobile:py-[10px] tab:py-[19px] tab:px-[72px] mobile:px-[24px] tab:h-[54px] relative z-20 flex h-[88px] w-full items-center justify-between bg-white px-[160px] py-[26px]">
       <div className="flex items-center gap-[82px]">
         <Link href="/">
           <Image
@@ -77,10 +78,11 @@ const GNB = () => {
         {user.role !== 'guest' && (
           <div className="flex items-center gap-8">
             <Image src="icons/alarm.svg" alt="alarm" width={36} height={36} />
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
               <Image src="icons/profile.svg" alt="profile" width={36} height={36} />
               <div className="text-black-500 text-2lg font-medium">{user.name}</div>
-            </div>
+            </div> */}
+            <DropdownProfile size="md" userName={user.name} userType={user.role} />
           </div>
         )}
       </div>
@@ -96,7 +98,8 @@ const GNB = () => {
               <Image src="icons/alarm.svg" alt="alarm" width={24} height={24} />
             </button>
             <button type="button">
-              <Image src="icons/profile.svg" alt="profile" width={24} height={24} />
+              {/* <Image src="icons/profile.svg" alt="profile" width={24} height={24} /> */}
+              <DropdownProfile size="sm" userName={user.name} userType={user.role} />
             </button>
             <button type="button" onClick={() => setIsOpen(true)}>
               <Image src="icons/menu.svg" alt="menu" width={24} height={24} />

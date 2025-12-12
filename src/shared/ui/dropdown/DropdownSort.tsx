@@ -56,7 +56,7 @@ export default function DropdownSort({
   };
 
   return (
-    <div ref={dropdownRef} className="relative z-10 text-[#262524]">
+    <div ref={dropdownRef} className="relative z-10 shrink-0 text-[#262524]">
       <button
         onClick={handleDropdownClick}
         className={`cursor-pointer rounded-[8px] border border-[var(--color-grayScale-200)] bg-[var(--color-grayScale-50)] shadow-md ${buttonSize[size]} ${butttonStyle[size]}`}
