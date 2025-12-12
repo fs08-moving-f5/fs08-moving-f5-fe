@@ -13,7 +13,7 @@ interface EstimateClientProps {
   movingDate: string;
   estimatePrice: number;
   isConfirmed?: boolean;
-  isCompleted?: boolean;
+  status?: 'completed' | 'rejected';
   onDetailClick?: () => void;
 }
 
@@ -26,7 +26,7 @@ const EstimateClient = ({
   movingDate,
   estimatePrice,
   isConfirmed = false,
-  isCompleted = false,
+  status,
   onDetailClick,
 }: EstimateClientProps) => {
   return (
@@ -95,12 +95,19 @@ const EstimateClient = ({
       </div>
 
       {/* 이사 완료 오버레이 */}
-      {isCompleted && (
+      {status === 'completed' && (
         <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-[rgba(4,4,4,0.64)]">
           <p className="mb-4 text-lg font-semibold text-white">이사 완료된 견적이에요</p>
           <Button variant="outlined" design="secondary" size="xs" onClick={onDetailClick}>
             견적 상세보기
           </Button>
+        </div>
+      )}
+
+      {/* 반려된 요청 오버레이 */}
+      {status === 'rejected' && (
+        <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-[rgba(4,4,4,0.64)]">
+          <p className="text-lg font-semibold text-white">반려된 요청이에요</p>
         </div>
       )}
     </article>
