@@ -5,6 +5,7 @@ import EstimateWait from '@/shared/ui/card/EstimateWait';
 import Review from '@/shared/ui/card/Review';
 import ReviewCanWrite from '@/shared/ui/card/ReviewCanWrite';
 import ReviewWritten from '@/shared/ui/card/ReviewWritten';
+import EstimateClient from '@/shared/ui/card/EstimateClient';
 
 export default function CardTestPage() {
   return (
@@ -158,6 +159,52 @@ export default function CardTestPage() {
           rating={3.9}
           reviewContent="이사 과정에서 몇 가지 아쉬운 점이 있었지만, 전반적으로는 괜찮았습니다. 기사님이 친절하셨고, 물건들도 무사히 도착했습니다. 다만, 약속된 시간보다 조금 늦게 도착한 점은 개선되었으면 좋겠습니다."
           reviewDate="2024-09-11"
+        />
+
+        <EstimateClient
+          customerName="박고객"
+          movingType="home"
+          pickedDriver={true}
+          pickupAddress="서울시 강남구"
+          dropoffAddress="서울시 서초구"
+          movingDate="2024년 10월 01일 (월)"
+          estimatePrice={400000}
+          isConfirmed={true}
+        />
+
+        <EstimateClient
+          customerName="이고객"
+          movingType="office"
+          pickedDriver={false}
+          pickupAddress="서울시 은평구"
+          dropoffAddress="서울시 종로구"
+          movingDate="2024년 11월 20일 (수)"
+          estimatePrice={120000}
+        />
+
+        <EstimateClient
+          customerName="최고객"
+          movingType="small"
+          pickedDriver={true}
+          pickupAddress="서울시 동작구"
+          dropoffAddress="서울시 관악구"
+          movingDate="2024년 12월 15일 (일)"
+          estimatePrice={90000}
+          isConfirmed={false}
+          status="completed"
+          onDetailClick={() => alert('견적 상세보기 클릭됨')}
+        />
+
+        <EstimateClient
+          customerName="김고객"
+          movingType="home"
+          pickedDriver={false}
+          pickupAddress="서울시 성북구"
+          dropoffAddress="서울시 노원구"
+          movingDate="2025년 01월 10일 (금)"
+          estimatePrice={300000}
+          status="rejected"
+          onDetailClick={() => alert('견적 상세보기 클릭됨')}
         />
       </div>
     </div>
