@@ -181,6 +181,19 @@ export default function CardTestPage() {
           movingDate="2024년 11월 20일 (수)"
           estimatePrice={120000}
         />
+
+        <EstimateClient
+          customerName="최고객"
+          movingType="small"
+          pickedDriver={true}
+          pickupAddress="서울시 동작구"
+          dropoffAddress="서울시 관악구"
+          movingDate="2024년 12월 15일 (일)"
+          estimatePrice={90000}
+          isConfirmed={false}
+          isCompleted={true}
+          onDetailClick={() => alert('견적 상세보기 클릭됨')}
+        />
       </div>
     </div>
   );

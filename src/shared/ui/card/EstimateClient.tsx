@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { MovingTypeChip } from '../chip';
+import Button from '../Button/Button';
 
 interface EstimateClientProps {
   customerName: string;
@@ -12,6 +13,8 @@ interface EstimateClientProps {
   movingDate: string;
   estimatePrice: number;
   isConfirmed?: boolean;
+  isCompleted?: boolean;
+  onDetailClick?: () => void;
 }
 
 const EstimateClient = ({
@@ -23,9 +26,11 @@ const EstimateClient = ({
   movingDate,
   estimatePrice,
   isConfirmed = false,
+  isCompleted = false,
+  onDetailClick,
 }: EstimateClientProps) => {
   return (
-    <article className="mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 mobile:max-w-[327px] w-full max-w-[558px] rounded-2xl bg-white p-6 shadow-md">
+    <article className="mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 mobile:max-w-[327px] relative w-full max-w-[558px] rounded-2xl bg-white p-6 shadow-md">
       <div className="mobile:gap-3 tab:gap-3 flex flex-col gap-4">
         {/* 헤더: 칩 영역 */}
         <header className="flex w-full items-center justify-between">
@@ -88,6 +93,16 @@ const EstimateClient = ({
           </strong>
         </section>
       </div>
+
+      {/* 이사 완료 오버레이 */}
+      {isCompleted && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-[rgba(4,4,4,0.64)]">
+          <p className="mb-4 text-lg font-semibold text-white">이사 완료된 견적이에요</p>
+          <Button variant="outlined" design="secondary" size="xs" onClick={onDetailClick}>
+            견적 상세보기
+          </Button>
+        </div>
+      )}
     </article>
   );
 };
