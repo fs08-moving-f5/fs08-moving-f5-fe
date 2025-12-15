@@ -79,7 +79,7 @@ const ReviewWriting = ({
         </figure>
       </div>
 
-      <hr className="text-line-200 my-4 w-full" />
+      <hr className="border-line-200 my-4 w-full" />
 
       {/* 이사 정보 */}
       <div className="mobile:text-sm tab:text-sm text-black-300 text-md tab:gap-6 mobile:gap-4 flex flex-row flex-wrap gap-10">
@@ -106,7 +106,7 @@ const ReviewWriting = ({
         </div>
       </div>
 
-      <hr className="text-line-200 my-4 w-full" />
+      <hr className="border-line-200 my-4 w-full" />
 
       {/* 평점 선택 */}
       <div className="mb-6">
