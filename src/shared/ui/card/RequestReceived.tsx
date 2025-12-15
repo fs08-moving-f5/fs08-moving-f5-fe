@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { MovingTypeChip } from '../chip';
-import Button from '../Button/Button';
+import { MovingTypeChip } from '@/shared/ui/chip';
+import Button from '@/shared/ui/Button/Button';
 
 interface RequestReceivedProps {
   customerName: string;

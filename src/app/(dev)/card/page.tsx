@@ -1,18 +1,33 @@
 'use client';
-import FindDriver from '@/shared/ui/card/FindDriver';
-import EstimateDetail from '@/shared/ui/card/EstimateDetail';
-import EstimateWait from '@/shared/ui/card/EstimateWait';
-import Review from '@/shared/ui/card/Review';
-import ReviewCanWrite from '@/shared/ui/card/ReviewCanWrite';
-import ReviewWritten from '@/shared/ui/card/ReviewWritten';
-import EstimateClient from '@/shared/ui/card/EstimateClient';
-import RequestReceived from '@/shared/ui/card/RequestReceived';
+import {
+  FindDriver,
+  EstimateDetail,
+  EstimateWait,
+  Review,
+  ReviewCanWrite,
+  ReviewWritten,
+  EstimateClient,
+  RequestReceived,
+  ReviewWriting,
+} from '@/shared/ui/card';
 
 export default function CardTestPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="mx-auto max-w-4xl space-y-6">
         <h1 className="mb-6 text-2xl font-bold">FindDriver 컴포넌트 테스트</h1>
+
+        <ReviewWriting
+          driverName="홍길동"
+          driverImageUrl="https://i.namu.wiki/i/QhqqJ7IFrrniG4DQeWlM6-dRuKeEDXY__U7WOuo1JmaP6wg35_Xa3X_ndOJO9ivEHDqj1U3MYwxQRb9jcxUa01FYBz_pi1DWc_-CZMWW4HuO0jin4fImq9ylaNWB_qKk9h0EnxVMQmuXMokNXemfEA.webp"
+          movingType="home"
+          pickedDriver={true}
+          pickupAddress="서울시 강남구"
+          dropoffAddress="서울시 서초구"
+          movingDate="2024년 07월 01일 (월)"
+          onSubmit={(rating, content) => alert(`평점: ${rating}, 내용: ${content}`)}
+          onClose={() => alert('리뷰 작성 닫기')}
+        />
 
         <RequestReceived
           customerName="홍길동"
