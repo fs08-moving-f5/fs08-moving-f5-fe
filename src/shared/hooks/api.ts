@@ -1,6 +1,7 @@
 const setAuthorizationHeader = async () => {};
 const handleToken = async () => {};
-const parseErrorResponse = async (error: any) => { //TODO: 타입 수정
+const parseErrorResponse = async (error: any) => {
+  //TODO: 타입 수정
   const { response } = error;
   if (response && response.body) {
     const errorBody = await response.json();
@@ -12,9 +13,4 @@ const parseErrorResponse = async (error: any) => { //TODO: 타입 수정
 };
 const handleUnauthorized = async () => {};
 
-export {
-  setAuthorizationHeader,
-  handleToken,
-  parseErrorResponse,
-  handleUnauthorized,
-};
+export { setAuthorizationHeader, handleToken, parseErrorResponse, handleUnauthorized };
