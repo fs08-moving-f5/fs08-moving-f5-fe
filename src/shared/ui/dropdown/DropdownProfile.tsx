@@ -83,7 +83,7 @@ export default function DropdownProfile({
     <div ref={dropdownRef} className="h-fit w-fit">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-fit w-fit cursor-pointer items-center gap-[16px]"
+        className="flex h-fit w-fit cursor-pointer items-center gap-[16px] hover:brightness-95"
       >
         <Image
           src={ic_profile}
@@ -109,7 +109,7 @@ export default function DropdownProfile({
                 listObject[userType].map((e, idx) => (
                   <li
                     key={idx}
-                    className={`flex items-center justify-start font-[500] ${elementText[size]} ${elementSize[size]}`}
+                    className={`flex items-center justify-start font-[500] hover:text-[var(--color-primary-orange-400)] ${elementText[size]} ${elementSize[size]}`}
                   >
                     <Link href={e[1]}>{e[0]}</Link>
                   </li>
@@ -118,9 +118,9 @@ export default function DropdownProfile({
           </div>
           <button
             onClick={logout}
-            className={`flex cursor-pointer items-center justify-center border-t border-[var(--color-line-100)] text-[#808080] ${logoutText[size]}`}
+            className={`flex cursor-pointer items-center justify-center border-t border-[var(--color-line-100)] ${logoutText[size]}`}
           >
-            로그아웃
+            <span className="text-[#808080] hover:brightness-50">로그아웃</span>
           </button>
         </div>
       )}

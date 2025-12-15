@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import Menu from './Menu';
 import DropdownProfile from '../dropdown/DropdownProfile';
+import DropdownNotification from '../dropdown/DropdownNotification';
 
 interface User {
   role: 'guest' | 'user' | 'driver';
@@ -44,6 +45,22 @@ const menuByRole = {
   ],
 };
 
+interface Notification {
+  message: [string, string, string];
+  createdAt: Date;
+}
+
+const alarm: Notification[] = [
+  {
+    message: ['김코드 기사님의 ', '소형이사 견적', '이 도착했어요'],
+    createdAt: new Date(),
+  },
+  {
+    message: ['김코드 기사님의 견적이 ', '확정', '되었어요'],
+    createdAt: new Date(),
+  },
+];
+
 const GNB = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -77,11 +94,12 @@ const GNB = () => {
         {user.role === 'guest' && <button type="button">로그인</button>}
         {user.role !== 'guest' && (
           <div className="flex items-center gap-8">
-            <Image src="icons/alarm.svg" alt="alarm" width={36} height={36} />
+            {/* <Image src="icons/alarm.svg" alt="alarm" width={36} height={36} /> */}
             {/* <div className="flex items-center gap-4">
               <Image src="icons/profile.svg" alt="profile" width={36} height={36} />
               <div className="text-black-500 text-2lg font-medium">{user.name}</div>
             </div> */}
+            <DropdownNotification size="md" list={alarm} />
             <DropdownProfile size="md" userName={user.name} userType={user.role} />
           </div>
         )}
@@ -94,13 +112,14 @@ const GNB = () => {
         )}
         {user.role !== 'guest' && (
           <div className="flex items-center gap-6">
-            <button type="button">
+            {/* <button type="button">
               <Image src="icons/alarm.svg" alt="alarm" width={24} height={24} />
-            </button>
-            <button type="button">
-              {/* <Image src="icons/profile.svg" alt="profile" width={24} height={24} /> */}
-              <DropdownProfile size="sm" userName={user.name} userType={user.role} />
-            </button>
+            </button> */}
+            {/* <button type="button">
+              <Image src="icons/profile.svg" alt="profile" width={24} height={24} />
+            </button> */}
+            <DropdownNotification size="sm" list={alarm} />
+            <DropdownProfile size="sm" userName={user.name} userType={user.role} />
             <button type="button" onClick={() => setIsOpen(true)}>
               <Image src="icons/menu.svg" alt="menu" width={24} height={24} />
             </button>
