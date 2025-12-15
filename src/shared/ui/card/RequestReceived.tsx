@@ -11,6 +11,7 @@ interface RequestReceivedProps {
   pickupAddress: string;
   dropoffAddress: string;
   movingDate: string;
+  requestTime?: string;
   onSendEstimateClick?: () => void;
   onRejectClick?: () => void;
 }
@@ -22,6 +23,7 @@ const RequestReceived = ({
   pickupAddress,
   dropoffAddress,
   movingDate,
+  requestTime,
   onSendEstimateClick,
   onRejectClick,
 }: RequestReceivedProps) => {
@@ -33,6 +35,9 @@ const RequestReceived = ({
           <div className="flex flex-wrap gap-2">
             {movingType && <MovingTypeChip movingType={movingType} />}
             {pickedDriver && <MovingTypeChip movingType="assign" />}
+          </div>
+          <div>
+            {requestTime && <span className="text-grayScale-500 text-md">{requestTime}</span>}
           </div>
         </header>
 

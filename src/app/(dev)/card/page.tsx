@@ -21,6 +21,7 @@ export default function CardTestPage() {
           pickupAddress="서울시 강남구"
           dropoffAddress="서울시 서초구"
           movingDate="2024년 07월 01일 (월)"
+          requestTime="1시간 전"
           onSendEstimateClick={() => alert('견적서 보내기 클릭됨')}
           onRejectClick={() => alert('요청 반려 클릭됨')}
         />
