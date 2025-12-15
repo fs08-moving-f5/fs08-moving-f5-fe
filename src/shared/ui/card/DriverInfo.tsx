@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import Like from '../like';
+import Like from '@/shared/ui/like';
 
 interface DriverInfoProps {
   driverName: string;

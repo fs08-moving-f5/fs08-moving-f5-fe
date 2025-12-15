@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { MovingTypeChip } from '../chip';
+import { MovingTypeChip } from '@/shared/ui/chip';
 import DriverInfo from './DriverInfo';
 
 interface FindDriverProps {

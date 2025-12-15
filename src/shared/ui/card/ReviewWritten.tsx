@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 import { SimpleDriverInfo } from './DriverInfo';
-import { MovingTypeChip } from '../chip';
-import { StarRating } from '../star';
+import { MovingTypeChip } from '@/shared/ui/chip';
+import { StarRating } from '@/shared/ui/star';
 
 interface ReviewWrittenProps {
   driverName: string;

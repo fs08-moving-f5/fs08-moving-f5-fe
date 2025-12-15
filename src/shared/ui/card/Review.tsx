@@ -1,6 +1,6 @@
 'use client';
 
-import { StarRating } from '../star';
+import { StarRating } from '@/shared/ui/star';
 
 interface ReviewProps {
   userName: string;

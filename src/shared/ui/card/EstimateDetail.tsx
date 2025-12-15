@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { MovingTypeChip } from '../chip';
+import { MovingTypeChip } from '@/shared/ui/chip';
 import DriverInfo from './DriverInfo';
 
 interface EstimateDetailProps {
