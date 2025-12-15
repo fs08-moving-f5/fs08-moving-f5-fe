@@ -6,12 +6,25 @@ import Review from '@/shared/ui/card/Review';
 import ReviewCanWrite from '@/shared/ui/card/ReviewCanWrite';
 import ReviewWritten from '@/shared/ui/card/ReviewWritten';
 import EstimateClient from '@/shared/ui/card/EstimateClient';
+import RequestReceived from '@/shared/ui/card/RequestReceived';
 
 export default function CardTestPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="mx-auto max-w-4xl space-y-6">
         <h1 className="mb-6 text-2xl font-bold">FindDriver 컴포넌트 테스트</h1>
+
+        <RequestReceived
+          customerName="홍길동"
+          movingType="home"
+          pickedDriver={true}
+          pickupAddress="서울시 강남구"
+          dropoffAddress="서울시 서초구"
+          movingDate="2024년 07월 01일 (월)"
+          requestTime="1시간 전"
+          onSendEstimateClick={() => alert('견적서 보내기 클릭됨')}
+          onRejectClick={() => alert('요청 반려 클릭됨')}
+        />
 
         <FindDriver
           driverImageUrl="https://i.namu.wiki/i/QhqqJ7IFrrniG4DQeWlM6-dRuKeEDXY__U7WOuo1JmaP6wg35_Xa3X_ndOJO9ivEHDqj1U3MYwxQRb9jcxUa01FYBz_pi1DWc_-CZMWW4HuO0jin4fImq9ylaNWB_qKk9h0EnxVMQmuXMokNXemfEA.webp"
