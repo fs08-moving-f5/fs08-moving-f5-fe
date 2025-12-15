@@ -1,5 +1,11 @@
 import ky, { Options } from 'ky';
 import type { ApiResponse } from '../types/api';
+import {
+  setAuthorizationHeader,
+  handleToken,
+  parseErrorResponse,
+  handleUnauthorized,
+} from '../hooks/api';
 
 const apiClient = ky.create({
   prefixUrl: process.env.NEXT_PUBLIC_API_URL,
@@ -8,16 +14,10 @@ const apiClient = ky.create({
     'Content-Type': 'application/json',
   },
   hooks: {
-    beforeError: [
-      (error) => {
-        const { response } = error;
-        if (response && response.body) {
-          // API 에러 응답을 파싱
-          error.name = 'ApiError';
-        }
-        return error;
-      },
-    ],
+    beforeRequest: [setAuthorizationHeader],
+    beforeRetry: [handleToken],
+    beforeError: [parseErrorResponse],
+    afterResponse: [handleUnauthorized],
   },
 });
 
