@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 //public 경로 기반
-const eyeVisible = '/img/Input/eye-visible.svg';
-const eyeInvisible = '/img/Input/eye-invisible.svg';
+const eyeVisible = '/icons/Input/eye-visible.svg';
+const eyeInvisible = '/icons/Input/eye-invisible.svg';
 
 interface InputProps {
   name?: string;

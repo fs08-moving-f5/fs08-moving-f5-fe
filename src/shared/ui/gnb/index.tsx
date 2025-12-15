@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import Menu from './Menu';
+import DropdownProfile from '../dropdown/DropdownProfile';
+import DropdownNotification from '../dropdown/DropdownNotification';
 
 interface User {
   role: 'guest' | 'user' | 'driver';
@@ -43,17 +45,33 @@ const menuByRole = {
   ],
 };
 
+interface Notification {
+  message: [string, string, string];
+  createdAt: Date;
+}
+
+const alarm: Notification[] = [
+  {
+    message: ['김코드 기사님의 ', '소형이사 견적', '이 도착했어요'],
+    createdAt: new Date(),
+  },
+  {
+    message: ['김코드 기사님의 견적이 ', '확정', '되었어요'],
+    createdAt: new Date(),
+  },
+];
+
 const GNB = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   // TODO: 로그인 기능 완성되면 API 요청해서 유저 정보 가져오기
   const user: User = {
-    role: 'guest',
+    role: 'user',
     name: '김가나',
   };
 
   return (
-    <div className="mobile:h-[54px] mobile:py-[10px] tab:py-[19px] tab:px-[72px] mobile:px-[24px] tab:h-]54px] flex h-[88px] w-full items-center justify-between bg-white px-[160px] py-[26px]">
+    <div className="mobile:h-[54px] mobile:py-[10px] tab:py-[19px] tab:px-[72px] mobile:px-[24px] tab:h-[54px] relative z-20 flex h-[88px] w-full items-center justify-between bg-white px-[160px] py-[26px]">
       <div className="flex items-center gap-[82px]">
         <Link href="/">
           <Image
@@ -76,11 +94,13 @@ const GNB = () => {
         {user.role === 'guest' && <button type="button">로그인</button>}
         {user.role !== 'guest' && (
           <div className="flex items-center gap-8">
-            <Image src="icons/alarm.svg" alt="alarm" width={36} height={36} />
-            <div className="flex items-center gap-4">
+            {/* <Image src="icons/alarm.svg" alt="alarm" width={36} height={36} /> */}
+            {/* <div className="flex items-center gap-4">
               <Image src="icons/profile.svg" alt="profile" width={36} height={36} />
               <div className="text-black-500 text-2lg font-medium">{user.name}</div>
-            </div>
+            </div> */}
+            <DropdownNotification size="md" list={alarm} />
+            <DropdownProfile size="md" userName={user.name} userType={user.role} />
           </div>
         )}
       </div>
@@ -92,12 +112,14 @@ const GNB = () => {
         )}
         {user.role !== 'guest' && (
           <div className="flex items-center gap-6">
-            <button type="button">
+            {/* <button type="button">
               <Image src="icons/alarm.svg" alt="alarm" width={24} height={24} />
-            </button>
-            <button type="button">
+            </button> */}
+            {/* <button type="button">
               <Image src="icons/profile.svg" alt="profile" width={24} height={24} />
-            </button>
+            </button> */}
+            <DropdownNotification size="sm" list={alarm} />
+            <DropdownProfile size="sm" userName={user.name} userType={user.role} />
             <button type="button" onClick={() => setIsOpen(true)}>
               <Image src="icons/menu.svg" alt="menu" width={24} height={24} />
             </button>

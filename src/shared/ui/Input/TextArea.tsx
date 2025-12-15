@@ -19,8 +19,8 @@ export default function TextArea({
   size = 'md',
 }: TextAreaProps) {
   const boxSize = {
-    sm: 'h-[160px] min-w-0 w-full max-w-[327px] px-[16px] py-[14px]',
-    md: 'h-[160px] min-w-0 w-full max-w-[560px] px-[24px] py-[14px]',
+    sm: 'h-[160px] min-w-0 w-full max-w-[327px] pl-[16px] pr-[12px] py-[14px]',
+    md: 'h-[160px] min-w-0 w-full max-w-[560px] pl-[24px] pr-[14px] py-[12px]',
   };
   const borderType = {
     default: 'outline-none border border-[var(--color-line-200)]',
