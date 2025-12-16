@@ -4,7 +4,7 @@ import {
   setAuthorizationHeader,
   // handleToken,
   // parseErrorResponse,
-  handleUnauthorized,
+  // handleUnauthorized,
 } from './interceptors';
 
 const apiClient = ky.create({
@@ -17,7 +17,7 @@ const apiClient = ky.create({
     beforeRequest: [setAuthorizationHeader],
     // beforeRetry: [handleToken],
     // beforeError: [parseErrorResponse],
-    afterResponse: [handleUnauthorized],
+    // afterResponse: [handleUnauthorized],
   },
 });
 

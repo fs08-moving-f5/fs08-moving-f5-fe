@@ -10,12 +10,15 @@ const setAuthorizationHeader: BeforeRequestHook = (request) => {
 
 const parseErrorResponse = async (error: HTTPError) => {
   const { response } = error;
-  const data = (await response.json()) as { message?: string };
+
   try {
+    const data = (await response.json()) as { message?: string };
     error.message = data.message || response.statusText;
   } catch (e) {
     console.error('Error parsing error response:', e);
+    error.message = response.statusText;
   }
+
   return error;
 };
 
