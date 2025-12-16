@@ -1,4 +1,4 @@
-import { BeforeRequestHook, BeforeRetryHook } from 'ky';
+import { BeforeRequestHook, BeforeRetryHook, HTTPError } from 'ky';
 import { storage } from '@/shared/lib/storage';
 
 const setAuthorizationHeader: BeforeRequestHook = (request) => {
@@ -8,14 +8,13 @@ const setAuthorizationHeader: BeforeRequestHook = (request) => {
   request.headers.set('Authorization', `Bearer ${accessToken}`);
 };
 
-const parseErrorResponse = async (error: any) => {
-  //TODO: 타입 수정
+const parseErrorResponse = async (error: HTTPError) => {
   const { response } = error;
-  if (response && response.body) {
-    const errorBody = await response.json();
-    error.message = errorBody.message || error.message;
-    error.statusCode = response.status;
-    error.errors = errorBody.errors;
+  const data = await response.json() as { message?: string };
+  try {
+    error.message = data.message || response.statusText;
+  } catch (e) {
+    console.error('Error parsing error response:', e);
   }
   return error;
 };
