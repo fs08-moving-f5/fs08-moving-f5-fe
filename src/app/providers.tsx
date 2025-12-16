@@ -7,7 +7,7 @@ import { queryClient } from '@/shared/lib/queryClient';
 import { useAuthStore } from '@/shared/store/authStore';
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
-  const initAuth = useAuthStore(state => state.initAuth);
+  const initAuth = useAuthStore((state) => state.initAuth);
 
   useEffect(() => {
     initAuth();
