@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { storage } from '../lib/storage';
-
+//TODO - authStore 구현
 interface User {
   id: string;
   email: string;
