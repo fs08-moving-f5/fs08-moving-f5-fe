@@ -10,7 +10,7 @@ const setAuthorizationHeader: BeforeRequestHook = (request) => {
 
 const parseErrorResponse = async (error: HTTPError) => {
   const { response } = error;
-  const data = await response.json() as { message?: string };
+  const data = (await response.json()) as { message?: string };
   try {
     error.message = data.message || response.statusText;
   } catch (e) {
