@@ -204,6 +204,7 @@ body {
 }
 
 /* === 커스텀 스크롤 바 === */
+/* Chrome, Safari */
 .textAreaScroll::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -216,6 +217,7 @@ body {
   cursor: pointer;
 }
 
+/* Chrome, Safari */
 .scrollbar-thin {
   overflow-x: hidden;
   overflow-y: overlay;
@@ -246,7 +248,10 @@ body {
   height: 5px;
 }
 
-.testscroll {
-  overflow-x: overlay;
-  overflow-y: hidden;
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }

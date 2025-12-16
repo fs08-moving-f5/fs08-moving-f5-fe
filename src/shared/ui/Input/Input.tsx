@@ -14,7 +14,8 @@ interface InputProps {
   placeholder?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   size?: 'sm' | 'md';
-  type?: 'text' | 'password';
+  type?: 'text' | 'password' | 'number';
+  focusOn?: boolean;
 }
 
 export default function Input({
@@ -25,6 +26,7 @@ export default function Input({
   onChange,
   size = 'md',
   type = 'text',
+  focusOn = true,
 }: InputProps) {
   const [isVisible, setIsVisible] = useState(false);
   const handleClickEye = () => {
@@ -36,11 +38,11 @@ export default function Input({
     md: 'min-w-0 w-full max-w-[640px]',
   };
   const borderType = {
-    default:
-      'outline-none border border-[var(--color-line-200)] focus:border-[var(--color-primary-orange-400)]',
+    default: `outline-none border border-[var(--color-line-200)] ${focusOn && 'focus:border-[var(--color-primary-orange-400)]'}`,
     error: 'outline-none border border-[var(--color-error)]',
   };
   const shadow =
+    focusOn &&
     'focus:shadow-[0_4px_4px_-1px_rgba(249,80,46,0.20),0_4px_4px_-1px_rgba(249,80,46,0.10)]';
   const text = `text-[18px] font-[400] text-[var(--color-black-400)] plaseholder-[var(--color-gray-400, #999)]`;
   const inputStyle = `${borderType[errMsg ? 'error' : 'default']} ${shadow} ${text}`;
@@ -50,7 +52,7 @@ export default function Input({
       <div className={`relative flex h-[54px] w-fit items-center justify-start ${width[size]}`}>
         <input
           name={name}
-          type={type === 'password' ? (isVisible ? 'text' : 'password') : 'text'}
+          type={type === 'password' ? (isVisible ? 'text' : 'password') : type}
           value={value}
           placeholder={placeholder}
           onChange={onChange}
