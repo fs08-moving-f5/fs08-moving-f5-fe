@@ -21,31 +21,33 @@ const Pagination = ({ currentPage, totalPages, onPageChange, maxVisiblePages = 5
   };
 
   return (
-    <div className="flex items-center justify-center gap-2">
-      <PageArrowButton type="first" disabled={currentPage === 1} onClick={() => move(1)} />
+    <nav aria-label="페이지 네비게이션">
+      <div className="flex items-center justify-center gap-2">
+        <PageArrowButton type="first" disabled={currentPage === 1} onClick={() => move(1)} />
 
-      <PageArrowButton
-        type="prev"
-        disabled={currentPage === 1}
-        onClick={() => move(currentPage - 1)}
-      />
+        <PageArrowButton
+          type="prev"
+          disabled={currentPage === 1}
+          onClick={() => move(currentPage - 1)}
+        />
 
-      {pages.map((page) => (
-        <PageNumButton key={page} page={page} currentPage={currentPage} onClick={move} />
-      ))}
+        {pages.map((page) => (
+          <PageNumButton key={page} page={page} currentPage={currentPage} onClick={move} />
+        ))}
 
-      <PageArrowButton
-        type="next"
-        disabled={currentPage === totalPages}
-        onClick={() => move(currentPage + 1)}
-      />
+        <PageArrowButton
+          type="next"
+          disabled={currentPage === totalPages}
+          onClick={() => move(currentPage + 1)}
+        />
 
-      <PageArrowButton
-        type="last"
-        disabled={currentPage === totalPages}
-        onClick={() => move(totalPages)}
-      />
-    </div>
+        <PageArrowButton
+          type="last"
+          disabled={currentPage === totalPages}
+          onClick={() => move(totalPages)}
+        />
+      </div>
+    </nav>
   );
 };
 

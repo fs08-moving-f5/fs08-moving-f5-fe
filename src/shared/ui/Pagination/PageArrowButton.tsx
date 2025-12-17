@@ -8,6 +8,13 @@ interface Props {
   onClick: () => void;
 }
 
+const ariaLabelMap = {
+  first: '첫 페이지로 이동',
+  prev: '이전 페이지로 이동',
+  next: '다음 페이지로 이동',
+  last: '마지막 페이지로 이동',
+} as const;
+
 const PageArrowButton = ({ type, disabled, onClick }: Props) => {
   const isLeft = type === 'first' || type === 'prev';
   const isDouble = type === 'first' || type === 'last';
@@ -26,7 +33,7 @@ const PageArrowButton = ({ type, disabled, onClick }: Props) => {
       disabled={disabled}
       onClick={onClick}
       className="flex p-2"
-      aria-label={type}
+      aria-label={ariaLabelMap[type]}
     >
       <Image src={icon} alt="" width={24} height={24} />
       {isDouble && <Image src={icon} alt="" width={24} height={24} className="-ml-2" />}
