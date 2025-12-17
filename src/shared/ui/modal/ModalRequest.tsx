@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import { Button } from '../Button';
 import { MovingTypeChip } from '../chip';
-import TextArea from '../input/TextArea';
+import TextArea from '../Input/TextArea';
 
 import Image from 'next/image';
-import Input from '../input/Input';
+import Input from '../Input/Input';
 import { convertDateType1 } from '@/shared/hooks/convertDate';
 const ic_x = '/icons/x.svg';
 const ic_arrow_right = '/icons/arrow-right.svg';
