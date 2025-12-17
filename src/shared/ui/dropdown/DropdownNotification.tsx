@@ -1,5 +1,5 @@
 'use client';
-import { convertDateToKRString } from '@/shared/hooks/convertDate';
+import { convertDateType2 } from '@/shared/hooks/convertDate';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 const ic_x = '/icons/x.svg';
@@ -84,7 +84,7 @@ export default function DropdownNotification({ size, list }: DropdownNotificatio
                     <span className="text-[var(--color-primary-orange-400)]">{e.message[1]}</span>
                     <span>{e.message[2]}</span>
                   </div>
-                  <span className={timeText[size]}>{convertDateToKRString(e.createdAt)}</span>
+                  <span className={timeText[size]}>{convertDateType2(e.createdAt)}</span>
                 </li>
               ))}
           </ul>
