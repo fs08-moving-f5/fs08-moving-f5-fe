@@ -75,7 +75,7 @@ const GNB = () => {
       <div className="flex items-center gap-[82px]">
         <Link href="/">
           <Image
-            src="img/logo-text.svg"
+            src="/img/logo-text.svg"
             alt="logo"
             width={116}
             height={44}
@@ -94,9 +94,9 @@ const GNB = () => {
         {user.role === 'guest' && <button type="button">로그인</button>}
         {user.role !== 'guest' && (
           <div className="flex items-center gap-8">
-            {/* <Image src="icons/alarm.svg" alt="alarm" width={36} height={36} /> */}
+            {/* <Image src="/icons/alarm.svg" alt="alarm" width={36} height={36} /> */}
             {/* <div className="flex items-center gap-4">
-              <Image src="icons/profile.svg" alt="profile" width={36} height={36} />
+              <Image src="/icons/profile.svg" alt="profile" width={36} height={36} />
               <div className="text-black-500 text-2lg font-medium">{user.name}</div>
             </div> */}
             <DropdownNotification size="md" list={alarm} />
@@ -107,21 +107,21 @@ const GNB = () => {
       <div className="mobile:flex tab:flex hidden items-center">
         {user.role === 'guest' && (
           <button type="button" onClick={() => setIsOpen(true)}>
-            <Image src="icons/menu.svg" alt="menu" width={24} height={24} />
+            <Image src="/icons/menu.svg" alt="menu" width={24} height={24} />
           </button>
         )}
         {user.role !== 'guest' && (
           <div className="flex items-center gap-6">
             {/* <button type="button">
-              <Image src="icons/alarm.svg" alt="alarm" width={24} height={24} />
+              <Image src="/icons/alarm.svg" alt="alarm" width={24} height={24} />
             </button> */}
             {/* <button type="button">
-              <Image src="icons/profile.svg" alt="profile" width={24} height={24} />
+              <Image src="/icons/profile.svg" alt="profile" width={24} height={24} />
             </button> */}
             <DropdownNotification size="sm" list={alarm} />
             <DropdownProfile size="sm" userName={user.name} userType={user.role} />
             <button type="button" onClick={() => setIsOpen(true)}>
-              <Image src="icons/menu.svg" alt="menu" width={24} height={24} />
+              <Image src="/icons/menu.svg" alt="menu" width={24} height={24} />
             </button>
           </div>
         )}
