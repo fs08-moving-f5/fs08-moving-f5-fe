@@ -1,9 +1,11 @@
 'use client';
-import { convertDateToKRString } from '@/shared/hooks/convertDate';
+import { convertDateToKRString } from '@/shared/lib/convertDate';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { useNotificationStore } from '@/shared/store/notificationStore';
 const ic_x = '/icons/x.svg';
 const ic_alarm = '/icons/alarm.svg';
+const ic_alarm_unread = '/icons/alarm_unread.svg';
 
 interface Notification {
   message: [string, string, string];
@@ -33,6 +35,9 @@ export default function DropdownNotification({ size, list }: DropdownNotificatio
     };
   }, [setIsOpen]);
 
+  const unreadCount = useNotificationStore((state) => state.unreadCount);
+  const hasUnread = unreadCount > 0;
+
   const iconSize = {
     sm: 'h-[24px] w-[24px]',
     md: 'h-[36px] w-[36px]',
@@ -60,7 +65,13 @@ export default function DropdownNotification({ size, list }: DropdownNotificatio
         onClick={() => setIsOpen(!isOpen)}
         className="h-fit w-fit cursor-pointer hover:brightness-80"
       >
-        <Image src={ic_alarm} alt="ic_alarm" width={36} height={36} className={iconSize[size]} />
+        <Image
+          src={hasUnread ? ic_alarm_unread : ic_alarm}
+          alt="ic_alarm"
+          width={36}
+          height={36}
+          className={iconSize[size]}
+        />
       </button>
       {isOpen && (
         <div
