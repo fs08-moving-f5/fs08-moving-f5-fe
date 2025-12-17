@@ -38,10 +38,6 @@ export default function DropdownNotification({ size, list }: DropdownNotificatio
   const unreadCount = useNotificationStore((state) => state.unreadCount);
   const hasUnread = unreadCount > 0;
 
-  const iconSize = {
-    sm: 'h-[24px] w-[24px]',
-    md: 'h-[36px] w-[36px]',
-  };
   const listPosition = {
     sm: 'top-[52px] right-[263px] tab:right-[108px] mobile:right-[20px]',
     md: 'top-[80px] right-[263px] tab:right-[108px] mobile:right-[20px]',
@@ -60,17 +56,17 @@ export default function DropdownNotification({ size, list }: DropdownNotificatio
   };
 
   return (
-    <div ref={dropdownRef} className="h-fit w-fit">
+    <div ref={dropdownRef} className="flex h-full items-center">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="h-fit w-fit cursor-pointer hover:brightness-80"
+        className="mobile:h-6 mobile:w-6 tab:h-6 tab:w-6 flex h-9 w-9 cursor-pointer items-center justify-center hover:brightness-80"
       >
         <Image
           src={hasUnread ? ic_alarm_unread : ic_alarm}
           alt="ic_alarm"
           width={36}
           height={36}
-          className={iconSize[size]}
+          className="mobile:h-6 mobile:w-6 tab:h-6 tab:w-6 h-9 w-9"
         />
       </button>
       {isOpen && (
