@@ -14,6 +14,8 @@ const PageNumButton = ({ page, currentPage, onClick }: Props) => {
   return (
     <button
       onClick={() => onClick(page)}
+      aria-current={isActive ? 'page' : undefined}
+      aria-label={`페이지 ${page}로 이동`}
       className={`min-h-[40px] min-w-[40px] rounded px-3 py-2 text-[14px] transition-all md:min-h-[45px] md:min-w-[45px] lg:min-h-[50px] lg:min-w-[50px] lg:text-base ${
         isActive
           ? 'border border-[var(--color-black-500)] font-semibold text-[var(--color-black-500)]'

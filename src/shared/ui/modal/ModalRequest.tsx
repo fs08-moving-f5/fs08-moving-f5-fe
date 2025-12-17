@@ -7,6 +7,7 @@ import TextArea from '../Input/TextArea';
 import Image from 'next/image';
 import Input from '../Input/Input';
 import { convertDateType1 } from '@/shared/lib/convertDate';
+
 const ic_x = '/icons/x.svg';
 const ic_arrow_right = '/icons/arrow-right.svg';
 const ic_name = '/icons/name.svg';

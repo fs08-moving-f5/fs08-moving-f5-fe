@@ -1,55 +1,85 @@
 'use client';
 
-import { PageItem, PaginationProps } from '@/shared/types/pagination';
-import generateNumbers from './generateNumbers';
-import PageNumButton from './PageNumButton';
+import { getPageNumbers } from './generateNumbers';
 import PageArrowButton from './PageArrowButton';
-import PageDropdown from './PageDropdown';
+import PageNumButton from './PageNumButton';
 
-const Pagination = ({
-  currentPage,
-  totalPages,
-  onPageChange,
-  options = {
-    maxVisiblePages: 7,
-    edgePageCount: 1,
-    siblingCount: 1,
-  },
-}: PaginationProps) => {
-  const pages: PageItem[] = generateNumbers({
-    currentPage,
-    totalPages,
-    ...options,
-  });
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  maxVisiblePages?: number;
+}
+
+const Pagination = ({ currentPage, totalPages, onPageChange, maxVisiblePages = 5 }: Props) => {
+  const pages = getPageNumbers(currentPage, totalPages, maxVisiblePages);
+
+  const move = (page: number) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    onPageChange(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    switch (e.key) {
+      case 'ArrowLeft':
+        e.preventDefault();
+        move(currentPage - 1);
+        break;
+
+      case 'ArrowRight':
+        e.preventDefault();
+        move(currentPage + 1);
+        break;
+
+      case 'Home':
+        e.preventDefault();
+        move(1);
+        break;
+
+      case 'End':
+        e.preventDefault();
+        move(totalPages);
+        break;
+
+      default:
+        break;
+    }
+  };
 
   return (
-    <div className="flex w-full items-center justify-center gap-2">
-      <PageArrowButton
-        direction="prev"
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-      />
+    <nav aria-label="페이지 네비게이션">
+      <div
+        className="flex items-center justify-center gap-2"
+        role="navigation"
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
+      >
+        <PageArrowButton type="first" disabled={currentPage === 1} onClick={() => move(1)} />
 
-      {pages.map((page, idx) =>
-        typeof page === 'number' ? (
-          <PageNumButton key={page} page={page} currentPage={currentPage} onClick={onPageChange} />
-        ) : (
-          <PageDropdown
-            key={`ellipsis-${idx}`}
-            startPage={page.start}
-            endPage={page.end}
-            currentPage={currentPage}
-            onClick={onPageChange}
-          />
-        ),
-      )}
+        <PageArrowButton
+          type="prev"
+          disabled={currentPage === 1}
+          onClick={() => move(currentPage - 1)}
+        />
 
-      <PageArrowButton
-        direction="next"
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-      />
-    </div>
+        {pages.map((page) => (
+          <PageNumButton key={page} page={page} currentPage={currentPage} onClick={move} />
+        ))}
+
+        <PageArrowButton
+          type="next"
+          disabled={currentPage === totalPages}
+          onClick={() => move(currentPage + 1)}
+        />
+
+        <PageArrowButton
+          type="last"
+          disabled={currentPage === totalPages}
+          onClick={() => move(totalPages)}
+        />
+      </div>
+    </nav>
   );
 };
 
