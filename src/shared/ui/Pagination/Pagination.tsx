@@ -20,9 +20,41 @@ const Pagination = ({ currentPage, totalPages, onPageChange, maxVisiblePages = 5
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    switch (e.key) {
+      case 'ArrowLeft':
+        e.preventDefault();
+        move(currentPage - 1);
+        break;
+
+      case 'ArrowRight':
+        e.preventDefault();
+        move(currentPage + 1);
+        break;
+
+      case 'Home':
+        e.preventDefault();
+        move(1);
+        break;
+
+      case 'End':
+        e.preventDefault();
+        move(totalPages);
+        break;
+
+      default:
+        break;
+    }
+  };
+
   return (
     <nav aria-label="페이지 네비게이션">
-      <div className="flex items-center justify-center gap-2">
+      <div
+        className="flex items-center justify-center gap-2"
+        role="navigation"
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
+      >
         <PageArrowButton type="first" disabled={currentPage === 1} onClick={() => move(1)} />
 
         <PageArrowButton
