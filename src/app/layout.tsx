@@ -4,6 +4,7 @@ import Providers from './providers';
 import './globals.css';
 import Script from 'next/script';
 import { AppToaster } from '@/shared/ui/sonner';
+import { NotificationSseProvider } from './providers/NotificationSseProvider';
 
 export const metadata: Metadata = {
   title: '무빙 Moving',
@@ -30,6 +31,7 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
         <AppToaster />
+        <NotificationSseProvider />
       </body>
     </html>
   );
