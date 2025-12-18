@@ -7,7 +7,6 @@ interface TextAreaProps {
   errMsg?: string;
   placeholder?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  size?: 'sm' | 'md';
 }
 
 export default function TextArea({
@@ -16,12 +15,9 @@ export default function TextArea({
   errMsg = value && value.length < 10 ? '10자 이상 입력해주세요' : '',
   placeholder = '최소 10자 이상 입력해주세요',
   onChange,
-  size = 'md',
 }: TextAreaProps) {
-  const boxSize = {
-    sm: 'h-[160px] min-w-0 w-full max-w-[327px] pl-[16px] pr-[12px] py-[14px]',
-    md: 'h-[160px] min-w-0 w-full max-w-[560px] pl-[24px] pr-[14px] py-[12px]',
-  };
+  const boxSize =
+    'mobile:h-[160px] mobile:max-w-[327px] mobile:pl-[16px] mobile:pr-[12px] mobile:py-[14px] h-[160px] max-w-[560px] min-w-0 w-full pl-[24px] pr-[14px] py-[12px]';
   const borderType = {
     default: 'outline-none border border-[var(--color-line-200)]',
     error: 'outline-none border border-[var(--color-error)]',
@@ -34,7 +30,7 @@ export default function TextArea({
   return (
     <div className="flex flex-col gap-[4px]">
       <div
-        className={`flex h-[54px] w-fit items-center justify-start rounded-[16px] bg-[#fff] ${boxSize[size]} ${borderType[errMsg ? 'error' : 'default']}`}
+        className={`flex h-[54px] w-fit items-center justify-start rounded-[16px] bg-[#fff] ${boxSize} ${borderType[errMsg ? 'error' : 'default']}`}
       >
         <textarea
           rows={4}
