@@ -1,6 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { getRequests } from '@/shared/api/requests';
+
 import { ActiveChip } from '@/shared/ui/chip';
 import GNB from '@/shared/ui/gnb';
 import SearchBar from '@/shared/ui/Input/SearchBar';
@@ -8,17 +11,62 @@ import { CheckBox } from '@/shared/ui/Button';
 import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
 import { RequestReceived } from '@/shared/ui/card';
 
+const sortListObj = {
+  HighestRating: '평점 높은순',
+  HighestMovingDate: '이사 빠른순',
+  Latest: '요청일 빠른순',
+};
+
+export interface EstimateRequestItem {
+  id: string;
+  customerName: string;
+  movingType?: 'small' | 'home' | 'office';
+  pickedDriver: boolean;
+  pickupAddress: string;
+  dropoffAddress: string;
+  movingDate: string;
+  requestTime: string;
+}
+
+export interface EstimateRequestResponse {
+  data: EstimateRequestItem[];
+  nextCursor: string | null;
+}
+
 const RequestPage = () => {
   const [isSmallActive, setIsSmallActive] = useState<boolean>(false);
   const [isHomeActive, setIsHomeActive] = useState<boolean>(false);
   const [isOfficeActive, setIsOfficeActive] = useState<boolean>(false);
   const [sortValue, setSortValue] = useState<string>('HighestRating');
 
-  const sortListObj = {
-    HighestRating: '평점 높은순',
-    HighestMovingDate: '이사 빠른순',
-    Latest: '요청일 빠른순',
-  };
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery<EstimateRequestResponse>({
+      queryKey: ['requests'],
+      queryFn: ({ pageParam }) => getRequests({ cursor: pageParam }),
+      initialPageParam: null,
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    });
+
+  const requests = data?.pages.flatMap((page) => page.data) ?? [];
+
+  useEffect(() => {
+    if (!ref.current || !hasNextPage) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1 },
+    );
+
+    observer.observe(ref.current);
+
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage]);
 
   return (
     <div className="flex max-w-[1920px] flex-col justify-center">
@@ -56,26 +104,27 @@ const RequestPage = () => {
                   서비스 가능 지역
                 </div>
               </div>
-              <DropdownSort
-                size="md"
-                listObject={sortListObj}
-                value={sortValue}
-                setValue={setSortValue}
-              />
+              <DropdownSort listObject={sortListObj} value={sortValue} setValue={setSortValue} />
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <RequestReceived
-                customerName="홍길동"
-                movingType="home"
-                pickedDriver={true}
-                pickupAddress="서울시 강남구"
-                dropoffAddress="서울시 서초구"
-                movingDate="2024년 07월 01일 (월)"
-                requestTime="1시간 전"
-                onSendEstimateClick={() => alert('견적서 보내기 클릭됨')}
-                onRejectClick={() => alert('요청 반려 클릭됨')}
-              />
+              {requests.map((request) => (
+                <RequestReceived
+                  key={request.id}
+                  customerName={request.customerName}
+                  movingType={request.movingType}
+                  pickedDriver={request.pickedDriver}
+                  pickupAddress={request.pickupAddress}
+                  dropoffAddress={request.dropoffAddress}
+                  movingDate={request.movingDate}
+                  requestTime={request.requestTime}
+                  onSendEstimateClick={() => {}}
+                  onRejectClick={() => {}}
+                />
+              ))}
+              <div ref={ref} className="h-10" />
+
+              {isFetchingNextPage && <p className="text-center">불러오는 중...</p>}
             </div>
           </div>
         </section>
