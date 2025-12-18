@@ -75,7 +75,7 @@ const GNB = () => {
       <div className="flex items-center gap-[82px]">
         <Link href="/">
           <Image
-            src="img/logo-text.svg"
+            src="/img/logo-text.svg"
             alt="logo"
             width={116}
             height={44}

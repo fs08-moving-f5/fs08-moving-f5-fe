@@ -31,7 +31,7 @@ export default function Input({
     setIsVisible(!isVisible);
   };
 
-  const width = 'min-w-0 w-full mobile:max-w-[327px] w-[640px]';
+  const width = 'min-w-0 w-full w-[640px]';
   const borderType = {
     default: `outline-none border border-[var(--color-line-200)] ${focusOn && 'focus:border-[var(--color-primary-orange-400)]'}`,
     error: 'outline-none border border-[var(--color-error)]',
@@ -43,8 +43,8 @@ export default function Input({
   const inputStyle = `${borderType[errMsg ? 'error' : 'default']} ${shadow} ${text}`;
 
   return (
-    <div className="flex flex-col gap-[4px]">
-      <div className={`relative flex h-[54px] w-fit items-center justify-start ${width}`}>
+    <div className={`flex flex-col gap-[4px] ${width}`}>
+      <div className={`relative flex h-[54px] w-full items-center justify-start `}>
         <input
           name={name}
           type={type === 'password' ? (isVisible ? 'text' : 'password') : type}
