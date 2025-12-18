@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { storage } from '../lib/storage';
 //TODO - authStore 구현
+//TODO - accessToken 상태 제거 필요 (보안상 이슈). user 존재 여부로 로그인 상태 판단
 interface User {
   id: string;
   email: string;

@@ -1,64 +1,29 @@
-import { PageItem } from '@/shared/types/pagination';
+export const getPageNumbers = (
+  currentPage: number,
+  totalPages: number,
+  maxVisiblePages: number,
+): number[] => {
+  const half = Math.floor(maxVisiblePages / 2);
 
-interface GenerateNumbersOptions {
-  currentPage: number;
-  totalPages: number;
-  options?: {
-    maxVisiblePages?: number;
-    edgePageCount?: number;
-    siblingCount?: number;
-  };
-}
+  let start = currentPage - half;
+  let end = currentPage + half;
 
-const generateNumbers = ({ currentPage, totalPages, options = {} }: GenerateNumbersOptions) => {
-  const { maxVisiblePages = 7, edgePageCount = 1, siblingCount = 0 } = options;
-
-  if (totalPages <= maxVisiblePages) {
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  // 왼쪽 경계 보정
+  if (start < 1) {
+    start = 1;
+    end = Math.min(totalPages, start + maxVisiblePages - 1);
   }
 
-  const pages: PageItem[] = [];
-
-  const leftEdgeEnd = edgePageCount;
-  const leftSiblingStart = Math.max(1, currentPage - siblingCount);
-  const showLeftEllipsis = leftSiblingStart > leftEdgeEnd + 1;
-
-  const rightEdgeStart = totalPages - edgePageCount + 1;
-  const rightSiblingEnd = Math.min(totalPages, currentPage + siblingCount);
-  const showRightEllipsis = rightSiblingEnd < rightEdgeStart - 1;
-
-  for (let i = 1; i <= leftEdgeEnd; i++) {
-    pages.push(i);
+  // 오른쪽 경계 보정
+  if (end > totalPages) {
+    end = totalPages;
+    start = Math.max(1, end - maxVisiblePages + 1);
   }
 
-  if (showLeftEllipsis) {
-    pages.push({
-      type: 'ellipsis',
-      start: leftEdgeEnd + 1,
-      end: leftSiblingStart - 1,
-    });
-  }
-
-  const middleStart = Math.max(leftEdgeEnd + 1, leftSiblingStart);
-  const middleEnd = Math.min(rightEdgeStart - 1, rightSiblingEnd);
-
-  for (let i = middleStart; i <= middleEnd; i++) {
-    pages.push(i);
-  }
-
-  if (showRightEllipsis) {
-    pages.push({
-      type: 'ellipsis',
-      start: rightSiblingEnd + 1,
-      end: rightEdgeStart - 1,
-    });
-  }
-
-  for (let i = rightEdgeStart; i <= totalPages; i++) {
+  const pages: number[] = [];
+  for (let i = start; i <= end; i++) {
     pages.push(i);
   }
 
   return pages;
 };
-
-export default generateNumbers;
