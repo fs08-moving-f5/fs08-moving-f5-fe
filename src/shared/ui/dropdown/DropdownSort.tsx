@@ -5,18 +5,12 @@ const ic_up = '/icons/dropdown/ic_chevon_up.svg';
 const ic_down = '/icons/dropdown/ic_chevon_down.svg';
 
 interface DropdoownSortProps {
-  size: 'sm' | 'md';
   listObject: Record<string, string>;
   value: string;
   setValue: (value: string) => void;
 }
 
-export default function DropdownSort({
-  size = 'md',
-  listObject,
-  value,
-  setValue,
-}: DropdoownSortProps) {
+export default function DropdownSort({ listObject, value, setValue }: DropdoownSortProps) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -34,19 +28,11 @@ export default function DropdownSort({
     };
   }, []);
 
-  const buttonSize = {
-    sm: 'h-[32px] pl-[8px] pr-[6px] py-[6px] text-[12px] font-[500] ',
-    md: 'h-[40px] px-[10px] py-[8px] text-[14px] font-[500] ',
-  };
-  const butttonStyle = {
-    sm: 'flex gap-[2px] items-center justify-center hover:brightness-95',
-    md: 'flex gap-[10px] items-center justify-center hover:brightness-95',
-  };
-
-  const listPosition = {
-    sm: 'absolute top-[40px] left-0 w-full',
-    md: 'absolute top-[48px] left-0 w-full',
-  };
+  const buttonSize =
+    'mobile:h-[32px] mobile:pl-[8px] mobile:pr-[6px] mobile:py-[6px] mobile:text-[12px] font-[500] h-[40px] px-[10px] py-[8px] text-[14px]';
+  const butttonStyle =
+    'flex mobilegap-[2px] gap-[10px] items-center justify-center hover:brightness-95';
+  const listPosition = 'absolute movile:top-[40px] top-[48px] left-0 w-full';
 
   const handleDropdownClick = () => {
     setOpen(!open);
@@ -59,17 +45,17 @@ export default function DropdownSort({
     <div ref={dropdownRef} className="relative z-10 shrink-0 text-[#262524]">
       <button
         onClick={handleDropdownClick}
-        className={`cursor-pointer rounded-[8px] border border-[var(--color-grayScale-200)] bg-[var(--color-grayScale-50)] shadow-md ${buttonSize[size]} ${butttonStyle[size]}`}
+        className={`cursor-pointer rounded-[8px] border border-[var(--color-grayScale-200)] bg-[var(--color-grayScale-50)] shadow-md ${buttonSize} ${butttonStyle}`}
       >
         <span className={open ? 'font-[500] text-[#999]' : 'font-[600]'}>{listObject[value]}</span>
         <Image src={open ? ic_up : ic_down} alt="ic_arrow" width={20} height={20} />
       </button>
       {open && (
-        <div className={listPosition[size]}>
+        <div className={listPosition}>
           <ul className="flex h-fit w-full flex-col rounded-[8px] border border-[var(--color-grayScale-200)] bg-[var(--color-grayScale-50)] shadow-md">
             {listObject &&
-              Object.keys(listObject).map((key) => (
-                <li className={buttonSize[size]}>
+              Object.keys(listObject).map((key, idx) => (
+                <li key={idx} className={buttonSize}>
                   <button
                     value={key}
                     onClick={handleSelectClick}
