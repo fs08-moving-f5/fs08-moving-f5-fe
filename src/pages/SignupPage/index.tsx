@@ -3,14 +3,14 @@
 import React from 'react';
 import Image from 'next/image';
 // import { useRouter } from 'next/navigation';
-import { 
-  SignupForm, 
-  SocialLoginButtons, 
+import {
+  SignupForm,
+  SocialLoginButtons,
   SignupHeader,
   useSignup,
   useSocialLogin,
   type SignupFormData,
-  type UserType
+  type UserType,
 } from '@/features/auth/signup';
 
 export default function SignupPage({ usertype }: { usertype: UserType }) {
@@ -21,7 +21,7 @@ export default function SignupPage({ usertype }: { usertype: UserType }) {
   const handleSubmit = async (data: SignupFormData) => {
     try {
       const result = await handleSignup(data, usertype);
-      
+
       if (result) {
         console.log('회원가입 성공:', result);
         // TODO: 성공 메시지 표시 (토스트)
@@ -46,11 +46,11 @@ export default function SignupPage({ usertype }: { usertype: UserType }) {
   };
 
   return (
-    <div className="relative mobile:bg-transparent p-0 min-h-screen w-full bg-[var(--color-primary-orange-400)] pb-10 pt-[80px]">
+    <div className="mobile:bg-transparent relative min-h-screen w-full bg-[var(--color-primary-orange-400)] p-0 pt-[80px] pb-10">
       {/* 메인 컨테이너 */}
-      <div className="mx-auto flex w-full max-w-[1280px] items-start justify-center gap-8 px-4 tab:px-6 mobile:px-0">
+      <div className="tab:px-6 mobile:px-0 mx-auto flex w-full max-w-[1280px] items-start justify-center gap-8 px-4">
         {/* 회원가입 폼 */}
-        <div className="w-full max-w-[640px] rounded-[32px] bg-white px-8 py-12 shadow-lg tab:max-w-[560px] tab:px-6 mobile:max-w-[100%] mobile:px-5 mobile:py-8">
+        <div className="tab:max-w-[560px] tab:px-6 mobile:max-w-[100%] mobile:px-5 mobile:py-8 w-full max-w-[640px] rounded-[32px] bg-white px-8 py-12 shadow-lg">
           {/* 로고 - usertype에 따라 다른 로고 표시 */}
           <SignupHeader usertype={usertype} />
 
@@ -62,9 +62,9 @@ export default function SignupPage({ usertype }: { usertype: UserType }) {
         </div>
 
         {/* 이미지 (데스크톱만) */}
-        <div className="mobile:hidden tab:w-[240px] tab:translate-x-[145px] absolute left-1/2 translate-x-[245px] bottom-0">
+        <div className="mobile:hidden tab:w-[240px] tab:translate-x-[145px] absolute bottom-0 left-1/2 translate-x-[245px]">
           <Image
-            src={usertype === 'DRIVER' ? "/img/img-truck.png" : "/img/img-character.png"}
+            src={usertype === 'DRIVER' ? '/img/img-truck.png' : '/img/img-character.png'}
             alt="타입별 이미지"
             width={300}
             height={300}

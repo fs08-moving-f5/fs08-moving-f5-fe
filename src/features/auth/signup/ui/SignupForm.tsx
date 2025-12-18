@@ -23,10 +23,10 @@ export default function SignupForm({ onSubmit }: SignupFormProps) {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-6 mobile:space-y-4">
+      <form onSubmit={handleSubmit} className="mobile:space-y-4 space-y-6">
         {/* 이름 */}
         <div>
-          <label className="mb-2 block text-lg text-[var(--color-black-400)] mobile:text-md">
+          <label className="mobile:text-md mb-2 block text-lg text-[var(--color-black-400)]">
             이름
           </label>
           <Input
@@ -41,7 +41,7 @@ export default function SignupForm({ onSubmit }: SignupFormProps) {
 
         {/* 이메일 */}
         <div>
-          <label className="mb-2 block text-lg text-[var(--color-black-400)] mobile:text-md">
+          <label className="mobile:text-md mb-2 block text-lg text-[var(--color-black-400)]">
             이메일
           </label>
           <Input
@@ -56,7 +56,7 @@ export default function SignupForm({ onSubmit }: SignupFormProps) {
 
         {/* 전화번호 */}
         <div>
-          <label className="mb-2 block text-lg text-[var(--color-black-400)] mobile:text-md">
+          <label className="mobile:text-md mb-2 block text-lg text-[var(--color-black-400)]">
             전화번호
           </label>
           <Input
@@ -71,7 +71,7 @@ export default function SignupForm({ onSubmit }: SignupFormProps) {
 
         {/* 비밀번호 */}
         <div>
-          <label className="mb-2 block text-lg text-[var(--color-black-400)] mobile:text-md">
+          <label className="mobile:text-md mb-2 block text-lg text-[var(--color-black-400)]">
             비밀번호
           </label>
           <Input
@@ -86,7 +86,7 @@ export default function SignupForm({ onSubmit }: SignupFormProps) {
 
         {/* 비밀번호 확인 */}
         <div>
-          <label className="mb-2 block text-lg text-[var(--color-black-400)] mobile:text-md">
+          <label className="mobile:text-md mb-2 block text-lg text-[var(--color-black-400)]">
             비밀번호 확인
           </label>
           <Input
@@ -100,24 +100,18 @@ export default function SignupForm({ onSubmit }: SignupFormProps) {
         </div>
 
         {/* 시작하기 버튼 */}
-        <div className="pt-4 w-full">
-          <Button
-            type="submit"
-            size="xl"
-            variant="solid"
-            design="primary"
-            disabled={!isValid}
-          >
+        <div className="w-full pt-4">
+          <Button type="submit" size="xl" variant="solid" design="primary" disabled={!isValid}>
             시작하기
           </Button>
         </div>
       </form>
 
       {/* 로그인 링크 */}
-      <div className="mt-6 text-center text-md text-[var(--color-black-300)] mobile:text-sm">
+      <div className="text-md mobile:text-sm mt-6 text-center text-[var(--color-black-300)]">
         이미 무빙 회원이신가요?{' '}
-        <Link 
-          href="/login" 
+        <Link
+          href="/login"
           className="font-semibold text-[var(--color-primary-orange-400)] hover:text-[var(--color-primary-orange-500)]"
         >
           로그인

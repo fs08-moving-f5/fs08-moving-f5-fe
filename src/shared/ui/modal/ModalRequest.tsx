@@ -2,8 +2,8 @@
 import { useState } from 'react';
 import { Button } from '../Button';
 import { MovingTypeChip } from '../chip';
-import Input from '../input/Input';
-import TextArea from '../input/TextArea';
+import Input from '../Input/Input';
+import TextArea from '../Input/TextArea';
 
 import Image from 'next/image';
 import { convertDateType1 } from '@/shared/lib/convertDate';

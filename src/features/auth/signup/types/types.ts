@@ -24,7 +24,7 @@ export interface SignupRequest {
   email: string;
   phone: string;
   password: string;
-  type: UserType;  // 백엔드는 'type' 필드를 사용
+  type: UserType; // 백엔드는 'type' 필드를 사용
 }
 
 // 기사 회원가입 요청

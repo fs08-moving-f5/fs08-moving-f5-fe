@@ -44,7 +44,7 @@ export default function Input({
 
   return (
     <div className={`flex flex-col gap-[4px] ${width}`}>
-      <div className={`relative flex h-[54px] w-full items-center justify-start `}>
+      <div className={`relative flex h-[54px] w-full items-center justify-start`}>
         <input
           name={name}
           type={type === 'password' ? (isVisible ? 'text' : 'password') : type}

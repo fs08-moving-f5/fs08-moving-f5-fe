@@ -1,4 +1,4 @@
-import GNB from "@/shared/ui/gnb";
+import GNB from '@/shared/ui/gnb';
 
 export default function Layout({
   children,
