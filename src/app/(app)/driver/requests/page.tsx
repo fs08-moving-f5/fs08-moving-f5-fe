@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getRequests } from '@/shared/api/requests';
+import { getRequests } from '@/shared/api/driverEstimate';
 
 import { ActiveChip } from '@/shared/ui/chip';
 import GNB from '@/shared/ui/gnb';
@@ -10,6 +10,37 @@ import SearchBar from '@/shared/ui/Input/SearchBar';
 import { CheckBox } from '@/shared/ui/Button';
 import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
 import { RequestReceived } from '@/shared/ui/card';
+import ModalQuetRequest from '@/shared/ui/modal/ModalRequest';
+
+import {
+  EstimateRequestItem,
+  EstimateRequestResponse,
+  ModalType,
+  toMovingInfo,
+} from '@/shared/types/driverEstimate';
+
+const mockRequests: EstimateRequestItem[] = [
+  {
+    id: 'mock-1',
+    customerName: '홍길동',
+    movingType: 'home',
+    pickedDriver: true,
+    pickupAddress: '서울시 강남구',
+    dropoffAddress: '서울시 서초구',
+    movingDate: '2025-07-01T09:00:00.000Z',
+    requestTime: '2025-07-01T08:00:00.000Z',
+  },
+  {
+    id: 'mock-2',
+    customerName: '김철수',
+    movingType: 'small',
+    pickedDriver: false,
+    pickupAddress: '서울시 마포구',
+    dropoffAddress: '서울시 은평구',
+    movingDate: '2025-07-03T14:00:00.000Z',
+    requestTime: '2025-07-02T10:00:00.000Z',
+  },
+];
 
 const sortListObj = {
   HighestRating: '평점 높은순',
@@ -17,40 +48,32 @@ const sortListObj = {
   Latest: '요청일 빠른순',
 };
 
-export interface EstimateRequestItem {
-  id: string;
-  customerName: string;
-  movingType?: 'small' | 'home' | 'office';
-  pickedDriver: boolean;
-  pickupAddress: string;
-  dropoffAddress: string;
-  movingDate: string;
-  requestTime: string;
-}
-
-export interface EstimateRequestResponse {
-  data: EstimateRequestItem[];
-  nextCursor: string | null;
-}
-
 const RequestPage = () => {
   const [isSmallActive, setIsSmallActive] = useState<boolean>(false);
   const [isHomeActive, setIsHomeActive] = useState<boolean>(false);
   const [isOfficeActive, setIsOfficeActive] = useState<boolean>(false);
   const [sortValue, setSortValue] = useState<string>('HighestRating');
 
+  const [modalType, setModalType] = useState<ModalType>(null);
+  const [selectedRequest, setSelectedRequest] = useState<EstimateRequestItem | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [comment, setComment] = useState<string>('');
+  const [price, setPrice] = useState<number>();
+
   const ref = useRef<HTMLDivElement | null>(null);
 
+  //페이지네이션 React Query
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery<EstimateRequestResponse>({
       queryKey: ['requests'],
-      queryFn: ({ pageParam }) => getRequests({ cursor: pageParam }),
+      // queryFn: ({ pageParam }) => getRequests({ cursor: pageParam }),
       initialPageParam: null,
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     });
 
-  const requests = data?.pages.flatMap((page) => page.data) ?? [];
+  const requests = data?.pages.flatMap((page) => page.data) ?? mockRequests ?? [];
 
+  // 페이지네이션
   useEffect(() => {
     if (!ref.current || !hasNextPage) return;
 
@@ -67,6 +90,25 @@ const RequestPage = () => {
 
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage]);
+
+  // 카드 클릭 핸들러
+  const openConfirmModal = (request: EstimateRequestItem) => {
+    setSelectedRequest(request);
+    setModalType('confirm');
+    setIsModalOpen(true);
+  };
+  const openRejectModal = (request: EstimateRequestItem) => {
+    setSelectedRequest(request);
+    setModalType('reject');
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalType(null);
+    setSelectedRequest(null);
+    setPrice(undefined);
+    setComment('');
+  };
 
   return (
     <div className="flex max-w-[1920px] flex-col justify-center">
@@ -118,13 +160,36 @@ const RequestPage = () => {
                   dropoffAddress={request.dropoffAddress}
                   movingDate={request.movingDate}
                   requestTime={request.requestTime}
-                  onSendEstimateClick={() => {}}
-                  onRejectClick={() => {}}
+                  onSendEstimateClick={() => openConfirmModal(request)}
+                  onRejectClick={() => openRejectModal(request)}
                 />
               ))}
               <div ref={ref} className="h-10" />
 
+              {/* 로딩중 */}
               {isFetchingNextPage && <p className="text-center">불러오는 중...</p>}
+
+              {/* 모달 */}
+              {selectedRequest && modalType && (
+                <ModalQuetRequest
+                  type={modalType}
+                  isOpen={isModalOpen}
+                  setIsOpen={closeModal}
+                  user={{
+                    name: selectedRequest.customerName,
+                    role: 'user',
+                  }}
+                  mvInfo={toMovingInfo(selectedRequest)}
+                  price={price}
+                  setPrice={setPrice}
+                  comment={comment}
+                  setComment={setComment}
+                  onSubmit={() => {
+                    // TODO: 견적 보내기 / 반려 API 호출
+                    setIsModalOpen(false);
+                  }}
+                />
+              )}
             </div>
           </div>
         </section>
