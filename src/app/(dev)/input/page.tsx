@@ -1,8 +1,8 @@
 'use client';
 
-import Input from '@/shared/ui/Input/Input';
-import SearchBar from '@/shared/ui/Input/SearchBar';
-import TextArea from '@/shared/ui/Input/TextArea';
+import Input from '@/shared/ui/input/Input';
+import SearchBar from '@/shared/ui/input/SearchBar';
+import TextArea from '@/shared/ui/input/TextArea';
 import { useState } from 'react';
 
 /*Input, searchBar, TextArea 컴포넌트 사용 예시입니다. */
