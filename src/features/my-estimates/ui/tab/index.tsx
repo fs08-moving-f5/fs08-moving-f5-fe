@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import Link from 'next/link';
-import type { PendingEstimatesTabProps } from '@/features/my-estimates/pending/types/pendingTypes';
+import type { PendingEstimatesTabProps } from '@/features/my-estimates/types/pendingTypes';
 
 const PendingEstimatesTab = ({ activeTab }: PendingEstimatesTabProps) => {
   const tabStyles = 'py-4 flex items-center justify-center cursor-pointer';

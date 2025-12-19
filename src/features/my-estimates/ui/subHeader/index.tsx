@@ -1,4 +1,4 @@
-import type { PendingEstimatesSubHeaderProps } from '@/features/my-estimates/pending/types/pendingTypes';
+import type { PendingEstimatesSubHeaderProps } from '@/features/my-estimates/types/pendingTypes';
 
 const PendingEstimatesSubHeader = ({
   movingType,
