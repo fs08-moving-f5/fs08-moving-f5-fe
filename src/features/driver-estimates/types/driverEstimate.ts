@@ -40,6 +40,8 @@ export interface EstimateRequestRaw {
   movingType: BackendMovingType;
   movingDate: string;
   isDesignated: boolean;
+  createdAt: string;
+  updatedAt?: string | null;
   from: { sido: string; sigungu: string } | null;
   to: { sido: string; sigungu: string } | null;
 }

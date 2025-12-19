@@ -1,15 +1,15 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { getRequests } from '@/shared/api/driverEstimate';
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
+import { getRequests } from '@/features/driver-estimates/services/driverEstimate';
 
 import { ActiveChip } from '@/shared/ui/chip';
 import GNB from '@/shared/ui/gnb';
-import SearchBar from '@/shared/ui/Input/SearchBar';
-import { CheckBox } from '@/shared/ui/Button';
+import SearchBar from '@/shared/ui/input/SearchBar';
+import { CheckBox } from '@/shared/ui/button';
 import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
-import { RequestReceived } from '@/shared/ui/card';
+import CardList from '@/features/driver-estimates/ui/CardList';
 import ModalQuetRequest from '@/shared/ui/modal/ModalRequest';
 
 import {
@@ -17,7 +17,7 @@ import {
   EstimateRequestResponse,
   ModalType,
   toMovingInfo,
-} from '@/shared/types/driverEstimate';
+} from '@/features/driver-estimates/types/driverEstimate';
 
 // const mockRequests: EstimateRequestItem[] = [
 //   {
@@ -48,7 +48,7 @@ const sortListObj = {
   Latest: '요청일 빠른순',
 };
 
-const RequestPage = () => {
+const DriverEstimateRequestPage = () => {
   const [isSmallActive, setIsSmallActive] = useState<boolean>(false);
   const [isHomeActive, setIsHomeActive] = useState<boolean>(false);
   const [isOfficeActive, setIsOfficeActive] = useState<boolean>(false);
@@ -62,14 +62,19 @@ const RequestPage = () => {
 
   const ref = useRef<HTMLDivElement | null>(null);
 
-  //페이지네이션 React Query
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery<EstimateRequestResponse>({
-      queryKey: ['requests'],
-      // queryFn: ({ pageParam }) => getRequests({ cursor: pageParam }),
-      initialPageParam: null,
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-    });
+  // useInfiniteQuery - 무한 스크롤
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery<
+    EstimateRequestResponse, // TQueryFnData
+    Error, // TError
+    InfiniteData<EstimateRequestResponse>, // TData
+    ['requests'], // TQueryKey
+    string | null // TPageParam
+  >({
+    queryKey: ['requests'],
+    queryFn: ({ pageParam }) => getRequests({ cursor: pageParam }),
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
 
   const requests = data?.pages.flatMap((page) => page.data) ?? [];
 
@@ -79,19 +84,19 @@ const RequestPage = () => {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
           fetchNextPage();
         }
       },
-      { threshold: 1 },
+      { rootMargin: '200px', threshold: 0 },
     );
 
     observer.observe(ref.current);
 
     return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  // 카드 클릭 핸들러
+  // 카드 버튼 클릭 핸들러
   const openConfirmModal = (request: EstimateRequestItem) => {
     setSelectedRequest(request);
     setModalType('confirm');
@@ -133,7 +138,9 @@ const RequestPage = () => {
           </div>
 
           <div className="flex flex-col gap-[24px]">
-            <h1 className="text-lg font-semibold text-[var(--color-black-500)]">전체 n건</h1>
+            <h1 className="text-lg font-semibold text-[var(--color-black-500)]">
+              전체 {requests.length}건
+            </h1>
 
             <div className="flex justify-between text-base font-normal text-[var(--color-black-500)]">
               <div className="flex items-center gap-3">
@@ -148,49 +155,41 @@ const RequestPage = () => {
               </div>
               <DropdownSort listObject={sortListObj} value={sortValue} setValue={setSortValue} />
             </div>
+          </div>
 
+          <div className="flex flex-col gap-[24px]">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {requests.map((request) => (
-                <RequestReceived
-                  key={request.id}
-                  customerName={request.customerName}
-                  movingType={request.movingType}
-                  pickedDriver={request.pickedDriver}
-                  pickupAddress={request.pickupAddress}
-                  dropoffAddress={request.dropoffAddress}
-                  movingDate={request.movingDate}
-                  requestTime={request.requestTime}
-                  onSendEstimateClick={() => openConfirmModal(request)}
-                  onRejectClick={() => openRejectModal(request)}
-                />
-              ))}
-              <div ref={ref} className="h-10" />
-
-              {/* 로딩중 */}
-              {isFetchingNextPage && <p className="text-center">불러오는 중...</p>}
-
-              {/* 모달 */}
-              {selectedRequest && modalType && (
-                <ModalQuetRequest
-                  type={modalType}
-                  isOpen={isModalOpen}
-                  setIsOpen={closeModal}
-                  user={{
-                    name: selectedRequest.customerName,
-                    role: 'user',
-                  }}
-                  mvInfo={toMovingInfo(selectedRequest)}
-                  price={price}
-                  setPrice={setPrice}
-                  comment={comment}
-                  setComment={setComment}
-                  onSubmit={() => {
-                    // TODO: 견적 보내기 / 반려 API 호출
-                    setIsModalOpen(false);
-                  }}
-                />
-              )}
+              <CardList
+                requests={requests}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+                fetchNextPage={fetchNextPage}
+                onConfirm={(r) => openConfirmModal(r)}
+                onReject={(r) => openRejectModal(r)}
+              />
             </div>
+
+            {/* 모달 */}
+            {selectedRequest && modalType && (
+              <ModalQuetRequest
+                type={modalType}
+                isOpen={isModalOpen}
+                setIsOpen={closeModal}
+                user={{
+                  name: selectedRequest.customerName,
+                  role: 'user',
+                }}
+                mvInfo={toMovingInfo(selectedRequest)}
+                price={price}
+                setPrice={setPrice}
+                comment={comment}
+                setComment={setComment}
+                onSubmit={() => {
+                  // TODO: 견적 보내기 / 반려 API 호출
+                  setIsModalOpen(false);
+                }}
+              />
+            )}
           </div>
         </section>
       </main>
@@ -198,4 +197,4 @@ const RequestPage = () => {
   );
 };
 
-export default RequestPage;
+export default DriverEstimateRequestPage;

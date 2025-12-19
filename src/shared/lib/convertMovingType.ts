@@ -1,4 +1,7 @@
-import { BackendMovingType, FrontMovingType } from '@/shared/types/driverEstimate';
+import {
+  BackendMovingType,
+  FrontMovingType,
+} from '@/features/driver-estimates/types/driverEstimate';
 
 export function convertMovingType(
   type: BackendMovingType | null | undefined,
