@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { signup } from '../services/signup';
 import { SignupFormData, UserType } from '../types/types';
-import { storage } from '@/shared/lib/storage';
 
 /**
  * 회원가입 처리 훅
@@ -33,12 +32,6 @@ export const useSignup = () => {
 
       // 백엔드 응답: { user: UserResponse, accessToken: string }
       const result = await signup(signupData);
-
-      // accessToken 저장 (refreshToken은 httpOnly 쿠키로 자동 설정됨)
-      storage.setString('accessToken', result.accessToken);
-
-      // 유저 정보 저장
-      storage.setObject('user', result.user);
 
       return result;
     } catch (err) {

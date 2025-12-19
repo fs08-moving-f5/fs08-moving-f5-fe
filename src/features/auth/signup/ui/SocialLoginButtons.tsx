@@ -18,7 +18,7 @@ export default function SocialLoginButtons({ onSocialLogin }: SocialLoginButtons
         <button
           type="button"
           onClick={() => onSocialLogin('google')}
-          className="mobile:h-[48px] mobile:w-[48px] flex h-[56px] w-[56px] items-center justify-center rounded-full bg-white shadow-md transition hover:shadow-lg"
+          className="flex h-[56px] w-[56px] items-center justify-center rounded-full bg-white shadow-md transition hover:shadow-lg"
         >
           <Image src="/icons/social/ic-google.svg" alt="Google" width={56} height={56} />
         </button>
