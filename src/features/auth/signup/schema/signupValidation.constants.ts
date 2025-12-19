@@ -14,6 +14,7 @@ export const SIGNUP_ERROR_MESSAGES = {
   PHONE: {
     REQUIRED: '전화번호를 입력해 주세요',
     INVALID_FORMAT: '올바른 전화번호 형식이 아닙니다 (10-11자리 숫자)',
+    INVALID_CHARACTERS: '숫자만 입력해 주세요',
   },
   PASSWORD: {
     REQUIRED: '비밀번호를 입력해 주세요',

@@ -1,15 +1,20 @@
 import { HTTPError } from 'ky';
 import { api } from '@/shared/api/client';
 import { SignupRequest, SignupResponse } from '../types/types';
+import { useAuthStore } from '@/shared/store/authStore';
 
 /**
  * 회원가입 API
  * @param data - 회원가입 요청 데이터 (type 필드 포함)
- * @returns 백엔드 응답: { success: true, data: { user, accessToken } }
+ * @returns 백엔드 응답: { user, accessToken }
  */
 export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
   try {
     const response = await api.post<SignupResponse>('api/auth/signup', data);
+    const { user, accessToken } = response.data;
+
+    useAuthStore.getState().setAuth(user, accessToken);
+
     return response.data;
   } catch (error) {
     // ky 에러 처리

@@ -1,46 +1,46 @@
 import { create } from 'zustand';
 import { storage } from '../lib/storage';
-//TODO - authStore 구현
-//TODO - accessToken 상태 제거 필요 (보안상 이슈). user 존재 여부로 로그인 상태 판단
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  // 필요한 사용자 정보 추가
-}
+import type { UserResponse } from '../types/user';
 
 interface AuthState {
-  user: User | null;
-  accessToken: string | null;
-  isAuthenticated: boolean;
-  setAuth: (user: User, accessToken: string) => void;
+  user: UserResponse | null;
+  isUserLoaded: boolean;
+  setUser: (user: UserResponse) => void;
+  clearUser: () => void;
+  markUserLoaded: () => void;
+  setAuth: (user: UserResponse, accessToken: string) => void;
   clearAuth: () => void;
   initAuth: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  accessToken: null,
-  isAuthenticated: false,
+  isUserLoaded: false,
 
+  setUser: (user) => set({ user, isUserLoaded: true }),
+  clearUser: () => set({ user: null, isUserLoaded: false }),
+  markUserLoaded: () => set({ isUserLoaded: true }),
+
+  // 로그인/회원가입 시 호출 (토큰은 로컬스토리지, 유저는 상태)
   setAuth: (user, accessToken) => {
-    storage.setObject('user', user);
     storage.setString('accessToken', accessToken);
-    set({ user, accessToken, isAuthenticated: true });
+    set({ user, isUserLoaded: true });
   },
 
+  // 로그아웃 시 호출
   clearAuth: () => {
-    storage.remove('user');
     storage.remove('accessToken');
     storage.remove('refreshToken');
-    set({ user: null, accessToken: null, isAuthenticated: false });
+    set({ user: null, isUserLoaded: false });
   },
 
+  // 앱 시작 시 토큰으로 유저 정보 복원 (API 호출 필요)
   initAuth: () => {
-    const user = storage.getObject<User>('user');
     const accessToken = storage.getString('accessToken');
-    if (user && accessToken) {
-      set({ user, accessToken, isAuthenticated: true });
+    if (accessToken) {
+      set({ isUserLoaded: false });
+    } else {
+      set({ user: null, isUserLoaded: true });
     }
   },
 }));

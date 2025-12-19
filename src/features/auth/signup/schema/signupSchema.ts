@@ -32,6 +32,11 @@ export const validatePhone = (phone: string): string => {
   if (!phone.trim()) {
     return SIGNUP_ERROR_MESSAGES.PHONE.REQUIRED;
   }
+
+  if (/[^0-9-]/.test(phone)) {
+    return SIGNUP_ERROR_MESSAGES.PHONE.INVALID_CHARACTERS;
+  }
+
   const cleanPhone = phone.replace(/-/g, '');
   if (!VALIDATION_PATTERNS.PHONE.test(cleanPhone)) {
     return SIGNUP_ERROR_MESSAGES.PHONE.INVALID_FORMAT;
