@@ -1,4 +1,4 @@
-import { Button, LikeButton, Clip, ShareButton, Filter, CheckBox } from '@/shared/ui/Button/index';
+import { Button, LikeButton, Clip, ShareButton, Filter, CheckBox } from '@/shared/ui/button/index';
 
 const ButtonPage = () => {
   return (
