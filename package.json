@@ -9,7 +9,9 @@
     "lint": "eslint",
     "prepare": "husky",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "generate:types": "openapi-typescript https://api.gomoving.shop/openapi.json -o src/shared/types/openapi.d.ts ",
+    "generate:types:watch": "openapi-typescript https://api.gomoving.shop/openapi.json -o src/shared/types/openapi.d.ts --watch "
   },
   "dependencies": {
     "@microsoft/fetch-event-source": "^2.0.1",
@@ -36,6 +38,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
     "husky": "^9.1.7",
+    "openapi-typescript": "^7.10.1",
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4",

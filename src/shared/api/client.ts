@@ -59,4 +59,6 @@ export const api = {
   },
 };
 
+export type { paths, components } from '../types/openapi';
+
 export default apiClient;
