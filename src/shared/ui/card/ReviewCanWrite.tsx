@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { SimpleDriverInfo } from './DriverInfo';
 
 import { MovingTypeChip } from '@/shared/ui/chip';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/shared/ui/button';
 
 interface ReviewCanWriteProps {
   driverName: string;

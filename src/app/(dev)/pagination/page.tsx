@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import Pagination from '@/shared/ui/Pagination/Pagination';
+import Pagination from '@/shared/ui/pagination/Pagination';
 
 interface MockItem {
   id: number;

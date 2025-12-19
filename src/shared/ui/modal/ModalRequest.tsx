@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Button } from '../Button';
+import { Button } from '../button';
 import { MovingTypeChip } from '../chip';
 import Input from '../input/Input';
 import TextArea from '../input/TextArea';
