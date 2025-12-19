@@ -1,8 +1,11 @@
+'use client';
+
 import PendingEstimatesTab from '@/features/my-estimates/ui/tab';
 import PendingEstimatesSubHeader from '@/features/my-estimates/ui/subHeader';
 import { combineAddress } from '@/features/my-estimates/lib/address';
 import { formatDateOnlyDate, formatDateWithWeekday } from '@/shared/lib/day';
 import { PendingCardContainer } from '@/features/my-estimates/ui/cardContainer';
+import { useGetPendingEstimatesQuery } from '@/features/my-estimates/hooks/queries/useEstimateQueries';
 
 // TODO: 실제 데이터 받아오기
 const mockEstimateRequest = {
@@ -30,6 +33,10 @@ const movingTypeMap: Record<string, string> = {
 };
 
 const PendingEstimatesPageClient = () => {
+  const { data: pendingEstimates } = useGetPendingEstimatesQuery();
+
+  // const estimateRequestData = pendingEstimates?.data?.estimateRequest;
+
   const formattedCreatedAt = formatDateOnlyDate(mockEstimateRequest.createdAt);
   const formattedMovingDate = formatDateWithWeekday(mockEstimateRequest.movingDate);
 
