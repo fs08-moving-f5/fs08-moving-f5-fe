@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import Image from 'next/image';
-import { Button } from '../Button';
+import { Button } from '../button';
 const ic_x = '/icons/x.svg';
 
 interface ModalConfirmProps {

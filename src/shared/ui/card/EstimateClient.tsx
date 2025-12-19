@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { MovingTypeChip } from '@/shared/ui/chip';
-import Button from '@/shared/ui/Button/Button';
+import { Button } from '@/shared/ui/button';
 
 interface EstimateClientProps {
   customerName: string;
