@@ -6,6 +6,7 @@ import { Button } from '@/shared/ui/button';
 
 interface EstimateWaitProps {
   driverName: string;
+  shortIntro?: string;
   driverImageUrl?: string;
   rating: number;
   reviewCount: number;
@@ -13,6 +14,8 @@ interface EstimateWaitProps {
   moveCount: string;
   movingType?: 'small' | 'home' | 'office';
   pickedDriver?: boolean;
+  isLiked?: boolean;
+  likeCount?: number;
   estimatePrice: number;
   onDetailClick?: () => void;
   onConfirmClick?: () => void;
@@ -20,6 +23,7 @@ interface EstimateWaitProps {
 
 const EstimateWait = ({
   driverName,
+  shortIntro,
   driverImageUrl,
   rating,
   reviewCount,
@@ -27,6 +31,8 @@ const EstimateWait = ({
   moveCount,
   movingType,
   pickedDriver = false,
+  isLiked,
+  likeCount,
   estimatePrice,
   onDetailClick,
   onConfirmClick,
@@ -42,7 +48,7 @@ const EstimateWait = ({
 
           <section className="flex flex-col gap-2">
             <h3 className="mobile:text-lg tab:text-lg text-xl font-semibold text-[#1a1a1a]">
-              고객님의 물품을 안전하게 운송해 드립니다.
+              {shortIntro}
             </h3>
 
             <DriverInfo
@@ -53,6 +59,8 @@ const EstimateWait = ({
               experience={experience}
               moveCount={moveCount}
               showLikeButton={true}
+              isLiked={isLiked}
+              likeCount={likeCount}
               type="estimateWait"
             />
           </section>

@@ -17,6 +17,7 @@ const PendingEstimatesPageClient = () => {
   const { data: pendingEstimates } = useGetPendingEstimatesQuery();
 
   const estimateRequestData = pendingEstimates?.[0]?.estimateRequest;
+  const estimateData = pendingEstimates?.[0]?.estimates;
 
   const formattedCreatedAt = formatDateOnlyDate(estimateRequestData?.createdAt ?? '');
   const formattedMovingDate = formatDateWithWeekday(estimateRequestData?.movingDate ?? '');
@@ -37,7 +38,10 @@ const PendingEstimatesPageClient = () => {
           sigungu: estimateRequestData?.addresses?.[1]?.sigungu ?? '',
         })}
       />
-      <PendingCardContainer />
+      <PendingCardContainer
+        estimates={estimateData}
+        movingType={estimateRequestData?.movingType ?? 'SMALL_MOVING'}
+      />
     </div>
   );
 };
