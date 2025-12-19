@@ -11,7 +11,7 @@ import {
   useSocialLogin,
   type SignupFormData,
   type UserType,
-} from '@/features/auth/signup';
+} from '@/features/auth';
 
 export default function SignupPage({ usertype }: { usertype: UserType }) {
   // const router = useRouter(); // TODO: 로그인 페이지 이동 시 활성화
