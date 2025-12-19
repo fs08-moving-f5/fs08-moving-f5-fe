@@ -20,23 +20,28 @@ const PendingEstimatesTab = ({ activeTab }: PendingEstimatesTabProps) => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-[1200px] pt-4">
-      <div className="flex items-center gap-8">
-        <Link
-          className={clsx(tabStyles, activeTab === 'pending' ? activeTabStyles : inactiveTabStyles)}
-          href={tab.pending.href}
-        >
-          {tab.pending.label}
-        </Link>
-        <Link
-          className={clsx(
-            tabStyles,
-            activeTab === 'received' ? activeTabStyles : inactiveTabStyles,
-          )}
-          href={tab.received.href}
-        >
-          {tab.received.label}
-        </Link>
+    <div className="w-full bg-white">
+      <div className="mx-auto w-full max-w-[1200px] py-4">
+        <div className="flex items-center gap-8">
+          <Link
+            className={clsx(
+              tabStyles,
+              activeTab === 'pending' ? activeTabStyles : inactiveTabStyles,
+            )}
+            href={tab.pending.href}
+          >
+            {tab.pending.label}
+          </Link>
+          <Link
+            className={clsx(
+              tabStyles,
+              activeTab === 'received' ? activeTabStyles : inactiveTabStyles,
+            )}
+            href={tab.received.href}
+          >
+            {tab.received.label}
+          </Link>
+        </div>
       </div>
     </div>
   );

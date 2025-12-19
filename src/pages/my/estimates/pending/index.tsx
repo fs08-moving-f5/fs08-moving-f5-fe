@@ -2,6 +2,7 @@ import PendingEstimatesTab from '@/features/my-estimates/ui/tab';
 import PendingEstimatesSubHeader from '@/features/my-estimates/ui/subHeader';
 import { combineAddress } from '@/features/my-estimates/lib/address';
 import { formatDateOnlyDate, formatDateWithWeekday } from '@/shared/lib/day';
+import { PendingCardContainer } from '@/features/my-estimates/ui/cardContainer';
 
 // TODO: 실제 데이터 받아오기
 const mockEstimateRequest = {
@@ -33,7 +34,7 @@ const PendingEstimatesPageClient = () => {
   const formattedMovingDate = formatDateWithWeekday(mockEstimateRequest.movingDate);
 
   return (
-    <div>
+    <div className="bg-bg-100">
       <PendingEstimatesTab activeTab="pending" />
       <PendingEstimatesSubHeader
         movingType={movingTypeMap[mockEstimateRequest.movingType]}
@@ -42,6 +43,7 @@ const PendingEstimatesPageClient = () => {
         fromAddress={combineAddress(mockEstimateRequest.addresses[0])}
         toAddress={combineAddress(mockEstimateRequest.addresses[1])}
       />
+      <PendingCardContainer />
     </div>
   );
 };
