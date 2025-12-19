@@ -23,9 +23,8 @@ export default function SocialLoginButtons({ onSocialLogin }: SocialLoginButtons
           <Image
             src="/icons/social/ic-google.svg"
             alt="Google"
-            width={28}
-            height={28}
-            className="mobile:h-[24px] mobile:w-[24px]"
+            width={56}
+            height={56}
           />
         </button>
 
