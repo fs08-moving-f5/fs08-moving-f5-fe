@@ -1,6 +1,6 @@
 {
   "css.lint.unknownAtRules": "ignore",
-  "cSpell.words": ["Pretendard"],
+  "cSpell.words": ["Pretendard", "sido", "sigungu"],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[typescript]": {

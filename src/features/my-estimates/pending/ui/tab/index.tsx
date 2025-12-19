@@ -1,11 +1,8 @@
 import clsx from 'clsx';
 import Link from 'next/link';
+import type { PendingEstimatesTabProps } from '@/features/my-estimates/pending/types/pendingTypes';
 
-interface PendingEstimatesTabProps {
-  activeTab: 'pending' | 'received';
-}
-
-const PendingEstimatesTab = ({ activeTab = 'pending' }: PendingEstimatesTabProps) => {
+const PendingEstimatesTab = ({ activeTab }: PendingEstimatesTabProps) => {
   const tabStyles = 'py-4 flex items-center justify-center cursor-pointer';
   const activeTabStyles =
     'border-b-2 border-solid border-black-500 text-xl font-semibold text-black-500';
