@@ -1,7 +1,11 @@
+export type BackendMovingType = 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
+
+export type FrontMovingType = 'small' | 'home' | 'office';
+
 export interface EstimateRequestItem {
   id: string;
   customerName: string;
-  movingType?: 'small' | 'home' | 'office';
+  movingType?: FrontMovingType;
   pickedDriver: boolean;
   pickupAddress: string;
   dropoffAddress: string;
@@ -23,27 +27,19 @@ export const toMovingInfo = (r: EstimateRequestItem) => ({
   date: new Date(r.movingDate),
 });
 
-export interface GetRequestsParams {
-  cursor?: string | null;
-  take?: number;
-  movingType?: string;
-  sort?: string;
-}
-
-export interface EstimateRequestRaw {
-  id: string;
-  name: string;
-  movingType: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
-  movingDate: string;
-  isDesignated: boolean;
-  from: { sido: string; sigungu: string } | null;
-  to: { sido: string; sigungu: string } | null;
-}
-
 // api/driverEstimate
 export interface GetRequestsParams {
   cursor?: string | null;
   take?: number;
-  movingType?: string;
-  sort?: string;
+  movingType?: BackendMovingType;
+  sort?: 'latest' | 'oldest' | 'moving-latest' | 'moving-oldest';
+}
+export interface EstimateRequestRaw {
+  id: string;
+  name: string;
+  movingType: BackendMovingType;
+  movingDate: string;
+  isDesignated: boolean;
+  from: { sido: string; sigungu: string } | null;
+  to: { sido: string; sigungu: string } | null;
 }

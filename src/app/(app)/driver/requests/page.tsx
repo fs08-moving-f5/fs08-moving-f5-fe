@@ -19,28 +19,28 @@ import {
   toMovingInfo,
 } from '@/shared/types/driverEstimate';
 
-const mockRequests: EstimateRequestItem[] = [
-  {
-    id: 'mock-1',
-    customerName: '홍길동',
-    movingType: 'home',
-    pickedDriver: true,
-    pickupAddress: '서울시 강남구',
-    dropoffAddress: '서울시 서초구',
-    movingDate: '2025-07-01T09:00:00.000Z',
-    requestTime: '2025-07-01T08:00:00.000Z',
-  },
-  {
-    id: 'mock-2',
-    customerName: '김철수',
-    movingType: 'small',
-    pickedDriver: false,
-    pickupAddress: '서울시 마포구',
-    dropoffAddress: '서울시 은평구',
-    movingDate: '2025-07-03T14:00:00.000Z',
-    requestTime: '2025-07-02T10:00:00.000Z',
-  },
-];
+// const mockRequests: EstimateRequestItem[] = [
+//   {
+//     id: 'mock-1',
+//     customerName: '홍길동',
+//     movingType: 'home',
+//     pickedDriver: true,
+//     pickupAddress: '서울시 강남구',
+//     dropoffAddress: '서울시 서초구',
+//     movingDate: '2025-07-01T09:00:00.000Z',
+//     requestTime: '2025-07-01T08:00:00.000Z',
+//   },
+//   {
+//     id: 'mock-2',
+//     customerName: '김철수',
+//     movingType: 'small',
+//     pickedDriver: false,
+//     pickupAddress: '서울시 마포구',
+//     dropoffAddress: '서울시 은평구',
+//     movingDate: '2025-07-03T14:00:00.000Z',
+//     requestTime: '2025-07-02T10:00:00.000Z',
+//   },
+// ];
 
 const sortListObj = {
   HighestRating: '평점 높은순',
@@ -71,7 +71,7 @@ const RequestPage = () => {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     });
 
-  const requests = data?.pages.flatMap((page) => page.data) ?? mockRequests ?? [];
+  const requests = data?.pages.flatMap((page) => page.data) ?? [];
 
   // 페이지네이션
   useEffect(() => {
