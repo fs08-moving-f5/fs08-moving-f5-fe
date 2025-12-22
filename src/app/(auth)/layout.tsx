@@ -9,8 +9,8 @@ export default function Layout({
   return (
     <>
       <LoginedGuard>
-      <GNB />
-      {children}
+        <GNB />
+        {children}
       </LoginedGuard>
     </>
   );

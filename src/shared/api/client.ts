@@ -1,9 +1,6 @@
 import ky, { Options } from 'ky';
 import type { ApiResponse } from '../types/api';
-import {
-  setAuthorizationHeader,
-  handleToken,
-} from './interceptors';
+import { setAuthorizationHeader, handleToken } from './interceptors';
 
 const apiClient = ky.create({
   prefixUrl: process.env.NEXT_PUBLIC_API_URL,

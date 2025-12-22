@@ -14,10 +14,7 @@ interface LoginedGuardProps {
   redirectTo?: string;
 }
 
-export function AuthGuard({ 
-  children, 
-  redirectTo = '/login/user' 
-}: AuthGuardProps) {
+export function AuthGuard({ children, redirectTo = '/login/user' }: AuthGuardProps) {
   const { user, isUserLoaded } = useAuthStore();
   const router = useRouter();
   const pathname = usePathname();
@@ -39,10 +36,7 @@ export function AuthGuard({
   return <>{children}</>;
 }
 
-export function LoginedGuard({ 
-  children, 
-  redirectTo = '/' 
-}: LoginedGuardProps) {
+export function LoginedGuard({ children, redirectTo = '/' }: LoginedGuardProps) {
   const { user, isUserLoaded } = useAuthStore();
   const router = useRouter();
   const pathname = usePathname();
@@ -53,8 +47,8 @@ export function LoginedGuard({
       router.replace(redirectTo);
     }
   }, [user, isUserLoaded, router, pathname, redirectTo]);
-  
-  // 로딩 중 
+
+  // 로딩 중
   if (!isUserLoaded) {
     return null;
   }

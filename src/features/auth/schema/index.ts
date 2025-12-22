@@ -24,7 +24,4 @@ export {
   type LoginFormErrors,
 } from './loginSchema';
 
-export {
-  LOGIN_ERROR_MESSAGES,
-  LOGIN_VALIDATION_PATTERNS,
-} from './loginValidation.constants';
+export { LOGIN_ERROR_MESSAGES, LOGIN_VALIDATION_PATTERNS } from './loginValidation.constants';

@@ -20,12 +20,11 @@ const onRefreshed = (token: string) => {
   refreshSubscribers = [];
 };
 
-
 async function refreshAccessToken(): Promise<string> {
   const data = await refreshClient
     .post('api/auth/refresh')
     .json<{ success: boolean; data: { accessToken: string } }>();
-  
+
   if (data.success && data.data.accessToken) {
     storage.setString('accessToken', data.data.accessToken);
     console.log('Access token 갱신 성공');
@@ -46,12 +45,12 @@ const setAuthorizationHeader: BeforeRequestHook = async (request) => {
 
 const handleToken: BeforeRetryHook = async ({ error, request }) => {
   const httpError = error as HTTPError;
-  
+
   // 401이 아닌 경우 재시도 중지
   if (httpError.response?.status !== 401) {
     return;
   }
-  
+
   // 동시 다발적 요청 처리 - 이미 갱신 중이면 대기
   if (isRefreshing) {
     return new Promise<void>((resolve) => {
@@ -61,15 +60,15 @@ const handleToken: BeforeRetryHook = async ({ error, request }) => {
       });
     });
   }
-  
+
   isRefreshing = true;
-  
+
   try {
     const newAccessToken = await refreshAccessToken();
-    
+
     // 현재 요청의 헤더 업데이트
     request.headers.set('Authorization', `Bearer ${newAccessToken}`);
-    
+
     // 대기 중인 모든 요청에 새 토큰 전달
     onRefreshed(newAccessToken);
   } catch (error) {
