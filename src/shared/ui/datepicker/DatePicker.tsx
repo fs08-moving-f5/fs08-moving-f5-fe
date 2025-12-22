@@ -14,16 +14,14 @@ interface DatePickerProps {
   size: 'sm' | 'md';
   date: Date;
   setDate: (date: Date) => void;
-  setIsSelected?: (isSelected: boolean) => void;
 }
 
-export default function DatePicker({ size = 'md', date, setDate, setIsSelected }: DatePickerProps) {
+export default function DatePicker({ size = 'md', date, setDate }: DatePickerProps) {
   const buttonIconSize = 24;
   const [month, setMonth] = useState(date.getMonth());
   const [monthMode, setMonthMode] = useState(false);
 
   const handleChange = (date: Date) => {
-    setIsSelected && setIsSelected(true);
     setDate(date);
   };
 

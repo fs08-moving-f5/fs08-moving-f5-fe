@@ -2,26 +2,21 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import DatePicker from '../datepicker/DatePicker';
 import { Button } from '../Button';
-const ic_canlendar = 'icons/dropdown/ic_calendar.svg';
+const ic_canlendar = '/icons/dropdown/ic_calendar.svg';
 const ic_down = '/icons/dropdown/ic_chevron_down_md.svg';
 const ic_up = '/icons/dropdown/ic_chevron_up_md.svg';
 
 interface DropdownDatePickerProps {
-  date: Date;
-  setDate: (date: Date) => void;
-  setIsSelected: (isSelected: boolean) => void;
+  date: Date | null;
+  setDate: (date: Date | null) => void;
 }
 
-export default function DropdownDatePicker({
-  date,
-  setDate,
-  setIsSelected,
-}: DropdownDatePickerProps) {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
+export default function DropdownDatePicker({ date, setDate }: DropdownDatePickerProps) {
+  const _date = date || new Date();
+  const year = _date.getFullYear();
+  const month = _date.getMonth() + 1;
+  const day = _date.getDate();
   const [open, setOpen] = useState(false);
-  const [isDateSelected, setIsDateSelected] = useState(false);
 
   const ButtonColor = {
     on: 'bg-[var(--color-primary-orange-100)] border border-[var(--color-primary-orange-400)]',
@@ -45,13 +40,11 @@ export default function DropdownDatePicker({
   }, []);
   const handleOpen = () => {
     if (!open) {
-      setIsDateSelected(false);
-      setIsSelected(false);
+      setDate(null);
     }
     setOpen(!open);
   };
   const handleConfirm = () => {
-    setIsSelected(true);
     setOpen(false);
   };
   return (
@@ -61,9 +54,9 @@ export default function DropdownDatePicker({
     >
       <button
         onClick={handleOpen}
-        className={`flex h-[50px] w-[350px] items-center justify-between rounded-[12px] p-[0_12px_0_20px] shadow-md outline-none ${ButtonColor[open ? 'on' : 'off']}`}
+        className={`flex h-[50px] w-[350px] cursor-pointer items-center justify-between rounded-[12px] p-[0_12px_0_20px] outline-none hover:brightness-95 ${ButtonColor[open ? 'on' : 'off']}`}
       >
-        <div className="flex gap-[8px]">
+        <div className="flex items-center gap-[8px]">
           <Image
             src={ic_canlendar}
             alt="ic_calendar"
@@ -83,8 +76,8 @@ export default function DropdownDatePicker({
       </button>
       {open && (
         <div className="absolute top-[58px] flex h-fit w-[350px] flex-col items-center gap-[12px] rounded-[12px] border border-[var(--color-grayScale-200)] bg-[var(--color-grayScale-50)] p-[20px_16px_28px_16px] shadow-md">
-          <DatePicker size="sm" date={date} setDate={setDate} setIsSelected={setIsDateSelected} />
-          <Button size="sm" disabled={!isDateSelected} onClick={handleConfirm}>
+          <DatePicker size="sm" date={_date} setDate={setDate} />
+          <Button size="sm" disabled={!date} onClick={handleConfirm}>
             선택완료
           </Button>
         </div>

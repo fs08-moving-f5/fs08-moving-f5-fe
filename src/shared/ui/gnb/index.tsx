@@ -75,7 +75,7 @@ const GNB = () => {
       <div className="flex items-center gap-[82px]">
         <Link href="/">
           <Image
-            src="img/logo-text.svg"
+            src="/img/logo-text.svg"
             alt="logo"
             width={116}
             height={44}
@@ -110,7 +110,7 @@ const GNB = () => {
             <DropdownNotification size="sm" list={alarm} />
             <DropdownProfile size="sm" userName={user.name} userType={user.role} />
             <button type="button" onClick={() => setIsOpen(true)}>
-              <Image src="icons/menu.svg" alt="menu" width={24} height={24} />
+              <Image src="/icons/menu.svg" alt="menu" width={24} height={24} />
             </button>
           </div>
         )}

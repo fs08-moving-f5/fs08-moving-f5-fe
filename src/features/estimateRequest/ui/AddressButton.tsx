@@ -1,20 +1,11 @@
 'use client';
 
 import { Button } from '@/shared/ui/Button';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import DaumPostcode, { Address } from './DaumPostCode';
+import { AddressParams } from '../types/type';
 const ic_x = '/icons/x.svg';
-
-export interface AddressParams {
-  zonecode: string;
-  address: string;
-  addressEnglish: string;
-  sido: string;
-  sidoEnglish: string;
-  sigungu: string;
-  sigunguEnglish: string;
-}
 
 interface AddressButtonProps {
   type: 'from' | 'to';
@@ -54,14 +45,18 @@ export default function AddressButton({ type, address, setAddress }: AddressButt
 
   return (
     <div className="relative h-fit w-fit">
-      <div className="mobile:w-[327px] tab:w-[400px] relative flex w-[252px] flex-col gap-[8px]">
+      <div className="mobile:max-w-[327px] tab:max-w-[400px] flex max-w-[252px] flex-col gap-[8px]">
         <div className="flex flex-col gap-[12px]">
-          <label className="text-[16px] leading-[26px] font-[500]">{typeName[type]}</label>
-          <Button size="sm" variant="outlined" design="primary" onClick={toggleHandler}>
-            <div className="h-full w-full px-[24px] py-[16px]">
-              <p className="truncate">{address ? address.address : `${typeName[type]} 선택하기`}</p>
-            </div>
-          </Button>
+          <label className="w-fit text-[16px] leading-[26px] font-[500]">{typeName[type]}</label>
+          <div className="mobile:max-w-[327px] tab:max-w-[400px] mobile:w-[327px] tab:w-[400px] flex w-[252px] max-w-[252px]">
+            <Button size="sm" variant="outlined" design="primary" onClick={toggleHandler}>
+              <div className="h-full w-full px-[24px] py-[16px]">
+                <p className="truncate">
+                  {address ? address.address : `${typeName[type]} 선택하기`}
+                </p>
+              </div>
+            </Button>
+          </div>
         </div>
         {address && (
           <div className="flex justify-end">

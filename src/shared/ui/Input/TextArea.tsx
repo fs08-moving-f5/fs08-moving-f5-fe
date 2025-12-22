@@ -17,6 +17,7 @@ export default function TextArea({
   placeholder = '최소 10자 이상 입력해주세요',
   onChange,
   size = 'md',
+  ...props
 }: TextAreaProps) {
   const boxSize = {
     sm: 'h-[160px] min-w-0 w-full max-w-[327px] pl-[16px] pr-[12px] py-[14px]',
@@ -37,6 +38,7 @@ export default function TextArea({
         className={`flex h-[54px] w-fit items-center justify-start rounded-[16px] bg-[#fff] ${boxSize[size]} ${borderType[errMsg ? 'error' : 'default']}`}
       >
         <textarea
+          {...props}
           rows={4}
           name={name}
           value={value}

@@ -36,7 +36,7 @@ const Button = ({
       case 'md':
         return 'max-w-[320px] min-h-[64px] text-[16px] w-full';
       case 'sm':
-        return 'max-w-[300px] min-h-[54px] text-[16px] w-full';
+        return 'max-w-[400px] min-h-[54px] text-[16px] w-full';
       case 'xs':
         return 'max-w-[200px] min-h-[60px] text-[18px] w-full';
       case '2xs':

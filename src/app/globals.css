@@ -195,6 +195,12 @@
 /*
 ================== Global Styles ==================
 */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
 body {
   background: var(--color-bg-100);
   color: var(--color-black-500);
