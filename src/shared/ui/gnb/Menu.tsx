@@ -11,7 +11,7 @@ interface MenuProps {
   isOpen: boolean;
   onClose: () => void;
   menuItems: MenuItem[];
-  role: 'guest' | null;
+  role: 'guest' | 'user' | 'driver';
 }
 
 const menuByGuest = [
