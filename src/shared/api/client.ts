@@ -1,11 +1,6 @@
 import ky, { Options } from 'ky';
 import type { ApiResponse } from '../types/api';
-import {
-  setAuthorizationHeader,
-  // handleToken,
-  // parseErrorResponse,
-  // handleUnauthorized,
-} from './interceptors';
+import { setAuthorizationHeader, handleToken } from './interceptors';
 
 const apiClient = ky.create({
   prefixUrl: process.env.NEXT_PUBLIC_API_URL,
@@ -16,9 +11,7 @@ const apiClient = ky.create({
   },
   hooks: {
     beforeRequest: [setAuthorizationHeader],
-    // beforeRetry: [handleToken],
-    // beforeError: [parseErrorResponse],
-    // afterResponse: [handleUnauthorized],
+    beforeRetry: [handleToken],
   },
 });
 
