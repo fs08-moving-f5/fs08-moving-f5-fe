@@ -19,8 +19,8 @@ const PendingCardContainer = ({
 }) => {
   return (
     <div className="w-full">
-      <div className="mx-auto max-w-[1140px] pt-[78px] pb-[112px]">
-        <div className="grid grid-cols-2 gap-6">
+      <div className="container-responsive tab:max-w-[600px] mobile:max-w-[327px] max-w-[1200px] pt-[78px] pb-[112px]">
+        <div className="tab:grid-cols-1 mobile:grid-cols-1 tab:gap-8 mobile:gap-5 grid grid-cols-2 gap-6">
           {estimates?.map((estimate) => (
             <EstimateWait
               key={estimate.id}

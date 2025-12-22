@@ -18,30 +18,36 @@ const PendingEstimatesSubHeader = ({
 
   return (
     <div className="w-full bg-white">
-      <div className="mx-auto flex max-w-[1160px] items-center justify-between py-8">
+      <div className="container-responsive mobile:max-w-[327px] mobile:gap-5 mobile:py-6 tab:flex-col tab:items-start tab:gap-[28px] tab:max-w-[600px] flex max-w-[1200px] items-center justify-between py-8">
         <div className="flex flex-col gap-1">
-          <div className="text-black-500 text-2xl font-bold">{movingType}</div>
-          <div className="text-md font-normal text-gray-500">견적 신청일: {applyAt}</div>
+          <div className="text-black-500 mobile:text-xl text-2xl font-bold">{movingType}</div>
+          <div className="text-md mobile:text-xs font-normal text-gray-500">
+            견적 신청일: {applyAt}
+          </div>
         </div>
-        <div className="flex items-end gap-10">
-          <div className="flex items-end gap-3">
-            <div className="flex flex-col">
-              <div className="text-md font-normal text-gray-500">출발지</div>
-              <div className="text-2lg text-black-500 font-semibold">{fromAddress}</div>
+        <div className="mobile:flex-col mobile:items-start mobile:gap-0 mobile:w-full flex items-end gap-10">
+          <div className="mobile:flex-col mobile:items-start mobile:gap-0 mobile:w-full flex items-end gap-3">
+            <div className="mobile:flex-row mobile:justify-between flex w-full flex-col">
+              <div className="text-md mobile:text-md font-normal text-gray-500">출발지</div>
+              <div className="text-2lg text-black-500 mobile:text-md font-semibold whitespace-nowrap">
+                {fromAddress}
+              </div>
             </div>
 
-            <div className="flex h-[26px] flex-col items-center justify-center gap-[10px]">
+            <div className="mobile:hidden flex h-[26px] flex-col items-center justify-center gap-[10px]">
               {arrowRightIcon}
             </div>
 
-            <div className="flex flex-col">
-              <div className="text-md font-normal text-gray-500">도착지</div>
-              <div className="text-2lg text-black-500 font-semibold">{toAddress}</div>
+            <div className="mobile:flex-row mobile:justify-between flex w-full flex-col">
+              <div className="text-md mobile:text-md font-normal text-gray-500">도착지</div>
+              <div className="text-2lg text-black-500 mobile:text-md font-semibold whitespace-nowrap">
+                {toAddress}
+              </div>
             </div>
           </div>
-          <div className="flex flex-col">
-            <div className="text-md font-normal text-gray-500">이사일</div>
-            <div className="text-2lg text-black-500 font-semibold">{movingDate}</div>
+          <div className="mobile:flex-row mobile:justify-between mobile:w-full flex flex-col">
+            <div className="text-md mobile:text-md font-normal text-gray-500">이사일</div>
+            <div className="text-2lg text-black-500 mobile:text-md font-semibold">{movingDate}</div>
           </div>
         </div>
       </div>

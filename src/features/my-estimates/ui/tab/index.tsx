@@ -21,7 +21,7 @@ const PendingEstimatesTab = ({ activeTab }: PendingEstimatesTabProps) => {
 
   return (
     <div className="w-full bg-white">
-      <div className="mx-auto w-full max-w-[1200px] py-4">
+      <div className="container-responsive tab:max-w-[600px] mobile:max-w-[327px] tab:py-[10px] mobile:py-[10px] max-w-[1200px] py-4">
         <div className="flex items-center gap-8">
           <Link
             className={clsx(
