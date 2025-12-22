@@ -19,6 +19,7 @@ interface EstimateWaitProps {
   estimatePrice: number;
   onDetailClick?: () => void;
   onConfirmClick?: () => void;
+  onLikeClick?: () => void;
 }
 
 const EstimateWait = ({
@@ -36,6 +37,7 @@ const EstimateWait = ({
   estimatePrice,
   onDetailClick,
   onConfirmClick,
+  onLikeClick = () => {},
 }: EstimateWaitProps) => {
   return (
     <article className="mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 mobile:max-w-[327px] w-full max-w-[558px] rounded-2xl bg-white p-6 shadow-md">
@@ -62,6 +64,7 @@ const EstimateWait = ({
               isLiked={isLiked}
               likeCount={likeCount}
               type="estimateWait"
+              onLikeClick={onLikeClick}
             />
           </section>
 
