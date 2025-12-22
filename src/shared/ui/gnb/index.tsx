@@ -63,9 +63,7 @@ const GNB = () => {
   const { user } = useAuthStore();
   const { handleLogout } = useLogout();
 
-  const userRole = user ? (
-    user.type === 'USER' ? 'user' : 'driver'
-  ) : 'guest';
+  const userRole = user ? (user.type === 'USER' ? 'user' : 'driver') : 'guest';
 
   return (
     <div className="mobile:h-[54px] mobile:py-[10px] tab:py-[19px] tab:px-[72px] mobile:px-[24px] tab:h-[54px] relative z-20 flex h-[88px] w-full items-center justify-between bg-white px-[160px] py-[26px]">
@@ -100,7 +98,12 @@ const GNB = () => {
         {user && (
           <div className="flex items-center gap-8">
             <DropdownNotification size="md" list={alarm} />
-            <DropdownProfile size="md" userName={user.name} userType={userRole} logout={handleLogout} />
+            <DropdownProfile
+              size="md"
+              userName={user.name}
+              userType={userRole}
+              logout={handleLogout}
+            />
           </div>
         )}
       </div>
@@ -113,7 +116,12 @@ const GNB = () => {
         {user && (
           <div className="flex items-center gap-6">
             <DropdownNotification size="sm" list={alarm} />
-            <DropdownProfile size="sm" userName={user.name} userType={userRole} logout={handleLogout} />
+            <DropdownProfile
+              size="sm"
+              userName={user.name}
+              userType={userRole}
+              logout={handleLogout}
+            />
             <button type="button" onClick={() => setIsOpen(true)}>
               <Image src="/icons/menu.svg" alt="menu" width={24} height={24} />
             </button>

@@ -11,10 +11,10 @@ export const useLogout = () => {
     try {
       // 백엔드 로그아웃 API 호출
       await api.post('api/auth/logout');
-      
+
       // 클라이언트 상태 초기화
       clearAuth();
-      
+
       showToast({ kind: 'success', message: '로그아웃되었습니다.' });
       router.push('/');
     } catch (error) {
