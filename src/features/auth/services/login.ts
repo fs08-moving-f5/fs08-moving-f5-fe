@@ -14,7 +14,7 @@ export const loginService = async (
   userType: UserType,
 ): Promise<LoginResponse> => {
   try {
-    const response = await api.post<LoginResponse>('api/auth/login', {
+    const response = await api.post<LoginResponse>('auth/login', {
       email: formData.email,
       password: formData.password,
       type: userType,
