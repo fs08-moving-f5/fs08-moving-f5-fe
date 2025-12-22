@@ -20,7 +20,13 @@ const PendingEstimateDetailHeader = ({ driverImageUrl }: { driverImageUrl: strin
 
         <div className="button-0 tab:top-[78.5px] mobile:top-[61px] absolute top-[90px] right-0 left-0">
           <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] max-w-[1200px]">
-            <Image src={driverImageUrl} alt="driverImg" width={134} height={134} />
+            <Image
+              src={driverImageUrl}
+              alt="driverImg"
+              width={134}
+              height={134}
+              className="rounded-[12px]"
+            />
           </div>
         </div>
       </div>
