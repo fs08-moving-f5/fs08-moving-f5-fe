@@ -42,7 +42,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     // accessToken이 있으면 바로 유저 정보 가져오기
     if (accessToken) {
       try {
-        const response = await api.get<UserResponse>('api/auth/me');
+        const response = await api.get<UserResponse>('auth/me');
         set({ user: response.data, isUserLoaded: true });
         return;
       } catch (error) {
@@ -52,14 +52,14 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     // accessToken이 없거나 만료된 경우, refreshToken으로 갱신 시도
     try {
-      const refreshResponse = await api.post<{ accessToken: string }>('api/auth/refresh');
+      const refreshResponse = await api.post<{ accessToken: string }>('auth/refresh');
 
       if (refreshResponse.data.accessToken) {
         // 새 accessToken 저장
         storage.setString('accessToken', refreshResponse.data.accessToken);
 
         // 유저 정보 가져오기
-        const userResponse = await api.get<UserResponse>('api/auth/me');
+        const userResponse = await api.get<UserResponse>('auth/me');
         set({ user: userResponse.data, isUserLoaded: true });
         return;
       }

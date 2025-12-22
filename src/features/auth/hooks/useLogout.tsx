@@ -10,7 +10,7 @@ export const useLogout = () => {
   const handleLogout = async () => {
     try {
       // 백엔드 로그아웃 API 호출
-      await api.post('api/auth/logout');
+      await api.post('auth/logout');
 
       // 클라이언트 상태 초기화
       clearAuth();
