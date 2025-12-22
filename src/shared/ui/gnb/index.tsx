@@ -89,7 +89,7 @@ const GNB = () => {
       </div>
       <div className="mobile:hidden tab:hidden">
         {!user && (
-          <Link href="/login">
+          <Link href="/login/user">
             <button type="button" className="text-black-500 text-lg font-medium">
               로그인
             </button>
