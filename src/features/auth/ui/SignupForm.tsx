@@ -111,7 +111,7 @@ export default function SignupForm({ onSubmit }: SignupFormProps) {
       <div className="text-md mobile:text-sm mt-6 text-center text-[var(--color-black-300)]">
         이미 무빙 회원이신가요?{' '}
         <Link
-          href="/login"
+          href="/login/user"
           className="font-semibold text-[var(--color-primary-orange-400)] hover:text-[var(--color-primary-orange-500)]"
         >
           로그인

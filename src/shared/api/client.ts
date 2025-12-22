@@ -2,9 +2,7 @@ import ky, { Options } from 'ky';
 import type { ApiResponse } from '../types/api';
 import {
   setAuthorizationHeader,
-  // handleToken,
-  // parseErrorResponse,
-  // handleUnauthorized,
+  handleToken,
 } from './interceptors';
 
 const apiClient = ky.create({
@@ -16,9 +14,7 @@ const apiClient = ky.create({
   },
   hooks: {
     beforeRequest: [setAuthorizationHeader],
-    // beforeRetry: [handleToken],
-    // beforeError: [parseErrorResponse],
-    // afterResponse: [handleUnauthorized],
+    beforeRetry: [handleToken],
   },
 });
 
