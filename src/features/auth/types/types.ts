@@ -1,5 +1,7 @@
 import type { UserType, AuthResponse } from '@/shared/types/user';
 
+// ===== 회원가입 타입 =====
+
 // 공통 폼 데이터
 export interface SignupFormData {
   name: string;
@@ -39,6 +41,24 @@ export interface UserSignupRequest extends SignupRequest {
 
 // 회원가입 응답
 export type SignupResponse = AuthResponse;
+
+// ===== 로그인 타입 =====
+
+// 로그인 폼 데이터
+export interface LoginFormData {
+  email: string;
+  password: string;
+}
+
+// 로그인 요청
+export interface LoginRequest {
+  email: string;
+  password: string;
+  type: UserType;
+}
+
+// 로그인 응답
+export type LoginResponse = AuthResponse;
 
 // UserType export
 export type { UserType };
