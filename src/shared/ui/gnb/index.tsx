@@ -90,7 +90,10 @@ const GNB = () => {
       <div className="mobile:hidden tab:hidden">
         {!user && (
           <Link href="/login/user">
-            <button type="button" className="text-black-500 text-lg font-medium">
+            <button
+              type="button"
+              className="text-2lg bg-primary-orange-400 w-[116px] cursor-pointer items-center justify-center rounded-[12px] px-4 py-3 font-semibold text-gray-50 hover:brightness-90"
+            >
               로그인
             </button>
           </Link>

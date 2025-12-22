@@ -1,9 +1,11 @@
+import { useRouter } from 'next/navigation';
 import { EstimateWait } from '@/shared/ui/card';
-import type { PendingEstimate } from '../../services/estimate.service';
 import {
   useDeleteFavoriteMutation,
   useFavoriteMutation,
 } from '../../hooks/mutations/useFavoriteMutation';
+
+import type { PendingEstimate } from '../../services/estimate.service';
 
 const movingTypeMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
@@ -21,6 +23,8 @@ const PendingCardContainer = ({
   estimates: PendingEstimate['estimates'];
   movingType: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
 }) => {
+  const router = useRouter();
+
   const { mutate: addFavoriteDriver } = useFavoriteMutation();
   const { mutate: deleteFavoriteDriver } = useDeleteFavoriteMutation();
 
@@ -30,6 +34,10 @@ const PendingCardContainer = ({
     } else {
       addFavoriteDriver(driverId);
     }
+  };
+
+  const handleDetailClick = (estimateId: string) => {
+    router.push(`/user/my/estimates/pending/${estimateId}`);
   };
 
   return (
@@ -47,6 +55,7 @@ const PendingCardContainer = ({
               experience={estimate.driver?.driverProfile?.career ?? ''}
               moveCount={`${estimate.driver?.driverProfile?.confirmedEstimateCount}건`}
               movingType={movingTypeMap[movingType] ?? undefined}
+              pickedDriver={estimate?.isDesignated ?? false}
               isLiked={estimate?.driver?.isFavorite ?? false}
               likeCount={estimate?.driver?.favoriteDriverCount ?? 0}
               estimatePrice={estimate?.price ?? 0}
@@ -56,6 +65,7 @@ const PendingCardContainer = ({
                   isLiked: estimate?.driver?.isFavorite ?? false,
                 })
               }
+              onDetailClick={() => handleDetailClick(estimate.id ?? '')}
             />
           ))}
         </div>
