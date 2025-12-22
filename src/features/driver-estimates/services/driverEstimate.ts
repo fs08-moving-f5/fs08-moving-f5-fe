@@ -1,4 +1,4 @@
-import { apiClient } from '../../../shared/api/index';
+import { apiClient } from '@/shared/api/index';
 import {
   GetRequestsParams,
   EstimateRequestRaw,
@@ -39,4 +39,27 @@ export const getRequests = async ({
     }),
     nextCursor: list.length ? list[list.length - 1].id : null,
   };
+};
+
+export interface SendEstimateParams {
+  estimateRequestId: string;
+  price: number;
+  comment: string;
+}
+
+export interface RejectEstimateParams {
+  estimateRequestId: string;
+  rejectReason: string;
+}
+
+export const sendEstimate = async ({ estimateRequestId, price, comment }: SendEstimateParams) => {
+  return apiClient.post(`estimate-request/driver/requests/${estimateRequestId}/create`, {
+    json: { price, comment },
+  });
+};
+
+export const rejectEstimate = async ({ estimateRequestId, rejectReason }: RejectEstimateParams) => {
+  return apiClient.post(`estimate-request/driver/requests/${estimateRequestId}/reject`, {
+    json: { rejectReason },
+  });
 };

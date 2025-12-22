@@ -2,65 +2,71 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
-import { getRequests } from '@/features/driver-estimates/services/driverEstimate';
+
+import {
+  getRequests,
+  sendEstimate,
+  rejectEstimate,
+} from '@/features/driver-estimates/services/driverEstimate';
+import { useModal } from '@/features/driver-estimates/hooks/useModal';
 
 import { ActiveChip } from '@/shared/ui/chip';
 import GNB from '@/shared/ui/gnb';
 import SearchBar from '@/shared/ui/input/SearchBar';
 import { CheckBox } from '@/shared/ui/button';
 import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
-import CardList from '@/features/driver-estimates/ui/CardList';
+import RequestList from '@/features/driver-estimates/ui/RequestList';
 import ModalQuetRequest from '@/shared/ui/modal/ModalRequest';
+import { showToast } from '@/shared/ui/sonner';
 
 import {
-  EstimateRequestItem,
   EstimateRequestResponse,
-  ModalType,
   toMovingInfo,
+  EstimateRequestItem,
 } from '@/features/driver-estimates/types/driverEstimate';
 
-// const mockRequests: EstimateRequestItem[] = [
-//   {
-//     id: 'mock-1',
-//     customerName: '홍길동',
-//     movingType: 'home',
-//     pickedDriver: true,
-//     pickupAddress: '서울시 강남구',
-//     dropoffAddress: '서울시 서초구',
-//     movingDate: '2025-07-01T09:00:00.000Z',
-//     requestTime: '2025-07-01T08:00:00.000Z',
-//   },
-//   {
-//     id: 'mock-2',
-//     customerName: '김철수',
-//     movingType: 'small',
-//     pickedDriver: false,
-//     pickupAddress: '서울시 마포구',
-//     dropoffAddress: '서울시 은평구',
-//     movingDate: '2025-07-03T14:00:00.000Z',
-//     requestTime: '2025-07-02T10:00:00.000Z',
-//   },
-// ];
+const mockRequests: EstimateRequestItem[] = [
+  {
+    id: 'mock-1',
+    customerName: '홍길동',
+    movingType: 'home',
+    pickedDriver: true,
+    pickupAddress: '서울시 강남구',
+    dropoffAddress: '서울시 서초구',
+    movingDate: '2025-07-01T09:00:00.000Z',
+    requestTime: '2025-07-01T08:00:00.000Z',
+  },
+  {
+    id: 'mock-2',
+    customerName: '김철수',
+    movingType: 'small',
+    pickedDriver: false,
+    pickupAddress: '서울시 마포구',
+    dropoffAddress: '서울시 은평구',
+    movingDate: '2025-07-03T14:00:00.000Z',
+    requestTime: '2025-07-02T10:00:00.000Z',
+  },
+];
 
 const sortListObj = {
-  HighestRating: '평점 높은순',
-  HighestMovingDate: '이사 빠른순',
   Latest: '요청일 빠른순',
+  Oldest: '요청일 느린순',
+  HighestMovingDate: '이사 빠른순',
+  LowestMovingDate: '이사 느린순',
+  // HighestRating: '평점 높은순',
 };
 
 const DriverEstimateRequestPage = () => {
   const [isSmallActive, setIsSmallActive] = useState<boolean>(false);
   const [isHomeActive, setIsHomeActive] = useState<boolean>(false);
   const [isOfficeActive, setIsOfficeActive] = useState<boolean>(false);
-  const [sortValue, setSortValue] = useState<string>('HighestRating');
-
-  const [modalType, setModalType] = useState<ModalType>(null);
-  const [selectedRequest, setSelectedRequest] = useState<EstimateRequestItem | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [sortValue, setSortValue] = useState<string>('Latest');
   const [comment, setComment] = useState<string>('');
   const [price, setPrice] = useState<number>();
 
-  const ref = useRef<HTMLDivElement | null>(null);
+  const { isOpen, type, selected, openConfirm, openReject, close } = useModal();
+
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   // useInfiniteQuery - 무한 스크롤
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery<
@@ -76,11 +82,11 @@ const DriverEstimateRequestPage = () => {
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 
-  const requests = data?.pages.flatMap((page) => page.data) ?? [];
+  const requests = data?.pages.flatMap((page) => page.data) ?? mockRequests ?? [];
 
   // 페이지네이션
   useEffect(() => {
-    if (!ref.current || !hasNextPage) return;
+    if (!loadMoreRef.current || !hasNextPage) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -91,28 +97,41 @@ const DriverEstimateRequestPage = () => {
       { rootMargin: '200px', threshold: 0 },
     );
 
-    observer.observe(ref.current);
+    observer.observe(loadMoreRef.current);
 
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  // 카드 버튼 클릭 핸들러
-  const openConfirmModal = (request: EstimateRequestItem) => {
-    setSelectedRequest(request);
-    setModalType('confirm');
-    setIsModalOpen(true);
-  };
-  const openRejectModal = (request: EstimateRequestItem) => {
-    setSelectedRequest(request);
-    setModalType('reject');
-    setIsModalOpen(true);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setModalType(null);
-    setSelectedRequest(null);
-    setPrice(undefined);
-    setComment('');
+  // 모달 버튼
+  const handleSubmit = async () => {
+    if (!selected || !type) return;
+
+    try {
+      if (type === 'confirm') {
+        if (!price || price <= 0) return;
+        await sendEstimate({
+          estimateRequestId: selected.id,
+          price,
+          comment,
+        });
+      }
+
+      if (type === 'reject') {
+        await rejectEstimate({
+          estimateRequestId: selected.id,
+          rejectReason: comment,
+        });
+      }
+
+      close();
+    } catch (error) {
+      console.error(error);
+
+      showToast({
+        kind: 'error',
+        message: '요청 처리 중 오류가 발생했습니다.',
+      });
+    }
   };
 
   return (
@@ -159,40 +178,33 @@ const DriverEstimateRequestPage = () => {
 
           <div className="flex flex-col gap-[24px]">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <CardList
+              <RequestList
                 requests={requests}
-                hasNextPage={hasNextPage}
                 isFetchingNextPage={isFetchingNextPage}
-                fetchNextPage={fetchNextPage}
-                onConfirm={(r) => openConfirmModal(r)}
-                onReject={(r) => openRejectModal(r)}
+                onConfirm={openConfirm}
+                onReject={openReject}
+                loadMoreRef={loadMoreRef}
               />
             </div>
-
-            {/* 모달 */}
-            {selectedRequest && modalType && (
-              <ModalQuetRequest
-                type={modalType}
-                isOpen={isModalOpen}
-                setIsOpen={closeModal}
-                user={{
-                  name: selectedRequest.customerName,
-                  role: 'user',
-                }}
-                mvInfo={toMovingInfo(selectedRequest)}
-                price={price}
-                setPrice={setPrice}
-                comment={comment}
-                setComment={setComment}
-                onSubmit={() => {
-                  // TODO: 견적 보내기 / 반려 API 호출
-                  setIsModalOpen(false);
-                }}
-              />
-            )}
           </div>
         </section>
       </main>
+
+      {/* 모달 */}
+      {isOpen && selected && type && (
+        <ModalQuetRequest
+          type={type}
+          isOpen={isOpen}
+          setIsOpen={close}
+          user={{ name: selected.customerName, role: 'user' }}
+          mvInfo={toMovingInfo(selected)}
+          price={price}
+          setPrice={setPrice}
+          comment={comment}
+          setComment={setComment}
+          onSubmit={handleSubmit}
+        />
+      )}
     </div>
   );
 };
