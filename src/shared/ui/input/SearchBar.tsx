@@ -8,10 +8,11 @@ const deleteIcon_sm = '/icons/SearchBar/ic_x_circle_sm.svg';
 const deleteIcon_md = '/icons/SearchBar/ic_x_circle_md.svg';
 
 interface SerarchBarProps {
-  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
+  widthFull?: boolean;
+  onSubmit?: () => void;
 }
 
-export default function SearchBar({ onSubmit }: SerarchBarProps) {
+export default function SearchBar({ widthFull = false, onSubmit }: SerarchBarProps) {
   const [value, setValue] = useState('');
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -20,7 +21,12 @@ export default function SearchBar({ onSubmit }: SerarchBarProps) {
     e.stopPropagation();
     setValue('');
   };
-  const divSize = 'mobile:h-[52px] mobile:max-w-[260px] min-w-0 w-full h-[64px] max-w-[560px]';
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit && onSubmit();
+  };
+
+  const divSize = `mobile:h-[52px] min-w-0 w-full h-[64px] ${widthFull ? 'w-full' : 'mobile:max-w-[260px] max-w-[560px]'}`;
   const inputSize =
     'h-full w-full mobile:pl-[46px] mobile:pr-[16px] mobile:py-[14px] mobile:group-focus-within:pl-[16px] mobile:group-focus-within:pr-[76px] pl-[68px] pr-[24px] py-[14px] group-focus-within:pl-[24px] group-focus-within:pr-[112px]';
   const borderType = 'outline-none border-none';
@@ -34,7 +40,7 @@ export default function SearchBar({ onSubmit }: SerarchBarProps) {
 
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       className={`group relative flex h-fit w-fit items-center justify-start ${divSize}`}
     >
       <input
