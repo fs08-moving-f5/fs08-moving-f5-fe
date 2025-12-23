@@ -28,6 +28,3 @@ export function getQueryClient() {
     return browserQueryClient;
   }
 }
-
-// 기존 코드 호환성을 위한 export (deprecated - getQueryClient 사용 권장)
-export const queryClient = typeof window !== 'undefined' ? getQueryClient() : makeQueryClient();
