@@ -2,7 +2,7 @@
 
 import { RequestReceived } from '@/shared/ui/card';
 import Skeleton from './Skeleton';
-import { EstimateRequestItem } from '@/features/driver-estimates/types/driverEstimate';
+import { EstimateRequestItem } from '@/features/driver-estimate/types/driverEstimate';
 
 interface CardListProps {
   requests: EstimateRequestItem[];

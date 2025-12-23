@@ -30,7 +30,7 @@ const EstimateClient = ({
   onDetailClick,
 }: EstimateClientProps) => {
   return (
-    <article className="mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 mobile:max-w-[327px] relative w-full max-w-[558px] rounded-2xl bg-white p-6 shadow-md">
+    <article className="mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 mobile:max-w-[327px] relative w-full max-w-[588px] rounded-2xl bg-white p-6 shadow-md">
       <div className="mobile:gap-3 tab:gap-3 flex flex-col gap-4">
         {/* 헤더: 칩 영역 */}
         <header className="flex w-full items-center justify-between">

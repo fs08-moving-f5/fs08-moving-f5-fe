@@ -3,7 +3,7 @@ import {
   GetRequestsParams,
   EstimateRequestRaw,
   EstimateRequestResponse,
-} from '@/features/driver-estimates/types/driverEstimate';
+} from '@/features/driver-estimate/types/driverEstimate';
 import { convertDateType1, convertDateType2 } from '@/shared/lib/convertDate';
 import { convertMovingType } from '@/shared/lib/convertMovingType';
 

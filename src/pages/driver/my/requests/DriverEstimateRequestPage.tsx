@@ -7,15 +7,14 @@ import {
   getRequests,
   sendEstimate,
   rejectEstimate,
-} from '@/features/driver-estimates/services/driverEstimate';
-import { useModal } from '@/features/driver-estimates/hooks/useModal';
+} from '@/features/driver-estimate/services/driverEstimate.service';
+import { useModal } from '@/features/driver-estimate/hooks/useModal';
 
 import { ActiveChip } from '@/shared/ui/chip';
-import GNB from '@/shared/ui/gnb';
 import SearchBar from '@/shared/ui/input/SearchBar';
 import { CheckBox } from '@/shared/ui/button';
 import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
-import RequestList from '@/features/driver-estimates/ui/RequestList';
+import RequestList from '@/features/driver-estimate/ui/cardContainer/RequestList';
 import ModalQuetRequest from '@/shared/ui/modal/ModalRequest';
 import { showToast } from '@/shared/ui/sonner';
 
@@ -23,7 +22,7 @@ import {
   EstimateRequestResponse,
   toMovingInfo,
   EstimateRequestItem,
-} from '@/features/driver-estimates/types/driverEstimate';
+} from '@/features/driver-estimate/types/driverEstimate';
 
 const mockRequests: EstimateRequestItem[] = [
   {
@@ -135,12 +134,12 @@ const DriverEstimateRequestPage = () => {
   };
 
   return (
-    <div className="flex max-w-[1920px] flex-col justify-center">
-      <GNB />
+    <main className="flex max-w-[1920px] flex-col justify-center">
+      <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
+        <div className="itmes-center w-full self-stretch py-[32px]">
+          <h1 className="text-2xl font-semibold text-[var(--color-black-500)]">받은 요청</h1>
+        </div>
 
-      {/* 받은 요청 GNB Tab */}
-
-      <main className="mx-auto mt-[10px] w-full max-w-[1200px]">
         <section className="flex flex-col gap-[40px]">
           <div className="flex flex-col items-start gap-[24px]">
             <SearchBar />
@@ -177,7 +176,7 @@ const DriverEstimateRequestPage = () => {
           </div>
 
           <div className="flex flex-col gap-[24px]">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
               <RequestList
                 requests={requests}
                 isFetchingNextPage={isFetchingNextPage}
@@ -188,7 +187,7 @@ const DriverEstimateRequestPage = () => {
             </div>
           </div>
         </section>
-      </main>
+      </section>
 
       {/* 모달 */}
       {isOpen && selected && type && (
@@ -205,7 +204,7 @@ const DriverEstimateRequestPage = () => {
           onSubmit={handleSubmit}
         />
       )}
-    </div>
+    </main>
   );
 };
 
