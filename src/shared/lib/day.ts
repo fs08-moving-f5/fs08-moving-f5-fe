@@ -14,3 +14,7 @@ export const formatDateWithWeekday = (isoDate: string): string => {
 export const formatDateOnlyDate = (isoDate: string): string => {
   return dayjs.utc(isoDate).tz('Asia/Seoul').format('YYYY년 MM월 DD일');
 };
+
+export const formatDateWithPeriod = (isoDate: string): string => {
+  return dayjs.utc(isoDate).tz('Asia/Seoul').format('YYYY.MM.DD');
+};

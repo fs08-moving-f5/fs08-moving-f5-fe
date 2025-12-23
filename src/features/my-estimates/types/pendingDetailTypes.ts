@@ -1,8 +1,8 @@
 export interface PendingDetailDriverInfoProps {
-  movingType: 'small' | 'home' | 'office';
+  movingType: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
   isDesignated: boolean;
   shortIntro: string;
-  estimateStatus: 'pending' | 'confirmed' | 'rejected' | 'cancelled';
+  estimateStatus: 'PENDING' | 'CONFIRMED' | 'REJECTED' | 'CANCELLED';
   driverName: string;
   favoriteCount: number;
   rating: number;
@@ -14,7 +14,7 @@ export interface PendingDetailDriverInfoProps {
 export interface PendingDetailEstimatePriceInfoProps {
   price: number;
   requestDate: string;
-  movingType: 'small' | 'home' | 'office';
+  movingType: '소형이사' | '가정이사' | '사무실이사';
   movingDate: string;
   fromAddress: string;
   toAddress: string;

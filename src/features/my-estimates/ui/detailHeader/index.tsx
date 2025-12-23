@@ -25,7 +25,7 @@ const PendingEstimateDetailHeader = ({ driverImageUrl }: { driverImageUrl: strin
               alt="driverImg"
               width={134}
               height={134}
-              className="rounded-[12px]"
+              className="h-[134px] w-[134px] rounded-[12px] object-cover"
             />
           </div>
         </div>

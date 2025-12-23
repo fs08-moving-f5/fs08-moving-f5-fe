@@ -3,6 +3,15 @@ import { MovingTypeChip } from '@/shared/ui/chip';
 import type { PendingDetailDriverInfoProps } from '../../types/pendingDetailTypes';
 import Image from 'next/image';
 
+const movingTypeMap: Record<
+  'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
+  'small' | 'home' | 'office'
+> = {
+  SMALL_MOVING: 'small',
+  HOME_MOVING: 'home',
+  OFFICE_MOVING: 'office',
+};
+
 const PendingEstimateDriverInfo = ({
   movingType,
   isDesignated,
@@ -32,12 +41,14 @@ const PendingEstimateDriverInfo = ({
       <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] flex max-w-[740px] flex-col gap-5">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
-            <MovingTypeChip movingType={movingType} />
+            <MovingTypeChip movingType={movingTypeMap[movingType]} />
             {isDesignated && <MovingTypeChip movingType="assign" />}
           </div>
           <div className="flex items-center justify-between">
             <div className="text-black-300 text-2xl font-semibold">{shortIntro}</div>
-            <div className="px-2 text-lg font-semibold text-gray-300">{estimateStatus}</div>
+            <div className="px-2 text-lg font-semibold text-gray-300">
+              {estimateStatus === 'PENDING' ? '견적대기' : estimateStatus}
+            </div>
           </div>
         </div>
         {stroke}
