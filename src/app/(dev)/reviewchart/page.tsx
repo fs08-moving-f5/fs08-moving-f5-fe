@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import StarRating from '@/shared/ui/ReviewChart/StarRating';
-import ReviewChart from '@/shared/ui/ReviewChart/ReviewChart';
+import StarRating from '@/shared/ui/reviewChart/StarRating';
+import ReviewChart from '@/shared/ui/reviewChart/ReviewChart';
 
 type Rating = 1 | 2 | 3 | 4 | 5;
 

@@ -4,6 +4,8 @@ import Providers from './providers';
 import './globals.css';
 import Script from 'next/script';
 import { AppToaster } from '@/shared/ui/sonner';
+import { NotificationSseProvider } from './providers/NotificationSseProvider';
+import GNB from '@/shared/ui/gnb';
 
 export const metadata: Metadata = {
   title: '무빙 Moving',
@@ -24,12 +26,16 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="antialiased">
-        <Providers>{children}</Providers>
+        <Providers>
+          <GNB />
+          {children}
+        </Providers>
         <Script
           src="https://developers.kakao.com/sdk/js/kakao.min.js"
           strategy="afterInteractive"
         />
         <AppToaster />
+        <NotificationSseProvider />
       </body>
     </html>
   );

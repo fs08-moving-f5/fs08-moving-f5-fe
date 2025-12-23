@@ -24,9 +24,11 @@
   --color-grayScale-400: #b3b3b3;
   --color-grayScale-500: #7a7a79;
 
+  --color-gray-50: #ffffff;
   --color-gray-100: #d9d9d9;
   --color-gray-200: #c4c4c4;
   --color-gray-300: #ababab;
+  --color-gray-500: #808080;
 
   --color-black-100: #61605e;
   --color-black-200: #474643;
@@ -103,6 +105,15 @@
   .text-xs {
     font-size: 12px;
     line-height: 20px;
+  }
+
+  /*
+  ================== Container Presets ==================
+  */
+  .container-responsive {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -204,6 +215,7 @@ body {
 }
 
 /* === 커스텀 스크롤 바 === */
+/* Chrome, Safari */
 .textAreaScroll::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -212,10 +224,11 @@ body {
 .textAreaScroll::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
-  border: 10px soid #fff;
+  border: 10px solid #fff;
   cursor: pointer;
 }
 
+/* Chrome, Safari */
 .scrollbar-thin {
   overflow-x: hidden;
   overflow-y: overlay;
@@ -246,7 +259,10 @@ body {
   height: 5px;
 }
 
-.testscroll {
-  overflow-x: overlay;
-  overflow-y: hidden;
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }

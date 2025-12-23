@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import Pagination from '@/shared/ui/Pagination/Pagination';
+import Pagination from '@/shared/ui/pagination/Pagination';
 
 interface MockItem {
   id: number;
@@ -18,6 +18,7 @@ const generateMockData = () => {
   }));
 };
 
+// 개발자 페이지 - 페이지네이션
 const PaginationPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 3; // 페이지당 아이템 수

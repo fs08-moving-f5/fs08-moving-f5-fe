@@ -1,23 +1,17 @@
 import ky, { Options } from 'ky';
 import type { ApiResponse } from '../types/api';
-import {
-  setAuthorizationHeader,
-  // handleToken,
-  // parseErrorResponse,
-  // handleUnauthorized,
-} from './interceptors';
+import { setAuthorizationHeader, handleToken } from './interceptors';
 
 const apiClient = ky.create({
   prefixUrl: process.env.NEXT_PUBLIC_API_URL,
   timeout: 30 * 1000, // 응답대기 30초
+  credentials: 'include', // 쿠키 포함
   headers: {
     'Content-Type': 'application/json',
   },
   hooks: {
     beforeRequest: [setAuthorizationHeader],
-    // beforeRetry: [handleToken],
-    // beforeError: [parseErrorResponse],
-    // afterResponse: [handleUnauthorized],
+    beforeRetry: [handleToken],
   },
 });
 
@@ -58,5 +52,7 @@ export const api = {
     return apiClient.delete(url, options).json<ApiResponse<T>>();
   },
 };
+
+export type { paths, components } from '../types/openapi';
 
 export default apiClient;

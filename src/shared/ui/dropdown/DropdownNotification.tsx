@@ -1,9 +1,11 @@
 'use client';
-import { convertDateToKRString } from '@/shared/hooks/convertDate';
+import { convertDateType2 } from '@/shared/lib/convertDate';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { useNotificationStore } from '@/shared/store/notificationStore';
 const ic_x = '/icons/x.svg';
 const ic_alarm = '/icons/alarm.svg';
+const ic_alarm_unread = '/icons/alarm_unread.svg';
 
 interface Notification {
   message: [string, string, string];
@@ -33,10 +35,9 @@ export default function DropdownNotification({ size, list }: DropdownNotificatio
     };
   }, [setIsOpen]);
 
-  const iconSize = {
-    sm: 'h-[24px] w-[24px]',
-    md: 'h-[36px] w-[36px]',
-  };
+  const unreadCount = useNotificationStore((state) => state.unreadCount);
+  const hasUnread = unreadCount > 0;
+
   const listPosition = {
     sm: 'top-[52px] right-[263px] tab:right-[108px] mobile:right-[20px]',
     md: 'top-[80px] right-[263px] tab:right-[108px] mobile:right-[20px]',
@@ -55,12 +56,18 @@ export default function DropdownNotification({ size, list }: DropdownNotificatio
   };
 
   return (
-    <div ref={dropdownRef} className="h-fit w-fit">
+    <div ref={dropdownRef} className="flex h-full items-center">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="h-fit w-fit cursor-pointer hover:brightness-80"
+        className="mobile:h-6 mobile:w-6 tab:h-6 tab:w-6 flex h-9 w-9 cursor-pointer items-center justify-center hover:brightness-80"
       >
-        <Image src={ic_alarm} alt="ic_alarm" width={36} height={36} className={iconSize[size]} />
+        <Image
+          src={hasUnread ? ic_alarm_unread : ic_alarm}
+          alt="ic_alarm"
+          width={36}
+          height={36}
+          className="mobile:h-6 mobile:w-6 tab:h-6 tab:w-6 h-9 w-9"
+        />
       </button>
       {isOpen && (
         <div
@@ -84,7 +91,7 @@ export default function DropdownNotification({ size, list }: DropdownNotificatio
                     <span className="text-[var(--color-primary-orange-400)]">{e.message[1]}</span>
                     <span>{e.message[2]}</span>
                   </div>
-                  <span className={timeText[size]}>{convertDateToKRString(e.createdAt)}</span>
+                  <span className={timeText[size]}>{convertDateType2(e.createdAt)}</span>
                 </li>
               ))}
           </ul>
