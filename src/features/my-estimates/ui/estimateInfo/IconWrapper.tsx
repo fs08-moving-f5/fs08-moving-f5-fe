@@ -26,15 +26,33 @@ const IconWrapper = () => {
   };
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="tab:gap-3 mobile:gap-3 flex items-center gap-4">
       <button type="button" className="cursor-pointer" onClick={shareToLink}>
-        <Image src="/icons/share/link.svg" alt="ic-share" width={64} height={64} />
+        <Image
+          src="/icons/share/link.svg"
+          alt="ic-share"
+          width={64}
+          height={64}
+          className="tab:w-10 tab:h-10 mobile:w-10 mobile:h-10 h-[64px] w-[64px]"
+        />
       </button>
       <button type="button" className="cursor-pointer" onClick={shareToKakao}>
-        <Image src="/icons/share/kakao.svg" alt="ic-share" width={64} height={64} />
+        <Image
+          src="/icons/share/kakao.svg"
+          alt="ic-share"
+          width={64}
+          height={64}
+          className="tab:w-10 tab:h-10 mobile:w-10 mobile:h-10 h-[64px] w-[64px]"
+        />
       </button>
       <button type="button" className="cursor-pointer" onClick={shareToFacebook}>
-        <Image src="/icons/share/facebook.svg" alt="ic-share" width={64} height={64} />
+        <Image
+          src="/icons/share/facebook.svg"
+          alt="ic-share"
+          width={64}
+          height={64}
+          className="tab:w-10 tab:h-10 mobile:w-10 mobile:h-10 h-[64px] w-[64px]"
+        />
       </button>
     </div>
   );

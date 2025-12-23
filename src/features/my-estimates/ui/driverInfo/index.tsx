@@ -24,11 +24,7 @@ const PendingEstimateDriverInfo = ({
   moveCount,
   reviewCount,
 }: PendingDetailDriverInfoProps) => {
-  const stroke = (
-    <svg xmlns="http://www.w3.org/2000/svg" width="741" height="1" viewBox="0 0 741 1" fill="none">
-      <path d="M0 0.5H741" stroke="#F2F2F2" />
-    </svg>
-  );
+  const stroke = <div className="h-[1px] w-full bg-[#F2F2F2]" />;
 
   const colStroke = (
     <svg xmlns="http://www.w3.org/2000/svg" width="1" height="14" viewBox="0 0 1 14" fill="none">
@@ -51,7 +47,7 @@ const PendingEstimateDriverInfo = ({
             </div>
           </div>
         </div>
-        {stroke}
+        <div className="w-full">{stroke}</div>
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">
@@ -66,7 +62,7 @@ const PendingEstimateDriverInfo = ({
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-[2px]">
               <Image src="/icons/star.svg" alt="star" width={20} height={20} />
-              <div className="text-black-300 text-md font-normal">{rating}</div>
+              <div className="text-black-300 text-md font-normal">{rating.toFixed(1)}</div>
               <div className="text-md font-normal text-gray-300">({reviewCount})</div>
             </div>
             {colStroke}
@@ -76,12 +72,12 @@ const PendingEstimateDriverInfo = ({
             </div>
             {colStroke}
             <div className="flex items-center gap-1">
-              <div className="text-black-300 text-md font-normal">{moveCount}</div>
+              <div className="text-black-300 text-md font-normal">{moveCount}건</div>
               <div className="text-md font-normal text-gray-300">확정</div>
             </div>
           </div>
         </div>
-        {stroke}
+        <div className="w-full">{stroke}</div>
       </div>
     </div>
   );

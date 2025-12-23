@@ -29,3 +29,4 @@ const PendingEstimateInfo = ({
 
 export default PendingEstimateInfo;
 export { default as EstimateConfirmPopup } from './EstimateConfirmPopup';
+export { default as EstimateRequestButtonWrapper } from './EstimateRequestButtonWrapper';

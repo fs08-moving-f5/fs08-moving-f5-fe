@@ -4,7 +4,7 @@ const PendingEstimateDetailHeader = ({ driverImageUrl }: { driverImageUrl: strin
   return (
     <>
       <header className="w-full bg-white py-8">
-        <div className="container-responsive text-black-500 flex max-w-[1200px] items-center justify-start px-2 text-2xl font-semibold">
+        <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] tab:text-2xl mobile:text-xl text-black-500 flex max-w-[1200px] items-center justify-start px-2 text-2xl font-semibold">
           견적 상세
         </div>
       </header>

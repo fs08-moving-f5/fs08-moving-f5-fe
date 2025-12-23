@@ -4,3281 +4,3270 @@
  */
 
 export interface paths {
-  '/api/auth/signup': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /**
-     * 일반 회원가입
-     * @description 새로운 사용자를 생성합니다. 이메일 중복 검사 후 비밀번호를 해싱하여 저장하고 JWT 토큰을 발급합니다.
-     */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          'application/json': components['schemas']['SignupRequest'];
+    "/api/auth/signup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-      };
-      responses: {
-        /** @description 회원가입 성공 */
-        201: {
-          headers: {
-            'Set-Cookie'?: string;
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['AuthResponse'];
-          };
-        };
-        /** @description 잘못된 요청 (유효성 검증 실패) */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['ErrorResponse'];
-          };
-        };
-        /** @description 이메일 중복 */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['ErrorResponse'];
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/auth/login': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /**
-     * 일반 로그인
-     * @description 이메일과 비밀번호로 로그인합니다. 성공시 JWT 토큰을 발급합니다.
-     */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          'application/json': components['schemas']['LoginRequest'];
-        };
-      };
-      responses: {
-        /** @description 로그인 성공 */
-        200: {
-          headers: {
-            'Set-Cookie'?: string;
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['AuthResponse'];
-          };
-        };
-        /** @description 잘못된 요청 */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['ErrorResponse'];
-          };
-        };
-        /** @description 인증 실패 (이메일 또는 비밀번호 오류) */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['ErrorResponse'];
-          };
-        };
-        /** @description 유저 타입 불일치 */
-        403: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['ErrorResponse'];
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/auth/logout': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /**
-     * 로그아웃
-     * @description 현재 로그인한 사용자를 로그아웃합니다. 리프레시 토큰을 무효화하고 쿠키를 삭제합니다.
-     */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description 로그아웃 성공 */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['MessageResponse'];
-          };
-        };
-        /** @description 인증 필요 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['ErrorResponse'];
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/auth/refresh': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /**
-     * 토큰 갱신
-     * @description 리프레시 토큰을 사용하여 새로운 액세스 토큰과 리프레시 토큰을 발급받습니다.
-     */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: {
-        content: {
-          'application/json': components['schemas']['RefreshTokenRequest'];
-        };
-      };
-      responses: {
-        /** @description 토큰 갱신 성공 */
-        200: {
-          headers: {
-            'Set-Cookie'?: string;
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['TokenResponse'];
-          };
-        };
-        /** @description 유효하지 않은 리프레시 토큰 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['ErrorResponse'];
-          };
-        };
-        /** @description 유저를 찾을 수 없음 */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['ErrorResponse'];
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/auth/me': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * 현재 로그인한 유저 정보 조회
-     * @description JWT 토큰을 통해 현재 로그인한 사용자의 정보를 조회합니다.
-     */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description 유저 정보 조회 성공 */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['UserResponse'];
-          };
-        };
-        /** @description 인증 필요 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['ErrorResponse'];
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/estimate/pending': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * 대기 중인 견적 목록 조회
-     * @description 현재 사용자가 요청한 견적 중에서 상태가 PENDING인 견적 요청 목록을 조회합니다.
-     *     각 견적 요청에는 해당 요청에 대한 모든 PENDING 견적들이 포함됩니다.
-     *     각 견적에는 드라이버 정보, 찜하기 여부, 드라이버의 확정된 견적 수, 찜하기 수, 리뷰 평균 점수가 포함됩니다.
-     *     응답은 EstimateRequest 기준으로 그룹화되어 제공됩니다.
-     */
-    get: operations['getPendingEstimates'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/estimate/received': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * 받은 견적 목록 조회
-     * @description 현재 사용자가 받은 견적 목록을 조회합니다.
-     *     status 쿼리 파라미터를 통해 특정 상태의 견적만 필터링할 수 있습니다.
-     *     가능한 상태 값: PENDING, CONFIRMED, REJECTED, CANCELLED (대소문자 구분 없음)
-     *     각 견적에는 드라이버 정보, 견적 요청 정보, 드라이버의 확정된 견적 수, 찜하기 수, 리뷰 평균 점수가 포함됩니다.
-     */
-    get: operations['getReceivedEstimates'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/estimate/{estimateId}': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * 견적 상세 조회
-     * @description 특정 견적의 상세 정보를 조회합니다.
-     *     견적 ID를 통해 해당 견적의 가격, 상태, 견적 요청 정보, 드라이버 정보 등을 확인할 수 있습니다.
-     *     드라이버의 확정된 견적 수, 찜하기 수, 리뷰 평균 점수가 함께 제공됩니다.
-     */
-    get: operations['getEstimateDetail'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/estimate/{estimateId}/confirm': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /**
-     * 견적 확정
-     * @description 특정 견적을 확정(CONFIRMED) 상태로 변경합니다.
-     *     견적이 확정되면 해당 견적 요청의 상태도 함께 변경됩니다.
-     *     확정된 견적은 취소하거나 변경할 수 없으므로 신중하게 결정해야 합니다.
-     */
-    post: operations['confirmEstimate'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/estimate-request/driver/requests': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 받은 견적 요청 목록 조회 (기사) */
-    get: {
-      parameters: {
-        query?: {
-          movingType?: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
-          serviceRegionFilter?: boolean;
-          search?: string;
-          sort?: 'latest' | 'oldest' | 'moving-latest' | 'moving-oldest';
-          cursor?: string;
-          take?: number;
-        };
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description 조회 성공 */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "success": true,
-             *       "data": [
-             *         {
-             *           "id": "req_1",
-             *           "name": "홍길동",
-             *           "movingType": "HOME_MOVING",
-             *           "movingDate": "2025-01-01T00:00:00.000Z",
-             *           "isDesignated": false,
-             *           "createdAt": "2024-12-01T10:00:00.000Z",
-             *           "updatedAt": "2024-12-01T10:00:00.000Z",
-             *           "from": {
-             *             "sido": "서울",
-             *             "sigungu": "강남구"
-             *           },
-             *           "to": {
-             *             "sido": "경기",
-             *             "sigungu": "성남시"
-             *           }
-             *         }
-             *       ]
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 잘못된 요청 */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "잘못된 요청입니다.",
-             *       "statusCode": 400,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 인증 실패 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "기사 로그인이 필요합니다.",
-             *       "statusCode": 401,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 서버 오류 */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "Internal Server Error",
-             *       "statusCode": 500,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/estimate-request/driver/requests/{estimateRequestId}/create': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** 견적 보내기 (기사) */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          estimateRequestId: string;
-        };
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          /**
-           * @example {
-           *       "price": 300000,
-           *       "comment": "합리적인 가격으로 진행 가능합니다."
-           *     }
-           */
-          'application/json': unknown;
-        };
-      };
-      responses: {
-        /** @description 견적 생성 성공 */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "success": true,
-             *       "data": {
-             *         "id": "est_1",
-             *         "price": 300000,
-             *         "status": "CONFIRMED"
-             *       }
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 요청 오류 */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "필수 값이 누락되었습니다.",
-             *       "statusCode": 400,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 인증 실패 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "기사 로그인이 필요합니다.",
-             *       "statusCode": 401,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 견적 요청 없음 */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "해당 견적 요청이 존재하지 않습니다.",
-             *       "statusCode": 404,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 이미 견적 제출됨 */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "이미 해당 요청에 견적을 제출했습니다.",
-             *       "statusCode": 409,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 서버 오류 */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "Internal Server Error",
-             *       "statusCode": 500,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/estimate-request/driver/requests/{estimateRequestId}/reject': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** 견적 반려 (기사) */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          estimateRequestId: string;
-        };
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          /**
-           * @example {
-           *       "rejectReason": "일정이 맞지 않습니다."
-           *     }
-           */
-          'application/json': unknown;
-        };
-      };
-      responses: {
-        /** @description 견적 반려 성공 */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "success": true,
-             *       "data": {
-             *         "id": "est_2",
-             *         "status": "REJECTED"
-             *       }
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 요청 오류 */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "필수 값이 누락되었습니다.",
-             *       "statusCode": 400,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 인증 실패 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "기사 로그인이 필요합니다.",
-             *       "statusCode": 401,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 견적 요청 없음 */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "해당 견적 요청이 존재하지 않습니다.",
-             *       "statusCode": 404,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 이미 처리된 요청 */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "이미 해당 요청에 견적을 제출했습니다.",
-             *       "statusCode": 409,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 서버 오류 */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "Internal Server Error",
-             *       "statusCode": 500,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/estimate-request/driver/confirms': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 확정 견적 목록 조회 (기사) */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description 조회 성공 */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "success": true,
-             *       "data": [
-             *         {
-             *           "id": "est_1",
-             *           "price": 300000,
-             *           "status": "CONFIRMED",
-             *           "createdAt": "2025-01-01T00:00:00.000Z",
-             *           "isCompleted": false,
-             *           "user": {
-             *             "id": "user_10",
-             *             "name": "박영희"
-             *           },
-             *           "movingType": "HOME_MOVING",
-             *           "movingDate": "2025-02-01T00:00:00.000Z",
-             *           "isDesignated": false,
-             *           "from": {
-             *             "sido": "서울",
-             *             "sigungu": "강남구"
-             *           },
-             *           "to": {
-             *             "sido": "경기",
-             *             "sigungu": "성남시"
-             *           }
-             *         }
-             *       ]
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 요청 오류 */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "잘못된 요청입니다.",
-             *       "statusCode": 400,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 인증 실패 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "기사 로그인이 필요합니다.",
-             *       "statusCode": 401,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 서버 오류 */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "Internal Server Error",
-             *       "statusCode": 500,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/estimate-request/driver/confirms/{estimateId}': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 확정 견적 상세 조회 (기사) */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          estimateId: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description 조회 성공 */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "success": true,
-             *       "data": {
-             *         "id": "est_1",
-             *         "price": 300000,
-             *         "userName": "홍길동",
-             *         "movingType": "HOME_MOVING",
-             *         "movingDate": "2025-01-01T00:00:00.000Z",
-             *         "fromAddress": "서울 강남구",
-             *         "toAddress": "경기 성남시"
-             *       }
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 요청 오류 */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "필수 값이 누락되었습니다.",
-             *       "statusCode": 400,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 인증 실패 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "기사 로그인이 필요합니다.",
-             *       "statusCode": 401,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 견적 없음 */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "해당 견적이 존재하지 않습니다.",
-             *       "statusCode": 404,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 서버 오류 */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "Internal Server Error",
-             *       "statusCode": 500,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/estimate-request/driver/rejects': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 반려 견적 목록 조회 (기사) */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description 조회 성공 */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "success": true,
-             *       "data": [
-             *         {
-             *           "id": "est_3",
-             *           "status": "REJECTED",
-             *           "estimateRequestId": "req_9",
-             *           "movingType": "SMALL_MOVING",
-             *           "movingDate": "2025-02-01T00:00:00.000Z",
-             *           "user": {
-             *             "id": "user_1",
-             *             "name": "김철수"
-             *           },
-             *           "from": {
-             *             "sido": "서울",
-             *             "sigungu": "마포구"
-             *           },
-             *           "to": {
-             *             "sido": "인천",
-             *             "sigungu": "연수구"
-             *           },
-             *           "isRejected": true
-             *         }
-             *       ]
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 요청 오류 */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "잘못된 요청입니다.",
-             *       "statusCode": 400,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 인증 실패 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "기사 로그인이 필요합니다.",
-             *       "statusCode": 401,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 서버 오류 */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "Internal Server Error",
-             *       "statusCode": 500,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/estimate-request/user/pending': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 진행 중인 견적 요청 조회 (유저) */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description 견적 요청 성공 */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': {
-              /** @example 견적 요청 성공 */
-              message?: string;
-              data?: {
-                /** @example uuid-estimate-request-id */
-                id?: string;
-                /** @example 홍길동 */
-                name?: string;
-                /** @example HOME */
-                movingType?: string;
-                /**
-                 * Format: date-time
-                 * @example 2024-12-01T00:00:00.000Z
-                 */
-                movingDate?: string;
-                /** @example false */
-                isDesignated?: boolean;
-                from?: {
-                  /** @example 서울특별시 */
-                  sido?: string;
-                  /** @example 강남구 */
-                  sigungu?: string;
-                } | null;
-                to?: {
-                  /** @example 부산광역시 */
-                  sido?: string;
-                  /** @example 해운대구 */
-                  sigungu?: string;
-                } | null;
-              }[];
+        get?: never;
+        put?: never;
+        /**
+         * 일반 회원가입
+         * @description 새로운 사용자를 생성합니다. 이메일 중복 검사 후 비밀번호를 해싱하여 저장하고 JWT 토큰을 발급합니다.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
             };
-          };
-        };
-        /** @description 유저 인증 실패 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content?: never;
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/estimate-request/user/create': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /**
-     * 견적 요청 (유저)
-     * @description 유저가 새로운 견적 요청을 생성합니다. - form, to는 카카오 우편번호 API의 Address 타입 마이너 버전입니다.
-     */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          'application/json': {
-            movingType: string;
-            /** Format: date-time */
-            movingDate: string;
-            from: {
-              /** @example 6035 */
-              zonecode: string;
-              /** @example 서울 강남구 가로수길 5 */
-              address: string;
-              /** @example 5 Garosu-gil, Gangnam-gu, Seoul, Republic of Korea */
-              addressEnglish: string;
-              /** @example 서울 */
-              sido: string;
-              /** @example Seoul */
-              sidoEnglish: string;
-              /** @example 강남구 */
-              sigungu: string;
-              /** @example Gangnam-gu */
-              sigunguEnglish: string;
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["SignupRequest"];
+                };
             };
-            to: {
-              /** @example 6035 */
-              zonecode: string;
-              /** @example 서울 강남구 가로수길 5 */
-              address: string;
-              /** @example 5 Garosu-gil, Gangnam-gu, Seoul, Republic of Korea */
-              addressEnglish: string;
-              /** @example 서울 */
-              sido: string;
-              /** @example Seoul */
-              sidoEnglish: string;
-              /** @example 강남구 */
-              sigungu: string;
-              /** @example Gangnam-gu */
-              sigunguEnglish: string;
+            responses: {
+                /** @description 회원가입 성공 */
+                201: {
+                    headers: {
+                        "Set-Cookie"?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AuthResponse"];
+                    };
+                };
+                /** @description 잘못된 요청 (유효성 검증 실패) */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description 이메일 중복 */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
             };
-          };
         };
-      };
-      responses: {
-        /** @description 견적 요청 성공 */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': {
-              /** @example 견적 요청 성공 */
-              message?: string;
-              data?: {
-                /** @example uuid-estimate-request-id */
-                id?: string;
-                /** @example uuid-estimate-request-id */
-                userId?: string;
-                /** @example HOME */
-                movingType?: string;
-                /**
-                 * Format: date-time
-                 * @example 2024-12-01T00:00:00.000Z
-                 */
-                movingDate?: string;
-                /** @example false */
-                isDesignated?: boolean;
-                from?: {
-                  /** @example 서울특별시 */
-                  sido?: string;
-                  /** @example 강남구 */
-                  sigungu?: string;
-                } | null;
-                to?: {
-                  /** @example 부산광역시 */
-                  sido?: string;
-                  /** @example 해운대구 */
-                  sigungu?: string;
-                } | null;
-                /**
-                 * Format: date-time
-                 * @example 2024-12-01T00:00:00.000Z
-                 */
-                createdAt?: string;
-                /**
-                 * Format: date-time
-                 * @example 2024-12-01T00:00:00.000Z
-                 */
-                updatedAt?: string;
-              };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 일반 로그인
+         * @description 이메일과 비밀번호로 로그인합니다. 성공시 JWT 토큰을 발급합니다.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
             };
-          };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["LoginRequest"];
+                };
+            };
+            responses: {
+                /** @description 로그인 성공 */
+                200: {
+                    headers: {
+                        "Set-Cookie"?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AuthResponse"];
+                    };
+                };
+                /** @description 잘못된 요청 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description 인증 실패 (이메일 또는 비밀번호 오류) */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description 유저 타입 불일치 */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
         };
-        /** @description 필수 데이터 누락 */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content?: never;
-        };
-        /** @description 유저 인증 실패 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content?: never;
-        };
-        /** @description 이미 진행 중인 견적 요청 존재 */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content?: never;
-        };
-      };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/favorite': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 로그아웃
+         * @description 현재 로그인한 사용자를 로그아웃합니다. 리프레시 토큰을 무효화하고 쿠키를 삭제합니다.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 로그아웃 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MessageResponse"];
+                    };
+                };
+                /** @description 인증 필요 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /**
-     * 찜한 기사 목록 조회
-     * @description 현재 사용자가 찜한 기사 목록을 조회합니다.
-     *     커서 기반 페이지네이션을 지원하며, 각 기사 정보에는 드라이버 프로필, 리뷰, 확정된 견적 수, 찜하기 수가 포함됩니다.
-     *
-     *     **쿼리 파라미터:**
-     *     - `cursor` (선택): 다음 페이지 조회를 위한 커서 값. 이전 응답의 `pagination.nextCursor` 값을 사용합니다.
-     *     - `limit` (선택): 조회할 항목 수. 기본값은 10입니다.
-     *
-     *     **사용 예시:**
-     *     - 첫 페이지: `GET /api/favorite?limit=10`
-     *     - 다음 페이지: `GET /api/favorite?cursor=123e4567-e89b-12d3-a456-426614174000&limit=10`
-     */
-    get: operations['getFavoriteDrivers'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/favorite/driver': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/auth/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 토큰 갱신
+         * @description 리프레시 토큰을 사용하여 새로운 액세스 토큰과 리프레시 토큰을 발급받습니다.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["RefreshTokenRequest"];
+                };
+            };
+            responses: {
+                /** @description 토큰 갱신 성공 */
+                200: {
+                    headers: {
+                        "Set-Cookie"?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TokenResponse"];
+                    };
+                };
+                /** @description 유효하지 않은 리프레시 토큰 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description 유저를 찾을 수 없음 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    post?: never;
-    /**
-     * 여러 기사 즐겨찾기 일괄 삭제
-     * @description 현재 사용자가 찜한 여러 기사를 한 번에 삭제합니다.
-     *     요청 본문에 삭제할 기사 ID 배열을 전달합니다.
-     */
-    delete: operations['deleteManyFavoriteDrivers'];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/favorite/driver/{driverId}': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/auth/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 현재 로그인한 유저 정보 조회
+         * @description JWT 토큰을 통해 현재 로그인한 사용자의 정보를 조회합니다.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 유저 정보 조회 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserResponse"];
+                    };
+                };
+                /** @description 인증 필요 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /**
-     * 기사 즐겨찾기 추가
-     * @description 특정 기사를 즐겨찾기에 추가합니다.
-     *     이미 찜한 기사인 경우 409 Conflict 에러가 반환됩니다.
-     */
-    post: operations['addFavoriteDriver'];
-    /**
-     * 기사 즐겨찾기 삭제
-     * @description 특정 기사를 즐겨찾기에서 삭제합니다.
-     *     존재하지 않는 즐겨찾기인 경우에도 성공으로 처리됩니다 (removed: false 반환).
-     */
-    delete: operations['deleteFavoriteDriver'];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/notifications/stream': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/estimate/pending": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 대기 중인 견적 목록 조회
+         * @description 현재 사용자가 요청한 견적 중에서 상태가 PENDING인 견적 요청 목록을 조회합니다.
+         *     각 견적 요청에는 해당 요청에 대한 모든 PENDING 견적들이 포함됩니다.
+         *     각 견적에는 드라이버 정보, 찜하기 여부, 드라이버의 확정된 견적 수, 찜하기 수, 리뷰 평균 점수가 포함됩니다.
+         *     응답은 EstimateRequest 기준으로 그룹화되어 제공됩니다.
+         */
+        get: operations["getPendingEstimates"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /**
-     * 알림 스트림 연결 (Server-Sent Events)
-     * @description Server-Sent Events (SSE)를 통해 실시간으로 알림을 수신합니다.
-     *     연결이 성립되면 즉시 읽지 않은 알림 개수를 전송하며,
-     *     이후 30초마다 heartbeat 메시지를 전송하여 연결을 유지합니다.
-     *     클라이언트가 연결을 종료하면 자동으로 스트림이 해제됩니다.
-     */
-    get: operations['getNotificationStream'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/notifications': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/estimate/received": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 받은 견적 목록 조회
+         * @description 현재 사용자가 받은 견적 목록을 조회합니다.
+         *     status 쿼리 파라미터를 통해 특정 상태의 견적만 필터링할 수 있습니다.
+         *     가능한 상태 값: PENDING, CONFIRMED, REJECTED, CANCELLED (대소문자 구분 없음)
+         *     각 견적에는 드라이버 정보, 견적 요청 정보, 드라이버의 확정된 견적 수, 찜하기 수, 리뷰 평균 점수가 포함됩니다.
+         */
+        get: operations["getReceivedEstimates"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /**
-     * 알림 목록 조회
-     * @description 현재 사용자의 읽지 않은 알림 목록을 최신순으로 조회합니다.
-     *     최대 30개의 알림을 반환하며, 삭제되지 않은 읽지 않은 알림만 조회됩니다.
-     */
-    get: operations['getNotifications'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/notifications/{id}': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/estimate/{estimateId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 견적 상세 조회
+         * @description 특정 견적의 상세 정보를 조회합니다.
+         *     견적 ID를 통해 해당 견적의 가격, 상태, 견적 요청 정보, 드라이버 정보 등을 확인할 수 있습니다.
+         *     드라이버의 확정된 견적 수, 찜하기 수, 리뷰 평균 점수가 함께 제공됩니다.
+         */
+        get: operations["getEstimateDetail"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    /**
-     * 알림 읽음 처리
-     * @description 특정 알림을 읽음 처리합니다.
-     *     알림이 읽음 처리되면 읽지 않은 알림 개수가 업데이트되어
-     *     SSE 스트림을 통해 클라이언트에 자동으로 전송됩니다.
-     */
-    patch: operations['readNotification'];
-    trace?: never;
-  };
-  '/api/review/written': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/estimate/{estimateId}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 견적 확정
+         * @description 특정 견적을 확정(CONFIRMED) 상태로 변경합니다.
+         *     견적이 확정되면 해당 견적 요청의 상태도 함께 변경됩니다.
+         *     확정된 견적은 취소하거나 변경할 수 없으므로 신중하게 결정해야 합니다.
+         */
+        post: operations["confirmEstimate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** 내가 작성한 리뷰 목록 조회 (일반 유저) */
-    get: {
-      parameters: {
-        query?: {
-          sort?: 'latest';
-          offset?: number;
-          limit?: number;
+    "/api/estimate-request/driver/requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description 조회 성공 */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "success": true,
-             *       "data": {
-             *         "reviews": [
-             *           {
-             *             "rating": 5,
-             *             "content": "아주 만족스러운 이사였습니다.",
-             *             "createdAt": "2025-01-01T10:00:00.000Z",
-             *             "driver": {
-             *               "name": "김기사",
-             *               "shortIntro": "10년 경력 기사입니다."
-             *             },
-             *             "movingType": "HOME_MOVING",
-             *             "movingDate": "2025-01-10T00:00:00.000Z",
-             *             "isDesignated": false,
-             *             "from": {
-             *               "sido": "서울",
-             *               "sigungu": "강남구"
-             *             },
-             *             "to": {
-             *               "sido": "경기",
-             *               "sigungu": "성남시"
-             *             }
-             *           }
-             *         ],
-             *         "total": 1
-             *       }
-             *     }
-             */
-            'application/json': unknown;
-          };
+        /** 받은 견적 요청 목록 조회 (기사) */
+        get: {
+            parameters: {
+                query?: {
+                    movingType?: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
+                    serviceRegionFilter?: boolean;
+                    search?: string;
+                    sort?: "latest" | "oldest" | "moving-latest" | "moving-oldest";
+                    cursor?: string;
+                    take?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 조회 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "success": true,
+                         *       "data": [
+                         *         {
+                         *           "id": "req_1",
+                         *           "name": "홍길동",
+                         *           "movingType": "HOME_MOVING",
+                         *           "movingDate": "2025-01-01T00:00:00.000Z",
+                         *           "isDesignated": false,
+                         *           "createdAt": "2024-12-01T10:00:00.000Z",
+                         *           "updatedAt": "2024-12-01T10:00:00.000Z",
+                         *           "from": {
+                         *             "sido": "서울",
+                         *             "sigungu": "강남구"
+                         *           },
+                         *           "to": {
+                         *             "sido": "경기",
+                         *             "sigungu": "성남시"
+                         *           }
+                         *         }
+                         *       ]
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 잘못된 요청 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "잘못된 요청입니다.",
+                         *       "statusCode": 400,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "기사 로그인이 필요합니다.",
+                         *       "statusCode": 401,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 서버 오류 */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "Internal Server Error",
+                         *       "statusCode": 500,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+            };
         };
-        /** @description 인증 실패 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "유저 로그인이 필요합니다.",
-             *       "statusCode": 401,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 서버 오류 */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "Internal Server Error",
-             *       "statusCode": 500,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-      };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/reviews/writable': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/estimate-request/driver/requests/{estimateRequestId}/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 견적 보내기 (기사) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    estimateRequestId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    /**
+                     * @example {
+                     *       "price": 300000,
+                     *       "comment": "합리적인 가격으로 진행 가능합니다."
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            responses: {
+                /** @description 견적 생성 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "success": true,
+                         *       "data": {
+                         *         "id": "est_1",
+                         *         "price": 300000,
+                         *         "status": "CONFIRMED"
+                         *       }
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 요청 오류 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "필수 값이 누락되었습니다.",
+                         *       "statusCode": 400,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "기사 로그인이 필요합니다.",
+                         *       "statusCode": 401,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 견적 요청 없음 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "해당 견적 요청이 존재하지 않습니다.",
+                         *       "statusCode": 404,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 이미 견적 제출됨 */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "이미 해당 요청에 견적을 제출했습니다.",
+                         *       "statusCode": 409,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 서버 오류 */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "Internal Server Error",
+                         *       "statusCode": 500,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** 작성 가능한 리뷰 목록 조회 (일반 유저) */
-    get: {
-      parameters: {
-        query?: {
-          sort?: 'latest';
-          offset?: number;
-          limit?: number;
+    "/api/estimate-request/driver/requests/{estimateRequestId}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description 조회 성공 */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "success": true,
-             *       "data": {
-             *         "estimates": [
-             *           {
-             *             "id": "est_1",
-             *             "price": 300000,
-             *             "createdAt": "2025-01-01T09:00:00.000Z",
-             *             "driver": {
-             *               "name": "이기사",
-             *               "shortIntro": "친절한 이사 전문가"
-             *             },
-             *             "movingType": "SMALL_MOVING",
-             *             "movingDate": "2025-01-15T00:00:00.000Z",
-             *             "isDesignated": true,
-             *             "from": {
-             *               "sido": "서울",
-             *               "sigungu": "마포구"
-             *             },
-             *             "to": {
-             *               "sido": "인천",
-             *               "sigungu": "연수구"
-             *             }
-             *           }
-             *         ],
-             *         "total": 1
-             *       }
-             *     }
-             */
-            'application/json': unknown;
-          };
+        get?: never;
+        put?: never;
+        /** 견적 반려 (기사) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    estimateRequestId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    /**
+                     * @example {
+                     *       "rejectReason": "일정이 맞지 않습니다."
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            responses: {
+                /** @description 견적 반려 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "success": true,
+                         *       "data": {
+                         *         "id": "est_2",
+                         *         "status": "REJECTED"
+                         *       }
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 요청 오류 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "필수 값이 누락되었습니다.",
+                         *       "statusCode": 400,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "기사 로그인이 필요합니다.",
+                         *       "statusCode": 401,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 견적 요청 없음 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "해당 견적 요청이 존재하지 않습니다.",
+                         *       "statusCode": 404,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 이미 처리된 요청 */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "이미 해당 요청에 견적을 제출했습니다.",
+                         *       "statusCode": 409,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 서버 오류 */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "Internal Server Error",
+                         *       "statusCode": 500,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+            };
         };
-        /** @description 인증 실패 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "유저 로그인이 필요합니다.",
-             *       "statusCode": 401,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 서버 오류 */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "Internal Server Error",
-             *       "statusCode": 500,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-      };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/reviews/write': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/estimate-request/driver/confirms": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 확정 견적 목록 조회 (기사) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 조회 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "success": true,
+                         *       "data": [
+                         *         {
+                         *           "id": "est_1",
+                         *           "price": 300000,
+                         *           "status": "CONFIRMED",
+                         *           "createdAt": "2025-01-01T00:00:00.000Z",
+                         *           "isCompleted": false,
+                         *           "user": {
+                         *             "id": "user_10",
+                         *             "name": "박영희"
+                         *           },
+                         *           "movingType": "HOME_MOVING",
+                         *           "movingDate": "2025-02-01T00:00:00.000Z",
+                         *           "isDesignated": false,
+                         *           "from": {
+                         *             "sido": "서울",
+                         *             "sigungu": "강남구"
+                         *           },
+                         *           "to": {
+                         *             "sido": "경기",
+                         *             "sigungu": "성남시"
+                         *           }
+                         *         }
+                         *       ]
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 요청 오류 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "잘못된 요청입니다.",
+                         *       "statusCode": 400,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "기사 로그인이 필요합니다.",
+                         *       "statusCode": 401,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 서버 오류 */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "Internal Server Error",
+                         *       "statusCode": 500,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    /** 리뷰 작성 (일반 유저) */
-    patch: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          /**
-           * @example {
-           *       "estimateId": "est_1",
-           *       "rating": 5,
-           *       "content": "기사님이 정말 친절했습니다."
-           *     }
-           */
-          'application/json': unknown;
+    "/api/estimate-request/driver/confirms/{estimateId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-      };
-      responses: {
-        /** @description 리뷰 작성 성공 */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "success": true,
-             *       "data": {
-             *         "id": "rev_1",
-             *         "rating": 5,
-             *         "content": "기사님이 정말 친절했습니다."
-             *       }
-             *     }
-             */
-            'application/json': unknown;
-          };
+        /** 확정 견적 상세 조회 (기사) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    estimateId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 조회 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "success": true,
+                         *       "data": {
+                         *         "id": "est_1",
+                         *         "price": 300000,
+                         *         "userName": "홍길동",
+                         *         "movingType": "HOME_MOVING",
+                         *         "movingDate": "2025-01-01T00:00:00.000Z",
+                         *         "fromAddress": "서울 강남구",
+                         *         "toAddress": "경기 성남시"
+                         *       }
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 요청 오류 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "필수 값이 누락되었습니다.",
+                         *       "statusCode": 400,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "기사 로그인이 필요합니다.",
+                         *       "statusCode": 401,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 견적 없음 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "해당 견적이 존재하지 않습니다.",
+                         *       "statusCode": 404,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 서버 오류 */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "Internal Server Error",
+                         *       "statusCode": 500,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+            };
         };
-        /** @description 잘못된 요청 */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "필수 값이 누락되었습니다.",
-             *       "statusCode": 400,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 인증 실패 */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "유저 로그인이 필요합니다.",
-             *       "statusCode": 401,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 리뷰 대상 없음 */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "해당 리뷰가 존재하지 않습니다.",
-             *       "statusCode": 404,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 이미 리뷰 작성됨 */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "이미 해당 견적에 리뷰를 제출했습니다.",
-             *       "statusCode": 409,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-        /** @description 서버 오류 */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            /**
-             * @example {
-             *       "message": "Internal Server Error",
-             *       "statusCode": 500,
-             *       "name": "Error",
-             *       "stack": "string"
-             *     }
-             */
-            'application/json': unknown;
-          };
-        };
-      };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    trace?: never;
-  };
+    "/api/estimate-request/driver/rejects": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 반려 견적 목록 조회 (기사) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 조회 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "success": true,
+                         *       "data": [
+                         *         {
+                         *           "id": "est_3",
+                         *           "status": "REJECTED",
+                         *           "estimateRequestId": "req_9",
+                         *           "movingType": "SMALL_MOVING",
+                         *           "movingDate": "2025-02-01T00:00:00.000Z",
+                         *           "user": {
+                         *             "id": "user_1",
+                         *             "name": "김철수"
+                         *           },
+                         *           "from": {
+                         *             "sido": "서울",
+                         *             "sigungu": "마포구"
+                         *           },
+                         *           "to": {
+                         *             "sido": "인천",
+                         *             "sigungu": "연수구"
+                         *           },
+                         *           "isRejected": true
+                         *         }
+                         *       ]
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 요청 오류 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "잘못된 요청입니다.",
+                         *       "statusCode": 400,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "기사 로그인이 필요합니다.",
+                         *       "statusCode": 401,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 서버 오류 */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "Internal Server Error",
+                         *       "statusCode": 500,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/estimate-request/user/pending": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 진행 중인 견적 요청 조회 (유저) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 견적 요청 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example 견적 요청 성공 */
+                            message?: string;
+                            data?: {
+                                /** @example uuid-estimate-request-id */
+                                id?: string;
+                                /** @example 홍길동 */
+                                name?: string;
+                                /** @example HOME */
+                                movingType?: string;
+                                /**
+                                 * Format: date-time
+                                 * @example 2024-12-01T00:00:00.000Z
+                                 */
+                                movingDate?: string;
+                                /** @example false */
+                                isDesignated?: boolean;
+                                from?: {
+                                    /** @example 서울특별시 */
+                                    sido?: string;
+                                    /** @example 강남구 */
+                                    sigungu?: string;
+                                } | null;
+                                to?: {
+                                    /** @example 부산광역시 */
+                                    sido?: string;
+                                    /** @example 해운대구 */
+                                    sigungu?: string;
+                                } | null;
+                            }[];
+                        };
+                    };
+                };
+                /** @description 유저 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/estimate-request/user/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 견적 요청 (유저)
+         * @description 유저가 새로운 견적 요청을 생성합니다. - form, to는 카카오 우편번호 API의 Address 타입 마이너 버전입니다.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        movingType: string;
+                        /** Format: date-time */
+                        movingDate: string;
+                        from: {
+                            /** @example 6035 */
+                            zonecode: string;
+                            /** @example 서울 강남구 가로수길 5 */
+                            address: string;
+                            /** @example 5 Garosu-gil, Gangnam-gu, Seoul, Republic of Korea */
+                            addressEnglish: string;
+                            /** @example 서울 */
+                            sido: string;
+                            /** @example Seoul */
+                            sidoEnglish: string;
+                            /** @example 강남구 */
+                            sigungu: string;
+                            /** @example Gangnam-gu */
+                            sigunguEnglish: string;
+                        };
+                        to: {
+                            /** @example 6035 */
+                            zonecode: string;
+                            /** @example 서울 강남구 가로수길 5 */
+                            address: string;
+                            /** @example 5 Garosu-gil, Gangnam-gu, Seoul, Republic of Korea */
+                            addressEnglish: string;
+                            /** @example 서울 */
+                            sido: string;
+                            /** @example Seoul */
+                            sidoEnglish: string;
+                            /** @example 강남구 */
+                            sigungu: string;
+                            /** @example Gangnam-gu */
+                            sigunguEnglish: string;
+                        };
+                    };
+                };
+            };
+            responses: {
+                /** @description 견적 요청 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example 견적 요청 성공 */
+                            message?: string;
+                            data?: {
+                                /** @example uuid-estimate-request-id */
+                                id?: string;
+                                /** @example uuid-estimate-request-id */
+                                userId?: string;
+                                /** @example HOME */
+                                movingType?: string;
+                                /**
+                                 * Format: date-time
+                                 * @example 2024-12-01T00:00:00.000Z
+                                 */
+                                movingDate?: string;
+                                /** @example false */
+                                isDesignated?: boolean;
+                                from?: {
+                                    /** @example 서울특별시 */
+                                    sido?: string;
+                                    /** @example 강남구 */
+                                    sigungu?: string;
+                                } | null;
+                                to?: {
+                                    /** @example 부산광역시 */
+                                    sido?: string;
+                                    /** @example 해운대구 */
+                                    sigungu?: string;
+                                } | null;
+                                /**
+                                 * Format: date-time
+                                 * @example 2024-12-01T00:00:00.000Z
+                                 */
+                                createdAt?: string;
+                                /**
+                                 * Format: date-time
+                                 * @example 2024-12-01T00:00:00.000Z
+                                 */
+                                updatedAt?: string;
+                            };
+                        };
+                    };
+                };
+                /** @description 필수 데이터 누락 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 유저 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 이미 진행 중인 견적 요청 존재 */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/favorite": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 찜한 기사 목록 조회
+         * @description 현재 사용자가 찜한 기사 목록을 조회합니다.
+         *     커서 기반 페이지네이션을 지원하며, 각 기사 정보에는 드라이버 프로필, 리뷰, 확정된 견적 수, 찜하기 수가 포함됩니다.
+         *
+         *     **쿼리 파라미터:**
+         *     - `cursor` (선택): 다음 페이지 조회를 위한 커서 값. 이전 응답의 `pagination.nextCursor` 값을 사용합니다.
+         *     - `limit` (선택): 조회할 항목 수. 기본값은 10입니다.
+         *
+         *     **사용 예시:**
+         *     - 첫 페이지: `GET /api/favorite?limit=10`
+         *     - 다음 페이지: `GET /api/favorite?cursor=123e4567-e89b-12d3-a456-426614174000&limit=10`
+         */
+        get: operations["getFavoriteDrivers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/favorite/driver": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * 여러 기사 즐겨찾기 일괄 삭제
+         * @description 현재 사용자가 찜한 여러 기사를 한 번에 삭제합니다.
+         *     요청 본문에 삭제할 기사 ID 배열을 전달합니다.
+         */
+        delete: operations["deleteManyFavoriteDrivers"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/favorite/driver/{driverId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 기사 즐겨찾기 추가
+         * @description 특정 기사를 즐겨찾기에 추가합니다.
+         *     이미 찜한 기사인 경우 409 Conflict 에러가 반환됩니다.
+         */
+        post: operations["addFavoriteDriver"];
+        /**
+         * 기사 즐겨찾기 삭제
+         * @description 특정 기사를 즐겨찾기에서 삭제합니다.
+         *     존재하지 않는 즐겨찾기인 경우에도 성공으로 처리됩니다 (removed: false 반환).
+         */
+        delete: operations["deleteFavoriteDriver"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/notifications/stream": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 알림 스트림 연결 (Server-Sent Events)
+         * @description Server-Sent Events (SSE)를 통해 실시간으로 알림을 수신합니다.
+         *     연결이 성립되면 즉시 읽지 않은 알림 개수를 전송하며,
+         *     이후 30초마다 heartbeat 메시지를 전송하여 연결을 유지합니다.
+         *     클라이언트가 연결을 종료하면 자동으로 스트림이 해제됩니다.
+         */
+        get: operations["getNotificationStream"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/notifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 알림 목록 조회
+         * @description 현재 사용자의 읽지 않은 알림 목록을 최신순으로 조회합니다.
+         *     최대 30개의 알림을 반환하며, 삭제되지 않은 읽지 않은 알림만 조회됩니다.
+         */
+        get: operations["getNotifications"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/notifications/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * 알림 읽음 처리
+         * @description 특정 알림을 읽음 처리합니다.
+         *     알림이 읽음 처리되면 읽지 않은 알림 개수가 업데이트되어
+         *     SSE 스트림을 통해 클라이언트에 자동으로 전송됩니다.
+         */
+        patch: operations["readNotification"];
+        trace?: never;
+    };
+    "/api/review/written": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 내가 작성한 리뷰 목록 조회 (일반 유저) */
+        get: {
+            parameters: {
+                query?: {
+                    sort?: "latest";
+                    offset?: number;
+                    limit?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 조회 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "success": true,
+                         *       "data": {
+                         *         "reviews": [
+                         *           {
+                         *             "rating": 5,
+                         *             "content": "아주 만족스러운 이사였습니다.",
+                         *             "createdAt": "2025-01-01T10:00:00.000Z",
+                         *             "driver": {
+                         *               "name": "김기사",
+                         *               "shortIntro": "10년 경력 기사입니다."
+                         *             },
+                         *             "movingType": "HOME_MOVING",
+                         *             "movingDate": "2025-01-10T00:00:00.000Z",
+                         *             "isDesignated": false,
+                         *             "from": {
+                         *               "sido": "서울",
+                         *               "sigungu": "강남구"
+                         *             },
+                         *             "to": {
+                         *               "sido": "경기",
+                         *               "sigungu": "성남시"
+                         *             }
+                         *           }
+                         *         ],
+                         *         "total": 1
+                         *       }
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "유저 로그인이 필요합니다.",
+                         *       "statusCode": 401,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 서버 오류 */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "Internal Server Error",
+                         *       "statusCode": 500,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/reviews/writable": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 작성 가능한 리뷰 목록 조회 (일반 유저) */
+        get: {
+            parameters: {
+                query?: {
+                    sort?: "latest";
+                    offset?: number;
+                    limit?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 조회 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "success": true,
+                         *       "data": {
+                         *         "estimates": [
+                         *           {
+                         *             "id": "est_1",
+                         *             "price": 300000,
+                         *             "createdAt": "2025-01-01T09:00:00.000Z",
+                         *             "driver": {
+                         *               "name": "이기사",
+                         *               "shortIntro": "친절한 이사 전문가"
+                         *             },
+                         *             "movingType": "SMALL_MOVING",
+                         *             "movingDate": "2025-01-15T00:00:00.000Z",
+                         *             "isDesignated": true,
+                         *             "from": {
+                         *               "sido": "서울",
+                         *               "sigungu": "마포구"
+                         *             },
+                         *             "to": {
+                         *               "sido": "인천",
+                         *               "sigungu": "연수구"
+                         *             }
+                         *           }
+                         *         ],
+                         *         "total": 1
+                         *       }
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "유저 로그인이 필요합니다.",
+                         *       "statusCode": 401,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 서버 오류 */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "Internal Server Error",
+                         *       "statusCode": 500,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/reviews/write": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** 리뷰 작성 (일반 유저) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    /**
+                     * @example {
+                     *       "estimateId": "est_1",
+                     *       "rating": 5,
+                     *       "content": "기사님이 정말 친절했습니다."
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            responses: {
+                /** @description 리뷰 작성 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "success": true,
+                         *       "data": {
+                         *         "id": "rev_1",
+                         *         "rating": 5,
+                         *         "content": "기사님이 정말 친절했습니다."
+                         *       }
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 잘못된 요청 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "필수 값이 누락되었습니다.",
+                         *       "statusCode": 400,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "유저 로그인이 필요합니다.",
+                         *       "statusCode": 401,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 리뷰 대상 없음 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "해당 리뷰가 존재하지 않습니다.",
+                         *       "statusCode": 404,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 이미 리뷰 작성됨 */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "이미 해당 견적에 리뷰를 제출했습니다.",
+                         *       "statusCode": 409,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+                /** @description 서버 오류 */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example {
+                         *       "message": "Internal Server Error",
+                         *       "statusCode": 500,
+                         *       "name": "Error",
+                         *       "stack": "string"
+                         *     }
+                         */
+                        "application/json": unknown;
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    User: {
-      /**
-       * Format: uuid
-       * @description 사용자 ID
-       * @example 123e4567-e89b-12d3-a456-426614174000
-       */
-      id?: string;
-      /**
-       * Format: email
-       * @description 이메일
-       * @example user@example.com
-       */
-      email?: string;
-      /**
-       * @description 이름
-       * @example 홍길동
-       */
-      name?: string;
-      /**
-       * @description 전화번호 (숫자만)
-       * @example 1012345678
-       */
-      phone?: number;
-      /**
-       * @description 사용자 유형
-       * @example USER
-       * @enum {string}
-       */
-      type?: 'USER' | 'DRIVER';
-      /**
-       * @description 로그인 제공자
-       * @example local
-       */
-      provider?: string;
-      /**
-       * Format: date-time
-       * @description 생성 일시
-       * @example 2024-01-15T10:30:00Z
-       */
-      createdAt?: string;
-      /**
-       * Format: date-time
-       * @description 수정 일시
-       * @example 2024-01-15T10:30:00Z
-       */
-      updatedAt?: string;
-    };
-    SignupRequest: {
-      /**
-       * Format: email
-       * @description 이메일 주소
-       * @example user@example.com
-       */
-      email: string;
-      /**
-       * Format: password
-       * @description 비밀번호 (최소 8자, 영문/숫자/특수문자 포함)
-       * @example Password123!
-       */
-      password: string;
-      /**
-       * @description 이름 (최소 2자)
-       * @example 홍길동
-       */
-      name: string;
-      /**
-       * @description 전화번호 (010으로 시작하는 11자리 숫자)
-       * @example 1012345678
-       */
-      phone: number;
-      /**
-       * @description 사용자 유형
-       * @example USER
-       * @enum {string}
-       */
-      type: 'USER' | 'DRIVER';
-    };
-    LoginRequest: {
-      /**
-       * Format: email
-       * @description 이메일 주소
-       * @example user@example.com
-       */
-      email: string;
-      /**
-       * Format: password
-       * @description 비밀번호
-       * @example Password123!
-       */
-      password: string;
-      /**
-       * @description 사용자 유형
-       * @example USER
-       * @enum {string}
-       */
-      type: 'USER' | 'DRIVER';
-    };
-    RefreshTokenRequest: {
-      /**
-       * @description 리프레시 토큰 (쿠키에 없을 경우)
-       * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-       */
-      refreshToken?: string;
-    };
-    AuthResponse: {
-      /** @example true */
-      success?: boolean;
-      data?: {
-        user?: components['schemas']['User'];
+    schemas: {
+        User: {
+            /**
+             * Format: uuid
+             * @description 사용자 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            id?: string;
+            /**
+             * Format: email
+             * @description 이메일
+             * @example user@example.com
+             */
+            email?: string;
+            /**
+             * @description 이름
+             * @example 홍길동
+             */
+            name?: string;
+            /**
+             * @description 전화번호 (숫자만)
+             * @example 1012345678
+             */
+            phone?: number;
+            /**
+             * @description 사용자 유형
+             * @example USER
+             * @enum {string}
+             */
+            type?: "USER" | "DRIVER";
+            /**
+             * @description 로그인 제공자
+             * @example local
+             */
+            provider?: string;
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 수정 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            updatedAt?: string;
+        };
+        SignupRequest: {
+            /**
+             * Format: email
+             * @description 이메일 주소
+             * @example user@example.com
+             */
+            email: string;
+            /**
+             * Format: password
+             * @description 비밀번호 (최소 8자, 영문/숫자/특수문자 포함)
+             * @example Password123!
+             */
+            password: string;
+            /**
+             * @description 이름 (최소 2자)
+             * @example 홍길동
+             */
+            name: string;
+            /**
+             * @description 전화번호 (010으로 시작하는 11자리 숫자)
+             * @example 1012345678
+             */
+            phone: number;
+            /**
+             * @description 사용자 유형
+             * @example USER
+             * @enum {string}
+             */
+            type: "USER" | "DRIVER";
+        };
+        LoginRequest: {
+            /**
+             * Format: email
+             * @description 이메일 주소
+             * @example user@example.com
+             */
+            email: string;
+            /**
+             * Format: password
+             * @description 비밀번호
+             * @example Password123!
+             */
+            password: string;
+            /**
+             * @description 사용자 유형
+             * @example USER
+             * @enum {string}
+             */
+            type: "USER" | "DRIVER";
+        };
+        RefreshTokenRequest: {
+            /**
+             * @description 리프레시 토큰 (쿠키에 없을 경우)
+             * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+             */
+            refreshToken?: string;
+        };
+        AuthResponse: {
+            /** @example true */
+            success?: boolean;
+            data?: {
+                user?: components["schemas"]["User"];
+                /**
+                 * @description JWT 액세스 토큰
+                 * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                 */
+                accessToken?: string;
+            };
+        };
+        TokenResponse: {
+            /** @example true */
+            success?: boolean;
+            data?: {
+                /**
+                 * @description JWT 액세스 토큰
+                 * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                 */
+                accessToken?: string;
+            };
+        };
+        UserResponse: {
+            /** @example true */
+            success?: boolean;
+            data?: components["schemas"]["User"];
+        };
+        MessageResponse: {
+            /** @example true */
+            success?: boolean;
+            /** @example 로그아웃되었습니다 */
+            message?: string;
+        };
+        ErrorResponse: {
+            /**
+             * @description 에러 메시지
+             * @example 에러 메시지
+             */
+            message?: string;
+            /**
+             * @description HTTP 상태 코드
+             * @example 400
+             */
+            statusCode?: number;
+            /**
+             * @description 에러 이름
+             * @example Error
+             */
+            name?: string;
+            /**
+             * @description 에러 스택 트레이스 (개발 환경에서만 제공)
+             * @example string
+             */
+            stack?: string | null;
+        };
+        Estimate: {
+            /**
+             * Format: uuid
+             * @description 견적 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            id?: string;
+            /**
+             * @description 견적 가격 (원)
+             * @example 500000
+             */
+            price?: number | null;
+            /**
+             * @description 견적 상태
+             * @example PENDING
+             * @enum {string}
+             */
+            status?: "PENDING" | "CONFIRMED" | "REJECTED" | "CANCELLED";
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 수정 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            updatedAt?: string;
+        };
+        EstimateRequestInfo: {
+            /**
+             * Format: uuid
+             * @description 견적 요청 ID
+             * @example 123e4567-e89b-12d3-a456-426614174001
+             */
+            id?: string;
+            /**
+             * @description 이사 유형
+             * @example HOME_MOVING
+             * @enum {string}
+             */
+            movingType?: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
+            /**
+             * Format: date-time
+             * @description 이사 예정일
+             * @example 2024-02-01T09:00:00Z
+             */
+            movingDate?: string;
+            /**
+             * @description 지정 기사 여부
+             * @example false
+             */
+            isDesignated?: boolean;
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-15T10:00:00Z
+             */
+            createdAt?: string;
+            /** @description 주소 정보 목록 */
+            addresses?: components["schemas"]["AddressInfo"][];
+        };
+        AddressInfo: {
+            /**
+             * Format: uuid
+             * @description 주소 ID
+             * @example 123e4567-e89b-12d3-a456-426614174002
+             */
+            id?: string;
+            /**
+             * @description 주소 유형 (출발지/도착지)
+             * @example FROM
+             * @enum {string}
+             */
+            addressType?: "FROM" | "TO";
+            /**
+             * @description 전체 주소
+             * @example 서울특별시 강남구 테헤란로 123
+             */
+            address?: string | null;
+            /**
+             * @description 시도
+             * @example 서울특별시
+             */
+            sido?: string | null;
+            /**
+             * @description 시군구
+             * @example 강남구
+             */
+            sigungu?: string | null;
+        };
+        DriverProfile: {
+            /**
+             * Format: uuid
+             * @description 드라이버 프로필 ID
+             * @example 123e4567-e89b-12d3-a456-426614174003
+             */
+            id?: string;
+            /**
+             * @description 프로필 이미지 URL
+             * @example https://example.com/image.jpg
+             */
+            imageUrl?: string | null;
+            /**
+             * @description 경력 정보
+             * @example 5년차 전문 이사 기사
+             */
+            career?: string | null;
+            /**
+             * @description 짧은 소개
+             * @example 안전하고 신속한 이사를 약속드립니다
+             */
+            shortIntro?: string | null;
+            /**
+             * @description 확정된 견적 수
+             * @example 150
+             */
+            confirmedEstimateCount?: number;
+            /**
+             * @description 찜하기 수
+             * @example 45
+             */
+            favoriteDriverCount?: number;
+            /**
+             * Format: float
+             * @description 리뷰 평균 점수 (소수점 첫째 자리까지)
+             * @example 4.5
+             */
+            averageRating?: number | null;
+        };
+        ReviewInfo: {
+            /**
+             * Format: uuid
+             * @description 리뷰 ID
+             * @example 123e4567-e89b-12d3-a456-426614174004
+             */
+            id?: string;
+            /**
+             * @description 평점 (1-5)
+             * @example 5
+             */
+            rating?: number;
+            /**
+             * Format: date-time
+             * @description 리뷰 작성 일시
+             * @example 2024-01-10T14:20:00Z
+             */
+            createdAt?: string | null;
+        };
+        Driver: {
+            /**
+             * Format: uuid
+             * @description 드라이버(기사) ID
+             * @example 123e4567-e89b-12d3-a456-426614174005
+             */
+            id?: string;
+            /**
+             * @description 드라이버 이름
+             * @example 홍길동
+             */
+            name?: string;
+            /**
+             * @description 찜하기 여부
+             * @example true
+             */
+            isFavorite?: boolean;
+            /**
+             * @description 해당 드라이버를 찜한 사용자 수
+             * @example 45
+             */
+            favoriteDriverCount?: number;
+            /** @description 드라이버 프로필 정보 */
+            driverProfile?: components["schemas"]["DriverProfile"] | null;
+        };
+        PendingEstimateItem: {
+            /**
+             * Format: uuid
+             * @description 견적 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            id?: string;
+            /**
+             * @description 견적 가격 (원)
+             * @example 500000
+             */
+            price?: number | null;
+            /**
+             * @description 견적 상태
+             * @example PENDING
+             * @enum {string}
+             */
+            status?: "PENDING" | "CONFIRMED" | "REJECTED" | "CANCELLED";
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            createdAt?: string;
+            /**
+             * Format: uuid
+             * @description 견적 요청 ID
+             * @example 123e4567-e89b-12d3-a456-426614174001
+             */
+            estimateRequestId?: string;
+            /**
+             * @description 지정 기사 여부
+             * @example false
+             */
+            isDesignated?: boolean;
+            /** @description 드라이버 정보 */
+            driver?: components["schemas"]["Driver"] | null;
+        };
+        PendingEstimate: {
+            /** @description 견적 요청 정보 */
+            estimateRequest?: components["schemas"]["EstimateRequestInfo"];
+            /** @description 해당 견적 요청에 대한 견적 목록 */
+            estimates?: components["schemas"]["PendingEstimateItem"][];
+        };
+        ReceivedEstimate: {
+            /**
+             * Format: uuid
+             * @description 견적 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            id?: string;
+            /**
+             * @description 견적 가격 (원)
+             * @example 500000
+             */
+            price?: number | null;
+            /**
+             * @description 견적 상태
+             * @example PENDING
+             * @enum {string}
+             */
+            status?: "PENDING" | "CONFIRMED" | "REJECTED" | "CANCELLED";
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            createdAt?: string;
+            /** @description 견적 요청 정보 */
+            estimateRequest?: {
+                /**
+                 * Format: uuid
+                 * @description 견적 요청 ID
+                 */
+                id?: string;
+                /**
+                 * @description 이사 유형
+                 * @enum {string}
+                 */
+                movingType?: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
+                /**
+                 * Format: date-time
+                 * @description 이사 예정일
+                 */
+                movingDate?: string;
+                /** @description 지정 기사 여부 */
+                isDesignated?: boolean;
+                /**
+                 * @description 견적 요청 상태
+                 * @enum {string}
+                 */
+                status?: "PENDING" | "CONFIRMED" | "REJECTED" | "CANCELLED";
+                /** @description 주소 정보 목록 */
+                addresses?: components["schemas"]["AddressInfo"][];
+            };
+            /** @description 드라이버 정보 */
+            driver?: {
+                /**
+                 * Format: uuid
+                 * @description 드라이버 ID
+                 */
+                id?: string;
+                /**
+                 * @description 드라이버 이름
+                 * @example 홍길동
+                 */
+                name?: string;
+                /** @description 드라이버 프로필 정보 */
+                driverProfile?: components["schemas"]["DriverProfile"] | null;
+            };
+        };
+        EstimateDetail: {
+            /**
+             * Format: uuid
+             * @description 견적 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            id?: string;
+            /**
+             * @description 견적 가격 (원)
+             * @example 500000
+             */
+            price?: number | null;
+            /**
+             * @description 견적 상태
+             * @example PENDING
+             * @enum {string}
+             */
+            status?: "PENDING" | "CONFIRMED" | "REJECTED" | "CANCELLED";
+            /** @description 견적 요청 정보 */
+            estimateRequest?: {
+                /**
+                 * Format: uuid
+                 * @description 견적 요청 ID
+                 */
+                id?: string;
+                /**
+                 * @description 이사 유형
+                 * @enum {string}
+                 */
+                movingType?: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
+                /**
+                 * Format: date-time
+                 * @description 이사 예정일
+                 */
+                movingDate?: string;
+                /** @description 지정 기사 여부 */
+                isDesignated?: boolean;
+                /**
+                 * Format: date-time
+                 * @description 생성 일시
+                 */
+                createdAt?: string;
+                /** @description 주소 정보 목록 */
+                addresses?: {
+                    /** Format: uuid */
+                    id?: string;
+                    /** @enum {string} */
+                    addressType?: "FROM" | "TO";
+                    address?: string | null;
+                }[];
+            };
+            /** @description 드라이버 정보 */
+            driver?: {
+                /**
+                 * Format: uuid
+                 * @description 드라이버 ID
+                 */
+                id?: string;
+                /**
+                 * @description 드라이버 이름
+                 * @example 홍길동
+                 */
+                name?: string;
+                /** @description 드라이버 프로필 정보 */
+                driverProfile?: components["schemas"]["DriverProfile"] | null;
+            } | null;
+        };
+        ConfirmedEstimate: {
+            /**
+             * Format: uuid
+             * @description 견적 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            id?: string;
+            /**
+             * Format: uuid
+             * @description 견적 요청 ID
+             * @example 123e4567-e89b-12d3-a456-426614174001
+             */
+            estimateRequestId?: string;
+            /**
+             * Format: uuid
+             * @description 드라이버 ID
+             * @example 123e4567-e89b-12d3-a456-426614174005
+             */
+            driverId?: string;
+            /**
+             * @description 견적 가격 (원)
+             * @example 500000
+             */
+            price?: number | null;
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 수정 일시
+             * @example 2024-01-15T11:00:00Z
+             */
+            updatedAt?: string;
+        };
+        ApiResponse: {
+            /**
+             * @description 요청 성공 여부
+             * @example true
+             */
+            success?: boolean;
+            /** @description 응답 데이터 */
+            data?: unknown;
+            /** @description 응답 메시지 */
+            message?: string | null;
+        };
+        ValidationErrorResponse: {
+            /** @description 검증 실패 메시지 */
+            message?: string;
+            /** @description 검증 에러 상세 정보 */
+            errors?: Record<string, never>;
+        };
+        NotFoundErrorResponse: {
+            /** @description 에러 메시지 */
+            message?: string;
+        };
+        AddressSummary: {
+            /** @example 서울 */
+            sido?: string;
+            /** @example 강남구 */
+            sigungu?: string;
+        };
+        FavoriteDriver: {
+            /**
+             * Format: uuid
+             * @description 즐겨찾기 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            id?: string;
+            /**
+             * Format: uuid
+             * @description 사용자 ID
+             * @example 123e4567-e89b-12d3-a456-426614174001
+             */
+            userId?: string;
+            /**
+             * Format: uuid
+             * @description 드라이버(기사) ID
+             * @example 123e4567-e89b-12d3-a456-426614174002
+             */
+            driverId?: string;
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 수정 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            updatedAt?: string;
+        };
+        DriverProfileInfo: {
+            /**
+             * Format: uuid
+             * @description 드라이버 프로필 ID
+             * @example 123e4567-e89b-12d3-a456-426614174003
+             */
+            id?: string;
+            /**
+             * @description 프로필 이미지 URL
+             * @example https://example.com/image.jpg
+             */
+            imageUrl?: string | null;
+            /**
+             * @description 경력 정보
+             * @example 5년차 전문 이사 기사
+             */
+            career?: string | null;
+            /**
+             * @description 짧은 소개
+             * @example 안전하고 신속한 이사를 약속드립니다
+             */
+            shortIntro?: string | null;
+            /**
+             * @description 상세 설명
+             * @example 10년 이상의 경력을 가진 전문 이사 기사입니다.
+             */
+            description?: string | null;
+            /**
+             * @description 확정된 견적 수
+             * @example 150
+             */
+            tasksCount?: number;
+            /**
+             * @description 찜하기 수
+             * @example 45
+             */
+            favoriteCount?: number;
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-10T09:00:00Z
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 수정 일시
+             * @example 2024-01-15T10:00:00Z
+             */
+            updatedAt?: string;
+        };
+        FavoriteDriverWithDetails: {
+            /**
+             * Format: uuid
+             * @description 즐겨찾기 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            id?: string;
+            /**
+             * Format: uuid
+             * @description 사용자 ID
+             * @example 123e4567-e89b-12d3-a456-426614174001
+             */
+            userId?: string;
+            /**
+             * Format: uuid
+             * @description 드라이버(기사) ID
+             * @example 123e4567-e89b-12d3-a456-426614174002
+             */
+            driverId?: string;
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            createdAt?: string;
+            /** @description 드라이버 정보 */
+            driver?: {
+                /**
+                 * Format: uuid
+                 * @description 드라이버 ID
+                 * @example 123e4567-e89b-12d3-a456-426614174002
+                 */
+                id?: string;
+                /** @description 드라이버 프로필 정보 */
+                driverProfile?: components["schemas"]["DriverProfileInfo"] | null;
+                /** @description 리뷰 목록 */
+                reviews?: components["schemas"]["ReviewInfo"][];
+            };
+        };
+        PaginationInfo: {
+            /**
+             * @description 다음 페이지 존재 여부
+             * @example true
+             */
+            hasNext?: boolean;
+            /**
+             * Format: uuid
+             * @description 다음 페이지 커서 (다음 페이지가 없으면 null)
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            nextCursor?: string | null;
+        };
+        DeleteResponse: {
+            /**
+             * @description 삭제 성공 여부
+             * @example true
+             */
+            removed?: boolean;
+        };
+        Notification: {
+            /**
+             * Format: uuid
+             * @description 알림 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            id?: string;
+            /**
+             * @description 알림 유형
+             * @example ESTIMATE_RECEIVED
+             * @enum {string}
+             */
+            type?: "REQUEST_SENT" | "REQUEST_REJECTED" | "REQUEST_CANCELLED" | "ESTIMATE_RECEIVED" | "ESTIMATE_CONFIRMED" | "ESTIMATE_REJECTED" | "ESTIMATE_EXPIRED" | "NEW_REVIEW";
+            /**
+             * @description 알림 메시지
+             * @example 새로운 견적이 도착했습니다.
+             */
+            message?: string;
+            /**
+             * @description 읽음 여부
+             * @example false
+             */
+            isRead?: boolean;
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            createdAt?: string;
+        };
         /**
-         * @description JWT 액세스 토큰
-         * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-         */
-        accessToken?: string;
-      };
-    };
-    TokenResponse: {
-      /** @example true */
-      success?: boolean;
-      data?: {
-        /**
-         * @description JWT 액세스 토큰
-         * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-         */
-        accessToken?: string;
-      };
-    };
-    UserResponse: {
-      /** @example true */
-      success?: boolean;
-      data?: components['schemas']['User'];
-    };
-    MessageResponse: {
-      /** @example true */
-      success?: boolean;
-      /** @example 로그아웃되었습니다 */
-      message?: string;
-    };
-    ErrorResponse: {
-      /**
-       * @description 에러 메시지
-       * @example 에러 메시지
-       */
-      message?: string;
-      /**
-       * @description HTTP 상태 코드
-       * @example 400
-       */
-      statusCode?: number;
-      /**
-       * @description 에러 이름
-       * @example Error
-       */
-      name?: string;
-      /**
-       * @description 에러 스택 트레이스 (개발 환경에서만 제공)
-       * @example string
-       */
-      stack?: string | null;
-    };
-    Estimate: {
-      /**
-       * Format: uuid
-       * @description 견적 ID
-       * @example 123e4567-e89b-12d3-a456-426614174000
-       */
-      id?: string;
-      /**
-       * @description 견적 가격 (원)
-       * @example 500000
-       */
-      price?: number | null;
-      /**
-       * @description 견적 상태
-       * @example PENDING
-       * @enum {string}
-       */
-      status?: 'PENDING' | 'CONFIRMED' | 'REJECTED' | 'CANCELLED';
-      /**
-       * Format: date-time
-       * @description 생성 일시
-       * @example 2024-01-15T10:30:00Z
-       */
-      createdAt?: string;
-      /**
-       * Format: date-time
-       * @description 수정 일시
-       * @example 2024-01-15T10:30:00Z
-       */
-      updatedAt?: string;
-    };
-    EstimateRequestInfo: {
-      /**
-       * Format: uuid
-       * @description 견적 요청 ID
-       * @example 123e4567-e89b-12d3-a456-426614174001
-       */
-      id?: string;
-      /**
-       * @description 이사 유형
-       * @example HOME_MOVING
-       * @enum {string}
-       */
-      movingType?: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
-      /**
-       * Format: date-time
-       * @description 이사 예정일
-       * @example 2024-02-01T09:00:00Z
-       */
-      movingDate?: string;
-      /**
-       * @description 지정 기사 여부
-       * @example false
-       */
-      isDesignated?: boolean;
-      /**
-       * Format: date-time
-       * @description 생성 일시
-       * @example 2024-01-15T10:00:00Z
-       */
-      createdAt?: string;
-      /** @description 주소 정보 목록 */
-      addresses?: components['schemas']['AddressInfo'][];
-    };
-    AddressInfo: {
-      /**
-       * Format: uuid
-       * @description 주소 ID
-       * @example 123e4567-e89b-12d3-a456-426614174002
-       */
-      id?: string;
-      /**
-       * @description 주소 유형 (출발지/도착지)
-       * @example FROM
-       * @enum {string}
-       */
-      addressType?: 'FROM' | 'TO';
-      /**
-       * @description 전체 주소
-       * @example 서울특별시 강남구 테헤란로 123
-       */
-      address?: string | null;
-      /**
-       * @description 시도
-       * @example 서울특별시
-       */
-      sido?: string | null;
-      /**
-       * @description 시군구
-       * @example 강남구
-       */
-      sigungu?: string | null;
-    };
-    DriverProfile: {
-      /**
-       * Format: uuid
-       * @description 드라이버 프로필 ID
-       * @example 123e4567-e89b-12d3-a456-426614174003
-       */
-      id?: string;
-      /**
-       * @description 프로필 이미지 URL
-       * @example https://example.com/image.jpg
-       */
-      imageUrl?: string | null;
-      /**
-       * @description 경력 정보
-       * @example 5년차 전문 이사 기사
-       */
-      career?: string | null;
-      /**
-       * @description 짧은 소개
-       * @example 안전하고 신속한 이사를 약속드립니다
-       */
-      shortIntro?: string | null;
-      /**
-       * @description 확정된 견적 수
-       * @example 150
-       */
-      confirmedEstimateCount?: number;
-      /**
-       * @description 찜하기 수
-       * @example 45
-       */
-      favoriteDriverCount?: number;
-      /**
-       * Format: float
-       * @description 리뷰 평균 점수 (소수점 첫째 자리까지)
-       * @example 4.5
-       */
-      averageRating?: number | null;
-    };
-    ReviewInfo: {
-      /**
-       * Format: uuid
-       * @description 리뷰 ID
-       * @example 123e4567-e89b-12d3-a456-426614174004
-       */
-      id?: string;
-      /**
-       * @description 평점 (1-5)
-       * @example 5
-       */
-      rating?: number;
-      /**
-       * Format: date-time
-       * @description 리뷰 작성 일시
-       * @example 2024-01-10T14:20:00Z
-       */
-      createdAt?: string | null;
-    };
-    Driver: {
-      /**
-       * Format: uuid
-       * @description 드라이버(기사) ID
-       * @example 123e4567-e89b-12d3-a456-426614174005
-       */
-      id?: string;
-      /**
-       * @description 드라이버 이름
-       * @example 홍길동
-       */
-      name?: string;
-      /**
-       * @description 찜하기 여부
-       * @example true
-       */
-      isFavorite?: boolean;
-      /**
-       * @description 해당 드라이버를 찜한 사용자 수
-       * @example 45
-       */
-      favoriteDriverCount?: number;
-      /** @description 드라이버 프로필 정보 */
-      driverProfile?: components['schemas']['DriverProfile'] | null;
-    };
-    PendingEstimateItem: {
-      /**
-       * Format: uuid
-       * @description 견적 ID
-       * @example 123e4567-e89b-12d3-a456-426614174000
-       */
-      id?: string;
-      /**
-       * @description 견적 가격 (원)
-       * @example 500000
-       */
-      price?: number | null;
-      /**
-       * @description 견적 상태
-       * @example PENDING
-       * @enum {string}
-       */
-      status?: 'PENDING' | 'CONFIRMED' | 'REJECTED' | 'CANCELLED';
-      /**
-       * Format: date-time
-       * @description 생성 일시
-       * @example 2024-01-15T10:30:00Z
-       */
-      createdAt?: string;
-      /**
-       * Format: uuid
-       * @description 견적 요청 ID
-       * @example 123e4567-e89b-12d3-a456-426614174001
-       */
-      estimateRequestId?: string;
-      /**
-       * @description 지정 기사 여부
-       * @example false
-       */
-      isDesignated?: boolean;
-      /** @description 드라이버 정보 */
-      driver?: components['schemas']['Driver'] | null;
-    };
-    PendingEstimate: {
-      /** @description 견적 요청 정보 */
-      estimateRequest?: components['schemas']['EstimateRequestInfo'];
-      /** @description 해당 견적 요청에 대한 견적 목록 */
-      estimates?: components['schemas']['PendingEstimateItem'][];
-    };
-    ReceivedEstimate: {
-      /**
-       * Format: uuid
-       * @description 견적 ID
-       * @example 123e4567-e89b-12d3-a456-426614174000
-       */
-      id?: string;
-      /**
-       * @description 견적 가격 (원)
-       * @example 500000
-       */
-      price?: number | null;
-      /**
-       * @description 견적 상태
-       * @example PENDING
-       * @enum {string}
-       */
-      status?: 'PENDING' | 'CONFIRMED' | 'REJECTED' | 'CANCELLED';
-      /**
-       * Format: date-time
-       * @description 생성 일시
-       * @example 2024-01-15T10:30:00Z
-       */
-      createdAt?: string;
-      /** @description 견적 요청 정보 */
-      estimateRequest?: {
-        /**
-         * Format: uuid
-         * @description 견적 요청 ID
-         */
-        id?: string;
-        /**
-         * @description 이사 유형
+         * @description 알림 유형
+         *     - REQUEST_SENT: 유저가 견적 요청을 보냄
+         *     - REQUEST_REJECTED: 유저가 견적을 거절
+         *     - REQUEST_CANCELLED: 유저가 견적 요청을 취소
+         *     - ESTIMATE_RECEIVED: 기사가 견적을 작성하여 유저에게 도착
+         *     - ESTIMATE_CONFIRMED: 유저가 견적서를 보고 견적 확정
+         *     - ESTIMATE_REJECTED: 기사가 요청을 거절(반려 사유)
+         *     - ESTIMATE_EXPIRED: 견적 시간 만료
+         *     - NEW_REVIEW: 새 리뷰 등록
          * @enum {string}
          */
-        movingType?: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
-        /**
-         * Format: date-time
-         * @description 이사 예정일
-         */
-        movingDate?: string;
-        /** @description 지정 기사 여부 */
-        isDesignated?: boolean;
-        /**
-         * @description 견적 요청 상태
-         * @enum {string}
-         */
-        status?: 'PENDING' | 'CONFIRMED' | 'REJECTED' | 'CANCELLED';
-        /** @description 주소 정보 목록 */
-        addresses?: components['schemas']['AddressInfo'][];
-      };
-      /** @description 드라이버 정보 */
-      driver?: {
-        /**
-         * Format: uuid
-         * @description 드라이버 ID
-         */
-        id?: string;
-        /**
-         * @description 드라이버 이름
-         * @example 홍길동
-         */
-        name?: string;
-        /** @description 드라이버 프로필 정보 */
-        driverProfile?: components['schemas']['DriverProfile'] | null;
-      };
+        NotificationType: "REQUEST_SENT" | "REQUEST_REJECTED" | "REQUEST_CANCELLED" | "ESTIMATE_RECEIVED" | "ESTIMATE_CONFIRMED" | "ESTIMATE_REJECTED" | "ESTIMATE_EXPIRED" | "NEW_REVIEW";
+        UnreadCountEvent: {
+            /**
+             * @description 읽지 않은 알림 개수
+             * @example 5
+             */
+            count?: number;
+        };
     };
-    EstimateDetail: {
-      /**
-       * Format: uuid
-       * @description 견적 ID
-       * @example 123e4567-e89b-12d3-a456-426614174000
-       */
-      id?: string;
-      /**
-       * @description 견적 가격 (원)
-       * @example 500000
-       */
-      price?: number | null;
-      /**
-       * @description 견적 상태
-       * @example PENDING
-       * @enum {string}
-       */
-      status?: 'PENDING' | 'CONFIRMED' | 'REJECTED' | 'CANCELLED';
-      /** @description 견적 요청 정보 */
-      estimateRequest?: {
-        /**
-         * Format: uuid
-         * @description 견적 요청 ID
-         */
-        id?: string;
-        /**
-         * @description 이사 유형
-         * @enum {string}
-         */
-        movingType?: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
-        /**
-         * Format: date-time
-         * @description 이사 예정일
-         */
-        movingDate?: string;
-        /** @description 지정 기사 여부 */
-        isDesignated?: boolean;
-        /** @description 주소 정보 목록 */
-        addresses?: {
-          /** Format: uuid */
-          id?: string;
-          /** @enum {string} */
-          addressType?: 'FROM' | 'TO';
-          address?: string | null;
-        }[];
-      };
-      /** @description 드라이버 정보 */
-      driver?: {
-        /**
-         * Format: uuid
-         * @description 드라이버 ID
-         */
-        id?: string;
-        /**
-         * @description 드라이버 이름
-         * @example 홍길동
-         */
-        name?: string;
-        /** @description 드라이버 프로필 정보 */
-        driverProfile?: components['schemas']['DriverProfile'] | null;
-      } | null;
-    };
-    ConfirmedEstimate: {
-      /**
-       * Format: uuid
-       * @description 견적 ID
-       * @example 123e4567-e89b-12d3-a456-426614174000
-       */
-      id?: string;
-      /**
-       * Format: uuid
-       * @description 견적 요청 ID
-       * @example 123e4567-e89b-12d3-a456-426614174001
-       */
-      estimateRequestId?: string;
-      /**
-       * Format: uuid
-       * @description 드라이버 ID
-       * @example 123e4567-e89b-12d3-a456-426614174005
-       */
-      driverId?: string;
-      /**
-       * @description 견적 가격 (원)
-       * @example 500000
-       */
-      price?: number | null;
-      /**
-       * Format: date-time
-       * @description 생성 일시
-       * @example 2024-01-15T10:30:00Z
-       */
-      createdAt?: string;
-      /**
-       * Format: date-time
-       * @description 수정 일시
-       * @example 2024-01-15T11:00:00Z
-       */
-      updatedAt?: string;
-    };
-    ApiResponse: {
-      /**
-       * @description 요청 성공 여부
-       * @example true
-       */
-      success?: boolean;
-      /** @description 응답 데이터 */
-      data?: unknown;
-      /** @description 응답 메시지 */
-      message?: string | null;
-    };
-    ValidationErrorResponse: {
-      /** @description 검증 실패 메시지 */
-      message?: string;
-      /** @description 검증 에러 상세 정보 */
-      errors?: Record<string, never>;
-    };
-    NotFoundErrorResponse: {
-      /** @description 에러 메시지 */
-      message?: string;
-    };
-    AddressSummary: {
-      /** @example 서울 */
-      sido?: string;
-      /** @example 강남구 */
-      sigungu?: string;
-    };
-    FavoriteDriver: {
-      /**
-       * Format: uuid
-       * @description 즐겨찾기 ID
-       * @example 123e4567-e89b-12d3-a456-426614174000
-       */
-      id?: string;
-      /**
-       * Format: uuid
-       * @description 사용자 ID
-       * @example 123e4567-e89b-12d3-a456-426614174001
-       */
-      userId?: string;
-      /**
-       * Format: uuid
-       * @description 드라이버(기사) ID
-       * @example 123e4567-e89b-12d3-a456-426614174002
-       */
-      driverId?: string;
-      /**
-       * Format: date-time
-       * @description 생성 일시
-       * @example 2024-01-15T10:30:00Z
-       */
-      createdAt?: string;
-      /**
-       * Format: date-time
-       * @description 수정 일시
-       * @example 2024-01-15T10:30:00Z
-       */
-      updatedAt?: string;
-    };
-    DriverProfileInfo: {
-      /**
-       * Format: uuid
-       * @description 드라이버 프로필 ID
-       * @example 123e4567-e89b-12d3-a456-426614174003
-       */
-      id?: string;
-      /**
-       * @description 프로필 이미지 URL
-       * @example https://example.com/image.jpg
-       */
-      imageUrl?: string | null;
-      /**
-       * @description 경력 정보
-       * @example 5년차 전문 이사 기사
-       */
-      career?: string | null;
-      /**
-       * @description 짧은 소개
-       * @example 안전하고 신속한 이사를 약속드립니다
-       */
-      shortIntro?: string | null;
-      /**
-       * @description 상세 설명
-       * @example 10년 이상의 경력을 가진 전문 이사 기사입니다.
-       */
-      description?: string | null;
-      /**
-       * @description 확정된 견적 수
-       * @example 150
-       */
-      tasksCount?: number;
-      /**
-       * @description 찜하기 수
-       * @example 45
-       */
-      favoriteCount?: number;
-      /**
-       * Format: date-time
-       * @description 생성 일시
-       * @example 2024-01-10T09:00:00Z
-       */
-      createdAt?: string;
-      /**
-       * Format: date-time
-       * @description 수정 일시
-       * @example 2024-01-15T10:00:00Z
-       */
-      updatedAt?: string;
-    };
-    FavoriteDriverWithDetails: {
-      /**
-       * Format: uuid
-       * @description 즐겨찾기 ID
-       * @example 123e4567-e89b-12d3-a456-426614174000
-       */
-      id?: string;
-      /**
-       * Format: uuid
-       * @description 사용자 ID
-       * @example 123e4567-e89b-12d3-a456-426614174001
-       */
-      userId?: string;
-      /**
-       * Format: uuid
-       * @description 드라이버(기사) ID
-       * @example 123e4567-e89b-12d3-a456-426614174002
-       */
-      driverId?: string;
-      /**
-       * Format: date-time
-       * @description 생성 일시
-       * @example 2024-01-15T10:30:00Z
-       */
-      createdAt?: string;
-      /** @description 드라이버 정보 */
-      driver?: {
-        /**
-         * Format: uuid
-         * @description 드라이버 ID
-         * @example 123e4567-e89b-12d3-a456-426614174002
-         */
-        id?: string;
-        /** @description 드라이버 프로필 정보 */
-        driverProfile?: components['schemas']['DriverProfileInfo'] | null;
-        /** @description 리뷰 목록 */
-        reviews?: components['schemas']['ReviewInfo'][];
-      };
-    };
-    PaginationInfo: {
-      /**
-       * @description 다음 페이지 존재 여부
-       * @example true
-       */
-      hasNext?: boolean;
-      /**
-       * Format: uuid
-       * @description 다음 페이지 커서 (다음 페이지가 없으면 null)
-       * @example 123e4567-e89b-12d3-a456-426614174000
-       */
-      nextCursor?: string | null;
-    };
-    DeleteResponse: {
-      /**
-       * @description 삭제 성공 여부
-       * @example true
-       */
-      removed?: boolean;
-    };
-    Notification: {
-      /**
-       * Format: uuid
-       * @description 알림 ID
-       * @example 123e4567-e89b-12d3-a456-426614174000
-       */
-      id?: string;
-      /**
-       * @description 알림 유형
-       * @example ESTIMATE_RECEIVED
-       * @enum {string}
-       */
-      type?:
-        | 'REQUEST_SENT'
-        | 'REQUEST_REJECTED'
-        | 'REQUEST_CANCELLED'
-        | 'ESTIMATE_RECEIVED'
-        | 'ESTIMATE_CONFIRMED'
-        | 'ESTIMATE_REJECTED'
-        | 'ESTIMATE_EXPIRED'
-        | 'NEW_REVIEW';
-      /**
-       * @description 알림 메시지
-       * @example 새로운 견적이 도착했습니다.
-       */
-      message?: string;
-      /**
-       * @description 읽음 여부
-       * @example false
-       */
-      isRead?: boolean;
-      /**
-       * Format: date-time
-       * @description 생성 일시
-       * @example 2024-01-15T10:30:00Z
-       */
-      createdAt?: string;
-    };
-    /**
-     * @description 알림 유형
-     *     - REQUEST_SENT: 유저가 견적 요청을 보냄
-     *     - REQUEST_REJECTED: 유저가 견적을 거절
-     *     - REQUEST_CANCELLED: 유저가 견적 요청을 취소
-     *     - ESTIMATE_RECEIVED: 기사가 견적을 작성하여 유저에게 도착
-     *     - ESTIMATE_CONFIRMED: 유저가 견적서를 보고 견적 확정
-     *     - ESTIMATE_REJECTED: 기사가 요청을 거절(반려 사유)
-     *     - ESTIMATE_EXPIRED: 견적 시간 만료
-     *     - NEW_REVIEW: 새 리뷰 등록
-     * @enum {string}
-     */
-    NotificationType:
-      | 'REQUEST_SENT'
-      | 'REQUEST_REJECTED'
-      | 'REQUEST_CANCELLED'
-      | 'ESTIMATE_RECEIVED'
-      | 'ESTIMATE_CONFIRMED'
-      | 'ESTIMATE_REJECTED'
-      | 'ESTIMATE_EXPIRED'
-      | 'NEW_REVIEW';
-    UnreadCountEvent: {
-      /**
-       * @description 읽지 않은 알림 개수
-       * @example 5
-       */
-      count?: number;
-    };
-  };
-  responses: never;
-  parameters: {
-    /**
-     * @description 견적 ID
-     * @example 123e4567-e89b-12d3-a456-426614174000
-     */
-    estimateId: string;
-    /**
-     * @description 견적 상태 필터 (대소문자 구분 없음)
-     * @example PENDING
-     */
-    statusQuery: 'PENDING' | 'CONFIRMED' | 'REJECTED' | 'CANCELLED';
-    /**
-     * @description 드라이버(기사) ID
-     * @example 123e4567-e89b-12d3-a456-426614174002
-     */
-    driverId: string;
-    /**
-     * @description 페이지네이션 커서 (다음 페이지 조회 시 사용)
-     *     이전 응답의 pagination.nextCursor 값을 사용하여 다음 페이지를 조회할 수 있습니다.
-     *     첫 페이지 조회 시에는 생략 가능합니다.
-     * @example 123e4567-e89b-12d3-a456-426614174000
-     */
-    cursorQuery: string;
-    /**
-     * @description 조회할 항목 수 (기본값: 10)
-     *     한 번에 가져올 즐겨찾기 항목의 개수를 지정합니다.
-     *     최소값은 1이며, 생략 시 기본값 10이 적용됩니다.
-     * @example 10
-     */
-    limitQuery: number;
-    /**
-     * @description 알림 ID
-     * @example 123e4567-e89b-12d3-a456-426614174000
-     */
-    notificationId: string;
-  };
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
-}
-export type $defs = Record<string, never>;
-export interface operations {
-  getPendingEstimates: {
+    responses: never;
     parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description 성공적으로 대기 중인 견적 목록을 조회했습니다. */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiResponse'] & {
-            data?: components['schemas']['PendingEstimate'][];
-          };
-        };
-      };
-      /** @description 인증되지 않은 사용자입니다. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 서버 내부 오류가 발생했습니다. */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
-  getReceivedEstimates: {
-    parameters: {
-      query?: {
+        /**
+         * @description 견적 ID
+         * @example 123e4567-e89b-12d3-a456-426614174000
+         */
+        estimateId: string;
         /**
          * @description 견적 상태 필터 (대소문자 구분 없음)
          * @example PENDING
          */
-        status?: components['parameters']['statusQuery'];
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description 성공적으로 받은 견적 목록을 조회했습니다. */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiResponse'] & {
-            data?: components['schemas']['ReceivedEstimate'][];
-          };
-        };
-      };
-      /** @description 잘못된 요청입니다. status 값이 유효하지 않습니다. */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 인증되지 않은 사용자입니다. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 서버 내부 오류가 발생했습니다. */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
-  getEstimateDetail: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
+        statusQuery: "PENDING" | "CONFIRMED" | "REJECTED" | "CANCELLED";
         /**
-         * @description 견적 ID
-         * @example 123e4567-e89b-12d3-a456-426614174000
+         * @description 드라이버(기사) ID
+         * @example 123e4567-e89b-12d3-a456-426614174002
          */
-        estimateId: components['parameters']['estimateId'];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description 성공적으로 견적 상세 정보를 조회했습니다. */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiResponse'] & {
-            data?: components['schemas']['EstimateDetail'] | null;
-          };
-        };
-      };
-      /** @description 잘못된 요청입니다. estimateId가 유효하지 않습니다. */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 인증되지 않은 사용자입니다. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 견적을 찾을 수 없습니다. */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 서버 내부 오류가 발생했습니다. */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
-  confirmEstimate: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /**
-         * @description 견적 ID
-         * @example 123e4567-e89b-12d3-a456-426614174000
-         */
-        estimateId: components['parameters']['estimateId'];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description 성공적으로 견적을 확정했습니다. */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiResponse'] & {
-            data?: components['schemas']['ConfirmedEstimate'];
-          };
-        };
-      };
-      /** @description 잘못된 요청입니다. estimateId가 유효하지 않거나 이미 확정/취소된 견적입니다. */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 인증되지 않은 사용자입니다. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 견적을 찾을 수 없습니다. */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 견적을 확정할 수 없는 상태입니다. (이미 확정되었거나 취소된 견적) */
-      409: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 서버 내부 오류가 발생했습니다. */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
-  getFavoriteDrivers: {
-    parameters: {
-      query?: {
+        driverId: string;
         /**
          * @description 페이지네이션 커서 (다음 페이지 조회 시 사용)
          *     이전 응답의 pagination.nextCursor 값을 사용하여 다음 페이지를 조회할 수 있습니다.
          *     첫 페이지 조회 시에는 생략 가능합니다.
          * @example 123e4567-e89b-12d3-a456-426614174000
          */
-        cursor?: components['parameters']['cursorQuery'];
+        cursorQuery: string;
         /**
          * @description 조회할 항목 수 (기본값: 10)
          *     한 번에 가져올 즐겨찾기 항목의 개수를 지정합니다.
          *     최소값은 1이며, 생략 시 기본값 10이 적용됩니다.
          * @example 10
          */
-        limit?: components['parameters']['limitQuery'];
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description 성공적으로 찜한 기사 목록을 조회했습니다. */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiResponse'] & {
-            data?: components['schemas']['FavoriteDriverWithDetails'][];
-            pagination?: components['schemas']['PaginationInfo'];
-          };
-        };
-      };
-      /** @description 잘못된 요청입니다. userId가 필요합니다. */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 인증되지 않은 사용자입니다. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 서버 내부 오류가 발생했습니다. */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
-  deleteManyFavoriteDrivers: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': string[];
-      };
-    };
-    responses: {
-      /** @description 성공적으로 즐겨찾기를 삭제했습니다. */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiResponse'] & {
-            data?: components['schemas']['DeleteResponse'];
-          };
-        };
-      };
-      /** @description 잘못된 요청입니다. userId가 필요하거나 1개 이상의 driverId가 필요합니다. */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 인증되지 않은 사용자입니다. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 서버 내부 오류가 발생했습니다. */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
-  addFavoriteDriver: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /**
-         * @description 드라이버(기사) ID
-         * @example 123e4567-e89b-12d3-a456-426614174002
-         */
-        driverId: components['parameters']['driverId'];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description 성공적으로 즐겨찾기에 추가했습니다. */
-      201: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiResponse'] & {
-            data?: components['schemas']['FavoriteDriver'];
-          };
-        };
-      };
-      /** @description 잘못된 요청입니다. userId 또는 driverId가 필요합니다. */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 인증되지 않은 사용자입니다. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 이미 찜한 기사입니다. */
-      409: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 서버 내부 오류가 발생했습니다. */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
-  deleteFavoriteDriver: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /**
-         * @description 드라이버(기사) ID
-         * @example 123e4567-e89b-12d3-a456-426614174002
-         */
-        driverId: components['parameters']['driverId'];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description 성공적으로 즐겨찾기를 삭제했습니다. */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiResponse'] & {
-            data?: components['schemas']['DeleteResponse'];
-          };
-        };
-      };
-      /** @description 잘못된 요청입니다. userId 또는 driverId가 필요합니다. */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 인증되지 않은 사용자입니다. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 서버 내부 오류가 발생했습니다. */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
-  getNotificationStream: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description SSE 스트림 연결 성공 */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'text/event-stream': string;
-        };
-      };
-      /** @description 인증되지 않은 사용자입니다. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 서버 내부 오류가 발생했습니다. */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
-  getNotifications: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description 성공적으로 알림 목록을 조회했습니다. */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiResponse'] & {
-            data?: components['schemas']['Notification'][];
-          };
-        };
-      };
-      /** @description 인증되지 않은 사용자입니다. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 서버 내부 오류가 발생했습니다. */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
-  readNotification: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
+        limitQuery: number;
         /**
          * @description 알림 ID
          * @example 123e4567-e89b-12d3-a456-426614174000
          */
-        id: components['parameters']['notificationId'];
-      };
-      cookie?: never;
+        notificationId: string;
     };
-    requestBody?: never;
-    responses: {
-      /** @description 성공적으로 알림을 읽음 처리했습니다. */
-      200: {
-        headers: {
-          [name: string]: unknown;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
+}
+export type $defs = Record<string, never>;
+export interface operations {
+    getPendingEstimates: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-        content: {
-          'application/json': components['schemas']['ApiResponse'] & {
-            data?: null;
-          };
+        requestBody?: never;
+        responses: {
+            /** @description 성공적으로 대기 중인 견적 목록을 조회했습니다. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse"] & {
+                        data?: components["schemas"]["PendingEstimate"][];
+                    };
+                };
+            };
+            /** @description 인증되지 않은 사용자입니다. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
         };
-      };
-      /** @description 잘못된 요청입니다. notificationId가 유효하지 않습니다. */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 인증되지 않은 사용자입니다. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 알림을 찾을 수 없습니다. */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-      /** @description 서버 내부 오류가 발생했습니다. */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
     };
-  };
+    getReceivedEstimates: {
+        parameters: {
+            query?: {
+                /**
+                 * @description 견적 상태 필터 (대소문자 구분 없음)
+                 * @example PENDING
+                 */
+                status?: components["parameters"]["statusQuery"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 성공적으로 받은 견적 목록을 조회했습니다. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse"] & {
+                        data?: components["schemas"]["ReceivedEstimate"][];
+                    };
+                };
+            };
+            /** @description 잘못된 요청입니다. status 값이 유효하지 않습니다. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 인증되지 않은 사용자입니다. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    getEstimateDetail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description 견적 ID
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
+                estimateId: components["parameters"]["estimateId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 성공적으로 견적 상세 정보를 조회했습니다. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse"] & {
+                        data?: components["schemas"]["EstimateDetail"] | null;
+                    };
+                };
+            };
+            /** @description 잘못된 요청입니다. estimateId가 유효하지 않습니다. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 인증되지 않은 사용자입니다. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 견적을 찾을 수 없습니다. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    confirmEstimate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description 견적 ID
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
+                estimateId: components["parameters"]["estimateId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 성공적으로 견적을 확정했습니다. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse"] & {
+                        data?: components["schemas"]["ConfirmedEstimate"];
+                    };
+                };
+            };
+            /** @description 잘못된 요청입니다. estimateId가 유효하지 않거나 이미 확정/취소된 견적입니다. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 인증되지 않은 사용자입니다. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 견적을 찾을 수 없습니다. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 견적을 확정할 수 없는 상태입니다. (이미 확정되었거나 취소된 견적) */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    getFavoriteDrivers: {
+        parameters: {
+            query?: {
+                /**
+                 * @description 페이지네이션 커서 (다음 페이지 조회 시 사용)
+                 *     이전 응답의 pagination.nextCursor 값을 사용하여 다음 페이지를 조회할 수 있습니다.
+                 *     첫 페이지 조회 시에는 생략 가능합니다.
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
+                cursor?: components["parameters"]["cursorQuery"];
+                /**
+                 * @description 조회할 항목 수 (기본값: 10)
+                 *     한 번에 가져올 즐겨찾기 항목의 개수를 지정합니다.
+                 *     최소값은 1이며, 생략 시 기본값 10이 적용됩니다.
+                 * @example 10
+                 */
+                limit?: components["parameters"]["limitQuery"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 성공적으로 찜한 기사 목록을 조회했습니다. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse"] & {
+                        data?: components["schemas"]["FavoriteDriverWithDetails"][];
+                        pagination?: components["schemas"]["PaginationInfo"];
+                    };
+                };
+            };
+            /** @description 잘못된 요청입니다. userId가 필요합니다. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 인증되지 않은 사용자입니다. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    deleteManyFavoriteDrivers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": string[];
+            };
+        };
+        responses: {
+            /** @description 성공적으로 즐겨찾기를 삭제했습니다. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse"] & {
+                        data?: components["schemas"]["DeleteResponse"];
+                    };
+                };
+            };
+            /** @description 잘못된 요청입니다. userId가 필요하거나 1개 이상의 driverId가 필요합니다. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 인증되지 않은 사용자입니다. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    addFavoriteDriver: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description 드라이버(기사) ID
+                 * @example 123e4567-e89b-12d3-a456-426614174002
+                 */
+                driverId: components["parameters"]["driverId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 성공적으로 즐겨찾기에 추가했습니다. */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse"] & {
+                        data?: components["schemas"]["FavoriteDriver"];
+                    };
+                };
+            };
+            /** @description 잘못된 요청입니다. userId 또는 driverId가 필요합니다. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 인증되지 않은 사용자입니다. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 이미 찜한 기사입니다. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    deleteFavoriteDriver: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description 드라이버(기사) ID
+                 * @example 123e4567-e89b-12d3-a456-426614174002
+                 */
+                driverId: components["parameters"]["driverId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 성공적으로 즐겨찾기를 삭제했습니다. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse"] & {
+                        data?: components["schemas"]["DeleteResponse"];
+                    };
+                };
+            };
+            /** @description 잘못된 요청입니다. userId 또는 driverId가 필요합니다. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 인증되지 않은 사용자입니다. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    getNotificationStream: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description SSE 스트림 연결 성공 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/event-stream": string;
+                };
+            };
+            /** @description 인증되지 않은 사용자입니다. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    getNotifications: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 성공적으로 알림 목록을 조회했습니다. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse"] & {
+                        data?: components["schemas"]["Notification"][];
+                    };
+                };
+            };
+            /** @description 인증되지 않은 사용자입니다. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    readNotification: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description 알림 ID
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
+                id: components["parameters"]["notificationId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 성공적으로 알림을 읽음 처리했습니다. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse"] & {
+                        data?: null;
+                    };
+                };
+            };
+            /** @description 잘못된 요청입니다. notificationId가 유효하지 않습니다. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 인증되지 않은 사용자입니다. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 알림을 찾을 수 없습니다. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
 }

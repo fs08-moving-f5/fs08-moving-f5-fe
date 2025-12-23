@@ -1,9 +1,12 @@
 import PendingEstimateDetailHeader from '@/features/my-estimates/ui/detailHeader';
 import PendingEstimateDriverInfo from '@/features/my-estimates/ui/driverInfo';
-import PendingEstimateInfo from '@/features/my-estimates/ui/estimateInfo';
+import PendingEstimateInfo, {
+  EstimateRequestButtonWrapper,
+} from '@/features/my-estimates/ui/estimateInfo';
 import EstimateConfirmPopup from '@/features/my-estimates/ui/estimateInfo/EstimateConfirmPopup';
 import { useGetPendingEstimateDetailQuery } from '@/features/my-estimates/hooks/queries/useEstimateQueries';
-import { formatDateWithWeekday } from '@/shared/lib/day';
+import { formatDateWithPeriod, formatDateWithWeekday } from '@/shared/lib/day';
+import IconWrapper from '@/features/my-estimates/ui/estimateInfo/IconWrapper';
 
 const movingTypeKoreanMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
@@ -15,15 +18,16 @@ const movingTypeKoreanMap: Record<
 };
 
 const PendingEstimateDetailPageClient = ({ estimateId }: { estimateId: string }) => {
+  const stroke = <div className="h-[1px] w-full bg-[#F2F2F2]" />;
+
   const { data: pendingEstimateDetail } = useGetPendingEstimateDetailQuery({ estimateId });
 
   const estimateReqData = pendingEstimateDetail?.estimateRequest;
   const driverData = pendingEstimateDetail?.driver;
 
   /*
-  TODO
-  - 백엔드 createdAt 추가 (requestDate)
-  - movingDate 에 시간까지 포함
+  TODO: movingDate 에 시간까지 포함
+  시간 입력 필드가 없어서 상세 주소 추가 시 함께 진행
   */
   return (
     <div className="w-full bg-white pb-[62px]">
@@ -31,8 +35,8 @@ const PendingEstimateDetailPageClient = ({ estimateId }: { estimateId: string })
         driverImageUrl={driverData?.driverProfile?.imageUrl ?? '/img/profile.png'}
       />
 
-      <div className="container-responsive flex max-w-[1200px] items-center justify-between">
-        <div>
+      <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] tab:flex-col mobile:flex-col tab:gap-8 mobile:gap-8 tab:justify-start mobile:justify-start tab:items-start mobile:items-start flex w-full max-w-[1200px] flex-row items-center justify-between">
+        <div className="tab:w-full mobile:w-full w-[740px]">
           <PendingEstimateDriverInfo
             movingType={estimateReqData?.movingType ?? 'SMALL_MOVING'}
             isDesignated={estimateReqData?.isDesignated ?? false}
@@ -48,13 +52,19 @@ const PendingEstimateDetailPageClient = ({ estimateId }: { estimateId: string })
 
           <PendingEstimateInfo
             price={pendingEstimateDetail?.price ?? 0}
-            requestDate="2025-01-01"
+            requestDate={formatDateWithPeriod(estimateReqData?.createdAt ?? '')}
             movingType={movingTypeKoreanMap[estimateReqData?.movingType ?? 'SMALL_MOVING']}
             movingDate={formatDateWithWeekday(estimateReqData?.movingDate ?? '')}
             fromAddress={estimateReqData?.addresses?.[0]?.address ?? ''}
             toAddress={estimateReqData?.addresses?.[1]?.address ?? ''}
           />
         </div>
+        <div className="tab:block mobile:block hidden w-full">{stroke}</div>
+        <div className="tab:block mobile:block flex hidden w-full flex-col gap-3">
+          <div className="text-black-400 text-base leading-8 font-semibold">견적서 공유하기</div>
+          <IconWrapper />
+        </div>
+        <EstimateRequestButtonWrapper />
         <EstimateConfirmPopup price={pendingEstimateDetail?.price ?? 0} />
       </div>
     </div>
