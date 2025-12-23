@@ -4,9 +4,11 @@ import Image from 'next/image';
 const EstimateRequestButtonWrapper = ({
   isLiked,
   onLikeClick,
+  onConfirmClick,
 }: {
   isLiked: boolean;
   onLikeClick: () => void;
+  onConfirmClick: () => void;
 }) => {
   return (
     <div className="tab:flex mobile:flex tab:w-full mobile:w-full tab:items-center mobile:items-center tab:gap-2 mobile:gap-2 hidden">
@@ -22,7 +24,7 @@ const EstimateRequestButtonWrapper = ({
           height={24}
         />
       </button>
-      <Button variant="solid" size="sm">
+      <Button variant="solid" size="sm" onClick={onConfirmClick}>
         견적 확정하기
       </Button>
     </div>

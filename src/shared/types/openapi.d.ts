@@ -2294,6 +2294,11 @@ export interface components {
                  * @example true
                  */
                 isFavorite?: boolean;
+                /**
+                 * @description 해당 드라이버를 찜한 사용자 수
+                 * @example 45
+                 */
+                favoriteDriverCount?: number;
                 /** @description 드라이버 프로필 정보 */
                 driverProfile?: components["schemas"]["DriverProfile"] | null;
             };
@@ -2366,6 +2371,11 @@ export interface components {
                  * @example true
                  */
                 isFavorite?: boolean;
+                /**
+                 * @description 해당 드라이버를 찜한 사용자 수
+                 * @example 45
+                 */
+                favoriteDriverCount?: number;
                 /** @description 드라이버 프로필 정보 */
                 driverProfile?: components["schemas"]["DriverProfile"] | null;
             } | null;
@@ -2406,6 +2416,20 @@ export interface components {
              * @example 2024-01-15T11:00:00Z
              */
             updatedAt?: string;
+            /** @description 드라이버 정보 */
+            driver?: {
+                /**
+                 * Format: uuid
+                 * @description 드라이버 ID
+                 * @example 123e4567-e89b-12d3-a456-426614174005
+                 */
+                id?: string;
+                /**
+                 * @description 드라이버 이름
+                 * @example 홍길동
+                 */
+                name?: string;
+            };
         };
         ApiResponse: {
             /**

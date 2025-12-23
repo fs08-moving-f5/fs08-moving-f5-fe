@@ -2,7 +2,13 @@ import { Button } from '@/shared/ui/button';
 import { formatPrice } from '../../lib/price';
 import IconWrapper from './IconWrapper';
 
-const EstimateConfirmPopup = ({ price }: { price: number }) => {
+const EstimateConfirmPopup = ({
+  price,
+  onConfirmClick,
+}: {
+  price: number;
+  onConfirmClick: () => void;
+}) => {
   const stroke = <div className="h-[1px] w-full bg-[#F2F2F2]" />;
 
   return (
@@ -12,7 +18,7 @@ const EstimateConfirmPopup = ({ price }: { price: number }) => {
         <div className="text-black-400 text-2xl font-bold">{formatPrice(price)}</div>
       </div>
       <div className="flex flex-col gap-10">
-        <Button size="md" variant="solid">
+        <Button size="md" variant="solid" onClick={onConfirmClick}>
           견적 확정하기
         </Button>
         <div className="w-full">{stroke}</div>

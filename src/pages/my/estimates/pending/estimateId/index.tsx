@@ -9,10 +9,12 @@ import { formatDateWithPeriod, formatDateWithWeekday } from '@/shared/lib/day';
 import IconWrapper from '@/features/my-estimates/ui/estimateInfo/IconWrapper';
 import {
   useDeleteFavoriteMutation,
+  useConfirmEstimateMutation,
   useFavoriteMutation,
 } from '@/features/my-estimates/hooks/mutations/useFavoriteMutation';
 import { queryClient } from '@/shared/lib/queryClient';
 import QUERY_KEY from '@/features/my-estimates/constants/queryKey';
+import { useRouter } from 'next/navigation';
 
 const movingTypeKoreanMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
@@ -24,7 +26,7 @@ const movingTypeKoreanMap: Record<
 };
 
 const PendingEstimateDetailPageClient = ({ estimateId }: { estimateId: string }) => {
-  const stroke = <div className="h-[1px] w-full bg-[#F2F2F2]" />;
+  const router = useRouter();
 
   const { data: pendingEstimateDetail } = useGetPendingEstimateDetailQuery({ estimateId });
 
@@ -33,6 +35,18 @@ const PendingEstimateDetailPageClient = ({ estimateId }: { estimateId: string })
 
   const { mutate: addFavoriteDriver } = useFavoriteMutation();
   const { mutate: deleteFavoriteDriver } = useDeleteFavoriteMutation();
+  const { mutate: confirmEstimate } = useConfirmEstimateMutation();
+
+  const handleConfirmEstimate = () => {
+    confirmEstimate(
+      { estimateId },
+      {
+        onSuccess: () => {
+          router.push('/user/my/estimates/received');
+        },
+      },
+    );
+  };
 
   const handleLikeClick = ({ driverId, isLiked }: { driverId: string; isLiked: boolean }) => {
     if (isLiked) {
@@ -53,6 +67,8 @@ const PendingEstimateDetailPageClient = ({ estimateId }: { estimateId: string })
       });
     }
   };
+
+  const stroke = <div className="h-[1px] w-full bg-[#F2F2F2]" />;
 
   /*
   TODO: movingDate 에 시간까지 포함
@@ -102,6 +118,7 @@ const PendingEstimateDetailPageClient = ({ estimateId }: { estimateId: string })
         </div>
         <EstimateRequestButtonWrapper
           isLiked={driverData?.isFavorite ?? false}
+          onConfirmClick={handleConfirmEstimate}
           onLikeClick={() =>
             handleLikeClick({
               driverId: driverData?.id ?? '',
@@ -109,7 +126,10 @@ const PendingEstimateDetailPageClient = ({ estimateId }: { estimateId: string })
             })
           }
         />
-        <EstimateConfirmPopup price={pendingEstimateDetail?.price ?? 0} />
+        <EstimateConfirmPopup
+          price={pendingEstimateDetail?.price ?? 0}
+          onConfirmClick={handleConfirmEstimate}
+        />
       </div>
     </div>
   );
