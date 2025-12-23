@@ -19,8 +19,19 @@ export interface UserResponse {
   updatedAt: Date | string;
 }
 
-// 로그인,회원가입 응답
-export interface AuthResponse {
+// 로그인 응답 데이터
+export interface LoginData {
   user: UserResponse;
+  accessToken: string;
+}
+
+// 회원가입 응답 데이터
+export interface SignupData {
+  user: UserResponse;
+  accessToken: string;
+}
+
+// 토큰 갱신 응답 데이터
+export interface RefreshData {
   accessToken: string;
 }

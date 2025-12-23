@@ -1,4 +1,4 @@
-import type { UserType, AuthResponse } from '@/shared/types/user';
+import type { UserType, LoginData, SignupData } from '@/shared/types/user';
 
 // ===== 회원가입 타입 =====
 
@@ -40,7 +40,7 @@ export interface UserSignupRequest extends SignupRequest {
 }
 
 // 회원가입 응답
-export type SignupResponse = AuthResponse;
+export type SignupResponse = SignupData;
 
 // ===== 로그인 타입 =====
 
@@ -58,7 +58,7 @@ export interface LoginRequest {
 }
 
 // 로그인 응답
-export type LoginResponse = AuthResponse;
+export type LoginResponse = LoginData;
 
 // UserType export
 export type { UserType };
