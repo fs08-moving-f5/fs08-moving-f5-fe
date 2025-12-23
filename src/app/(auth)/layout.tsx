@@ -1,4 +1,4 @@
-import GNB from '@/shared/ui/gnb';
+import { LoginedGuard } from '@/shared/lib/guard';
 
 export default function Layout({
   children,
@@ -7,8 +7,7 @@ export default function Layout({
 }>) {
   return (
     <>
-      <GNB />
-      {children}
+      <LoginedGuard>{children}</LoginedGuard>
     </>
   );
 }

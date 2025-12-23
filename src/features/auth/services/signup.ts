@@ -10,7 +10,7 @@ import { useAuthStore } from '@/shared/store/authStore';
  */
 export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
   try {
-    const response = await api.post<SignupResponse>('api/auth/signup', data);
+    const response = await api.post<SignupResponse>('auth/signup', data);
     const { user, accessToken } = response.data;
 
     useAuthStore.getState().setAuth(user, accessToken);
