@@ -1,3 +1,5 @@
+'use client';
+
 import PendingEstimateDetailHeader from '@/features/my-estimates/ui/detailHeader';
 import PendingEstimateDriverInfo from '@/features/my-estimates/ui/driverInfo';
 import PendingEstimateInfo, {
