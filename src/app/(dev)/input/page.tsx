@@ -30,6 +30,7 @@ export default function Test({}) {
         onChange={handleInputChange(setInputValue)}
       />
       <SearchBar onSubmit={undefined} />
+      <SearchBar widthFull={true} onSubmit={undefined} />
       <TextArea value={textareaValue2} onChange={handleTextAreaChange(setTextareaValue2)} />
     </div>
   );
