@@ -4,6 +4,8 @@ import {
   useDeleteFavoriteMutation,
   useFavoriteMutation,
 } from '../../hooks/mutations/useFavoriteMutation';
+import { queryClient } from '@/shared/lib/queryClient';
+import QUERY_KEY from '../../constants/queryKey';
 
 import type { PendingEstimate } from '../../services/estimate.service';
 
@@ -30,9 +32,17 @@ const PendingCardContainer = ({
 
   const handleLikeClick = ({ driverId, isLiked }: { driverId: string; isLiked: boolean }) => {
     if (isLiked) {
-      deleteFavoriteDriver(driverId);
+      deleteFavoriteDriver(driverId, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PENDING_ESTIMATES] });
+        },
+      });
     } else {
-      addFavoriteDriver(driverId);
+      addFavoriteDriver(driverId, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PENDING_ESTIMATES] });
+        },
+      });
     }
   };
 

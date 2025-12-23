@@ -2289,6 +2289,11 @@ export interface components {
                  * @example 홍길동
                  */
                 name?: string;
+                /**
+                 * @description 찜하기 여부
+                 * @example true
+                 */
+                isFavorite?: boolean;
                 /** @description 드라이버 프로필 정보 */
                 driverProfile?: components["schemas"]["DriverProfile"] | null;
             };
@@ -2356,6 +2361,11 @@ export interface components {
                  * @example 홍길동
                  */
                 name?: string;
+                /**
+                 * @description 찜하기 여부
+                 * @example true
+                 */
+                isFavorite?: boolean;
                 /** @description 드라이버 프로필 정보 */
                 driverProfile?: components["schemas"]["DriverProfile"] | null;
             } | null;

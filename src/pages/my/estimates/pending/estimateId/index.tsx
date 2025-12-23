@@ -7,6 +7,12 @@ import EstimateConfirmPopup from '@/features/my-estimates/ui/estimateInfo/Estima
 import { useGetPendingEstimateDetailQuery } from '@/features/my-estimates/hooks/queries/useEstimateQueries';
 import { formatDateWithPeriod, formatDateWithWeekday } from '@/shared/lib/day';
 import IconWrapper from '@/features/my-estimates/ui/estimateInfo/IconWrapper';
+import {
+  useDeleteFavoriteMutation,
+  useFavoriteMutation,
+} from '@/features/my-estimates/hooks/mutations/useFavoriteMutation';
+import { queryClient } from '@/shared/lib/queryClient';
+import QUERY_KEY from '@/features/my-estimates/constants/queryKey';
 
 const movingTypeKoreanMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
@@ -24,6 +30,29 @@ const PendingEstimateDetailPageClient = ({ estimateId }: { estimateId: string })
 
   const estimateReqData = pendingEstimateDetail?.estimateRequest;
   const driverData = pendingEstimateDetail?.driver;
+
+  const { mutate: addFavoriteDriver } = useFavoriteMutation();
+  const { mutate: deleteFavoriteDriver } = useDeleteFavoriteMutation();
+
+  const handleLikeClick = ({ driverId, isLiked }: { driverId: string; isLiked: boolean }) => {
+    if (isLiked) {
+      deleteFavoriteDriver(driverId, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY.PENDING_ESTIMATE_DETAIL, estimateId],
+          });
+        },
+      });
+    } else {
+      addFavoriteDriver(driverId, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY.PENDING_ESTIMATE_DETAIL, estimateId],
+          });
+        },
+      });
+    }
+  };
 
   /*
   TODO: movingDate 에 시간까지 포함
@@ -48,6 +77,13 @@ const PendingEstimateDetailPageClient = ({ estimateId }: { estimateId: string })
             career={driverData?.driverProfile?.career ?? ''}
             moveCount={driverData?.driverProfile?.confirmedEstimateCount ?? 0}
             reviewCount={1}
+            isLiked={driverData?.isFavorite ?? false}
+            onLikeClick={() =>
+              handleLikeClick({
+                driverId: driverData?.id ?? '',
+                isLiked: driverData?.isFavorite ?? false,
+              })
+            }
           />
 
           <PendingEstimateInfo
@@ -64,7 +100,15 @@ const PendingEstimateDetailPageClient = ({ estimateId }: { estimateId: string })
           <div className="text-black-400 text-base leading-8 font-semibold">견적서 공유하기</div>
           <IconWrapper />
         </div>
-        <EstimateRequestButtonWrapper />
+        <EstimateRequestButtonWrapper
+          isLiked={driverData?.isFavorite ?? false}
+          onLikeClick={() =>
+            handleLikeClick({
+              driverId: driverData?.id ?? '',
+              isLiked: driverData?.isFavorite ?? false,
+            })
+          }
+        />
         <EstimateConfirmPopup price={pendingEstimateDetail?.price ?? 0} />
       </div>
     </div>

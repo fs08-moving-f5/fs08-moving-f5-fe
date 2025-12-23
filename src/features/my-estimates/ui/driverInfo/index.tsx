@@ -23,6 +23,8 @@ const PendingEstimateDriverInfo = ({
   career,
   moveCount,
   reviewCount,
+  isLiked,
+  onLikeClick,
 }: PendingDetailDriverInfoProps) => {
   const stroke = <div className="h-[1px] w-full bg-[#F2F2F2]" />;
 
@@ -56,7 +58,14 @@ const PendingEstimateDriverInfo = ({
             </div>
             <div className="flex items-center gap-1">
               <div className="text-2lg font-medium text-gray-500">{favoriteCount}</div>
-              <Image src="/icons/like-empty.svg" alt="like-empty" width={24} height={24} />
+              <button type="button" className="cursor-pointer" onClick={onLikeClick}>
+                <Image
+                  src={isLiked ? '/icons/like-on.svg' : '/icons/like-off.svg'}
+                  alt="like-icon"
+                  width={24}
+                  height={24}
+                />
+              </button>
             </div>
           </div>
           <div className="flex items-center gap-2">

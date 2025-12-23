@@ -9,6 +9,8 @@ export interface PendingDetailDriverInfoProps {
   career: string;
   moveCount: number;
   reviewCount: number;
+  isLiked: boolean;
+  onLikeClick: () => void;
 }
 
 export interface PendingDetailEstimatePriceInfoProps {
