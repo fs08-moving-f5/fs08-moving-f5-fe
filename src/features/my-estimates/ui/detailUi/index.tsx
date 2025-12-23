@@ -1,5 +1,6 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import PendingEstimateDetailHeader from '@/features/my-estimates/ui/detailHeader';
 import PendingEstimateDriverInfo from '@/features/my-estimates/ui/driverInfo';
 import PendingEstimateInfo, {
@@ -14,7 +15,6 @@ import {
   useConfirmEstimateMutation,
   useFavoriteMutation,
 } from '@/features/my-estimates/hooks/mutations/useFavoriteMutation';
-import { queryClient } from '@/shared/lib/queryClient';
 import QUERY_KEY from '@/features/my-estimates/constants/queryKey';
 import { useRouter } from 'next/navigation';
 
@@ -29,6 +29,7 @@ const movingTypeKoreanMap: Record<
 
 const EstimateDetailUi = ({ estimateId }: { estimateId: string }) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { data: pendingEstimateDetail } = useGetPendingEstimateDetailQuery({ estimateId });
 
@@ -57,6 +58,9 @@ const EstimateDetailUi = ({ estimateId }: { estimateId: string }) => {
           queryClient.invalidateQueries({
             queryKey: QUERY_KEY.PENDING_ESTIMATE,
           });
+          queryClient.invalidateQueries({
+            queryKey: QUERY_KEY.PENDING_ESTIMATE_DETAIL(estimateId),
+          });
         },
       });
     } else {
@@ -64,6 +68,9 @@ const EstimateDetailUi = ({ estimateId }: { estimateId: string }) => {
         onSuccess: () => {
           queryClient.invalidateQueries({
             queryKey: QUERY_KEY.PENDING_ESTIMATE,
+          });
+          queryClient.invalidateQueries({
+            queryKey: QUERY_KEY.PENDING_ESTIMATE_DETAIL(estimateId),
           });
         },
       });

@@ -16,8 +16,8 @@ const movingTypeMap: Record<string, string> = {
 const PendingEstimatesPageClient = () => {
   const { data: pendingEstimates } = useGetPendingEstimatesQuery();
 
-  const estimateRequestData = pendingEstimates?.[0]?.estimateRequest;
-  const estimateData = pendingEstimates?.[0]?.estimates;
+  const estimateRequestData = pendingEstimates;
+  const estimateData = pendingEstimates?.estimates;
 
   const formattedCreatedAt = formatDateOnlyDate(estimateRequestData?.createdAt ?? '');
   const formattedMovingDate = formatDateWithWeekday(estimateRequestData?.movingDate ?? '');
