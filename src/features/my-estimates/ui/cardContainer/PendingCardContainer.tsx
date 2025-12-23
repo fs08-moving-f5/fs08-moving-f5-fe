@@ -1,13 +1,14 @@
+'use client';
+
 import { useRouter } from 'next/navigation';
 import { EstimateWait } from '@/shared/ui/card';
 import {
   useDeleteFavoriteMutation,
   useFavoriteMutation,
-} from '../../hooks/mutations/useFavoriteMutation';
+} from '@/features/my-estimates/hooks/mutations/useFavoriteMutation';
 import { queryClient } from '@/shared/lib/queryClient';
-import QUERY_KEY from '../../constants/queryKey';
-
-import type { PendingEstimate } from '../../services/estimate.service';
+import QUERY_KEY from '@/features/my-estimates/constants/queryKey';
+import type { PendingEstimate } from '@/features/my-estimates/services/estimate.service';
 
 const movingTypeMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',

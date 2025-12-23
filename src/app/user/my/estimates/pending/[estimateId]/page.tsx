@@ -1,6 +1,6 @@
 'use client';
 
-import PendingEstimateDetailPageClient from '@/pages/my/estimates/pending/estimateId';
+import PendingEstimateDetailPageClient from '@/views/my/estimates/pending/estimateId';
 import { notFound, useParams } from 'next/navigation';
 
 const PendingEstimateDetailPage = () => {
