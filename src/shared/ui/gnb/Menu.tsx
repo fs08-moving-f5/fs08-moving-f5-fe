@@ -18,12 +18,12 @@ const menuByGuest = [
   {
     id: 1,
     label: '기사님 찾기',
-    href: '/',
+    href: '/drivers',
   },
   {
     id: 2,
     label: '로그인',
-    href: '/',
+    href: '/login/user',
   },
 ];
 

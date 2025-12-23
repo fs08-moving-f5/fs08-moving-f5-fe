@@ -15,29 +15,29 @@ const menuByRole = {
     {
       id: 1,
       label: '받은 요청',
-      href: '/',
+      href: '/driver/my/requests',
     },
     {
       id: 2,
       label: '내 견적 관리',
-      href: '/',
+      href: '/driver/my/requests/confirmed',
     },
   ],
   user: [
     {
       id: 1,
       label: '견적 요청',
-      href: '/',
+      href: '/user/estimates/request',
     },
     {
       id: 2,
       label: '기사님 찾기',
-      href: '/',
+      href: '/user/drivers',
     },
     {
       id: 3,
       label: '내 견적 관리',
-      href: '/',
+      href: '/user/my/estimates/pending',
     },
   ],
 };
