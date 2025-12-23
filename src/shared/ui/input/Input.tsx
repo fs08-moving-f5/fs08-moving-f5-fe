@@ -55,6 +55,7 @@ export default function Input({
         />
         {type === 'password' && (
           <button
+            type="button"
             onClick={handleClickEye}
             className="absolute right-[14px] h-[24px] w-[24px] cursor-pointer"
           >
