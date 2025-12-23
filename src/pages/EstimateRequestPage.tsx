@@ -18,8 +18,9 @@ export default function EstimateRequestPage() {
   const [progress, setProgress] = useState(0);
 
   return (
-    <div className="h-full min-h-[100vh] w-full bg-white">
+    <div className="h-full min-h-[100vh] w-full bg-white select-none">
       <GNB />
+      {/* pc, 태블릿 스타일 */}
       <main className="mobile:hidden relative flex h-full w-full items-center justify-center bg-[var(--color-bg-100)] pb-[100px]">
         <div className="tab:mt-[37px] tab:mb-[37px] mt-[40px] mb-[76px] rounded-[40px] bg-white p-[79px_40px_40px_40px] 2xl:p-[89px_47px_107px_47px]">
           <div className="tab:w-[700px] tab:gap-[64px] flex h-fit w-[800px] flex-col gap-[80px] leading-none">
@@ -69,6 +70,7 @@ export default function EstimateRequestPage() {
           </Button>
         </div>
       </main>
+      {/* 모바일 스타일 */}
       <main className="mobile:flex flex hidden h-full w-full flex-col items-center justify-center bg-white px-[24px] py-[36px]">
         <div className="flex flex-col items-center justify-center gap-[8px]">
           <ul className="flex h-full w-fit items-center gap-[8px]">
@@ -84,7 +86,7 @@ export default function EstimateRequestPage() {
           </ul>
           <div className="flex flex-col items-center justify-center">
             <span className="w-fit text-[24px] leading-[32px] font-[700]">
-              {`${'이사 유형'}을 선택해주세요`}
+              {`${['이사 유형', '이사 예정일', '이사 지역'][progress]}을 선택해주세요`}
             </span>
             <span className="w-fit text-[16px] leading-[26px] font-[400]">
               {'견적을 요청하면 최대 5개의 견적을 받을 수 있어요 :)'}
