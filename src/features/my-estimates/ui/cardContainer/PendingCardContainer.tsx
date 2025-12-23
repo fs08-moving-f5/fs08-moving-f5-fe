@@ -34,13 +34,13 @@ const PendingCardContainer = ({
     if (isLiked) {
       deleteFavoriteDriver(driverId, {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PENDING_ESTIMATES] });
+          queryClient.invalidateQueries({ queryKey: QUERY_KEY.PENDING_ESTIMATE });
         },
       });
     } else {
       addFavoriteDriver(driverId, {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PENDING_ESTIMATES] });
+          queryClient.invalidateQueries({ queryKey: QUERY_KEY.PENDING_ESTIMATE });
         },
       });
     }

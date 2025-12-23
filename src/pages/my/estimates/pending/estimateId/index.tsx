@@ -53,7 +53,7 @@ const PendingEstimateDetailPageClient = ({ estimateId }: { estimateId: string })
       deleteFavoriteDriver(driverId, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY.PENDING_ESTIMATE_DETAIL, estimateId],
+            queryKey: QUERY_KEY.PENDING_ESTIMATE,
           });
         },
       });
@@ -61,7 +61,7 @@ const PendingEstimateDetailPageClient = ({ estimateId }: { estimateId: string })
       addFavoriteDriver(driverId, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY.PENDING_ESTIMATE_DETAIL, estimateId],
+            queryKey: QUERY_KEY.PENDING_ESTIMATE,
           });
         },
       });
