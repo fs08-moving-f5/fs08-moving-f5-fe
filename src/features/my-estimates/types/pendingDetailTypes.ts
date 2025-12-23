@@ -10,3 +10,12 @@ export interface PendingDetailDriverInfoProps {
   moveCount: number;
   reviewCount: number;
 }
+
+export interface PendingDetailEstimatePriceInfoProps {
+  price: number;
+  requestDate: string;
+  movingType: 'small' | 'home' | 'office';
+  movingDate: string;
+  fromAddress: string;
+  toAddress: string;
+}
