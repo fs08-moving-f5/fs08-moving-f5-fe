@@ -17,6 +17,7 @@ import {
 } from '@/features/my-estimates/hooks/mutations/useFavoriteMutation';
 import QUERY_KEY from '@/features/my-estimates/constants/queryKey';
 import { useRouter } from 'next/navigation';
+import NonConfirmMessage from '../nonConfirmMessage';
 
 const movingTypeKoreanMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
@@ -27,7 +28,13 @@ const movingTypeKoreanMap: Record<
   OFFICE_MOVING: '사무실이사',
 };
 
-const EstimateDetailUi = ({ estimateId }: { estimateId: string }) => {
+const EstimateDetailUi = ({
+  estimateId,
+  type,
+}: {
+  estimateId: string;
+  type: 'pending' | 'received';
+}) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -89,7 +96,7 @@ const EstimateDetailUi = ({ estimateId }: { estimateId: string }) => {
         driverImageUrl={driverData?.driverProfile?.imageUrl ?? '/img/profile.png'}
       />
 
-      <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] tab:flex-col mobile:flex-col tab:gap-8 mobile:gap-8 tab:justify-start mobile:justify-start tab:items-start mobile:items-start flex w-full max-w-[1200px] flex-row items-center justify-between">
+      <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] tab:flex-col mobile:flex-col tab:gap-8 mobile:gap-8 tab:justify-start mobile:justify-start flex w-full max-w-[1200px] flex-row items-start justify-between">
         <div className="tab:w-full mobile:w-full w-[740px]">
           <PendingEstimateDriverInfo
             movingType={estimateReqData?.movingType ?? 'SMALL_MOVING'}
@@ -119,24 +126,28 @@ const EstimateDetailUi = ({ estimateId }: { estimateId: string }) => {
             fromAddress={estimateReqData?.addresses?.[0]?.address ?? ''}
             toAddress={estimateReqData?.addresses?.[1]?.address ?? ''}
           />
+
+          {type === 'received' && pendingEstimateDetail?.status !== 'CONFIRMED' && (
+            <NonConfirmMessage />
+          )}
         </div>
         <div className="tab:block mobile:block hidden w-full">{stroke}</div>
-        <div className="tab:block mobile:block flex hidden w-full flex-col gap-3">
-          <div className="text-black-400 text-base leading-8 font-semibold">견적서 공유하기</div>
-          <IconWrapper />
-        </div>
-        <EstimateRequestButtonWrapper
-          isLiked={driverData?.isFavorite ?? false}
-          onConfirmClick={handleConfirmEstimate}
-          onLikeClick={() =>
-            handleLikeClick({
-              driverId: driverData?.id ?? '',
-              isLiked: driverData?.isFavorite ?? false,
-            })
-          }
-        />
+        <IconWrapper type="mobile" />
+        {type === 'pending' && (
+          <EstimateRequestButtonWrapper
+            isLiked={driverData?.isFavorite ?? false}
+            onConfirmClick={handleConfirmEstimate}
+            onLikeClick={() =>
+              handleLikeClick({
+                driverId: driverData?.id ?? '',
+                isLiked: driverData?.isFavorite ?? false,
+              })
+            }
+          />
+        )}
         <EstimateConfirmPopup
           price={pendingEstimateDetail?.price ?? 0}
+          type={type}
           onConfirmClick={handleConfirmEstimate}
         />
       </div>
