@@ -1,6 +1,8 @@
 export type BackendMovingType = 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
+export type BackendFilter = 'latest' | 'oldest' | 'moving-latest' | 'moving-oldest';
 
 export type FrontMovingType = 'small' | 'home' | 'office';
+export type FrontFilter = 'Latest' | 'Oldest' | 'HighestMovingDate' | 'LowestMovingDate';
 
 export interface EstimateRequestItem {
   id: string;
@@ -28,11 +30,18 @@ export const toMovingInfo = (r: EstimateRequestItem) => ({
 });
 
 // api/driverEstimate
+export interface GetRequestsUIParams {
+  cursor?: string | null;
+  take?: number;
+  movingType?: FrontMovingType;
+  sort?: FrontFilter;
+}
+
 export interface GetRequestsParams {
   cursor?: string | null;
   take?: number;
   movingType?: BackendMovingType;
-  sort?: 'latest' | 'oldest' | 'moving-latest' | 'moving-oldest';
+  sort?: BackendFilter;
 }
 export interface EstimateRequestRaw {
   id: string;

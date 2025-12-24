@@ -1,20 +1,31 @@
 import { apiClient } from '@/shared/api/index';
 import {
-  GetRequestsParams,
+  GetRequestsUIParams,
   EstimateRequestRaw,
   EstimateRequestResponse,
+  FrontFilter,
+  BackendFilter,
 } from '@/features/driver-estimate/types/driverEstimate';
 import { convertDateType1, convertDateType2 } from '@/shared/lib/convertDate';
 import { convertMovingType } from '@/shared/lib/convertMovingType';
 
+const convertSort: Record<FrontFilter, BackendFilter> = {
+  Latest: 'latest',
+  Oldest: 'oldest',
+  HighestMovingDate: 'moving-latest',
+  LowestMovingDate: 'moving-oldest',
+};
+
 export const getRequests = async ({
   cursor,
+  sort,
   ...params
-}: GetRequestsParams): Promise<EstimateRequestResponse> => {
+}: GetRequestsUIParams): Promise<EstimateRequestResponse> => {
   const res = await apiClient
     .get('estimate-request/driver/requests', {
       searchParams: {
         ...params,
+        ...(sort && { sort: convertSort[sort] }),
         ...(cursor && { cursor }),
       },
     })

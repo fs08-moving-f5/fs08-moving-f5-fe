@@ -9,6 +9,12 @@ import {
   rejectEstimate,
 } from '@/features/driver-estimate/services/driverEstimate.service';
 import { useModal } from '@/features/driver-estimate/hooks/useModal';
+import {
+  FrontFilter,
+  EstimateRequestResponse,
+  toMovingInfo,
+  EstimateRequestItem,
+} from '@/features/driver-estimate/types/driverEstimate';
 
 import { ActiveChip } from '@/shared/ui/chip';
 import SearchBar from '@/shared/ui/input/SearchBar';
@@ -17,12 +23,6 @@ import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
 import RequestList from '@/features/driver-estimate/ui/cardContainer/RequestList';
 import ModalQuetRequest from '@/shared/ui/modal/ModalRequest';
 import { showToast } from '@/shared/ui/sonner';
-
-import {
-  EstimateRequestResponse,
-  toMovingInfo,
-  EstimateRequestItem,
-} from '@/features/driver-estimate/types/driverEstimate';
 
 const mockRequests: EstimateRequestItem[] = [
   {
@@ -55,13 +55,28 @@ const sortListObj = {
   // HighestRating: '평점 높은순',
 };
 
+type Filters = {
+  keyword: string;
+  movingTypes: ('small' | 'home' | 'office')[];
+  onlyDesignated: boolean;
+  onlyServiceable: boolean;
+  sort: FrontFilter;
+};
+
 const DriverEstimateRequestPage = () => {
   const [isSmallActive, setIsSmallActive] = useState<boolean>(false);
   const [isHomeActive, setIsHomeActive] = useState<boolean>(false);
   const [isOfficeActive, setIsOfficeActive] = useState<boolean>(false);
-  const [sortValue, setSortValue] = useState<string>('Latest');
   const [comment, setComment] = useState<string>('');
   const [price, setPrice] = useState<number>();
+
+  const [filters, setFilters] = useState({
+    keyword: '',
+    movingTypes: [] as ('small' | 'home' | 'office')[],
+    onlyDesignated: false,
+    onlyServiceable: false,
+    sort: 'Latest',
+  });
 
   const { isOpen, type, selected, openConfirm, openReject, close } = useModal();
 
@@ -72,11 +87,11 @@ const DriverEstimateRequestPage = () => {
     EstimateRequestResponse, // TQueryFnData
     Error, // TError
     InfiniteData<EstimateRequestResponse>, // TData
-    ['requests'], // TQueryKey
+    ['requests', Filters], // TQueryKey
     string | null // TPageParam
   >({
-    queryKey: ['requests'],
-    queryFn: ({ pageParam }) => getRequests({ cursor: pageParam }),
+    queryKey: ['requests', filters],
+    queryFn: ({ pageParam }) => getRequests({ cursor: pageParam, ...filters }),
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
@@ -133,6 +148,16 @@ const DriverEstimateRequestPage = () => {
     }
   };
 
+  // 필터
+  const toggleMovingType = (type: 'small' | 'home' | 'office') => {
+    setFilters((prev) => ({
+      ...prev,
+      movingTypes: prev.movingTypes.includes(type)
+        ? prev.movingTypes.filter((t) => t !== type)
+        : [...prev.movingTypes, type],
+    }));
+  };
+
   return (
     <main className="flex max-w-[1920px] flex-col justify-center">
       <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
@@ -142,8 +167,13 @@ const DriverEstimateRequestPage = () => {
 
         <section className="flex flex-col gap-[40px]">
           <div className="flex flex-col items-start gap-[24px]">
-            <SearchBar />
+            {/* 검색 */}
+            <SearchBar
+              widthFull={true}
+              onSubmit={(value: string) => setFilters((prev) => ({ ...prev, keyword: value }))}
+            />
 
+            {/* 이사 유형 필터 */}
             <div className="flex gap-[12px]">
               <ActiveChip text="소형이사" isActive={isSmallActive} setIsActive={setIsSmallActive} />
               <ActiveChip text="가정이사" isActive={isHomeActive} setIsActive={setIsHomeActive} />
@@ -162,20 +192,39 @@ const DriverEstimateRequestPage = () => {
 
             <div className="flex justify-between text-base font-normal text-[var(--color-black-500)]">
               <div className="flex items-center gap-3">
+                {/* 지정 요청 여부 */}
                 <div className="flex items-center gap-2">
-                  <CheckBox />
+                  <CheckBox
+                    checked={filters.onlyDesignated}
+                    onChange={(checked: boolean) =>
+                      setFilters((prev) => ({ ...prev, onlyDesignated: checked }))
+                    }
+                  />
                   지정 견적 요청
                 </div>
+
+                {/* 서비스 가능 지역 여부 */}
                 <div className="flex items-center gap-2">
-                  <CheckBox />
+                  <CheckBox
+                    checked={filters.onlyServiceable}
+                    onChange={(checked: boolean) =>
+                      setFilters((prev) => ({ ...prev, onlyServiceable: checked }))
+                    }
+                  />
                   서비스 가능 지역
                 </div>
               </div>
-              <DropdownSort listObject={sortListObj} value={sortValue} setValue={setSortValue} />
+
+              {/* 정렬 드롭다운 */}
+              <DropdownSort
+                listObject={sortListObj}
+                value={filters.sort}
+                setValue={(value) => setFilters((prev) => ({ ...prev, sort: value }))}
+              />
             </div>
           </div>
 
-          <div className="flex flex-col gap-[24px]">
+          <div className="flex flex-col gap-[24px] sm:mb-[74px] md:mb-[110px] lg:mb-[83px]">
             <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
               <RequestList
                 requests={requests}

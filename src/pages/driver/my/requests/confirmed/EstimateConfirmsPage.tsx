@@ -9,7 +9,7 @@ const EstimateConfirmsPage = () => {
     <main className="flex max-w-[1920px] flex-col justify-center">
       <Tab />
 
-      <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
+      <section className="mx-auto mt-[10px] w-full max-w-[1200px] sm:mb-[74px] md:mb-[110px] lg:mb-[83px]">
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
           <EstimateClient
             customerName="이고객"

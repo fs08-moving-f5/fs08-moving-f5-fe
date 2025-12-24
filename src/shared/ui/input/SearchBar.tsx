@@ -9,7 +9,7 @@ const deleteIcon_md = '/icons/SearchBar/ic_x_circle_md.svg';
 
 interface SerarchBarProps {
   widthFull?: boolean;
-  onSubmit?: () => void;
+  onSubmit: (value: string) => void;
 }
 
 export default function SearchBar({ widthFull = false, onSubmit }: SerarchBarProps) {
@@ -23,7 +23,7 @@ export default function SearchBar({ widthFull = false, onSubmit }: SerarchBarPro
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit && onSubmit();
+    onSubmit(value.trim());
   };
 
   const divSize = `mobile:h-[52px] min-w-0 w-full h-[64px] ${widthFull ? 'w-full' : 'mobile:max-w-[260px] max-w-[560px]'}`;

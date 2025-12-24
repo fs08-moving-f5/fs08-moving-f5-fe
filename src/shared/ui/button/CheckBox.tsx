@@ -5,15 +5,11 @@ import Image from 'next/image';
 
 interface CheckBoxProps {
   shape?: 'square' | 'circle';
+  checked: boolean;
+  onChange: (checked: boolean) => void;
 }
 
-const CheckBox = ({ shape = 'square' }: CheckBoxProps) => {
-  const [checked, setChecked] = useState<boolean>(true);
-
-  const toggle = () => {
-    setChecked((prev) => !prev);
-  };
-
+const CheckBox = ({ shape = 'square', checked, onChange }: CheckBoxProps) => {
   const bgColor = checked ? 'bg-[var(--color-primary-orange-400)]' : 'bg-transparent';
 
   const borderColor = checked
@@ -28,8 +24,9 @@ const CheckBox = ({ shape = 'square' }: CheckBoxProps) => {
 
   return (
     <button
-      onClick={toggle}
-      className={`flex items-center justify-center border ${borderColor} ${bgColor} ${wrapperSize} ${radius} cursor-pointer transition`}
+      type="button"
+      onClick={() => onChange(!checked)}
+      className={`flex items-center justify-center border ${borderColor} ${bgColor} ${wrapperSize} ${radius} cursor-pointer shadow-md transition`}
     >
       {checked && (
         <Image
