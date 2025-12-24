@@ -2,7 +2,7 @@
 
 import { MovingTypeChip } from '@/shared/ui/chip';
 import DriverInfo from './DriverInfo';
-import { Button } from '@/shared/ui/button';
+import Button from '@/shared/ui/button/Button';
 
 interface EstimateWaitProps {
   driverName: string;

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import DatePicker from '../datepicker/DatePicker';
 
-import { Button } from '../button';
+import Button from '../button/Button';
 const ic_canlendar = '/icons/dropdown/ic_calendar.svg';
 
 const ic_down = '/icons/dropdown/ic_chevron_down_md.svg';

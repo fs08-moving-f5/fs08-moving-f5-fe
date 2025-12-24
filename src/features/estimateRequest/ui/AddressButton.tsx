@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/shared/ui/Button';
+import Button from '@/shared/ui/button/Button';
 import { useState } from 'react';
 import Image from 'next/image';
 import DaumPostcode, { Address } from './DaumPostCode';
