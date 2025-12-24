@@ -11,6 +11,7 @@ import {
 import { useModal } from '@/features/driver-estimate/hooks/useModal';
 import {
   FrontFilter,
+  FrontMovingType,
   EstimateRequestResponse,
   toMovingInfo,
   EstimateRequestItem,
@@ -55,24 +56,21 @@ const sortListObj = {
   // HighestRating: '평점 높은순',
 };
 
-type Filters = {
+export type Filters = {
   keyword: string;
-  movingTypes: ('small' | 'home' | 'office')[];
+  movingTypes: FrontMovingType[];
   onlyDesignated: boolean;
   onlyServiceable: boolean;
   sort: FrontFilter;
 };
 
 const DriverEstimateRequestPage = () => {
-  const [isSmallActive, setIsSmallActive] = useState<boolean>(false);
-  const [isHomeActive, setIsHomeActive] = useState<boolean>(false);
-  const [isOfficeActive, setIsOfficeActive] = useState<boolean>(false);
   const [comment, setComment] = useState<string>('');
   const [price, setPrice] = useState<number>();
 
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<Filters>({
     keyword: '',
-    movingTypes: [] as ('small' | 'home' | 'office')[],
+    movingTypes: [],
     onlyDesignated: false,
     onlyServiceable: false,
     sort: 'Latest',
@@ -148,7 +146,7 @@ const DriverEstimateRequestPage = () => {
     }
   };
 
-  // 필터
+  // 이사 유형 필터
   const toggleMovingType = (type: 'small' | 'home' | 'office') => {
     setFilters((prev) => ({
       ...prev,
@@ -175,12 +173,20 @@ const DriverEstimateRequestPage = () => {
 
             {/* 이사 유형 필터 */}
             <div className="flex gap-[12px]">
-              <ActiveChip text="소형이사" isActive={isSmallActive} setIsActive={setIsSmallActive} />
-              <ActiveChip text="가정이사" isActive={isHomeActive} setIsActive={setIsHomeActive} />
+              <ActiveChip
+                text="소형이사"
+                isActive={filters.movingTypes.includes('small')}
+                setIsActive={() => toggleMovingType('small')}
+              />
+              <ActiveChip
+                text="가정이사"
+                isActive={filters.movingTypes.includes('home')}
+                setIsActive={() => toggleMovingType('home')}
+              />
               <ActiveChip
                 text="사무실이사"
-                isActive={isOfficeActive}
-                setIsActive={setIsOfficeActive}
+                isActive={filters.movingTypes.includes('office')}
+                setIsActive={() => toggleMovingType('office')}
               />
             </div>
           </div>
@@ -195,6 +201,7 @@ const DriverEstimateRequestPage = () => {
                 {/* 지정 요청 여부 */}
                 <div className="flex items-center gap-2">
                   <CheckBox
+                    shape="square"
                     checked={filters.onlyDesignated}
                     onChange={(checked: boolean) =>
                       setFilters((prev) => ({ ...prev, onlyDesignated: checked }))
@@ -206,6 +213,7 @@ const DriverEstimateRequestPage = () => {
                 {/* 서비스 가능 지역 여부 */}
                 <div className="flex items-center gap-2">
                   <CheckBox
+                    shape="square"
                     checked={filters.onlyServiceable}
                     onChange={(checked: boolean) =>
                       setFilters((prev) => ({ ...prev, onlyServiceable: checked }))
@@ -219,7 +227,12 @@ const DriverEstimateRequestPage = () => {
               <DropdownSort
                 listObject={sortListObj}
                 value={filters.sort}
-                setValue={(value) => setFilters((prev) => ({ ...prev, sort: value }))}
+                setValue={(value) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    sort: value as FrontFilter,
+                  }))
+                }
               />
             </div>
           </div>
