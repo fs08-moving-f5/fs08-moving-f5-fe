@@ -21,9 +21,7 @@ export const getUserProfile = async (): Promise<UserProfile> => {
 /**
  * 유저 프로필 생성
  */
-export const createUserProfile = async (
-  data: CreateUserProfileRequest,
-): Promise<UserProfile> => {
+export const createUserProfile = async (data: CreateUserProfileRequest): Promise<UserProfile> => {
   const response = await api.post<UserProfile>('profile/user', data);
   return response.data;
 };
@@ -31,9 +29,7 @@ export const createUserProfile = async (
 /**
  * 유저 프로필 수정
  */
-export const updateUserProfile = async (
-  data: UpdateUserProfileRequest,
-): Promise<UserProfile> => {
+export const updateUserProfile = async (data: UpdateUserProfileRequest): Promise<UserProfile> => {
   const response = await api.patch<UserProfile>('profile/user', data);
   return response.data;
 };

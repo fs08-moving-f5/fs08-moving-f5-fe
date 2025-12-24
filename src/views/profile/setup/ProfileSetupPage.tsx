@@ -50,7 +50,7 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
 
   const [selectedServices, setSelectedServices] = useState<ServiceType[]>([]);
   const [selectedRegions, setSelectedRegions] = useState<RegionType[]>([]);
-  
+
   // 기사님 전용 필드
   const [career, setCareer] = useState('');
   const [shortIntro, setShortIntro] = useState('');
@@ -166,11 +166,11 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
   const isValid = selectedServices.length > 0 && selectedRegions.length > 0;
 
   return (
-    <div className="mx-auto max-w-[1200px] px-6 py-10 tab:px-4 mobile:px-4">
+    <div className="tab:px-4 mobile:px-4 mx-auto max-w-[1200px] px-6 py-10">
       <div className="mx-auto max-w-[744px]">
-        <div className="mb-10 mobile:mb-6">
-          <h1 className="mb-2 text-4xl font-bold mobile:text-2xl">프로필 등록</h1>
-          <p className="text-lg text-gray-500 mobile:text-md">
+        <div className="mobile:mb-6 mb-10">
+          <h1 className="mobile:text-2xl mb-2 text-4xl font-bold">프로필 등록</h1>
+          <p className="mobile:text-md text-lg text-gray-500">
             추가 정보를 입력하여 회원가입을 완료해주세요.
           </p>
         </div>
@@ -181,12 +181,12 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
           </div>
         )}
 
-        <div className="mb-10 mobile:mb-8">
-          <h2 className="mb-4 text-2xl font-bold mobile:text-xl">프로필 이미지</h2>
+        <div className="mobile:mb-8 mb-10">
+          <h2 className="mobile:text-xl mb-4 text-2xl font-bold">프로필 이미지</h2>
           <div className="flex items-center justify-center">
             <label
               htmlFor="profile-image"
-              className="flex h-[160px] w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 transition-colors hover:border-primary-orange-400 mobile:h-[120px] mobile:w-[120px]"
+              className="hover:border-primary-orange-400 mobile:h-[120px] mobile:w-[120px] flex h-[160px] w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 transition-colors"
             >
               {imageUrl ? (
                 <Image
@@ -199,7 +199,7 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
               ) : (
                 <div className="flex flex-col items-center text-gray-400">
                   <svg
-                    className="mb-2 h-12 w-12 mobile:h-10 mobile:w-10"
+                    className="mobile:h-10 mobile:w-10 mb-2 h-12 w-12"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -211,7 +211,7 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
                       d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                     />
                   </svg>
-                  <span className="text-sm mobile:text-xs">이미지 추가</span>
+                  <span className="mobile:text-xs text-sm">이미지 추가</span>
                 </div>
               )}
               <input
@@ -227,7 +227,7 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
 
         {isDriver && (
           <>
-            <div className="mb-10 mobile:mb-8">
+            <div className="mobile:mb-8 mb-10">
               <label className="mobile:text-xl mb-4 block text-2xl font-bold">경력</label>
               <Input
                 name="career"
@@ -240,7 +240,7 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
               <p className="mt-2 text-right text-sm text-gray-400">숫자만 입력 가능</p>
             </div>
 
-            <div className="mb-10 mobile:mb-8">
+            <div className="mobile:mb-8 mb-10">
               <label className="mobile:text-xl mb-4 block text-2xl font-bold">한줄 소개</label>
               <Input
                 name="shortIntro"
@@ -250,19 +250,17 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
                 placeholder="간단한 소개를 입력해주세요 (최소 8자)"
                 errMsg={errors.shortIntro}
               />
-              <p className="mt-2 text-right text-sm text-gray-400">
-                {shortIntro.length}/100
-              </p>
+              <p className="mt-2 text-right text-sm text-gray-400">{shortIntro.length}/100</p>
             </div>
 
-            <div className="mb-10 mobile:mb-8">
-              <h2 className="mb-4 text-2xl font-bold mobile:text-xl">상세 설명</h2>
+            <div className="mobile:mb-8 mb-10">
+              <h2 className="mobile:text-xl mb-4 text-2xl font-bold">상세 설명</h2>
               <textarea
                 value={description}
                 onChange={handleDescriptionChange}
                 placeholder="자세한 소개를 입력해주세요 (최소 10자, 최대 2000자)"
                 maxLength={2000}
-                className={`w-full rounded-lg border px-4 py-3 text-md focus:border-primary-orange-400 focus:outline-none mobile:text-sm ${
+                className={`text-md focus:border-primary-orange-400 mobile:text-sm w-full rounded-lg border px-4 py-3 focus:outline-none ${
                   errors.description ? 'border-[var(--color-error)]' : 'border-gray-300'
                 }`}
                 rows={8}
@@ -274,19 +272,17 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
                   </span>
                 </div>
               )}
-              <p className="mt-2 text-right text-sm text-gray-400">
-                {description.length}/2000
-              </p>
+              <p className="mt-2 text-right text-sm text-gray-400">{description.length}/2000</p>
             </div>
           </>
         )}
 
-        <div className="mb-10 mobile:mb-8">
-          <h2 className="mb-2 text-2xl font-bold mobile:text-xl">이용 서비스</h2>
-          <p className="mb-4 text-md text-gray-500 mobile:text-sm">
+        <div className="mobile:mb-8 mb-10">
+          <h2 className="mobile:text-xl mb-2 text-2xl font-bold">이용 서비스</h2>
+          <p className="text-md mobile:text-sm mb-4 text-gray-500">
             * 이용 서비스는 중복 선택 가능하며, 언제든 수정 가능해요!
           </p>
-          <div className="flex flex-wrap gap-3 mobile:gap-2">
+          <div className="mobile:gap-2 flex flex-wrap gap-3">
             {SERVICES.map((service) => (
               <ActiveChip
                 key={service.key}
@@ -298,12 +294,12 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
           </div>
         </div>
 
-        <div className="mb-10 mobile:mb-8">
-          <h2 className="mb-2 text-2xl font-bold mobile:text-xl">내가 사는 지역</h2>
-          <p className="mb-4 text-md text-gray-500 mobile:text-sm">
+        <div className="mobile:mb-8 mb-10">
+          <h2 className="mobile:text-xl mb-2 text-2xl font-bold">내가 사는 지역</h2>
+          <p className="text-md mobile:text-sm mb-4 text-gray-500">
             **내가 사는 지역은 언제든 수정 가능해요!
           </p>
-          <div className="flex flex-wrap gap-3 mobile:gap-2">
+          <div className="mobile:gap-2 flex flex-wrap gap-3">
             {REGIONS.map((region) => (
               <ActiveChip
                 key={region}
@@ -315,11 +311,8 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
           </div>
         </div>
 
-        <div className="mt-12 mobile:mt-8">
-          <Button
-            onClick={handleSubmit}
-            disabled={!isValid || isLoading}
-          >
+        <div className="mobile:mt-8 mt-12">
+          <Button onClick={handleSubmit} disabled={!isValid || isLoading}>
             {isLoading ? '처리 중...' : '시작하기'}
           </Button>
         </div>
