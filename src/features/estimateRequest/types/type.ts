@@ -1,7 +1,7 @@
 export type MovingType = 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
 
 export interface AddressParams {
-  zonecode: string;
+  zoneCode: string;
   address: string;
   addressEnglish: string;
   sido: string;

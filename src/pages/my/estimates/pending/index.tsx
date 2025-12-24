@@ -16,6 +16,8 @@ const movingTypeMap: Record<string, string> = {
 const PendingEstimatesPageClient = () => {
   const { data: pendingEstimates } = useGetPendingEstimatesQuery();
 
+  if (!Array.isArray(pendingEstimates)) return;
+
   const estimateRequestData = pendingEstimates?.[0]?.estimateRequest;
   const estimateData = pendingEstimates?.[0]?.estimates;
 

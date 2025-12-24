@@ -23,7 +23,15 @@ export default function AddressButton({ type, address, setAddress }: AddressButt
 
   const completeHandler = (data: Address) => {
     const { zonecode, address, addressEnglish, sido, sidoEnglish, sigungu, sigunguEnglish } = data;
-    setAddress({ zonecode, address, addressEnglish, sido, sidoEnglish, sigungu, sigunguEnglish });
+    setAddress({
+      zoneCode: zonecode,
+      address,
+      addressEnglish,
+      sido,
+      sidoEnglish,
+      sigungu,
+      sigunguEnglish,
+    });
   };
 
   const closeHandler = (state: 'FORCE_CLOSE' | 'COMPLETE_CLOSE') => {

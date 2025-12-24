@@ -303,11 +303,12 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * 대기 중인 견적 목록 조회
-     * @description 현재 사용자가 요청한 견적 중에서 상태가 PENDING인 견적 요청 목록을 조회합니다.
-     *     각 견적 요청에는 해당 요청에 대한 모든 PENDING 견적들이 포함됩니다.
+     * 대기 중인 견적 조회
+     * @description 현재 사용자가 요청한 견적 중에서 상태가 PENDING인 견적 요청을 조회합니다.
+     *     대기 중인 견적 요청이 없으면 null을 반환합니다.
+     *     견적 요청이 있으면 해당 요청에 대한 모든 PENDING 견적들이 포함됩니다.
      *     각 견적에는 드라이버 정보, 찜하기 여부, 드라이버의 확정된 견적 수, 찜하기 수, 리뷰 평균 점수가 포함됩니다.
-     *     응답은 EstimateRequest 기준으로 그룹화되어 제공됩니다.
+     *     estimates 필드는 견적이 없을 경우 빈 배열([])로 반환됩니다.
      */
     get: operations['getPendingEstimates'];
     put?: never;
@@ -1238,7 +1239,7 @@ export interface paths {
             movingDate: string;
             from: {
               /** @example 6035 */
-              zonecode: string;
+              zoneCode: string;
               /** @example 서울 강남구 가로수길 5 */
               address: string;
               /** @example 5 Garosu-gil, Gangnam-gu, Seoul, Republic of Korea */
@@ -1254,7 +1255,7 @@ export interface paths {
             };
             to: {
               /** @example 6035 */
-              zonecode: string;
+              zoneCode: string;
               /** @example 서울 강남구 가로수길 5 */
               address: string;
               /** @example 5 Garosu-gil, Gangnam-gu, Seoul, Republic of Korea */
@@ -1426,7 +1427,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/notification/stream': {
+  '/api/notifications/stream': {
     parameters: {
       query?: never;
       header?: never;
@@ -1449,7 +1450,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/notification': {
+  '/api/notifications': {
     parameters: {
       query?: never;
       header?: never;
@@ -1470,7 +1471,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/notification/{id}': {
+  '/api/notifications/{id}': {
     parameters: {
       query?: never;
       header?: never;
@@ -2221,9 +2222,38 @@ export interface components {
       driver?: components['schemas']['Driver'] | null;
     };
     PendingEstimate: {
-      /** @description 견적 요청 정보 */
-      estimateRequest?: components['schemas']['EstimateRequestInfo'];
-      /** @description 해당 견적 요청에 대한 견적 목록 */
+      /**
+       * Format: uuid
+       * @description 견적 요청 ID
+       * @example 123e4567-e89b-12d3-a456-426614174001
+       */
+      id?: string;
+      /**
+       * @description 이사 유형
+       * @example HOME_MOVING
+       * @enum {string}
+       */
+      movingType?: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
+      /**
+       * Format: date-time
+       * @description 이사 예정일
+       * @example 2024-02-01T09:00:00Z
+       */
+      movingDate?: string;
+      /**
+       * @description 지정 기사 여부
+       * @example false
+       */
+      isDesignated?: boolean;
+      /**
+       * Format: date-time
+       * @description 생성 일시
+       * @example 2024-01-15T10:00:00Z
+       */
+      createdAt?: string;
+      /** @description 주소 정보 목록 */
+      addresses?: components['schemas']['AddressInfo'][];
+      /** @description 해당 견적 요청에 대한 견적 목록 (빈 배열일 수 있음) */
       estimates?: components['schemas']['PendingEstimateItem'][];
     };
     ReceivedEstimate: {
@@ -2289,6 +2319,16 @@ export interface components {
          * @example 홍길동
          */
         name?: string;
+        /**
+         * @description 찜하기 여부
+         * @example true
+         */
+        isFavorite?: boolean;
+        /**
+         * @description 해당 드라이버를 찜한 사용자 수
+         * @example 45
+         */
+        favoriteDriverCount?: number;
         /** @description 드라이버 프로필 정보 */
         driverProfile?: components['schemas']['DriverProfile'] | null;
       };
@@ -2330,6 +2370,11 @@ export interface components {
         movingDate?: string;
         /** @description 지정 기사 여부 */
         isDesignated?: boolean;
+        /**
+         * Format: date-time
+         * @description 생성 일시
+         */
+        createdAt?: string;
         /** @description 주소 정보 목록 */
         addresses?: {
           /** Format: uuid */
@@ -2351,6 +2396,16 @@ export interface components {
          * @example 홍길동
          */
         name?: string;
+        /**
+         * @description 찜하기 여부
+         * @example true
+         */
+        isFavorite?: boolean;
+        /**
+         * @description 해당 드라이버를 찜한 사용자 수
+         * @example 45
+         */
+        favoriteDriverCount?: number;
         /** @description 드라이버 프로필 정보 */
         driverProfile?: components['schemas']['DriverProfile'] | null;
       } | null;
@@ -2391,6 +2446,20 @@ export interface components {
        * @example 2024-01-15T11:00:00Z
        */
       updatedAt?: string;
+      /** @description 드라이버 정보 */
+      driver?: {
+        /**
+         * Format: uuid
+         * @description 드라이버 ID
+         * @example 123e4567-e89b-12d3-a456-426614174005
+         */
+        id?: string;
+        /**
+         * @description 드라이버 이름
+         * @example 홍길동
+         */
+        name?: string;
+      };
     };
     ApiResponse: {
       /**
@@ -2686,7 +2755,7 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['ApiResponse'] & {
-            data?: components['schemas']['PendingEstimate'][];
+            data?: components['schemas']['PendingEstimate'] | null;
           };
         };
       };
