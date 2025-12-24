@@ -1,13 +1,21 @@
 import { apiClient } from '@/shared/api/index';
+import type { paths, components } from '@/shared/types/openapi';
+
 import {
   GetRequestsUIParams,
   EstimateRequestRaw,
   EstimateRequestResponse,
   FrontFilter,
   BackendFilter,
+  SendEstimateParams,
+  RejectEstimateParams,
+  EstimateListResponse,
+  EstimateConfirmRaw,
+  GetConfirmEstimatesParams,
+  EstimateRejectRaw,
 } from '@/features/driver-estimate/types/driverEstimate';
 import { convertDateType1, convertDateType2 } from '@/shared/lib/convertDate';
-import { convertMovingType } from '@/shared/lib/convertMovingType';
+import { convertMovingType, convertMovingTypeToBackend } from '@/shared/lib/convertMovingType';
 
 const convertSort: Record<FrontFilter, BackendFilter> = {
   Latest: 'latest',
@@ -16,9 +24,11 @@ const convertSort: Record<FrontFilter, BackendFilter> = {
   LowestMovingDate: 'moving-oldest',
 };
 
+// 받은 요청 목록 조회
 export const getRequests = async ({
   cursor,
   sort,
+  movingType,
   ...params
 }: GetRequestsUIParams): Promise<EstimateRequestResponse> => {
   const res = await apiClient
@@ -26,6 +36,7 @@ export const getRequests = async ({
       searchParams: {
         ...params,
         ...(sort && { sort: convertSort[sort] }),
+        ...(movingType && { movingType: convertMovingTypeToBackend(movingType) }),
         ...(cursor && { cursor }),
       },
     })
@@ -39,7 +50,7 @@ export const getRequests = async ({
 
       return {
         id: r.id,
-        customerName: r.name,
+        customerName: r.user.name,
         movingType: convertMovingType(r.movingType),
         pickedDriver: r.isDesignated,
         pickupAddress: r.from ? `${r.from.sido} ${r.from.sigungu}` : '',
@@ -52,25 +63,76 @@ export const getRequests = async ({
   };
 };
 
-export interface SendEstimateParams {
-  estimateRequestId: string;
-  price: number;
-  comment: string;
-}
-
-export interface RejectEstimateParams {
-  estimateRequestId: string;
-  rejectReason: string;
-}
-
+// 견적 생성
 export const sendEstimate = async ({ estimateRequestId, price, comment }: SendEstimateParams) => {
   return apiClient.post(`estimate-request/driver/requests/${estimateRequestId}/create`, {
-    json: { price, comment },
+    json: { estimateRequestId, price, comment },
   });
 };
 
+// 견적 반려
 export const rejectEstimate = async ({ estimateRequestId, rejectReason }: RejectEstimateParams) => {
   return apiClient.post(`estimate-request/driver/requests/${estimateRequestId}/reject`, {
-    json: { rejectReason },
+    json: { estimateRequestId, rejectReason },
   });
+};
+
+// 확정 견적 목록 조회
+export const getConfirmEstimates = async ({
+  cursor,
+}: GetConfirmEstimatesParams): Promise<EstimateListResponse> => {
+  const res = await apiClient
+    .get('estimate-request/driver/confirms', {
+      searchParams: {
+        ...(cursor && { cursor }),
+      },
+    })
+    .json<{ data: EstimateConfirmRaw[] }>();
+
+  const list = res.data ?? [];
+
+  return {
+    data: list.map((r) => ({
+      id: r.id,
+      customerName: r.user.name,
+      movingType: convertMovingType(r.movingType),
+      pickedDriver: r.isDesignated,
+      pickupAddress: r.from ? `${r.from.sido} ${r.from.sigungu}` : '',
+      dropoffAddress: r.to ? `${r.to.sido} ${r.to.sigungu}` : '',
+      movingDate: convertDateType1(new Date(r.movingDate)),
+      estimatePrice: r.price,
+      isConfirmed: r.status === 'CONFIRMED',
+      status: r.type,
+    })),
+    nextCursor: list.length ? list[list.length - 1].id : null,
+  };
+};
+
+// 반려 견적 목록 조회
+export const getRejectEstimates = async ({
+  cursor,
+}: {
+  cursor: string | null;
+}): Promise<EstimateListResponse> => {
+  const res = await apiClient
+    .get('estimate-request/driver/rejects', {
+      searchParams: { ...(cursor && { cursor }) },
+    })
+    .json<{ data: EstimateRejectRaw[] }>();
+
+  const list = res.data ?? [];
+
+  return {
+    data: list.map((r) => ({
+      id: r.id,
+      customerName: r.user.name,
+      movingType: convertMovingType(r.movingType),
+      pickedDriver: r.isDesignated,
+      pickupAddress: r.from ? `${r.from.sido} ${r.from.sigungu}` : '',
+      dropoffAddress: r.to ? `${r.to.sido} ${r.to.sigungu}` : '',
+      movingDate: convertDateType1(new Date(r.movingDate)),
+      status: r.type,
+    })),
+    nextCursor: list.length ? list[list.length - 1].id : null,
+  };
 };

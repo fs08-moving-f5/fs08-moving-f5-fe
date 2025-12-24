@@ -31,31 +31,38 @@ export const toMovingInfo = (r: EstimateRequestItem) => ({
 });
 
 // 확정 견적 & 반려
-type BaseEstimateClientProps = {
+export interface EstimateListPageProps {
+  queryKey: readonly unknown[];
+  queryFn: (params: { cursor: string | null }) => Promise<EstimateListResponse>;
+  emptyType: 'confirm' | 'reject';
+  status: 'completed' | 'rejected';
+}
+
+interface BaseEstimateClientProps {
+  id: string;
   customerName: string;
   pickupAddress: string;
   dropoffAddress: string;
   movingDate: string;
-  estimatePrice: number;
 
   movingType?: FrontMovingType;
   pickedDriver?: boolean;
   isConfirmed?: boolean;
-};
+}
 
-type CompletedEstimateProps = {
+interface CompletedEstimateProps {
   status: 'completed';
-  onDetailClick: () => void;
-};
+  estimatePrice: number;
+}
 
-type RejectedEstimateProps = {
+interface RejectedEstimateProps {
   status: 'rejected';
-};
+}
 
-type NormalEstimateProps = {
-  status?: undefined;
-  onDetailClick?: undefined;
-};
+interface NormalEstimateProps {
+  status: 'normal';
+  estimatePrice: number;
+}
 
 export type EstimateClientProps =
   | (BaseEstimateClientProps & CompletedEstimateProps)
@@ -83,7 +90,10 @@ export interface GetRequestsParams {
 }
 export interface EstimateRequestRaw {
   id: string;
-  name: string;
+  user: {
+    id: string;
+    name: string;
+  };
   movingType: BackendMovingType;
   movingDate: string;
   isDesignated: boolean;
@@ -91,4 +101,53 @@ export interface EstimateRequestRaw {
   updatedAt?: string | null;
   from: { sido: string; sigungu: string } | null;
   to: { sido: string; sigungu: string } | null;
+}
+
+export interface SendEstimateParams {
+  estimateRequestId: string;
+  price: number;
+  comment: string;
+}
+
+export interface RejectEstimateParams {
+  estimateRequestId: string;
+  rejectReason: string;
+}
+
+export interface GetConfirmEstimatesParams {
+  cursor?: string | null;
+}
+
+export interface EstimateConfirmRaw {
+  id: string;
+  user: {
+    id: string;
+    name: string;
+  };
+  movingType: BackendMovingType;
+  movingDate: string;
+  isDesignated: boolean;
+  createdAt: string;
+  updatedAt?: string | null;
+  from: { sido: string; sigungu: string } | null;
+  to: { sido: string; sigungu: string } | null;
+  price: number;
+  status: 'PENDING' | 'CONFIRMED' | 'REJECTED' | 'CANCELLED';
+  type: 'completed' | 'normal';
+}
+
+export interface EstimateRejectRaw {
+  id: string;
+  user: {
+    id: string;
+    name: string;
+  };
+  movingType: BackendMovingType;
+  movingDate: string;
+  isDesignated: boolean;
+  createdAt: string;
+  updatedAt?: string | null;
+  from: { sido: string; sigungu: string } | null;
+  to: { sido: string; sigungu: string } | null;
+  type: 'rejected';
 }
