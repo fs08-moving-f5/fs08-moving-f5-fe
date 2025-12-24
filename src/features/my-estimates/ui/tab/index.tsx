@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { PendingEstimatesTabProps } from '@/features/my-estimates/types/pendingTypes';
 
 const PendingEstimatesTab = ({ activeTab }: PendingEstimatesTabProps) => {
-  const tabStyles = 'py-4 flex items-center justify-center cursor-pointer';
-  const activeTabStyles =
-    'border-b-2 border-solid border-black-500 text-xl font-semibold text-black-500';
-  const inactiveTabStyles = 'text-xl font-semibold text-gray-400';
+  const tabStyles =
+    'py-4 flex items-center justify-center cursor-pointer text-xl font-semibold tab:text-md mobile:text-md';
+  const activeTabStyles = 'border-b-2 border-solid border-black-500 text-black-500';
+  const inactiveTabStyles = 'text-gray-400';
 
   const tab = {
     pending: {

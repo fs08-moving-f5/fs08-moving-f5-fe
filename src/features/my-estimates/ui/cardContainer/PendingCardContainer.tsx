@@ -1,12 +1,12 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 import { EstimateWait } from '@/shared/ui/card';
 import {
   useDeleteFavoriteMutation,
   useFavoriteMutation,
 } from '@/features/my-estimates/hooks/mutations/useFavoriteMutation';
-import { queryClient } from '@/shared/lib/queryClient';
 import QUERY_KEY from '@/features/my-estimates/constants/queryKey';
 import type { PendingEstimate } from '@/features/my-estimates/services/estimate.service';
 
@@ -27,6 +27,7 @@ const PendingCardContainer = ({
   movingType: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
 }) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { mutate: addFavoriteDriver } = useFavoriteMutation();
   const { mutate: deleteFavoriteDriver } = useDeleteFavoriteMutation();
@@ -68,7 +69,7 @@ const PendingCardContainer = ({
               movingType={movingTypeMap[movingType] ?? undefined}
               pickedDriver={estimate?.isDesignated ?? false}
               isLiked={estimate?.driver?.isFavorite ?? false}
-              likeCount={estimate?.driver?.favoriteDriverCount ?? 0}
+              likeCount={estimate?.driver?.driverProfile?.favoriteDriverCount ?? 0}
               estimatePrice={estimate?.price ?? 0}
               onLikeClick={() =>
                 handleLikeClick({
