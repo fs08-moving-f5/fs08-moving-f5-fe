@@ -1,5 +1,7 @@
+import PendingEstimatesPageClient from '@/pages/my/estimates/pending';
+
 const PendingEstimatesPage = () => {
-  return <div>PendingEstimatesPage</div>;
+  return <PendingEstimatesPageClient />;
 };
 
 export default PendingEstimatesPage;

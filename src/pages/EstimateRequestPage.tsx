@@ -3,11 +3,11 @@
 import { AddressParams, MovingType } from '@/features/estimateRequest/types/type';
 import AddressButton from '@/features/estimateRequest/ui/AddressButton';
 import MovingTypeSelect from '@/features/estimateRequest/ui/movingTypeButton';
-import { Button } from '@/shared/ui/Button';
+import Button from '@/shared/ui/button/Button';
 import DatePicker from '@/shared/ui/datepicker/DatePicker';
 import DropdownDatePicker from '@/shared/ui/dropdown/DropdownDatePicker';
 import GNB from '@/shared/ui/gnb';
-import { use, useState } from 'react';
+import { useState } from 'react';
 
 export default function EstimateRequestPage() {
   const [movingType, setMovingType] = useState<MovingType | null>(null);
@@ -16,6 +16,8 @@ export default function EstimateRequestPage() {
   const [to, setTo] = useState<AddressParams>();
 
   const [progress, setProgress] = useState(0);
+
+  const handleRequset = () => {};
 
   return (
     <div className="h-full min-h-[100vh] w-full bg-white select-none">

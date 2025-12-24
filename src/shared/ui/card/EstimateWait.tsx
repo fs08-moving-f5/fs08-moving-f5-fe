@@ -2,10 +2,11 @@
 
 import { MovingTypeChip } from '@/shared/ui/chip';
 import DriverInfo from './DriverInfo';
-import Button from '@/shared/ui/Button/Button';
+import { Button } from '@/shared/ui/button';
 
 interface EstimateWaitProps {
   driverName: string;
+  shortIntro?: string;
   driverImageUrl?: string;
   rating: number;
   reviewCount: number;
@@ -13,13 +14,17 @@ interface EstimateWaitProps {
   moveCount: string;
   movingType?: 'small' | 'home' | 'office';
   pickedDriver?: boolean;
+  isLiked?: boolean;
+  likeCount?: number;
   estimatePrice: number;
   onDetailClick?: () => void;
   onConfirmClick?: () => void;
+  onLikeClick?: () => void;
 }
 
 const EstimateWait = ({
   driverName,
+  shortIntro,
   driverImageUrl,
   rating,
   reviewCount,
@@ -27,9 +32,12 @@ const EstimateWait = ({
   moveCount,
   movingType,
   pickedDriver = false,
+  isLiked,
+  likeCount,
   estimatePrice,
   onDetailClick,
   onConfirmClick,
+  onLikeClick = () => {},
 }: EstimateWaitProps) => {
   return (
     <article className="mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 mobile:max-w-[327px] w-full max-w-[558px] rounded-2xl bg-white p-6 shadow-md">
@@ -42,7 +50,7 @@ const EstimateWait = ({
 
           <section className="flex flex-col gap-2">
             <h3 className="mobile:text-lg tab:text-lg text-xl font-semibold text-[#1a1a1a]">
-              고객님의 물품을 안전하게 운송해 드립니다.
+              {shortIntro}
             </h3>
 
             <DriverInfo
@@ -53,7 +61,10 @@ const EstimateWait = ({
               experience={experience}
               moveCount={moveCount}
               showLikeButton={true}
+              isLiked={isLiked}
+              likeCount={likeCount}
               type="estimateWait"
+              onLikeClick={onLikeClick}
             />
           </section>
 

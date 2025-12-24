@@ -6,11 +6,8 @@ import { useState } from 'react';
 import Menu from './Menu';
 import DropdownProfile from '../dropdown/DropdownProfile';
 import DropdownNotification from '../dropdown/DropdownNotification';
-
-interface User {
-  role: 'guest' | 'user' | 'driver';
-  name: string;
-}
+import { useAuthStore } from '@/shared/store/authStore';
+import { useLogout } from '@/features/auth/hooks/useLogout';
 
 const menuByRole = {
   guest: [{ id: 1, label: '기사님 찾기', href: '/' }],
@@ -63,12 +60,10 @@ const alarm: Notification[] = [
 
 const GNB = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useAuthStore();
+  const { handleLogout } = useLogout();
 
-  // TODO: 로그인 기능 완성되면 API 요청해서 유저 정보 가져오기
-  const user: User = {
-    role: 'user',
-    name: '김가나',
-  };
+  const userRole = user ? (user.type === 'USER' ? 'user' : 'driver') : 'guest';
 
   return (
     <div className="mobile:h-[54px] mobile:py-[10px] tab:py-[19px] tab:px-[72px] mobile:px-[24px] tab:h-[54px] relative z-20 flex h-[88px] w-full items-center justify-between bg-white px-[160px] py-[26px]">
@@ -82,33 +77,51 @@ const GNB = () => {
             className="mobile:w-[88px] tab:w-[88px] mobile:h-[34px] tab:h-[34px]"
           />
         </Link>
-        <div className="mobile:hidden tab:hidden flex items-center gap-10">
-          {menuByRole[user.role].map((menu) => (
-            <Link key={menu.id} href={menu.href} className="text-black-500 text-2lg font-bold">
-              {menu.label}
-            </Link>
-          ))}
-        </div>
+        {user && (
+          <div className="mobile:hidden tab:hidden flex items-center gap-10">
+            {menuByRole[userRole].map((menu) => (
+              <Link key={menu.id} href={menu.href} className="text-black-500 text-2lg font-bold">
+                {menu.label}
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
       <div className="mobile:hidden tab:hidden">
-        {user.role === 'guest' && <button type="button">로그인</button>}
-        {user.role !== 'guest' && (
+        {!user && (
+          <Link href="/login/user">
+            <button type="button" className="text-black-500 text-lg font-medium">
+              로그인
+            </button>
+          </Link>
+        )}
+        {user && (
           <div className="flex items-center gap-8">
             <DropdownNotification size="md" list={alarm} />
-            <DropdownProfile size="md" userName={user.name} userType={user.role} />
+            <DropdownProfile
+              size="md"
+              userName={user.name}
+              userType={userRole}
+              logout={handleLogout}
+            />
           </div>
         )}
       </div>
       <div className="mobile:flex tab:flex hidden items-center">
-        {user.role === 'guest' && (
+        {!user && (
           <button type="button" onClick={() => setIsOpen(true)}>
-            <Image src="icons/menu.svg" alt="menu" width={24} height={24} />
+            <Image src="/icons/menu.svg" alt="menu" width={24} height={24} />
           </button>
         )}
-        {user.role !== 'guest' && (
+        {user && (
           <div className="flex items-center gap-6">
             <DropdownNotification size="sm" list={alarm} />
-            <DropdownProfile size="sm" userName={user.name} userType={user.role} />
+            <DropdownProfile
+              size="sm"
+              userName={user.name}
+              userType={userRole}
+              logout={handleLogout}
+            />
             <button type="button" onClick={() => setIsOpen(true)}>
               <Image src="/icons/menu.svg" alt="menu" width={24} height={24} />
             </button>
@@ -118,8 +131,8 @@ const GNB = () => {
       <Menu
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        menuItems={user.role !== 'guest' ? menuByRole[user.role] : []}
-        role={user.role === 'guest' ? 'guest' : null}
+        menuItems={menuByRole[userRole]}
+        role={userRole}
       />
     </div>
   );

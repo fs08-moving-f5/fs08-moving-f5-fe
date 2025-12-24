@@ -13,7 +13,6 @@ interface InputProps {
   errMsg?: string;
   placeholder?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  size?: 'sm' | 'md';
   type?: 'text' | 'password' | 'number';
   focusOn?: boolean;
 }
@@ -24,7 +23,6 @@ export default function Input({
   errMsg = '',
   placeholder = '',
   onChange,
-  size = 'md',
   type = 'text',
   focusOn = true,
   ...props
@@ -34,10 +32,7 @@ export default function Input({
     setIsVisible(!isVisible);
   };
 
-  const width = {
-    sm: 'min-w-0 w-full max-w-[327px]',
-    md: 'min-w-0 w-full max-w-[640px]',
-  };
+  const width = 'min-w-0 w-full w-[640px]';
   const borderType = {
     default: `outline-none border border-[var(--color-line-200)] ${focusOn && 'focus:border-[var(--color-primary-orange-400)]'}`,
     error: 'outline-none border border-[var(--color-error)]',
@@ -49,8 +44,8 @@ export default function Input({
   const inputStyle = `${borderType[errMsg ? 'error' : 'default']} ${shadow} ${text}`;
 
   return (
-    <div className="flex flex-col gap-[4px]">
-      <div className={`relative flex h-[54px] w-fit items-center justify-start ${width[size]}`}>
+    <div className={`flex flex-col gap-[4px] ${width}`}>
+      <div className={`relative flex h-[54px] w-full items-center justify-start`}>
         <input
           {...props}
           name={name}
