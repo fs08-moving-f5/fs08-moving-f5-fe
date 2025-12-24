@@ -1,12 +1,12 @@
 'use client';
 
-import Image from 'next/image';
 import PendingEstimatesTab from '@/features/my-estimates/ui/tab';
 import PendingEstimatesSubHeader from '@/features/my-estimates/ui/subHeader';
 import { combineAddress } from '@/features/my-estimates/lib/address';
 import { formatDateOnlyDate, formatDateWithWeekday } from '@/shared/lib/day';
 import { PendingCardContainer } from '@/features/my-estimates/ui/cardContainer';
 import { useGetPendingEstimatesQuery } from '@/features/my-estimates/hooks/queries/useEstimateQueries';
+import EmptyData from '@/features/my-estimates/ui/emptyData';
 
 const movingTypeMap: Record<string, string> = {
   SMALL_MOVING: '소형이사',
@@ -41,19 +41,7 @@ const PendingEstimatesPageClient = () => {
       />
       {estimateData?.length === 0 ? (
         <div className="tab:min-h-[657px] mobile:min-h-[417px] flex min-h-[900px] w-full items-center justify-center">
-          <div className="flex flex-col items-center justify-center">
-            <Image
-              src="/img/moving-car.png"
-              alt="moving-car"
-              width={280}
-              height={280}
-              className="mobile:w-[184px] mobile:h-[184px] h-[280px] w-[280px]"
-            />
-            <div className="mobile:text-2lg text-center text-xl font-normal text-gray-400">
-              기사님들이 열심히 확인 중이에요
-              <br />곧 견적이 도착할 거예요!
-            </div>
-          </div>
+          <EmptyData />
         </div>
       ) : (
         <PendingCardContainer

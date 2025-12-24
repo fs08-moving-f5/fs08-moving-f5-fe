@@ -1,5 +1,7 @@
+import ReceivedEstimatesPageClient from '@/views/my/estimates/received';
+
 const ReceivedEstimatesPage = () => {
-  return <div>ReceivedEstimatesPage</div>;
+  return <ReceivedEstimatesPageClient />;
 };
 
 export default ReceivedEstimatesPage;
