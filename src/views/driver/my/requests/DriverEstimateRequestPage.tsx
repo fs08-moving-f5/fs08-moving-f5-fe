@@ -24,6 +24,7 @@ import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
 import RequestList from '@/features/driver-estimate/ui/cardContainer/RequestList';
 import ModalQuetRequest from '@/shared/ui/modal/ModalRequest';
 import { showToast } from '@/shared/ui/sonner';
+import EmptySection from '@/features/driver-estimate/ui/empty';
 
 const mockRequests: EstimateRequestItem[] = [
   {
@@ -156,6 +157,11 @@ const DriverEstimateRequestPage = () => {
     }));
   };
 
+  // 로딩 중 EmptySection 숨기기
+  if (!data && isFetchingNextPage) {
+    return null;
+  }
+
   return (
     <main className="flex max-w-[1920px] flex-col justify-center">
       <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
@@ -237,7 +243,9 @@ const DriverEstimateRequestPage = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-[24px] sm:mb-[74px] md:mb-[110px] lg:mb-[83px]">
+          {requests.length === 0 ? (
+            <EmptySection type="request" />
+          ) : (
             <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
               <RequestList
                 requests={requests}
@@ -247,7 +255,7 @@ const DriverEstimateRequestPage = () => {
                 loadMoreRef={loadMoreRef}
               />
             </div>
-          </div>
+          )}
         </section>
       </section>
 

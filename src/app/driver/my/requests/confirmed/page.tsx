@@ -1,4 +1,4 @@
-import EstimateConfirmsPage from '@/pages/driver/my/requests/confirmed/EstimateConfirmsPage';
+import EstimateConfirmsPage from '@/views/driver/my/requests/confirmed/EstimateConfirmsPage';
 
 const ConfirmsPage = () => {
   return <EstimateConfirmsPage />;

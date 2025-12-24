@@ -1,8 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+
+import { EstimateListResponse } from '@/features/driver-estimate/types/driverEstimate';
 import Tab from '@/features/driver-estimate/ui/tab';
 import { EstimateClient } from '@/shared/ui/card/index';
+import EmptySection from '@/features/driver-estimate/ui/empty';
 
 const EstimateConfirmsPage = () => {
   return (
@@ -32,16 +35,6 @@ const EstimateConfirmsPage = () => {
             isConfirmed={false}
             status="completed"
             onDetailClick={() => alert('견적 상세보기 클릭됨')}
-          />
-          <EstimateClient
-            customerName="김고객"
-            movingType="home"
-            pickedDriver={false}
-            pickupAddress="서울시 성북구"
-            dropoffAddress="서울시 노원구"
-            movingDate="2025년 01월 10일 (금)"
-            estimatePrice={300000}
-            status="rejected"
           />
         </div>
       </section>

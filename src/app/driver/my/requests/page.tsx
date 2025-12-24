@@ -1,4 +1,4 @@
-import DriverEstimateRequestPage from '@/pages/driver/my/requests/DriverEstimateRequestPage';
+import DriverEstimateRequestPage from '@/views/driver/my/requests/DriverEstimateRequestPage';
 
 const DriverRequestsPage = () => {
   return <DriverEstimateRequestPage />;
