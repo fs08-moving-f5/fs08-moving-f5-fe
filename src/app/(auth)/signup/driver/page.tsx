@@ -1,4 +1,4 @@
-import SignupPage from '@/pages/(auth)/signup/SignupPage';
+import SignupPage from '@/views/(auth)/signup/SignupPage';
 
 export default function DriverSignupPage() {
   return <SignupPage usertype="DRIVER" />;
