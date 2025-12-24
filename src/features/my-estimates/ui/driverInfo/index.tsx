@@ -2,6 +2,7 @@ import { MovingTypeChip } from '@/shared/ui/chip';
 
 import type { PendingDetailDriverInfoProps } from '../../types/pendingDetailTypes';
 import Image from 'next/image';
+import ConfirmChip from '../confirmChip';
 
 const movingTypeMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
@@ -10,6 +11,16 @@ const movingTypeMap: Record<
   SMALL_MOVING: 'small',
   HOME_MOVING: 'home',
   OFFICE_MOVING: 'office',
+};
+
+const estimateStatusMap: Record<
+  'PENDING' | 'CONFIRMED' | 'REJECTED' | 'CANCELLED',
+  '견적대기' | '견적확정' | '견적거절' | '견적취소'
+> = {
+  PENDING: '견적대기',
+  CONFIRMED: '견적확정',
+  REJECTED: '견적거절',
+  CANCELLED: '견적취소',
 };
 
 const PendingEstimateDriverInfo = ({
@@ -44,9 +55,13 @@ const PendingEstimateDriverInfo = ({
           </div>
           <div className="flex items-center justify-between">
             <div className="text-black-300 text-2xl font-semibold">{shortIntro}</div>
-            <div className="px-2 text-lg font-semibold text-gray-300">
-              {estimateStatus === 'PENDING' ? '견적대기' : estimateStatus}
-            </div>
+            {estimateStatus === 'CONFIRMED' ? (
+              <ConfirmChip />
+            ) : (
+              <div className="px-2 text-lg font-semibold text-gray-300">
+                {estimateStatusMap[estimateStatus]}
+              </div>
+            )}
           </div>
         </div>
         <div className="w-full">{stroke}</div>
