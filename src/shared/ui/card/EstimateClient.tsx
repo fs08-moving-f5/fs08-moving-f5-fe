@@ -3,7 +3,8 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { MovingTypeChip } from '@/shared/ui/chip';
-import { Button } from '@/shared/ui/button';
+
+import Button from '@/shared/ui/button/Button';
 import { EstimateClientProps } from '@/features/driver-estimate/types/driverEstimate';
 
 const EstimateClient = (props: EstimateClientProps) => {

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { MovingTypeChip } from '@/shared/ui/chip';
 import { StarSelect } from '@/shared/ui/star';
-import { Button } from '@/shared/ui/button';
+import Button from '@/shared/ui/button/Button';
 import { useState } from 'react';
 
 interface ReviewWritingProps {

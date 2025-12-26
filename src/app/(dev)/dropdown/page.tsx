@@ -30,8 +30,7 @@ export default function Page() {
   const handleClickFillter = (e: React.MouseEvent<HTMLButtonElement>) => {
     setFillterValue(e.currentTarget.value);
   };
-  const [date, setDate] = useState(new Date());
-  const [isDateSelected, setIsDateSelected] = useState(false);
+  const [date, setDate] = useState<Date | null>(null);
 
   type sortList = 'MostReviews' | 'HighestRating' | 'MostExperience' | 'MostConfirmations';
   const [sortValue, setSortValue] = useState('HighestRating');
@@ -62,12 +61,12 @@ export default function Page() {
               </div>
             </div>
           </div>
-          <span>날짜 선택됨: {isDateSelected ? 'true' : 'false'}</span>
+          <span>날짜 선택됨: {date ? 'true' : 'false'}</span>
           <div className="flex gap-[12px]">
-            <DatePicker size="sm" date={date} setDate={setDate} setIsSelected={setIsDateSelected} />
-            <DatePicker size="md" date={date} setDate={setDate} setIsSelected={setIsDateSelected} />
+            <DatePicker size="sm" date={date || new Date()} setDate={setDate} />
+            <DatePicker size="md" date={date || new Date()} setDate={setDate} />
           </div>
-          <DropdownDatePicker date={date} setDate={setDate} setIsSelected={setIsDateSelected} />
+          <DropdownDatePicker date={date} setDate={setDate} />
         </div>
       </div>
     </div>

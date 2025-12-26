@@ -25,6 +25,7 @@ export default function Input({
   onChange,
   type = 'text',
   focusOn = true,
+  ...props
 }: InputProps) {
   const [isVisible, setIsVisible] = useState(false);
   const handleClickEye = () => {
@@ -46,6 +47,7 @@ export default function Input({
     <div className={`flex flex-col gap-[4px] ${width}`}>
       <div className={`relative flex h-[54px] w-full items-center justify-start`}>
         <input
+          {...props}
           name={name}
           type={type === 'password' ? (isVisible ? 'text' : 'password') : type}
           value={value}
