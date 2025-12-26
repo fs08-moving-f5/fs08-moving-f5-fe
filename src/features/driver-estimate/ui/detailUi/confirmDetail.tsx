@@ -4,8 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { Clip, ShareButton } from '@/shared/ui/button';
 import { MovingTypeChip } from '@/shared/ui/chip';
-import { ConfirmDetailPageProps } from '@/features/driver-estimate/types/driverEstimate';
 import { getConfirmDetailEstimates } from '@/features/driver-estimate/services/driverEstimate.service';
+import { FrontMovingType } from '@/features/driver-estimate/types/driverEstimate';
 
 const ConfirmDetail = ({ id }: { id: string }) => {
   const { data, isLoading } = useQuery({
@@ -26,6 +26,12 @@ const ConfirmDetail = ({ id }: { id: string }) => {
     estimatePrice,
     isConfirmed,
   } = data;
+
+  const MOVING_TYPE_LABEL: Record<FrontMovingType, string> = {
+    small: '소형 이사',
+    home: '가정 이사',
+    office: '사무실 이사',
+  };
 
   return (
     <main className="flex max-w-[1920px] flex-col justify-center">
@@ -91,7 +97,7 @@ const ConfirmDetail = ({ id }: { id: string }) => {
                 <span className="text-grayScale-500 w-[90px] flex-shrink-0 font-semibold">
                   서비스
                 </span>
-                <strong>{movingType}</strong>
+                <strong>{movingType && MOVING_TYPE_LABEL[movingType]}</strong>
               </div>
 
               <div className="flex gap-[23px]">

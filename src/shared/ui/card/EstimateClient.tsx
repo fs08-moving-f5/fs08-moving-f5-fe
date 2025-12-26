@@ -6,19 +6,6 @@ import { MovingTypeChip } from '@/shared/ui/chip';
 import { Button } from '@/shared/ui/button';
 import { EstimateClientProps } from '@/features/driver-estimate/types/driverEstimate';
 
-// interface EstimateClientProps {
-//   customerName: string;
-//   movingType?: 'small' | 'home' | 'office';
-//   pickedDriver?: boolean;
-//   pickupAddress: string;
-//   dropoffAddress: string;
-//   movingDate: string;
-//   estimatePrice?: number | undefined;
-//   isConfirmed?: boolean;
-//   status?: 'completed' | 'rejected';
-//   onDetailClick?: () => void;
-// }
-
 const EstimateClient = (props: EstimateClientProps) => {
   const router = useRouter();
 
@@ -108,7 +95,7 @@ const EstimateClient = (props: EstimateClientProps) => {
             variant="outlined"
             design="secondary"
             size="xs"
-            onClick={() => router.push(`/estimates/${id}`)}
+            onClick={() => router.push(`/driver/my/requests/confirmed/${id}`)}
           >
             견적 상세보기
           </Button>

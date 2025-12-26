@@ -4,13 +4,13 @@ import EstiamteConfirmDetailPage from '@/views/driver/my/requests/confirmed/deta
 import { useParams, notFound } from 'next/navigation';
 
 const ConfirmsDetailPage = () => {
-  const params = useParams<{ estimateId: string }>();
+  const params = useParams<{ id: string }>();
 
-  if (!params) {
+  if (!params.id) {
     return notFound();
   }
 
-  return <EstiamteConfirmDetailPage estimateId={params.estimateId} />;
+  return <EstiamteConfirmDetailPage estimateId={params.id} />;
 };
 
 export default ConfirmsDetailPage;

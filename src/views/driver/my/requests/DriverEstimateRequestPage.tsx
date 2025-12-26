@@ -14,7 +14,6 @@ import {
   FrontMovingType,
   EstimateRequestResponse,
   toMovingInfo,
-  EstimateRequestItem,
 } from '@/features/driver-estimate/types/driverEstimate';
 
 import { ActiveChip } from '@/shared/ui/chip';
@@ -25,29 +24,6 @@ import RequestList from '@/features/driver-estimate/ui/cardContainer/RequestList
 import ModalQuetRequest from '@/shared/ui/modal/ModalRequest';
 import { showToast } from '@/shared/ui/sonner';
 import EmptySection from '@/features/driver-estimate/ui/empty';
-
-// const mockRequests: EstimateRequestItem[] = [
-//   {
-//     id: 'mock-1',
-//     customerName: '홍길동',
-//     movingType: 'home',
-//     pickedDriver: true,
-//     pickupAddress: '서울시 강남구',
-//     dropoffAddress: '서울시 서초구',
-//     movingDate: '2025-07-01T09:00:00.000Z',
-//     requestTime: '2025-07-01T08:00:00.000Z',
-//   },
-//   {
-//     id: 'mock-2',
-//     customerName: '김철수',
-//     movingType: 'small',
-//     pickedDriver: false,
-//     pickupAddress: '서울시 마포구',
-//     dropoffAddress: '서울시 은평구',
-//     movingDate: '2025-07-03T14:00:00.000Z',
-//     requestTime: '2025-07-02T10:00:00.000Z',
-//   },
-// ];
 
 const sortListObj = {
   Latest: '요청일 빠른순',

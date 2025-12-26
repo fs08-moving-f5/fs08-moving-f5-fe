@@ -15,6 +15,7 @@ import {
 const EstimateListPage = ({ queryKey, queryFn, emptyType, status }: EstimateListPageProps) => {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
+  // useInfiniteQuery - 무한 스크롤
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery<
     EstimateListResponse, // TQueryFnData
     Error, // TError
@@ -30,6 +31,7 @@ const EstimateListPage = ({ queryKey, queryFn, emptyType, status }: EstimateList
 
   const estimates = data?.pages.flatMap((page) => page.data) ?? [];
 
+  // 페이지네이션
   useEffect(() => {
     if (!loadMoreRef.current || !hasNextPage) return;
 
