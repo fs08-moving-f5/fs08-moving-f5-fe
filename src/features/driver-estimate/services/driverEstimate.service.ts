@@ -13,6 +13,8 @@ import {
   EstimateConfirmRaw,
   GetConfirmEstimatesParams,
   EstimateRejectRaw,
+  ConfirmDetailPageProps,
+  EstimateConfirmDetailRaw,
 } from '@/features/driver-estimate/types/driverEstimate';
 import { convertDateType1, convertDateType2 } from '@/shared/lib/convertDate';
 import { convertMovingType, convertMovingTypeToBackend } from '@/shared/lib/convertMovingType';
@@ -134,5 +136,28 @@ export const getRejectEstimates = async ({
       status: r.type,
     })),
     nextCursor: list.length ? list[list.length - 1].id : null,
+  };
+};
+
+// 확정 견적 상세 조회
+export const getConfirmDetailEstimates = async (
+  estimateId: string,
+): Promise<ConfirmDetailPageProps> => {
+  const res = await apiClient
+    .get(`estimate-request/driver/confirms/${estimateId}`)
+    .json<{ data: EstimateConfirmDetailRaw }>();
+
+  const r = res.data;
+
+  return {
+    id: r.id,
+    customerName: r.userName,
+    movingType: convertMovingType(r.movingType),
+    pickedDriver: r.isDesignated,
+    requestTime: convertDateType2(new Date(r.createdAt)),
+    pickupAddress: r.fromAddress ?? '',
+    dropoffAddress: r.toAddress ?? '',
+    movingDate: convertDateType1(new Date(r.movingDate)),
+    estimatePrice: r.price,
   };
 };

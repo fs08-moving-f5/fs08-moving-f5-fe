@@ -165,9 +165,9 @@ const DriverEstimateRequestPage = () => {
   return (
     <main className="flex max-w-[1920px] flex-col justify-center">
       <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
-        <div className="itmes-center w-full self-stretch py-[32px]">
+        <section className="itmes-center w-full self-stretch py-[32px]">
           <h1 className="text-2xl font-semibold text-[var(--color-black-500)]">받은 요청</h1>
-        </div>
+        </section>
 
         <section className="flex flex-col gap-[40px]">
           <div className="flex flex-col items-start gap-[24px]">

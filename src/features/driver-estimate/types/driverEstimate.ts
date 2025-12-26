@@ -74,6 +74,22 @@ export interface EstimateListResponse {
   nextCursor: string | null;
 }
 
+export interface ConfirmDetailPageProps {
+  id: string;
+
+  customerName: string;
+  movingType?: FrontMovingType;
+  pickedDriver?: boolean;
+
+  requestTime: string;
+  pickupAddress: string;
+  dropoffAddress: string;
+  movingDate: string;
+
+  estimatePrice: number;
+  isConfirmed?: boolean;
+}
+
 // api/driverEstimate
 export interface GetRequestsUIParams {
   cursor?: string | null;
@@ -150,4 +166,31 @@ export interface EstimateRejectRaw {
   from: { sido: string; sigungu: string } | null;
   to: { sido: string; sigungu: string } | null;
   type: 'rejected';
+}
+
+export interface ConfirmDetailPageProps {
+  id: string;
+  customerName: string;
+  movingType?: FrontMovingType;
+  pickedDriver?: boolean;
+
+  requestTime: string;
+  pickupAddress: string;
+  dropoffAddress: string;
+  movingDate: string;
+
+  estimatePrice: number;
+}
+
+export interface EstimateConfirmDetailRaw {
+  id: string;
+  price: number;
+  userName: string;
+  movingType: BackendMovingType;
+  movingDate: string;
+  isDesignated: boolean;
+  createdAt: string;
+  updatedAt: string;
+  fromAddress: string | null;
+  toAddress: string | null;
 }
