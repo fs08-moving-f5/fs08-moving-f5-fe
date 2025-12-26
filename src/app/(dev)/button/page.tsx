@@ -1,6 +1,19 @@
+'use client';
+
+import { useState } from 'react';
 import { Button, LikeButton, Clip, ShareButton, Filter, CheckBox } from '@/shared/ui/button/index';
 
+export type Filters = {
+  circleBoolean: boolean;
+  squareBoolean: boolean;
+};
+
 const ButtonPage = () => {
+  const [filters, setFilters] = useState<Filters>({
+    circleBoolean: false,
+    squareBoolean: false,
+  });
+
   return (
     <div className="developer-page min-h-screen bg-[var(--foreground)]">
       <div className="flex">
@@ -80,8 +93,20 @@ const ButtonPage = () => {
           <div className="flex gap-[8px]">
             <Filter />
 
-            <CheckBox shape="circle" />
-            <CheckBox shape="square" />
+            <CheckBox
+              shape="circle"
+              checked={filters.circleBoolean}
+              onChange={(checked: boolean) =>
+                setFilters((prev) => ({ ...prev, circleBoolean: checked }))
+              }
+            />
+            <CheckBox
+              shape="square"
+              checked={filters.squareBoolean}
+              onChange={(checked: boolean) =>
+                setFilters((prev) => ({ ...prev, squareBoolean: checked }))
+              }
+            />
           </div>
         </div>
       </div>

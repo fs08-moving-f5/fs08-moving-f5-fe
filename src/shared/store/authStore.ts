@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { storage } from '../lib/storage';
 import { api } from '../api/client';
 
-import type { UserResponse } from '../types/user';
+import type { UserResponse, RefreshData } from '../types/user';
 
 interface AuthState {
   user: UserResponse | null;
@@ -52,9 +52,9 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     // accessToken이 없거나 만료된 경우, refreshToken으로 갱신 시도
     try {
-      const refreshResponse = await api.post<{ accessToken: string }>('auth/refresh');
+      const refreshResponse = await api.post<RefreshData>('auth/refresh');
 
-      if (refreshResponse.data.accessToken) {
+      if (refreshResponse.data?.accessToken) {
         // 새 accessToken 저장
         storage.setString('accessToken', refreshResponse.data.accessToken);
 

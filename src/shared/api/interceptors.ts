@@ -22,7 +22,7 @@ const onRefreshed = (token: string) => {
 
 async function refreshAccessToken(): Promise<string> {
   const data = await refreshClient
-    .post('api/auth/refresh')
+    .post('auth/refresh')
     .json<{ success: boolean; data: { accessToken: string } }>();
 
   if (data.success && data.data.accessToken) {

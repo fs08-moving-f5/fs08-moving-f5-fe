@@ -50,7 +50,7 @@ const DriverInfo = ({
             alt="Driver Img"
             width={imageSize}
             height={imageSize}
-            className="rounded-xl"
+            className="h-[50px] w-[50px] rounded-xl object-cover"
           />
         </figure>
       </div>

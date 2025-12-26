@@ -25,10 +25,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="antialiased">
+      <body>
         <Providers>
           <GNB />
           {children}
+
+          <AppToaster />
+          <NotificationSseProvider />
+
+          <Script
+            src="https://developers.kakao.com/sdk/js/kakao.min.js"
+            strategy="afterInteractive"
+          />
         </Providers>
         <Script
           src="https://developers.kakao.com/sdk/js/kakao.min.js"

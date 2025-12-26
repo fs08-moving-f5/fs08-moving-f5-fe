@@ -15,29 +15,29 @@ const menuByRole = {
     {
       id: 1,
       label: '받은 요청',
-      href: '/',
+      href: '/driver/my/requests',
     },
     {
       id: 2,
       label: '내 견적 관리',
-      href: '/',
+      href: '/driver/my/requests/confirmed',
     },
   ],
   user: [
     {
       id: 1,
       label: '견적 요청',
-      href: '/',
+      href: '/user/estimates/request',
     },
     {
       id: 2,
       label: '기사님 찾기',
-      href: '/',
+      href: '/user/drivers',
     },
     {
       id: 3,
       label: '내 견적 관리',
-      href: '/',
+      href: '/user/my/estimates/pending',
     },
   ],
 };
@@ -90,7 +90,10 @@ const GNB = () => {
       <div className="mobile:hidden tab:hidden">
         {!user && (
           <Link href="/login/user">
-            <button type="button" className="text-black-500 text-lg font-medium">
+            <button
+              type="button"
+              className="text-2lg bg-primary-orange-400 w-[116px] cursor-pointer items-center justify-center rounded-[12px] px-4 py-3 font-semibold text-gray-50 hover:brightness-90"
+            >
               로그인
             </button>
           </Link>

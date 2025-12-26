@@ -54,6 +54,7 @@ export default function ModalQuetRequest({
   setPrice,
   setComment,
   setScore,
+  onSubmit,
   isOpen,
   setIsOpen,
 }: ModalQuetRequestProps) {
@@ -82,6 +83,12 @@ export default function ModalQuetRequest({
     confirm: '코멘트를 입력해주세요',
     reject: '반려 사유를 입력해주세요',
     review: '상품 후기를 작성해주세요',
+  };
+
+  const submitButton = {
+    confirm: '견적 보내기',
+    reject: '반려하기',
+    review: '리뷰 등록',
   };
 
   const modalSize = {
@@ -121,6 +128,11 @@ export default function ModalQuetRequest({
     review: 'hidden',
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit && onSubmit();
+  };
+
   return (
     <div
       className={`fixed top-0 left-0 z-30 h-full w-full bg-[#00000080] select-none ${isOpen ? 'block' : 'hidden'}`}
@@ -128,7 +140,7 @@ export default function ModalQuetRequest({
       <div
         className={`mobile:rounded-b-[0px] mobile:bottom-0 mobile:top-auto mobile:translate-y-0 fixed top-1/2 left-1/2 flex h-fit max-h-[95vh] max-w-[95vw] -translate-x-1/2 -translate-y-1/2 rounded-[32px] border-none bg-white ${modalSize[type]}`}
       >
-        <div className="mobile:gap-[26px] flex w-full flex-col gap-[40px]">
+        <form onSubmit={handleSubmit} className="mobile:gap-[26px] flex w-full flex-col gap-[40px]">
           <div className="flex justify-between">
             <span className="mobile:text-[18px] mobile:font-[700] text-[24px] font-[600]">
               {title[type]}
@@ -313,8 +325,10 @@ export default function ModalQuetRequest({
               />
             </div>
           </div>
-          <Button size="xl">견적 보내기</Button>
-        </div>
+          <Button type="submit" size="xl">
+            {submitButton[type]}
+          </Button>
+        </form>
       </div>
     </div>
   );
