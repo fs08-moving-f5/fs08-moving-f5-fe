@@ -31,6 +31,7 @@ export const useImageUpload = () => {
 
   return {
     imageUrl,
+    setImageUrl,
     isUploading,
     handleImageSelect,
     resetImage,
