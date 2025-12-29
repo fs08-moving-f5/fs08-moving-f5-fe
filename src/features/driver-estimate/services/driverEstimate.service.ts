@@ -49,11 +49,16 @@ export const getRequests = async ({
   return {
     data: list.map((r) => {
       const requestTimeSource = r.updatedAt ?? r.createdAt;
+      const movingType = convertMovingType(r.movingType);
+
+      if (!movingType) {
+        throw new Error(`Invalid movingType: ${r.movingType}`);
+      }
 
       return {
         id: r.id,
         customerName: r.user.name,
-        movingType: convertMovingType(r.movingType),
+        movingType,
         pickedDriver: r.isDesignated,
         pickupAddress: r.from ? `${r.from.sido} ${r.from.sigungu}` : '',
         dropoffAddress: r.to ? `${r.to.sido} ${r.to.sigungu}` : '',

@@ -1,14 +1,14 @@
 export type BackendMovingType = 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
-export type BackendFilter = 'latest' | 'oldest' | 'moving-latest' | 'moving-oldest';
-
 export type FrontMovingType = 'small' | 'home' | 'office';
+
+export type BackendFilter = 'latest' | 'oldest' | 'moving-latest' | 'moving-oldest';
 export type FrontFilter = 'Latest' | 'Oldest' | 'HighestMovingDate' | 'LowestMovingDate';
 
 // 받은 요청
 export interface EstimateRequestItem {
   id: string;
   customerName: string;
-  movingType?: FrontMovingType;
+  movingType: FrontMovingType;
   pickedDriver: boolean;
   pickupAddress: string;
   dropoffAddress: string;
@@ -24,10 +24,11 @@ export interface EstimateRequestResponse {
 export type ModalType = 'confirm' | 'reject' | null;
 
 export const toMovingInfo = (r: EstimateRequestItem) => ({
-  movingTypes: r.movingType ? [r.movingType] : [],
+  movingType: r.movingType,
+  pickedDriver: r.pickedDriver,
   departure: r.pickupAddress,
   destination: r.dropoffAddress,
-  date: new Date(r.movingDate),
+  date: r.movingDate,
 });
 
 // 확정 견적 & 반려

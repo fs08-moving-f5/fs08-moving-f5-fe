@@ -1,5 +1,7 @@
-const ReviewPage = () => {
-  return <div>ReviewPage</div>;
+import ReviewWrittenUI from '@/views/reviews/ReviewWrittenUI';
+
+const ReviewWrittenPage = () => {
+  return <ReviewWrittenUI />;
 };
 
-export default ReviewPage;
+export default ReviewWrittenPage;
