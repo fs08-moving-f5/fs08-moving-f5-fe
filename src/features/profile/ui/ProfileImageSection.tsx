@@ -5,10 +5,7 @@ interface ProfileImageSectionProps {
   onImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function ProfileImageSection({
-  imageUrl,
-  onImageUpload,
-}: ProfileImageSectionProps) {
+export default function ProfileImageSection({ imageUrl, onImageUpload }: ProfileImageSectionProps) {
   return (
     <div className="mobile:mb-8 mb-10">
       <h2 className="mobile:text-xl mb-4 text-2xl font-bold">프로필 이미지</h2>
