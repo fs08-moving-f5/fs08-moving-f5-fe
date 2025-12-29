@@ -101,11 +101,7 @@ export default function ProfileEditPage({ userType }: ProfileEditPageProps) {
         <RegionSelectionSection selectedRegions={selectedRegions} onToggleRegion={toggleRegion} />
 
         <div className="mobile:mt-8 mt-12 flex gap-3">
-          <Button
-            onClick={handleCancel}
-            disabled={isLoading}
-            variant="outlined"
-          >
+          <Button onClick={handleCancel} disabled={isLoading} variant="outlined">
             취소
           </Button>
           <Button onClick={handleSubmit} disabled={!isValid || isLoading}>
