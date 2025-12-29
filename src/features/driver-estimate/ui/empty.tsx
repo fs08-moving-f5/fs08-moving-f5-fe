@@ -22,7 +22,7 @@ const EmptySection = ({ type }: emptyParmas) => {
         </h1>
 
         {type === 'written' && (
-          <Link href="" className="w-full">
+          <Link href="/user/my/reviews/pending" className="w-full">
             <Button size="sm">리뷰 작성하러 가기</Button>
           </Link>
         )}

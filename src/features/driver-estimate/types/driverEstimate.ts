@@ -1,7 +1,7 @@
 export type BackendMovingType = 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
-export type BackendFilter = 'latest' | 'oldest' | 'moving-latest' | 'moving-oldest';
-
 export type FrontMovingType = 'small' | 'home' | 'office';
+
+export type BackendFilter = 'latest' | 'oldest' | 'moving-latest' | 'moving-oldest';
 export type FrontFilter = 'Latest' | 'Oldest' | 'HighestMovingDate' | 'LowestMovingDate';
 
 // 받은 요청
