@@ -21,7 +21,6 @@ interface ProfileEditFormProps {
   profile: UserProfile | DriverProfile;
 }
 
-
 function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
   const router = useRouter();
 
