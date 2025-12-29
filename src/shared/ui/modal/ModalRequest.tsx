@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import { Button } from '../button';
 import { MovingTypeChip } from '../chip';
@@ -6,7 +7,7 @@ import Input from '../input/Input';
 import TextArea from '../input/TextArea';
 
 import Image from 'next/image';
-import { convertDateType1 } from '@/shared/lib/convertDate';
+import StarRating from '../reviewChart/StarRating';
 
 const ic_x = '/icons/x.svg';
 const ic_arrow_right = '/icons/arrow-right.svg';
@@ -20,13 +21,14 @@ interface User {
   role: 'guest' | 'user' | 'driver';
 }
 
-type MovingType = 'small' | 'home' | 'office' | 'assign';
+type MovingType = 'small' | 'home' | 'office';
 
 interface MovingInfo {
-  movingTypes: MovingType[];
+  movingType: MovingType;
+  pickedDriver: boolean;
   departure: string;
   destination: string;
-  date: Date;
+  date: string;
 }
 
 interface ModalQuetRequestProps {
@@ -146,6 +148,7 @@ export default function ModalQuetRequest({
               {title[type]}
             </span>
             <button
+              aria-label="모달 닫기"
               onClick={() => setIsOpen(!isOpen)}
               className="cursor-pointer hover:brightness-50"
             >
@@ -162,11 +165,15 @@ export default function ModalQuetRequest({
             <div className={`flex flex-col ${InfoFrame[type]}`}>
               {/* 이사 유형 */}
               <ul className="flex gap-[8px]">
-                {mvInfo.movingTypes.map((type, idx) => (
-                  <li key={idx}>
-                    <MovingTypeChip movingType={type} />
+                <li>
+                  <MovingTypeChip movingType={mvInfo.movingType} />
+                </li>
+
+                {mvInfo.pickedDriver && (
+                  <li>
+                    <MovingTypeChip movingType="assign" />
                   </li>
-                ))}
+                )}
               </ul>
               {/* 유저 정보 */}
               <span
@@ -224,7 +231,7 @@ export default function ModalQuetRequest({
                     이사일
                   </span>
                   <span className="mobile:text-[14px] mobile:leading-[22px] h-fit w-fit text-[16px] leading-[26px] font-[500] text-[var(--color-black-500)]">
-                    {convertDateType1(mvInfo.date)}
+                    {mvInfo.date}
                   </span>
                 </div>
               </div>
@@ -261,7 +268,7 @@ export default function ModalQuetRequest({
                     이사일
                   </span>
                   <span className="h-fit w-fit text-[14px] leading-[26px] font-[500] text-[var(--color-black-500)]">
-                    {convertDateType1(mvInfo.date)}
+                    {mvInfo.date}
                   </span>
                 </div>
               </div>
@@ -283,34 +290,15 @@ export default function ModalQuetRequest({
             {type === 'review' && (
               <div className={labelDiv[type]}>
                 <span className="text-[16px] leading-[26px] font-[600]">평점을 선택해주세요</span>
-                <ul className="flex">
-                  {starList.map((e, idx) => (
-                    <li key={idx}>
-                      <button
-                        onMouseEnter={() => setHoverScore(idx + 1)}
-                        onMouseLeave={() => setHoverScore(0)}
-                        onClick={() => {
-                          if (setScore) {
-                            if (score === idx + 1) {
-                              setScore(0);
-                            } else {
-                              setScore(idx + 1);
-                            }
-                          }
-                        }}
-                        className={`cursor-pointer ${idx < hoverScore && 'brightness-90'}`}
-                      >
-                        <Image
-                          src={e === 1 ? ic_star : ic_star_empty}
-                          alt="ic_star"
-                          width={30}
-                          height={30}
-                          className="mobile:w-[20px] mobile:h-[20px] h-[30px] w-[30px]"
-                        />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                <StarRating
+                  type="post"
+                  value={score}
+                  onChange={(value) => {
+                    if (setScore) {
+                      setScore(value);
+                    }
+                  }}
+                />
               </div>
             )}
             {/* 글 작성 (코멘트, 반려 사유, 리뷰) */}

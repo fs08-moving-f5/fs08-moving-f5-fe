@@ -8,7 +8,7 @@ export type FrontFilter = 'Latest' | 'Oldest' | 'HighestMovingDate' | 'LowestMov
 export interface EstimateRequestItem {
   id: string;
   customerName: string;
-  movingType?: FrontMovingType;
+  movingType: FrontMovingType;
   pickedDriver: boolean;
   pickupAddress: string;
   dropoffAddress: string;
@@ -24,10 +24,11 @@ export interface EstimateRequestResponse {
 export type ModalType = 'confirm' | 'reject' | null;
 
 export const toMovingInfo = (r: EstimateRequestItem) => ({
-  movingTypes: r.movingType ? [r.movingType] : [],
+  movingType: r.movingType,
+  pickedDriver: r.pickedDriver,
   departure: r.pickupAddress,
   destination: r.dropoffAddress,
-  date: new Date(r.movingDate),
+  date: r.movingDate,
 });
 
 // 확정 견적 & 반려
