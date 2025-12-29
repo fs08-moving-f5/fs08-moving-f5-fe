@@ -25,7 +25,7 @@ export type ServiceType = 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
 export interface UserProfile {
   id: string;
   userId: string;
-  imageUrl?: string;
+  imageUrl?: string | null;
   regions: RegionType[];
   services: ServiceType[];
   createdAt: string;
@@ -36,10 +36,10 @@ export interface UserProfile {
 export interface DriverProfile {
   id: string;
   driverId: string;
-  imageUrl?: string;
-  career?: string;
-  shortIntro?: string;
-  description?: string;
+  imageUrl?: string | null;
+  career?: string | null;
+  shortIntro?: string | null;
+  description?: string | null;
   regions: RegionType[];
   services: ServiceType[];
   createdAt: string;

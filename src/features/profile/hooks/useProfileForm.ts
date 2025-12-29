@@ -1,14 +1,19 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import type { ServiceType, RegionType, UserProfile, DriverProfile } from '../types/types';
+import { useState } from 'react';
+import type {
+  ServiceType,
+  RegionType,
+  UserProfile,
+  DriverProfile,
+  UpdateUserProfileRequest,
+  UpdateDriverProfileRequest,
+} from '../types/types';
 import type { UserType } from '@/features/auth/types/types';
-import { useUpdateProfile } from './useUpdateProfile';
 import { useImageUpload } from './useImageUpload';
+import { useUpdateProfileMutation } from './mutations/useProfileMutations';
 import {
   PROFILE_ERROR_MESSAGES,
   PROFILE_VALIDATION_PATTERNS,
 } from '../constants/validation.constants';
-import { showToast } from '@/shared/ui/sonner';
 
 interface ProfileEditFormErrors {
   career: string;
@@ -16,14 +21,17 @@ interface ProfileEditFormErrors {
   description: string;
 }
 
-export function useProfileEditForm(
+/**
+ * 프로필 폼 로직을 관리하는 Hook
+ * Edit과 Setup 모두에서 사용 가능
+ */
+export function useProfileForm(
   userType: UserType,
-  initialProfile: UserProfile | DriverProfile | null,
+  initialProfile?: UserProfile | DriverProfile | null,
 ) {
-  const router = useRouter();
-  const { imageUrl, setImageUrl, handleImageSelect } = useImageUpload();
-  const { handleUpdateProfile, isLoading, error } = useUpdateProfile(userType);
+  const isDriver = userType === 'DRIVER';
 
+  // 초기값 설정 (페이지 로드시 한번만)
   const [selectedServices, setSelectedServices] = useState<ServiceType[]>(
     initialProfile?.services || [],
   );
@@ -45,14 +53,8 @@ export function useProfileEditForm(
     description: '',
   });
 
-  const isDriver = userType === 'DRIVER';
-
-  // initialProfile이 변경될 때만 이미지 URL 업데이트
-  useEffect(() => {
-    if (initialProfile?.imageUrl) {
-      setImageUrl(initialProfile.imageUrl);
-    }
-  }, [initialProfile, setImageUrl]);
+  const { imageUrl, handleImageSelect } = useImageUpload(initialProfile?.imageUrl || null);
+  const updateMutation = useUpdateProfileMutation(userType);
 
   // Validation 함수들
   const validateCareer = (value: string): string => {
@@ -114,12 +116,8 @@ export function useProfileEditForm(
     );
   };
 
-  const handleCancel = () => {
-    router.back();
-  };
-
-  const handleSubmit = async () => {
-    if (!isValid || isLoading) return;
+  const handleSubmit = async (onSuccess?: () => void) => {
+    if (!isValid || updateMutation.isPending) return;
 
     // 제출 전 validation
     if (isDriver) {
@@ -144,25 +142,20 @@ export function useProfileEditForm(
       regions: selectedRegions,
     };
 
-    try {
-      if (isDriver) {
-        await handleUpdateProfile({
-          ...baseData,
-          career: career || undefined,
-          shortIntro: shortIntro || undefined,
-          description: description || undefined,
-        });
-      } else {
-        await handleUpdateProfile(baseData);
-      }
-
-      showToast({ kind: 'success', message: '프로필이 수정되었습니다.' });
-      router.back();
-    } catch (error) {
-      console.error('프로필 수정 실패:', error);
-      showToast({
-        kind: 'error',
-        message: error instanceof Error ? error.message : '프로필 수정에 실패했습니다.',
+    if (isDriver) {
+      const driverData: UpdateDriverProfileRequest = {
+        ...baseData,
+        career: career || undefined,
+        shortIntro: shortIntro || undefined,
+        description: description || undefined,
+      };
+      updateMutation.mutate(driverData, {
+        onSuccess: () => onSuccess?.(),
+      });
+    } else {
+      const userData: UpdateUserProfileRequest = baseData;
+      updateMutation.mutate(userData, {
+        onSuccess: () => onSuccess?.(),
       });
     }
   };
@@ -178,8 +171,7 @@ export function useProfileEditForm(
     shortIntro,
     description,
     errors,
-    isLoading,
-    error,
+    isLoading: updateMutation.isPending,
     isValid,
     isDriver,
 
@@ -190,7 +182,6 @@ export function useProfileEditForm(
     handleImageUpload,
     toggleService,
     toggleRegion,
-    handleCancel,
     handleSubmit,
   };
 }

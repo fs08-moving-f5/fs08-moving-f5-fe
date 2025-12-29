@@ -8,8 +8,8 @@ import { useState } from 'react';
  * - 이미지 URL 변환
  * - TODO: 실제 이미지 업로드 API 연동
  */
-export const useImageUpload = () => {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+export const useImageUpload = (initialUrl: string | null = null) => {
+  const [imageUrl, setImageUrl] = useState<string | null>(initialUrl);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleImageSelect = (file: File) => {
