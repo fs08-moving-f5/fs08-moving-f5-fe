@@ -9,6 +9,7 @@ import {
 } from '../../hooks/mutations/useFavoriteMutation';
 import QUERY_KEY from '../../constants/queryKey';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 const movingTypeMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING' | '',
@@ -30,6 +31,16 @@ const movingTypeLabelMap: Record<
   '': undefined,
 };
 
+const estimateStatusMap: Record<
+  'PENDING' | 'CONFIRMED' | 'REJECTED' | 'CANCELLED',
+  '견적대기' | '견적확정' | '견적거절' | '견적취소'
+> = {
+  PENDING: '견적대기',
+  CONFIRMED: '견적확정',
+  REJECTED: '견적거절',
+  CANCELLED: '견적취소',
+};
+
 const ReceivedInfoCard = ({
   estimateRequest,
   estimates,
@@ -37,6 +48,7 @@ const ReceivedInfoCard = ({
   estimateRequest: ReceivedEstimate;
   estimates: ReceivedEstimate['estimates'];
 }) => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const [selectStatus, setSelectStatus] = useState<'ALL' | 'CONFIRMED'>('ALL');
 
@@ -77,6 +89,10 @@ const ReceivedInfoCard = ({
         },
       });
     }
+  };
+
+  const handleDetailClick = (estimateId: string) => {
+    router.push(`/user/my/estimates/received/${estimateId}`);
   };
 
   const estimateRequestInfoLabels = [
@@ -158,6 +174,12 @@ const ReceivedInfoCard = ({
                 movingType={movingTypeMap[estimateRequest?.movingType ?? ''] ?? undefined}
                 pickedDriver={estimateRequest?.isDesignated}
                 estimatePrice={estimate.price ?? 0}
+                shortIntro={estimate.driver?.driverProfile?.shortIntro ?? ''}
+                estimateStatus={
+                  estimate.status !== 'CONFIRMED'
+                    ? estimateStatusMap[estimate.status ?? 'PENDING']
+                    : estimateStatusMap['CONFIRMED']
+                }
                 isConfirmed={estimate.status === 'CONFIRMED'}
                 onLikeClick={() =>
                   handleLikeClick({
@@ -165,6 +187,7 @@ const ReceivedInfoCard = ({
                     isLiked: estimate.driver?.isFavorite ?? false,
                   })
                 }
+                onClick={() => handleDetailClick(estimate.id ?? '')}
               />
             ))}
           </div>

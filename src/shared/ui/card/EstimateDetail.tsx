@@ -16,7 +16,10 @@ interface EstimateDetailProps {
   pickedDriver?: boolean;
   estimatePrice: number;
   isConfirmed?: boolean;
+  shortIntro: string;
+  estimateStatus: '견적대기' | '견적확정' | '견적거절' | '견적취소';
   onLikeClick?: () => void;
+  onClick?: () => void;
 }
 
 const EstimateDetail = ({
@@ -26,6 +29,8 @@ const EstimateDetail = ({
   reviewCount,
   experience,
   moveCount,
+  shortIntro,
+  estimateStatus,
   likeCount = 0,
   isLiked = false,
   movingType,
@@ -33,9 +38,13 @@ const EstimateDetail = ({
   estimatePrice,
   isConfirmed = false,
   onLikeClick,
+  onClick,
 }: EstimateDetailProps) => {
   return (
-    <article className="mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 mobile:max-w-[327px] w-full max-w-[660px] rounded-2xl bg-white p-6 shadow-md">
+    <article
+      className="mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 mobile:max-w-[327px] w-full max-w-[660px] cursor-pointer rounded-2xl bg-white p-6 shadow-md"
+      onClick={onClick}
+    >
       <div className="mobile:gap-3 tab:gap-3 flex flex-col gap-4">
         <div className="relative flex flex-col gap-4">
           <header className="flex w-full items-center justify-between">
@@ -48,7 +57,7 @@ const EstimateDetail = ({
           <section className="flex flex-col gap-2">
             <div className="flex justify-between">
               <h3 className="mobile:text-lg tab:text-lg text-black-500 text-xl font-semibold">
-                고객님의 물품을 안전하게 운송해 드립니다.
+                {shortIntro}
               </h3>
 
               <p className="mobile:text-md tab:text-md text-grayScale-500 mobile:hidden text-lg">
@@ -58,7 +67,7 @@ const EstimateDetail = ({
                     확정견적
                   </span>
                 ) : (
-                  <span className="font-semibold">견적대기</span>
+                  <span className="font-semibold">{estimateStatus}</span>
                 )}
               </p>
             </div>
