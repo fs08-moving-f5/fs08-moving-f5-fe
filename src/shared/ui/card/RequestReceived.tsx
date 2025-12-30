@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { MovingTypeChip } from '@/shared/ui/chip';
-import { Button } from '@/shared/ui/button';
+import Button from '@/shared/ui/button/Button';
 
 interface RequestReceivedProps {
   customerName: string;
@@ -28,7 +28,7 @@ const RequestReceived = ({
   onRejectClick,
 }: RequestReceivedProps) => {
   return (
-    <article className="mobile:rounded-xl mobile:p-6 mobile:max-w-[327px] relative w-full max-w-[558px] rounded-2xl bg-white px-8 py-6 shadow-md">
+    <article className="mobile:rounded-xl mobile:p-6 mobile:max-w-[327px] relative w-full max-w-[588px] rounded-2xl bg-white px-8 py-6 shadow-md">
       <div className="mobile:gap-3 tab:gap-3 flex flex-col gap-4">
         {/* 헤더: 칩 영역 */}
         <header className="flex w-full items-center justify-between">

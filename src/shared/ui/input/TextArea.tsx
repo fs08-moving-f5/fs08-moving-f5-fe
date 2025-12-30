@@ -15,6 +15,7 @@ export default function TextArea({
   errMsg = value && value.length < 10 ? '10자 이상 입력해주세요' : '',
   placeholder = '최소 10자 이상 입력해주세요',
   onChange,
+  ...props
 }: TextAreaProps) {
   const boxSize =
     'mobile:h-[160px] mobile:max-w-[327px] mobile:pl-[16px] mobile:pr-[12px] mobile:py-[14px] h-[160px] max-w-[560px] min-w-0 w-full pl-[24px] pr-[14px] py-[12px]';
@@ -33,6 +34,7 @@ export default function TextArea({
         className={`flex h-[54px] w-fit items-center justify-start rounded-[16px] bg-[#fff] ${boxSize} ${borderType[errMsg ? 'error' : 'default']}`}
       >
         <textarea
+          {...props}
           rows={4}
           name={name}
           value={value}

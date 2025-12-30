@@ -6,6 +6,8 @@ import { combineAddress } from '@/features/my-estimates/lib/address';
 import { formatDateOnlyDate, formatDateWithWeekday } from '@/shared/lib/day';
 import { PendingCardContainer } from '@/features/my-estimates/ui/cardContainer';
 import { useGetPendingEstimatesQuery } from '@/features/my-estimates/hooks/queries/useEstimateQueries';
+import EmptyData from '@/features/my-estimates/ui/emptyData';
+import Spinner from '@/shared/ui/spinner';
 
 const movingTypeMap: Record<string, string> = {
   SMALL_MOVING: '소형이사',
@@ -14,35 +16,45 @@ const movingTypeMap: Record<string, string> = {
 };
 
 const PendingEstimatesPageClient = () => {
-  const { data: pendingEstimates } = useGetPendingEstimatesQuery();
+  const { data: pendingEstimates, isLoading: pendingEstimatesLoading } =
+    useGetPendingEstimatesQuery();
 
-  const estimateRequestData = pendingEstimates?.[0]?.estimateRequest;
-  const estimateData = pendingEstimates?.[0]?.estimates;
+  const estimateRequestData = pendingEstimates;
+  const estimateData = pendingEstimates?.estimates;
 
   const formattedCreatedAt = formatDateOnlyDate(estimateRequestData?.createdAt ?? '');
   const formattedMovingDate = formatDateWithWeekday(estimateRequestData?.movingDate ?? '');
 
   return (
-    <div className="bg-bg-100">
-      <PendingEstimatesTab activeTab="pending" />
-      <PendingEstimatesSubHeader
-        movingType={movingTypeMap[estimateRequestData?.movingType ?? '']}
-        movingDate={formattedMovingDate}
-        applyAt={formattedCreatedAt}
-        fromAddress={combineAddress({
-          sido: estimateRequestData?.addresses?.[0]?.sido ?? '',
-          sigungu: estimateRequestData?.addresses?.[0]?.sigungu ?? '',
-        })}
-        toAddress={combineAddress({
-          sido: estimateRequestData?.addresses?.[1]?.sido ?? '',
-          sigungu: estimateRequestData?.addresses?.[1]?.sigungu ?? '',
-        })}
-      />
-      <PendingCardContainer
-        estimates={estimateData}
-        movingType={estimateRequestData?.movingType ?? 'SMALL_MOVING'}
-      />
-    </div>
+    <>
+      <Spinner isLoading={pendingEstimatesLoading} />
+      <div className="bg-bg-100">
+        <PendingEstimatesTab activeTab="pending" />
+        <PendingEstimatesSubHeader
+          movingType={movingTypeMap[estimateRequestData?.movingType ?? '']}
+          movingDate={formattedMovingDate}
+          applyAt={formattedCreatedAt}
+          fromAddress={combineAddress({
+            sido: estimateRequestData?.addresses?.[0]?.sido ?? '',
+            sigungu: estimateRequestData?.addresses?.[0]?.sigungu ?? '',
+          })}
+          toAddress={combineAddress({
+            sido: estimateRequestData?.addresses?.[1]?.sido ?? '',
+            sigungu: estimateRequestData?.addresses?.[1]?.sigungu ?? '',
+          })}
+        />
+        {estimateData?.length === 0 ? (
+          <div className="tab:min-h-[657px] mobile:min-h-[417px] flex min-h-[900px] w-full items-center justify-center">
+            <EmptyData />
+          </div>
+        ) : (
+          <PendingCardContainer
+            estimates={estimateData}
+            movingType={estimateRequestData?.movingType ?? 'SMALL_MOVING'}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

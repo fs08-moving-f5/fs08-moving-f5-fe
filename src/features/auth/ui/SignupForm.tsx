@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Input from '@/shared/ui/input/Input';
-import { Button } from '@/shared/ui/button';
+import Button from '@/shared/ui/button/Button';
 import { useSignupForm } from '../hooks/useSignupForm';
 import { SignupFormData } from '../types/types';
 

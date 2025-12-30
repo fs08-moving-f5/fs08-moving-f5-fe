@@ -29,8 +29,8 @@ export default function Test({}) {
         placeholder="일반 텍스트"
         onChange={handleInputChange(setInputValue)}
       />
-      <SearchBar onSubmit={undefined} />
-      <SearchBar widthFull={true} onSubmit={undefined} />
+      <SearchBar onSubmit={() => alert('검색')} />
+      <SearchBar widthFull={true} onSubmit={() => alert('검색')} />
       <TextArea value={textareaValue2} onChange={handleTextAreaChange(setTextareaValue2)} />
     </div>
   );
