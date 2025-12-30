@@ -150,7 +150,7 @@ const MyPage = () => {
 
               {/* 별점 요약 */}
               <div className="mb-6 flex items-start justify-between gap-8">
-                <div className="text-center flex items-center gap-4">
+                <div className="flex items-center gap-4 text-center">
                   <div className="text-5xl font-bold">{activity.averageRating.toFixed(1)}</div>
                   <div className="my-2 flex flex-col items-start justify-center gap-1">
                     <StarRating rating={activity.averageRating} size={20} />
