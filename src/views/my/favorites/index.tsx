@@ -6,12 +6,14 @@ import FavoritesMenuWrapper from '@/features/favorites/ui/menuWrapper';
 import FavoritesCardContainer from '@/features/favorites/ui/cardContainer';
 import { useGetFavoriteDriversQuery } from '@/features/favorites/hooks/queries/useFavoriteQuery';
 import Spinner from '@/shared/ui/spinner';
+import { useIntersectionObserver } from '@/shared/hooks/useIntersectionObserver';
 import type { FavoriteDriver } from '@/features/favorites/services/favorite.service';
 
 const MyFavoritesPageClient = () => {
   const [selectedIds, setSelectedIds] = useState<Set<string | undefined>>(new Set());
 
-  const { data, isLoading } = useGetFavoriteDriversQuery();
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useGetFavoriteDriversQuery();
 
   // TODO: 타입 추론 개선
   const favoriteDrivers: FavoriteDriver[] = (data?.pages.flat() as FavoriteDriver[]) ?? [];
@@ -37,6 +39,15 @@ const MyFavoritesPageClient = () => {
     });
   };
 
+  const { ref } = useIntersectionObserver({
+    onIntersect: () => {
+      if (hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    enabled: hasNextPage && !isFetchingNextPage,
+  });
+
   const isAllChecked = favoriteDrivers.length > 0 && selectedIds.size === favoriteDrivers.length;
 
   const checkedCount = selectedIds.size;
@@ -58,6 +69,7 @@ const MyFavoritesPageClient = () => {
           selectedIds={selectedIds}
           onToggleCheck={handleToggleCheck}
         />
+        {hasNextPage && <div ref={ref} className="h-4" />}
       </div>
     </>
   );
