@@ -332,6 +332,7 @@ export interface paths {
          *     status 쿼리 파라미터를 통해 특정 상태의 견적만 필터링할 수 있습니다.
          *     가능한 상태 값: PENDING, CONFIRMED, REJECTED, CANCELLED (대소문자 구분 없음)
          *     각 견적에는 드라이버 정보, 견적 요청 정보, 드라이버의 확정된 견적 수, 찜하기 수, 리뷰 평균 점수가 포함됩니다.
+         *     페이지네이션을 지원하며, limit과 cursor 파라미터를 사용하여 페이지 단위로 조회할 수 있습니다.
          */
         get: operations["getReceivedEstimates"];
         put?: never;
@@ -1155,14 +1156,14 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description 견적 요청 성공 */
+                /** @description 진행 중인 견적 요청 조회 성공 */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
                         "application/json": {
-                            /** @example 견적 요청 성공 */
+                            /** @example 진행 중인 견적 요청 조회 성공 */
                             message?: string;
                             data?: {
                                 /** @example uuid-estimate-request-id */
@@ -1211,7 +1212,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/estimate-request/user/create": {
+    "/api/estimate-request/user/request": {
         parameters: {
             query?: never;
             header?: never;
@@ -1239,7 +1240,7 @@ export interface paths {
                         movingDate: string;
                         from: {
                             /** @example 6035 */
-                            zonecode: string;
+                            zoneCode: string;
                             /** @example 서울 강남구 가로수길 5 */
                             address: string;
                             /** @example 5 Garosu-gil, Gangnam-gu, Seoul, Republic of Korea */
@@ -1255,7 +1256,7 @@ export interface paths {
                         };
                         to: {
                             /** @example 6035 */
-                            zonecode: string;
+                            zoneCode: string;
                             /** @example 서울 강남구 가로수길 5 */
                             address: string;
                             /** @example 5 Garosu-gil, Gangnam-gu, Seoul, Republic of Korea */
@@ -1285,8 +1286,8 @@ export interface paths {
                             data?: {
                                 /** @example uuid-estimate-request-id */
                                 id?: string;
-                                /** @example uuid-estimate-request-id */
-                                userId?: string;
+                                /** @example 홍길동 */
+                                name?: string;
                                 /** @example HOME */
                                 movingType?: string;
                                 /**
@@ -1308,16 +1309,6 @@ export interface paths {
                                     /** @example 해운대구 */
                                     sigungu?: string;
                                 } | null;
-                                /**
-                                 * Format: date-time
-                                 * @example 2024-12-01T00:00:00.000Z
-                                 */
-                                createdAt?: string;
-                                /**
-                                 * Format: date-time
-                                 * @example 2024-12-01T00:00:00.000Z
-                                 */
-                                updatedAt?: string;
                             };
                         };
                     };
@@ -2482,6 +2473,19 @@ export interface components {
             /** @description 에러 메시지 */
             message?: string;
         };
+        Pagination: {
+            /**
+             * @description 다음 페이지 존재 여부
+             * @example true
+             */
+            hasNext?: boolean;
+            /**
+             * Format: uuid
+             * @description 다음 페이지 조회를 위한 커서 (hasNext가 false이면 null)
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            nextCursor?: string | null;
+        };
         AddressSummary: {
             /** @example 서울 */
             sido?: string;
@@ -2693,10 +2697,12 @@ export interface components {
          */
         statusQuery: "PENDING" | "CONFIRMED" | "REJECTED" | "CANCELLED";
         /**
-         * @description 드라이버(기사) ID
-         * @example 123e4567-e89b-12d3-a456-426614174002
+         * @description 조회할 항목 수 (기본값: 10)
+         *     한 번에 가져올 즐겨찾기 항목의 개수를 지정합니다.
+         *     최소값은 1이며, 생략 시 기본값 10이 적용됩니다.
+         * @example 10
          */
-        driverId: string;
+        limitQuery: number;
         /**
          * @description 페이지네이션 커서 (다음 페이지 조회 시 사용)
          *     이전 응답의 pagination.nextCursor 값을 사용하여 다음 페이지를 조회할 수 있습니다.
@@ -2705,12 +2711,10 @@ export interface components {
          */
         cursorQuery: string;
         /**
-         * @description 조회할 항목 수 (기본값: 10)
-         *     한 번에 가져올 즐겨찾기 항목의 개수를 지정합니다.
-         *     최소값은 1이며, 생략 시 기본값 10이 적용됩니다.
-         * @example 10
+         * @description 드라이버(기사) ID
+         * @example 123e4567-e89b-12d3-a456-426614174002
          */
-        limitQuery: number;
+        driverId: string;
         /**
          * @description 알림 ID
          * @example 123e4567-e89b-12d3-a456-426614174000
@@ -2738,8 +2742,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponse"] & {
+                    "application/json": {
+                        /**
+                         * @description 요청 성공 여부
+                         * @example true
+                         */
+                        success?: boolean;
                         data?: components["schemas"]["PendingEstimate"] | null;
+                        /** @description 응답 메시지 */
+                        message?: string | null;
                     };
                 };
             };
@@ -2771,6 +2782,20 @@ export interface operations {
                  * @example PENDING
                  */
                 status?: components["parameters"]["statusQuery"];
+                /**
+                 * @description 조회할 항목 수 (기본값: 10)
+                 *     한 번에 가져올 즐겨찾기 항목의 개수를 지정합니다.
+                 *     최소값은 1이며, 생략 시 기본값 10이 적용됩니다.
+                 * @example 10
+                 */
+                limit?: components["parameters"]["limitQuery"];
+                /**
+                 * @description 페이지네이션 커서 (다음 페이지 조회 시 사용)
+                 *     이전 응답의 pagination.nextCursor 값을 사용하여 다음 페이지를 조회할 수 있습니다.
+                 *     첫 페이지 조회 시에는 생략 가능합니다.
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
+                cursor?: components["parameters"]["cursorQuery"];
             };
             header?: never;
             path?: never;
@@ -2784,8 +2809,16 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponse"] & {
+                    "application/json": {
+                        /**
+                         * @description 요청 성공 여부
+                         * @example true
+                         */
+                        success?: boolean;
                         data?: components["schemas"]["ReceivedEstimate"][];
+                        pagination?: components["schemas"]["Pagination"];
+                        /** @description 응답 메시지 */
+                        message?: string | null;
                     };
                 };
             };
@@ -2839,8 +2872,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponse"] & {
+                    "application/json": {
+                        /**
+                         * @description 요청 성공 여부
+                         * @example true
+                         */
+                        success?: boolean;
                         data?: components["schemas"]["EstimateDetail"] | null;
+                        /** @description 응답 메시지 */
+                        message?: string | null;
                     };
                 };
             };
@@ -2903,8 +2943,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponse"] & {
+                    "application/json": {
+                        /**
+                         * @description 요청 성공 여부
+                         * @example true
+                         */
+                        success?: boolean;
                         data?: components["schemas"]["ConfirmedEstimate"];
+                        /** @description 응답 메시지 */
+                        message?: string | null;
                     };
                 };
             };
