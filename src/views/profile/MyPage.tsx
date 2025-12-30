@@ -93,7 +93,9 @@ const MyPage = () => {
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="text-sm text-gray-500">리뷰</div>
-                  <div className="text-2xl font-bold text-red-500">{activity.averageRating.toFixed(1)}</div>
+                  <div className="text-2xl font-bold text-red-500">
+                    {activity.averageRating.toFixed(1)}
+                  </div>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="text-sm text-gray-500">총 경력</div>
@@ -203,16 +205,13 @@ const MyPage = () => {
 
           <div className="tab:w-full mobile:w-full w-[30%]">
             <div className="tab:flex-row mobile:flex-row tab:justify-center mobile:justify-center flex flex-col gap-4">
-              <Button 
-                onClick={handleProfileEdit}
-                isWriting={true}
-              >
+              <Button onClick={handleProfileEdit} isWriting={true}>
                 내 프로필 수정
               </Button>
-              <Button 
+              <Button
                 onClick={handleBasicInfoEdit}
                 isWriting={true}
-                variant='outlined'
+                variant="outlined"
                 design="secondary"
               >
                 기본 정보 수정

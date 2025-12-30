@@ -25,18 +25,18 @@ const PendingEstimateDetailHeader = ({
           className="tab:h-[157px] mobile:h-[122px] h-[180px] object-cover"
           priority
         />
-      { hasImg && (
-        <div className="button-0 tab:top-[78.5px] mobile:top-[61px] absolute top-[90px] right-0 left-0">
-          <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] max-w-[1200px]">
-            <Image
-              src={driverImageUrl}
-              alt="driverImg"
-              width={134}
-              height={134}
-              className="h-[134px] w-[134px] rounded-[12px] object-cover"
-            />
+        {hasImg && (
+          <div className="button-0 tab:top-[78.5px] mobile:top-[61px] absolute top-[90px] right-0 left-0">
+            <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] max-w-[1200px]">
+              <Image
+                src={driverImageUrl}
+                alt="driverImg"
+                width={134}
+                height={134}
+                className="h-[134px] w-[134px] rounded-[12px] object-cover"
+              />
+            </div>
           </div>
-        </div>
         )}
       </div>
     </>
