@@ -1,5 +1,7 @@
+import HomePageUI from '@/views/home/homePage';
+
 const HomePage = () => {
-  return <div>HomePage</div>;
+  return <HomePageUI />;
 };
 
 export default HomePage;
