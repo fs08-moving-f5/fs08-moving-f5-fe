@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { MovingTypeChip } from '@/shared/ui/chip';
 import DriverInfo from './DriverInfo';
+import { CheckBox } from '../button';
 
 interface FindDriverProps {
   title: string;
@@ -15,7 +16,9 @@ interface FindDriverProps {
   experience: string;
   moveCount: string;
   likeCount: number;
-  movingType?: 'small' | 'home' | 'office' | 'assign';
+  // movingType?: 'small' | 'home' | 'office' | 'assign';
+  movingTypeArray?: ('small' | 'home' | 'office' | 'assign')[];
+  favoriteCard?: boolean;
   isLiked?: boolean;
   likeFunction?: () => void;
 }
@@ -30,7 +33,9 @@ const FindDriver = ({
   experience,
   moveCount,
   likeCount,
-  movingType,
+  // movingType,
+  movingTypeArray,
+  favoriteCard = false,
   isLiked = false,
   likeFunction,
 }: FindDriverProps) => {
@@ -44,9 +49,14 @@ const FindDriver = ({
   return (
     <article className="tab:max-w-[327px] mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 w-full max-w-[1200px] rounded-2xl bg-white p-6 shadow-md">
       <div className="mobile:gap-3 tab:gap-3 relative flex flex-col items-start gap-4">
-        {movingType && (
-          <div>
-            <MovingTypeChip movingType={movingType} />
+        {favoriteCard && (
+          <div className="flex w-full items-center justify-between">
+            <div className="flex items-center gap-1">
+              {movingTypeArray?.map((mv) => (
+                <MovingTypeChip key={mv} movingType={mv} />
+              ))}
+            </div>
+            <CheckBox shape="square" checked={false} onChange={() => {}} />
           </div>
         )}
         <div className="mobile:gap-4 tab:gap-4 flex flex-1 flex-row gap-6">
@@ -57,6 +67,7 @@ const FindDriver = ({
                 alt="Driver Img"
                 width={134}
                 height={134}
+                className="h-[134px] w-[134px] rounded-xl object-cover"
               />
             </figure>
           </div>

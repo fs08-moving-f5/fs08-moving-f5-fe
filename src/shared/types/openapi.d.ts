@@ -1354,7 +1354,7 @@ export interface paths {
         /**
          * 찜한 기사 목록 조회
          * @description 현재 사용자가 찜한 기사 목록을 조회합니다.
-         *     커서 기반 페이지네이션을 지원하며, 각 기사 정보에는 드라이버 프로필, 리뷰, 확정된 견적 수, 찜하기 수가 포함됩니다.
+         *     커서 기반 페이지네이션을 지원하며, 각 기사 정보에는 드라이버 프로필, 리뷰, 확정된 견적 수, 찜하기 수, 리뷰 평점 평균, 리뷰 총 개수가 포함됩니다.
          *
          *     **쿼리 파라미터:**
          *     - `cursor` (선택): 다음 페이지 조회를 위한 커서 값. 이전 응답의 `pagination.nextCursor` 값을 사용합니다.
@@ -3030,15 +3030,33 @@ export interface components {
              */
             description?: string | null;
             /**
-             * @description 확정된 견적 수
+             * @description 제공 서비스 목록
+             * @example [
+             *       "HOME_MOVING",
+             *       "OFFICE_MOVING"
+             *     ]
+             */
+            services?: ("SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING")[];
+            /**
+             * @description 확정된 견적 수 (작업 진행 건수)
              * @example 150
              */
-            tasksCount?: number;
+            confirmedEstimateCount?: number;
             /**
              * @description 찜하기 수
              * @example 45
              */
-            favoriteCount?: number;
+            favoriteDriverCount?: number;
+            /**
+             * @description 리뷰 평점 평균 (소수점 첫째 자리까지)
+             * @example 4.5
+             */
+            averageRating?: number | null;
+            /**
+             * @description 리뷰 총 개수
+             * @example 120
+             */
+            reviewCount?: number;
             /**
              * Format: date-time
              * @description 생성 일시
@@ -3085,6 +3103,11 @@ export interface components {
                  * @example 123e4567-e89b-12d3-a456-426614174002
                  */
                 id?: string;
+                /**
+                 * @description 드라이버 이름
+                 * @example 홍길동
+                 */
+                name?: string;
                 /** @description 드라이버 프로필 정보 */
                 driverProfile?: components["schemas"]["DriverProfileInfo"] | null;
                 /** @description 리뷰 목록 */

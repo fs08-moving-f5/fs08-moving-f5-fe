@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { addFavoriteDriver, deleteFavoriteDriver } from '../../services/favorite.service';
 import { showToast } from '@/shared/ui/sonner';
-import { confirmEstimate } from '../../services/estimate.service';
+import { confirmEstimate } from '../../../my-estimates/services/estimate.service';
 
 export const useFavoriteMutation = () => {
   return useMutation({
