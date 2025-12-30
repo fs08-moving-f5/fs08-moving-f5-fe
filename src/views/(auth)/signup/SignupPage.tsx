@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import {
   AuthLayout,
   SignupForm,
@@ -13,8 +14,10 @@ import {
 import { showToast } from '@/shared/ui/sonner';
 
 export default function SignupPage({ usertype }: { usertype: UserType }) {
+  const router = useRouter();
   const { handleSignup } = useSignup();
   const { handleSocialLogin } = useSocialLogin();
+  const filteredUsertype = usertype.toLowerCase();
 
   const handleSubmit = async (data: SignupFormData) => {
     try {
@@ -22,6 +25,8 @@ export default function SignupPage({ usertype }: { usertype: UserType }) {
 
       if (result) {
         showToast({ kind: 'success', message: '회원가입에 성공했습니다!' });
+        // 회원가입 성공 후 프로필 등록 페이지로 이동
+        router.push(`/${filteredUsertype}/profile/setup`);
       }
     } catch (error) {
       showToast({

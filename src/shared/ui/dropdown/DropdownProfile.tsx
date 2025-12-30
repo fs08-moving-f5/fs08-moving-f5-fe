@@ -36,7 +36,7 @@ export default function DropdownProfile({
   const listObject = {
     guest: [],
     user: [
-      ['프로필 수정', '/'],
+      ['프로필 수정', '/user/profile/edit'],
       ['찜한 기사님', '/'],
       ['이사 리뷰', '/'],
     ],

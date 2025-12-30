@@ -11,6 +11,7 @@ export default function LoginPage({ usertype }: { usertype: UserType }) {
   const router = useRouter();
   const { handleLogin, isLoading } = useLogin();
   const { handleSocialLogin } = useSocialLogin();
+  const filteredUsertype = usertype.toLowerCase();
 
   const handleSubmit = async (data: LoginFormData) => {
     try {
@@ -19,7 +20,12 @@ export default function LoginPage({ usertype }: { usertype: UserType }) {
       if (result) {
         console.log('로그인 성공:', result);
         showToast({ kind: 'success', message: '로그인에 성공했습니다.' });
-        router.push('/');
+        // 로그인 성공 후 프로필이 없으면 프로필 설정 페이지로 이동
+        if (!result.user.hasProfile) {
+          router.push(`/${filteredUsertype}/profile/setup`);
+        } else {
+          router.push('/');
+        }
       }
     } catch (error) {
       console.error('로그인 실패:', error);

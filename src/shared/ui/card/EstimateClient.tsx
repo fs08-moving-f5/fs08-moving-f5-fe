@@ -1,36 +1,29 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { MovingTypeChip } from '@/shared/ui/chip';
-import { Button } from '@/shared/ui/button';
 
-interface EstimateClientProps {
-  customerName: string;
-  movingType?: 'small' | 'home' | 'office';
-  pickedDriver?: boolean;
-  pickupAddress: string;
-  dropoffAddress: string;
-  movingDate: string;
-  estimatePrice: number;
-  isConfirmed?: boolean;
-  status?: 'completed' | 'rejected';
-  onDetailClick?: () => void;
-}
+import Button from '@/shared/ui/button/Button';
+import { EstimateClientProps } from '@/features/driver-estimate/types/driverEstimate';
 
-const EstimateClient = ({
-  customerName,
-  movingType,
-  pickedDriver = false,
-  pickupAddress,
-  dropoffAddress,
-  movingDate,
-  estimatePrice,
-  isConfirmed = false,
-  status,
-  onDetailClick,
-}: EstimateClientProps) => {
+const EstimateClient = (props: EstimateClientProps) => {
+  const router = useRouter();
+
+  const {
+    id,
+    customerName,
+    movingType,
+    pickedDriver = false,
+    pickupAddress,
+    dropoffAddress,
+    movingDate,
+    isConfirmed = false,
+    status,
+  } = props;
+
   return (
-    <article className="mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 mobile:max-w-[327px] relative w-full max-w-[558px] rounded-2xl bg-white p-6 shadow-md">
+    <article className="mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 mobile:max-w-[327px] relative w-full max-w-[588px] rounded-2xl bg-white p-6 shadow-md">
       <div className="mobile:gap-3 tab:gap-3 flex flex-col gap-4">
         {/* 헤더: 칩 영역 */}
         <header className="flex w-full items-center justify-between">
@@ -82,23 +75,29 @@ const EstimateClient = ({
         </section>
 
         <hr className="border-line-200" />
-
         {/* 견적 금액 */}
-        <section className="flex items-center justify-between">
-          <span className="mobile:text-md tab:text-md text-grayScale-500 text-lg font-medium">
-            견적 금액
-          </span>
-          <strong className="mobile:text-xl tab:text-xl text-black-500 text-2xl font-bold">
-            {estimatePrice.toLocaleString()}원
-          </strong>
-        </section>
+        {status !== 'rejected' && props.estimatePrice !== undefined && (
+          <section className="flex items-center justify-between">
+            <span className="mobile:text-md tab:text-md text-grayScale-500 text-lg font-medium">
+              견적 금액
+            </span>
+            <strong className="mobile:text-xl tab:text-xl text-black-500 text-2xl font-bold">
+              {props.estimatePrice.toLocaleString()}원
+            </strong>
+          </section>
+        )}
       </div>
 
       {/* 이사 완료 오버레이 */}
       {status === 'completed' && (
         <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-[rgba(4,4,4,0.64)]">
           <p className="mb-4 text-lg font-semibold text-white">이사 완료된 견적이에요</p>
-          <Button variant="outlined" design="secondary" size="xs" onClick={onDetailClick}>
+          <Button
+            variant="outlined"
+            design="secondary"
+            size="xs"
+            onClick={() => router.push(`/driver/my/requests/confirmed/${id}`)}
+          >
             견적 상세보기
           </Button>
         </div>

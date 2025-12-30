@@ -190,6 +190,7 @@ export default function CardTestPage() {
         />
 
         <EstimateClient
+          id="mock-1"
           customerName="박고객"
           movingType="home"
           pickedDriver={true}
@@ -198,9 +199,11 @@ export default function CardTestPage() {
           movingDate="2024년 10월 01일 (월)"
           estimatePrice={400000}
           isConfirmed={true}
+          status="normal"
         />
 
         <EstimateClient
+          id="mock-2"
           customerName="이고객"
           movingType="office"
           pickedDriver={false}
@@ -208,9 +211,11 @@ export default function CardTestPage() {
           dropoffAddress="서울시 종로구"
           movingDate="2024년 11월 20일 (수)"
           estimatePrice={120000}
+          status="normal"
         />
 
         <EstimateClient
+          id="mock-3"
           customerName="최고객"
           movingType="small"
           pickedDriver={true}
@@ -220,19 +225,17 @@ export default function CardTestPage() {
           estimatePrice={90000}
           isConfirmed={false}
           status="completed"
-          onDetailClick={() => alert('견적 상세보기 클릭됨')}
         />
 
         <EstimateClient
+          id="mock-4"
           customerName="김고객"
           movingType="home"
           pickedDriver={false}
           pickupAddress="서울시 성북구"
           dropoffAddress="서울시 노원구"
           movingDate="2025년 01월 10일 (금)"
-          estimatePrice={300000}
           status="rejected"
-          onDetailClick={() => alert('견적 상세보기 클릭됨')}
         />
       </div>
     </div>
