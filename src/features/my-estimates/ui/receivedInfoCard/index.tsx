@@ -1,6 +1,8 @@
 import EstimateDetail from '@/shared/ui/card/EstimateDetail';
 import DropdownFilter from '@/shared/ui/dropdown/DropdownFilter';
 import { ReceivedEstimate } from '../../services/estimate.service';
+import { formatDateWithPeriod, formatDateWithWeekday } from '@/shared/lib/day';
+import { useState, useMemo } from 'react';
 
 const movingTypeMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING' | '',
@@ -29,6 +31,28 @@ const ReceivedInfoCard = ({
   estimateRequest: ReceivedEstimate;
   estimates: ReceivedEstimate['estimates'];
 }) => {
+  const [selectStatus, setSelectStatus] = useState<'ALL' | 'CONFIRMED'>('ALL');
+
+  const handleSelectStatus = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const statusMap: Record<'전체' | '확정견적', 'ALL' | 'CONFIRMED'> = {
+      전체: 'ALL',
+      확정견적: 'CONFIRMED',
+    };
+
+    const value = e.currentTarget.value;
+
+    if (value === '전체' || value === '확정견적') {
+      setSelectStatus(statusMap[value]);
+    }
+  };
+
+  const filteredEstimates = useMemo(() => {
+    if (selectStatus === 'ALL') {
+      return estimates ?? [];
+    }
+    return estimates?.filter((estimate) => estimate.status === 'CONFIRMED') ?? [];
+  }, [estimates, selectStatus]);
+
   const estimateRequestInfoLabels = [
     {
       id: 1,
@@ -48,7 +72,7 @@ const ReceivedInfoCard = ({
     {
       id: 4,
       label: '이용일',
-      value: estimateRequest.movingDate ?? '',
+      value: formatDateWithWeekday(estimateRequest.movingDate ?? ''),
     },
   ];
 
@@ -57,7 +81,9 @@ const ReceivedInfoCard = ({
       <div className="tab:w-full flex min-w-[300px] shrink-0 grow-0 basis-auto flex-col gap-10">
         <div className="mobile:justify-center flex items-center justify-between">
           <div className="text-black-400 mobile:text-2lg text-xl font-semibold">견적 정보</div>
-          <div className="text-md mobile:hidden font-normal text-gray-500">25. 12. 25.</div>
+          <div className="text-md mobile:hidden flex items-center font-normal text-gray-500">
+            {formatDateWithPeriod(estimateRequest?.createdAt ?? '')}
+          </div>
         </div>
         <div className="mobile:gap-2 flex flex-col gap-4">
           {estimateRequestInfoLabels.map((label) => (
@@ -71,7 +97,7 @@ const ReceivedInfoCard = ({
             </div>
           ))}
           <div className="tab:hidden mobile:block text-md hidden w-full text-right font-normal text-gray-500">
-            25. 12. 25.
+            {formatDateWithPeriod(estimateRequest?.createdAt ?? '')}
           </div>
         </div>
       </div>
@@ -81,12 +107,18 @@ const ReceivedInfoCard = ({
       <div className="tab:w-full flex grow flex-col gap-5">
         <div className="flex items-center gap-2">
           <div className="text-black-400 text-xl font-semibold">견적서 목록</div>
-          <p className="text-primary-orange-400 text-xl font-semibold">4</p>
+          <p className="text-primary-orange-400 text-xl font-semibold">
+            {filteredEstimates?.length ?? 0}
+          </p>
         </div>
         <div className="flex flex-col gap-5">
-          <DropdownFilter title="전체" list={['전체', '확정견적']} />
+          <DropdownFilter
+            title={selectStatus === 'ALL' ? '전체' : '확정견적'}
+            list={['전체', '확정견적']}
+            onClick={handleSelectStatus}
+          />
           <div className="flex flex-col gap-2">
-            {estimates?.map((estimate) => (
+            {filteredEstimates?.map((estimate) => (
               <EstimateDetail
                 key={estimate.id}
                 driverName={estimate.driver?.name ?? ''}

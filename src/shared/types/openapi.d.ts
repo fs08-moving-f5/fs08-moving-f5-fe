@@ -2781,6 +2781,12 @@ export interface components {
              * @enum {string}
              */
             status?: "CONFIRMED" | "REJECTED" | "CANCELLED";
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-15T10:00:00Z
+             */
+            createdAt?: string;
             /** @description 주소 정보 목록 */
             addresses?: components["schemas"]["AddressInfo"][];
             /** @description 해당 견적 요청에 대한 견적 목록 (status 필터가 적용된 경우 해당 상태의 견적만 포함) */
