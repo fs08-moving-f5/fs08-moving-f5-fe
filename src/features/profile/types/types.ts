@@ -79,3 +79,48 @@ export interface UpdateDriverProfileRequest {
   regions?: RegionType[];
   services?: ServiceType[];
 }
+
+// ========== 마이페이지 관련 타입 ==========
+
+// 마이페이지 데이터
+export interface MyPageData {
+  profile: {
+    id: string;
+    name: string;
+    imageUrl: string | null;
+    career: string | null;
+    shortIntro: string | null;
+    description: string | null;
+    services: string[];
+    regions: string[];
+    favoritedCount: number;
+  };
+  activity: {
+    completedCount: number;
+    averageRating: number;
+    career: string | null;
+  };
+  reviewDistribution: {
+    [key: number]: number;
+  };
+}
+
+// 리뷰
+export interface Review {
+  id: string;
+  rating: number | null;
+  content: string | null;
+  createdAt: string;
+  userName: string;
+}
+
+// 리뷰 목록 데이터
+export interface ReviewListData {
+  reviews: Review[];
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    itemsPerPage: number;
+  };
+}

@@ -62,7 +62,7 @@ const MyPage = () => {
           <div className="tab:w-full mobile:w-full w-[70%]">
             {/* 기사 정보 */}
             <section className="mb-8">
-              <div className="flex flex-row items-center">
+              <div className="flex flex-row items-center gap-2">
                 <Image
                   src={profile.imageUrl || '/img/profile.png'}
                   alt="profileImg"
@@ -70,9 +70,20 @@ const MyPage = () => {
                   height={80}
                   className="mb-4 h-[80px] w-[80px] rounded-[12px] object-cover"
                 />
-                <div className="mb-4 flex items-center gap-2">
-                  <Image src="/icons/name.svg" alt="이름 아이콘" width={20} height={20} />
-                  <h2 className="text-xl font-semibold">{profile.name}</h2>
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-1">
+                    <Image src="/icons/name.svg" alt="이름 아이콘" width={20} height={20} />
+                    <h2 className="text-xl font-semibold">{profile.name}</h2>
+                  </div>
+                  <div className="flex items-center">
+                    <Image
+                      src="/icons/like-empty.svg"
+                      alt="찜 아이콘"
+                      width={20}
+                      height={20}
+                    />
+                    <span className="text-gray-600">{profile.favoritedCount}</span>
+                  </div>
                 </div>
               </div>
 
@@ -150,7 +161,7 @@ const MyPage = () => {
 
               {/* 별점 요약 */}
               <div className="mb-6 flex items-start justify-between gap-8">
-                <div className="flex items-center gap-4 text-center">
+                <div className="text-center flex items-center gap-4">
                   <div className="text-5xl font-bold">{activity.averageRating.toFixed(1)}</div>
                   <div className="my-2 flex flex-col items-start justify-center gap-1">
                     <StarRating rating={activity.averageRating} size={20} />

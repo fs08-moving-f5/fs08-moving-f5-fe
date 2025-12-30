@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getMyPageData, getMyPageReviews } from '@/shared/api/myPage.api';
+import { getMyPageData, getMyPageReviews } from '../../services/profileService';
 import MY_PAGE_QUERY_KEY from '../../constants/myPageQueryKey';
 
 /**
