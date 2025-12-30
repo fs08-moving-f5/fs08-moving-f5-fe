@@ -16,8 +16,8 @@ interface EstimateDetailProps {
   pickedDriver?: boolean;
   estimatePrice: number;
   isConfirmed?: boolean;
-  shortIntro: string;
-  estimateStatus: '견적대기' | '견적확정' | '견적거절' | '견적취소';
+  shortIntro?: string;
+  estimateStatus?: '견적대기' | '견적확정' | '견적거절' | '견적취소';
   onLikeClick?: () => void;
   onClick?: () => void;
 }
