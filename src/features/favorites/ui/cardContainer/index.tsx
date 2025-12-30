@@ -10,13 +10,25 @@ const movingTypeMap: Record<
   OFFICE_MOVING: 'office',
 };
 
-const FavoritesCardContainer = ({ favoriteDrivers }: { favoriteDrivers: FavoriteDriver[] }) => {
+interface FavoritesCardContainerProps {
+  favoriteDrivers: FavoriteDriver[];
+  selectedIds: Set<string | undefined>;
+  onToggleCheck: (id: string | undefined) => void;
+}
+
+const FavoritesCardContainer = ({
+  favoriteDrivers,
+  selectedIds,
+  onToggleCheck,
+}: FavoritesCardContainerProps) => {
   return (
     <div className="container-responsive tab:max-w-[600px] mobile:max-w-[327px] max-w-[1200px]">
       <div className="flex flex-col gap-5">
         {favoriteDrivers.map((favoriteDriver) => (
           <FindDriver
             key={favoriteDriver.id}
+            checked={selectedIds.has(favoriteDriver.id ?? '')}
+            onCheckChange={() => onToggleCheck(favoriteDriver.id ?? '')}
             title={favoriteDriver.driver?.driverProfile?.shortIntro ?? ''}
             description={favoriteDriver.driver?.driverProfile?.description ?? ''}
             driverName={favoriteDriver.driver?.name ?? ''}

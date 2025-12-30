@@ -7,6 +7,8 @@ import DriverInfo from './DriverInfo';
 import { CheckBox } from '../button';
 
 interface FindDriverProps {
+  checked?: boolean;
+  onCheckChange?: (checked: boolean) => void;
   title: string;
   description: string;
   driverName: string;
@@ -24,6 +26,8 @@ interface FindDriverProps {
 }
 
 const FindDriver = ({
+  checked = false,
+  onCheckChange = () => {},
   title,
   description,
   driverName,
@@ -56,7 +60,7 @@ const FindDriver = ({
                 <MovingTypeChip key={mv} movingType={mv} />
               ))}
             </div>
-            <CheckBox shape="square" checked={false} onChange={() => {}} />
+            <CheckBox shape="square" checked={checked} onChange={onCheckChange} />
           </div>
         )}
         <div className="mobile:gap-4 tab:gap-4 flex flex-1 flex-row gap-6">
