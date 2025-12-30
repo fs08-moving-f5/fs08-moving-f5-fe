@@ -82,7 +82,7 @@ const MyPage = () => {
                 </div>
               </div>
 
-              {profile.shortIntro && <p className="mb-4 text-gray-600">{profile.shortIntro}</p>}
+              {profile.shortIntro && <p className="mb-4 text-black-300 font-semibold">{profile.shortIntro}</p>}
 
               {profile.description && (
                 <p className="mb-4 whitespace-pre-wrap text-gray-700">{profile.description}</p>
@@ -155,7 +155,7 @@ const MyPage = () => {
               <h2 className="mb-4 text-lg font-semibold">리뷰</h2>
 
               {/* 별점 요약 */}
-              <div className="mb-6 flex items-start justify-between gap-8">
+              <div className="mobile:flex-col mb-6 flex items-start justify-between gap-8">
                 <div className="flex items-center gap-4 text-center">
                   <div className="text-5xl font-bold">{activity.averageRating.toFixed(1)}</div>
                   <div className="my-2 flex flex-col items-start justify-center gap-1">
@@ -210,7 +210,7 @@ const MyPage = () => {
           </div>
 
           <div className="tab:w-full mobile:w-full w-[30%]">
-            <div className="tab:flex-row mobile:flex-row tab:justify-center mobile:justify-center flex flex-col gap-4">
+            <div className="tab:flex-row mobile:flex-col tab:justify-center mobile:justify-center flex flex-col gap-4">
               <Button onClick={handleProfileEdit} isWriting={true}>
                 내 프로필 수정
               </Button>
