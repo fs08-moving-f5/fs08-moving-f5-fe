@@ -149,13 +149,13 @@ const MyPage = () => {
               <h2 className="mb-4 text-lg font-semibold">리뷰</h2>
 
               {/* 별점 요약 */}
-              <div className="mb-6 flex items-start gap-8">
-                <div className="text-center">
+              <div className="mb-6 flex items-start justify-between gap-8">
+                <div className="text-center flex items-center gap-4">
                   <div className="text-5xl font-bold">{activity.averageRating.toFixed(1)}</div>
-                  <div className="my-2 flex items-center justify-center gap-1">
+                  <div className="my-2 flex flex-col items-start justify-center gap-1">
                     <StarRating rating={activity.averageRating} size={20} />
+                    <div className="text-sm text-gray-500">({totalReviews}개 리뷰)</div>
                   </div>
-                  <div className="text-sm text-gray-500">({totalReviews}개 리뷰)</div>
                 </div>
 
                 {/* 별점 분포 */}
@@ -176,7 +176,7 @@ const MyPage = () => {
                 <div>리뷰를 불러오는 중...</div>
               ) : reviewsData && reviewsData.reviews.length > 0 ? (
                 <>
-                  <div className="mb-6 space-y-4">
+                  <div className="mb-6">
                     {reviewsData.reviews.map((review) => (
                       <Review
                         key={review.id}
