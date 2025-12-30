@@ -2554,6 +2554,11 @@ export interface components {
              */
             averageRating?: number | null;
             /**
+             * @description 총 리뷰 개수
+             * @example 120
+             */
+            reviewCount?: number;
+            /**
              * Format: uuid
              * @description 기사 ID
              * @example 123e4567-e89b-12d3-a456-426614174000
@@ -2747,6 +2752,11 @@ export interface components {
                  * @example 홍길동
                  */
                 name?: string;
+                /**
+                 * @description 현재 사용자가 해당 드라이버를 찜했는지 여부
+                 * @example true
+                 */
+                isFavorite?: boolean;
                 /** @description 드라이버 프로필 정보 */
                 driverProfile?: components["schemas"]["DriverProfile"] | null;
             };

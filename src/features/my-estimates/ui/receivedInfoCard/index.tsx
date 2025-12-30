@@ -3,6 +3,12 @@ import DropdownFilter from '@/shared/ui/dropdown/DropdownFilter';
 import { ReceivedEstimate } from '../../services/estimate.service';
 import { formatDateWithPeriod, formatDateWithWeekday } from '@/shared/lib/day';
 import { useState, useMemo } from 'react';
+import {
+  useDeleteFavoriteMutation,
+  useFavoriteMutation,
+} from '../../hooks/mutations/useFavoriteMutation';
+import QUERY_KEY from '../../constants/queryKey';
+import { useQueryClient } from '@tanstack/react-query';
 
 const movingTypeMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING' | '',
@@ -31,6 +37,7 @@ const ReceivedInfoCard = ({
   estimateRequest: ReceivedEstimate;
   estimates: ReceivedEstimate['estimates'];
 }) => {
+  const queryClient = useQueryClient();
   const [selectStatus, setSelectStatus] = useState<'ALL' | 'CONFIRMED'>('ALL');
 
   const handleSelectStatus = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -52,6 +59,25 @@ const ReceivedInfoCard = ({
     }
     return estimates?.filter((estimate) => estimate.status === 'CONFIRMED') ?? [];
   }, [estimates, selectStatus]);
+
+  const { mutate: addFavoriteDriver } = useFavoriteMutation();
+  const { mutate: deleteFavoriteDriver } = useDeleteFavoriteMutation();
+
+  const handleLikeClick = ({ driverId, isLiked }: { driverId: string; isLiked: boolean }) => {
+    if (isLiked) {
+      deleteFavoriteDriver(driverId, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: QUERY_KEY.RECEIVED_ESTIMATE });
+        },
+      });
+    } else {
+      addFavoriteDriver(driverId, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: QUERY_KEY.RECEIVED_ESTIMATE });
+        },
+      });
+    }
+  };
 
   const estimateRequestInfoLabels = [
     {
@@ -124,15 +150,21 @@ const ReceivedInfoCard = ({
                 driverName={estimate.driver?.name ?? ''}
                 driverImageUrl={estimate.driver?.driverProfile?.imageUrl ?? ''}
                 rating={estimate.driver?.driverProfile?.averageRating ?? 0}
-                reviewCount={0}
+                reviewCount={estimate.driver?.driverProfile?.reviewCount ?? 0}
                 experience={estimate.driver?.driverProfile?.career ?? ''}
                 moveCount={`${estimate.driver?.driverProfile?.confirmedEstimateCount ?? 0}건`}
                 likeCount={estimate.driver?.driverProfile?.favoriteDriverCount ?? 0}
-                isLiked={false}
+                isLiked={estimate.driver?.isFavorite ?? false}
                 movingType={movingTypeMap[estimateRequest?.movingType ?? ''] ?? undefined}
                 pickedDriver={estimateRequest?.isDesignated}
                 estimatePrice={estimate.price ?? 0}
                 isConfirmed={estimate.status === 'CONFIRMED'}
+                onLikeClick={() =>
+                  handleLikeClick({
+                    driverId: estimate.driver?.id ?? '',
+                    isLiked: estimate.driver?.isFavorite ?? false,
+                  })
+                }
               />
             ))}
           </div>

@@ -16,6 +16,7 @@ interface EstimateDetailProps {
   pickedDriver?: boolean;
   estimatePrice: number;
   isConfirmed?: boolean;
+  onLikeClick?: () => void;
 }
 
 const EstimateDetail = ({
@@ -31,6 +32,7 @@ const EstimateDetail = ({
   pickedDriver = false,
   estimatePrice,
   isConfirmed = false,
+  onLikeClick,
 }: EstimateDetailProps) => {
   return (
     <article className="mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 mobile:max-w-[327px] w-full max-w-[660px] rounded-2xl bg-white p-6 shadow-md">
@@ -73,6 +75,7 @@ const EstimateDetail = ({
                 isLiked={isLiked}
                 showLikeButton={true}
                 type="estimateWait"
+                onLikeClick={onLikeClick}
               />
             </div>
           </section>
