@@ -76,12 +76,7 @@ const MyPage = () => {
                     <h2 className="text-xl font-semibold">{profile.name}</h2>
                   </div>
                   <div className="flex items-center">
-                    <Image
-                      src="/icons/like-empty.svg"
-                      alt="찜 아이콘"
-                      width={20}
-                      height={20}
-                    />
+                    <Image src="/icons/like-empty.svg" alt="찜 아이콘" width={20} height={20} />
                     <span className="text-gray-600">{profile.favoritedCount}</span>
                   </div>
                 </div>
@@ -161,7 +156,7 @@ const MyPage = () => {
 
               {/* 별점 요약 */}
               <div className="mb-6 flex items-start justify-between gap-8">
-                <div className="text-center flex items-center gap-4">
+                <div className="flex items-center gap-4 text-center">
                   <div className="text-5xl font-bold">{activity.averageRating.toFixed(1)}</div>
                   <div className="my-2 flex flex-col items-start justify-center gap-1">
                     <StarRating rating={activity.averageRating} size={20} />
