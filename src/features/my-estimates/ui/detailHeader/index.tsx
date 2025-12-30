@@ -1,6 +1,14 @@
 import Image from 'next/image';
 
-const PendingEstimateDetailHeader = ({ driverImageUrl, title }: { driverImageUrl: string; title: string }) => {
+const PendingEstimateDetailHeader = ({
+  driverImageUrl,
+  title,
+  hasImg = true,
+}: {
+  driverImageUrl: string;
+  title: string;
+  hasImg?: boolean;
+}) => {
   return (
     <>
       <header className="w-full bg-white py-8">
@@ -17,7 +25,7 @@ const PendingEstimateDetailHeader = ({ driverImageUrl, title }: { driverImageUrl
           className="tab:h-[157px] mobile:h-[122px] h-[180px] object-cover"
           priority
         />
-
+      { hasImg && (
         <div className="button-0 tab:top-[78.5px] mobile:top-[61px] absolute top-[90px] right-0 left-0">
           <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] max-w-[1200px]">
             <Image
@@ -29,6 +37,7 @@ const PendingEstimateDetailHeader = ({ driverImageUrl, title }: { driverImageUrl
             />
           </div>
         </div>
+        )}
       </div>
     </>
   );

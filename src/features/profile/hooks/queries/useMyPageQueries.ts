@@ -15,7 +15,13 @@ export const useGetMyPageQuery = () => {
 /**
  * 마이페이지 리뷰 목록 조회 Query Hook
  */
-export const useGetMyPageReviewsQuery = ({ page = 1, limit = 10 }: { page?: number; limit?: number }) => {
+export const useGetMyPageReviewsQuery = ({
+  page = 1,
+  limit = 10,
+}: {
+  page?: number;
+  limit?: number;
+}) => {
   return useQuery({
     queryKey: MY_PAGE_QUERY_KEY.MY_PAGE_REVIEWS(page, limit),
     queryFn: () => getMyPageReviews({ page, limit }),
