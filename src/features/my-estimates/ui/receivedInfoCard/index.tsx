@@ -1,5 +1,16 @@
 import EstimateDetail from '@/shared/ui/card/EstimateDetail';
 import DropdownFilter from '@/shared/ui/dropdown/DropdownFilter';
+import { ReceivedEstimate } from '../../services/estimate.service';
+
+const movingTypeMap: Record<
+  'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING' | '',
+  'small' | 'home' | 'office' | undefined
+> = {
+  SMALL_MOVING: 'small',
+  HOME_MOVING: 'home',
+  OFFICE_MOVING: 'office',
+  '': undefined,
+};
 
 const estimateRequestInfoLabels = [
   {
@@ -24,7 +35,13 @@ const estimateRequestInfoLabels = [
   },
 ];
 
-const ReceivedInfoCard = () => {
+const ReceivedInfoCard = ({
+  estimateRequest,
+  estimates,
+}: {
+  estimateRequest: ReceivedEstimate;
+  estimates: ReceivedEstimate['estimates'];
+}) => {
   return (
     <div className="border-line-100 tab:gap-10 tab:flex-col flex items-start gap-15 rounded-[20px] border-[0.5px] bg-gray-50 px-10 py-12 shadow-[-2px_-2px_10px_0_rgba(220,220,220,0.14),2px_2px_10px_0_rgba(220,220,220,0.14)]">
       <div className="tab:w-full flex min-w-[300px] shrink-0 grow-0 basis-auto flex-col gap-10">
@@ -59,30 +76,23 @@ const ReceivedInfoCard = () => {
         <div className="flex flex-col gap-5">
           <DropdownFilter title="전체" list={['전체', '확정견적']} />
           <div className="flex flex-col gap-2">
-            <EstimateDetail
-              driverName="홍길동"
-              rating={4.5}
-              reviewCount={10}
-              experience="10년"
-              moveCount="100"
-              estimatePrice={100000}
-            />
-            <EstimateDetail
-              driverName="홍길동"
-              rating={4.5}
-              reviewCount={10}
-              experience="10년"
-              moveCount="100"
-              estimatePrice={100000}
-            />
-            <EstimateDetail
-              driverName="홍길동"
-              rating={4.5}
-              reviewCount={10}
-              experience="10년"
-              moveCount="100"
-              estimatePrice={100000}
-            />
+            {estimates?.map((estimate) => (
+              <EstimateDetail
+                key={estimate.id}
+                driverName={estimate.driver?.name ?? ''}
+                driverImageUrl={estimate.driver?.driverProfile?.imageUrl ?? ''}
+                rating={estimate.driver?.driverProfile?.averageRating ?? 0}
+                reviewCount={0}
+                experience={estimate.driver?.driverProfile?.career ?? ''}
+                moveCount={`${estimate.driver?.driverProfile?.confirmedEstimateCount ?? 0}건`}
+                likeCount={estimate.driver?.driverProfile?.favoriteDriverCount ?? 0}
+                isLiked={false}
+                movingType={movingTypeMap[estimateRequest?.movingType ?? ''] ?? undefined}
+                pickedDriver={estimateRequest?.isDesignated}
+                estimatePrice={estimate.price ?? 0}
+                isConfirmed={estimate.status === 'CONFIRMED'}
+              />
+            ))}
           </div>
         </div>
       </div>

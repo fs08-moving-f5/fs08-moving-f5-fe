@@ -37,9 +37,22 @@ export const getReceivedEstimates = async ({
   limit: number;
   status?: 'PENDING' | 'CONFIRMED' | 'REJECTED' | 'CANCELLED';
 }) => {
-  const res = await api.get<ReceivedEstimateResponse>(
-    `estimate/received?cursor=${cursor}&limit=${limit}&status=${status}`,
-  );
+  const params = new URLSearchParams();
+
+  params.set('limit', String(limit));
+
+  if (cursor) {
+    params.set('cursor', cursor);
+  }
+
+  if (status) {
+    params.set('status', status);
+  }
+
+  const res = await api.get<ReceivedEstimateResponse>('estimate/received', {
+    searchParams: params,
+  });
+
   return res.data;
 };
 

@@ -329,10 +329,12 @@ export interface paths {
         /**
          * 받은 견적 목록 조회
          * @description 현재 사용자가 받은 견적 목록을 조회합니다.
+         *     견적 요청(estimateRequest)별로 그룹화되어 반환되며, 각 견적 요청에는 해당하는 견적(estimate) 배열이 포함됩니다.
          *     status 쿼리 파라미터를 통해 특정 상태의 견적만 필터링할 수 있습니다.
          *     가능한 상태 값: PENDING, CONFIRMED, REJECTED, CANCELLED (대소문자 구분 없음)
-         *     각 견적에는 드라이버 정보, 견적 요청 정보, 드라이버의 확정된 견적 수, 찜하기 수, 리뷰 평균 점수가 포함됩니다.
+         *     각 견적에는 드라이버 정보, 드라이버의 확정된 견적 수, 찜하기 수, 리뷰 평균 점수가 포함됩니다.
          *     페이지네이션을 지원하며, limit과 cursor 파라미터를 사용하여 페이지 단위로 조회할 수 있습니다.
+         *     cursor는 estimateRequest의 ID를 사용하며, PENDING 상태가 아닌 견적 요청만 조회됩니다.
          */
         get: operations["getReceivedEstimates"];
         put?: never;
@@ -1484,6 +1486,427 @@ export interface paths {
         patch: operations["readNotification"];
         trace?: never;
     };
+    "/api/profile/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 내 프로필 조회 (유저 타입 자동 판별)
+         * @description 로그인한 사용자의 프로필을 조회합니다. 유저 타입에 따라 UserProfile 또는 DriverProfile을 반환합니다.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 프로필 조회 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: components["schemas"]["UserProfile"] | components["schemas"]["DriverProfile"];
+                        };
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 프로필을 찾을 수 없음 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/profile/user": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 유저 프로필 조회
+         * @description 일반 유저의 프로필을 조회합니다.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 프로필 조회 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: components["schemas"]["UserProfile"];
+                        };
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 일반 유저만 접근 가능 */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 프로필을 찾을 수 없음 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /**
+         * 유저 프로필 생성
+         * @description 일반 유저의 프로필을 생성합니다.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["CreateUserProfileRequest"];
+                };
+            };
+            responses: {
+                /** @description 프로필 생성 성공 */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: components["schemas"]["UserProfile"];
+                        };
+                    };
+                };
+                /** @description 잘못된 요청 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 일반 유저만 접근 가능 */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 이미 프로필이 존재함 */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * 유저 프로필 수정
+         * @description 일반 유저의 프로필을 수정합니다.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UpdateUserProfileRequest"];
+                };
+            };
+            responses: {
+                /** @description 프로필 수정 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: components["schemas"]["UserProfile"];
+                        };
+                    };
+                };
+                /** @description 잘못된 요청 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 일반 유저만 접근 가능 */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 프로필을 찾을 수 없음 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/profile/driver": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 기사 프로필 조회
+         * @description 기사의 프로필을 조회합니다.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 프로필 조회 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: components["schemas"]["DriverProfile"];
+                        };
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 기사만 접근 가능 */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 프로필을 찾을 수 없음 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /**
+         * 기사 프로필 생성
+         * @description 기사의 프로필을 생성합니다.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["CreateDriverProfileRequest"];
+                };
+            };
+            responses: {
+                /** @description 프로필 생성 성공 */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: components["schemas"]["DriverProfile"];
+                        };
+                    };
+                };
+                /** @description 잘못된 요청 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 기사만 접근 가능 */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 이미 프로필이 존재함 */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * 기사 프로필 수정
+         * @description 기사의 프로필을 수정합니다.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UpdateDriverProfileRequest"];
+                };
+            };
+            responses: {
+                /** @description 프로필 수정 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: components["schemas"]["DriverProfile"];
+                        };
+                    };
+                };
+                /** @description 잘못된 요청 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 기사만 접근 가능 */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 프로필을 찾을 수 없음 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
     "/api/review/written": {
         parameters: {
             query?: never;
@@ -2094,23 +2517,24 @@ export interface components {
         DriverProfile: {
             /**
              * Format: uuid
-             * @description 드라이버 프로필 ID
-             * @example 123e4567-e89b-12d3-a456-426614174003
+             * @description 프로필 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
              */
             id?: string;
             /**
+             * Format: uri
              * @description 프로필 이미지 URL
-             * @example https://example.com/image.jpg
+             * @example https://example.com/driver.jpg
              */
             imageUrl?: string | null;
             /**
-             * @description 경력 정보
-             * @example 5년차 전문 이사 기사
+             * @description 경력
+             * @example 10년 이상 이사 경력
              */
             career?: string | null;
             /**
-             * @description 짧은 소개
-             * @example 안전하고 신속한 이사를 약속드립니다
+             * @description 한줄 소개
+             * @example 친절하고 신속한 이사 서비스를 제공합니다
              */
             shortIntro?: string | null;
             /**
@@ -2129,6 +2553,46 @@ export interface components {
              * @example 4.5
              */
             averageRating?: number | null;
+            /**
+             * Format: uuid
+             * @description 기사 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            driverId?: string;
+            /**
+             * @description 상세 설명
+             * @example 고객님의 소중한 짐을 안전하게 운반해드립니다...
+             */
+            description?: string | null;
+            /**
+             * @description 가능 지역 목록
+             * @example [
+             *       "서울",
+             *       "경기",
+             *       "인천"
+             *     ]
+             */
+            regions?: ("서울" | "경기" | "인천" | "강원" | "충북" | "충남" | "대전" | "세종" | "전북" | "전남" | "광주" | "경북" | "경남" | "대구" | "부산" | "울산" | "제주")[];
+            /**
+             * @description 제공 서비스 목록
+             * @example [
+             *       "HOME_MOVING",
+             *       "OFFICE_MOVING"
+             *     ]
+             */
+            services?: ("SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING")[];
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 수정 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            updatedAt?: string;
         };
         ReviewInfo: {
             /**
@@ -2247,7 +2711,7 @@ export interface components {
             /** @description 해당 견적 요청에 대한 견적 목록 (빈 배열일 수 있음) */
             estimates?: components["schemas"]["PendingEstimateItem"][];
         };
-        ReceivedEstimate: {
+        ReceivedEstimateItem: {
             /**
              * Format: uuid
              * @description 견적 ID
@@ -2261,7 +2725,7 @@ export interface components {
             price?: number | null;
             /**
              * @description 견적 상태
-             * @example PENDING
+             * @example CONFIRMED
              * @enum {string}
              */
             status?: "PENDING" | "CONFIRMED" | "REJECTED" | "CANCELLED";
@@ -2271,33 +2735,6 @@ export interface components {
              * @example 2024-01-15T10:30:00Z
              */
             createdAt?: string;
-            /** @description 견적 요청 정보 */
-            estimateRequest?: {
-                /**
-                 * Format: uuid
-                 * @description 견적 요청 ID
-                 */
-                id?: string;
-                /**
-                 * @description 이사 유형
-                 * @enum {string}
-                 */
-                movingType?: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
-                /**
-                 * Format: date-time
-                 * @description 이사 예정일
-                 */
-                movingDate?: string;
-                /** @description 지정 기사 여부 */
-                isDesignated?: boolean;
-                /**
-                 * @description 견적 요청 상태
-                 * @enum {string}
-                 */
-                status?: "PENDING" | "CONFIRMED" | "REJECTED" | "CANCELLED";
-                /** @description 주소 정보 목록 */
-                addresses?: components["schemas"]["AddressInfo"][];
-            };
             /** @description 드라이버 정보 */
             driver?: {
                 /**
@@ -2310,19 +2747,44 @@ export interface components {
                  * @example 홍길동
                  */
                 name?: string;
-                /**
-                 * @description 찜하기 여부
-                 * @example true
-                 */
-                isFavorite?: boolean;
-                /**
-                 * @description 해당 드라이버를 찜한 사용자 수
-                 * @example 45
-                 */
-                favoriteDriverCount?: number;
                 /** @description 드라이버 프로필 정보 */
                 driverProfile?: components["schemas"]["DriverProfile"] | null;
             };
+        };
+        ReceivedEstimate: {
+            /**
+             * Format: uuid
+             * @description 견적 요청 ID
+             * @example 123e4567-e89b-12d3-a456-426614174001
+             */
+            id?: string;
+            /**
+             * @description 이사 유형
+             * @example HOME_MOVING
+             * @enum {string}
+             */
+            movingType?: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
+            /**
+             * Format: date-time
+             * @description 이사 예정일
+             * @example 2024-02-01T09:00:00Z
+             */
+            movingDate?: string;
+            /**
+             * @description 지정 기사 여부
+             * @example false
+             */
+            isDesignated?: boolean;
+            /**
+             * @description 견적 요청 상태 (PENDING 제외)
+             * @example CONFIRMED
+             * @enum {string}
+             */
+            status?: "CONFIRMED" | "REJECTED" | "CANCELLED";
+            /** @description 주소 정보 목록 */
+            addresses?: components["schemas"]["AddressInfo"][];
+            /** @description 해당 견적 요청에 대한 견적 목록 (status 필터가 적용된 경우 해당 상태의 견적만 포함) */
+            estimates?: components["schemas"]["ReceivedEstimateItem"][];
         };
         EstimateDetail: {
             /**
@@ -2481,8 +2943,8 @@ export interface components {
             hasNext?: boolean;
             /**
              * Format: uuid
-             * @description 다음 페이지 조회를 위한 커서 (hasNext가 false이면 null)
-             * @example 123e4567-e89b-12d3-a456-426614174000
+             * @description 다음 페이지 조회를 위한 커서 (estimateRequest의 ID, hasNext가 false이면 null)
+             * @example 123e4567-e89b-12d3-a456-426614174001
              */
             nextCursor?: string | null;
         };
@@ -2682,6 +3144,183 @@ export interface components {
              * @example 5
              */
             count?: number;
+        };
+        UserProfile: {
+            /**
+             * Format: uuid
+             * @description 프로필 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            id?: string;
+            /**
+             * Format: uuid
+             * @description 사용자 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            userId?: string;
+            /**
+             * Format: uri
+             * @description 프로필 이미지 URL
+             * @example https://example.com/profile.jpg
+             */
+            imageUrl?: string | null;
+            /**
+             * @description 희망 지역 목록
+             * @example [
+             *       "서울",
+             *       "경기"
+             *     ]
+             */
+            regions?: ("서울" | "경기" | "인천" | "강원" | "충북" | "충남" | "대전" | "세종" | "전북" | "전남" | "광주" | "경북" | "경남" | "대구" | "부산" | "울산" | "제주")[];
+            /**
+             * @description 희망 서비스 목록
+             * @example [
+             *       "HOME_MOVING"
+             *     ]
+             */
+            services?: ("SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING")[];
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 수정 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            updatedAt?: string;
+        };
+        CreateUserProfileRequest: {
+            /**
+             * Format: uri
+             * @description 프로필 이미지 URL
+             * @example https://example.com/profile.jpg
+             */
+            imageUrl?: string;
+            /**
+             * @description 희망 지역 목록 (최소 1개)
+             * @example [
+             *       "서울",
+             *       "경기"
+             *     ]
+             */
+            regions: ("서울" | "경기" | "인천" | "강원" | "충북" | "충남" | "대전" | "세종" | "전북" | "전남" | "광주" | "경북" | "경남" | "대구" | "부산" | "울산" | "제주")[];
+            /**
+             * @description 희망 서비스 목록 (최소 1개)
+             * @example [
+             *       "HOME_MOVING"
+             *     ]
+             */
+            services: ("SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING")[];
+        };
+        UpdateUserProfileRequest: {
+            /**
+             * Format: uri
+             * @description 프로필 이미지 URL
+             * @example https://example.com/profile.jpg
+             */
+            imageUrl?: string | null;
+            /**
+             * @description 희망 지역 목록
+             * @example [
+             *       "서울",
+             *       "경기",
+             *       "인천"
+             *     ]
+             */
+            regions?: ("서울" | "경기" | "인천" | "강원" | "충북" | "충남" | "대전" | "세종" | "전북" | "전남" | "광주" | "경북" | "경남" | "대구" | "부산" | "울산" | "제주")[];
+            /**
+             * @description 희망 서비스 목록
+             * @example [
+             *       "HOME_MOVING",
+             *       "OFFICE_MOVING"
+             *     ]
+             */
+            services?: ("SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING")[];
+        };
+        CreateDriverProfileRequest: {
+            /**
+             * Format: uri
+             * @description 프로필 이미지 URL
+             * @example https://example.com/driver.jpg
+             */
+            imageUrl?: string;
+            /**
+             * @description 경력
+             * @example 10년 이상 이사 경력
+             */
+            career?: string;
+            /**
+             * @description 한줄 소개
+             * @example 친절하고 신속한 이사 서비스를 제공합니다
+             */
+            shortIntro?: string;
+            /**
+             * @description 상세 설명
+             * @example 고객님의 소중한 짐을 안전하게 운반해드립니다...
+             */
+            description?: string;
+            /**
+             * @description 가능 지역 목록 (최소 1개)
+             * @example [
+             *       "서울",
+             *       "경기",
+             *       "인천"
+             *     ]
+             */
+            regions: ("서울" | "경기" | "인천" | "강원" | "충북" | "충남" | "대전" | "세종" | "전북" | "전남" | "광주" | "경북" | "경남" | "대구" | "부산" | "울산" | "제주")[];
+            /**
+             * @description 제공 서비스 목록 (최소 1개)
+             * @example [
+             *       "HOME_MOVING",
+             *       "OFFICE_MOVING"
+             *     ]
+             */
+            services: ("SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING")[];
+        };
+        UpdateDriverProfileRequest: {
+            /**
+             * Format: uri
+             * @description 프로필 이미지 URL
+             * @example https://example.com/driver.jpg
+             */
+            imageUrl?: string | null;
+            /**
+             * @description 경력
+             * @example 10년 이상 이사 경력
+             */
+            career?: string | null;
+            /**
+             * @description 한줄 소개
+             * @example 친절하고 신속한 이사 서비스를 제공합니다
+             */
+            shortIntro?: string | null;
+            /**
+             * @description 상세 설명
+             * @example 고객님의 소중한 짐을 안전하게 운반해드립니다...
+             */
+            description?: string | null;
+            /**
+             * @description 가능 지역 목록
+             * @example [
+             *       "서울",
+             *       "경기",
+             *       "인천",
+             *       "강원"
+             *     ]
+             */
+            regions?: ("서울" | "경기" | "인천" | "강원" | "충북" | "충남" | "대전" | "세종" | "전북" | "전남" | "광주" | "경북" | "경남" | "대구" | "부산" | "울산" | "제주")[];
+            /**
+             * @description 제공 서비스 목록
+             * @example [
+             *       "SMALL_MOVING",
+             *       "HOME_MOVING",
+             *       "OFFICE_MOVING"
+             *     ]
+             */
+            services?: ("SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING")[];
         };
     };
     responses: never;
