@@ -38,7 +38,7 @@ export default function DropdownProfile({
     user: [
       ['프로필 수정', '/user/profile/edit'],
       ['찜한 기사님', '/'],
-      ['이사 리뷰', '/'],
+      ['이사 리뷰', '/user/my/reviews/pending'],
     ],
     driver: [['마이페이지', '/']],
   };
