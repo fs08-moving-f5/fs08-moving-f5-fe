@@ -12,28 +12,15 @@ const movingTypeMap: Record<
   '': undefined,
 };
 
-const estimateRequestInfoLabels = [
-  {
-    id: 1,
-    label: '이사 유형',
-    value: '사무실 이사',
-  },
-  {
-    id: 2,
-    label: '출발지',
-    value: '서울특별시 강남구 테헤란로 123',
-  },
-  {
-    id: 3,
-    label: '도착지',
-    value: '서울특별시 강남구 테헤란로 123',
-  },
-  {
-    id: 4,
-    label: '이용일',
-    value: '2026년 01월 26일 (월)',
-  },
-];
+const movingTypeLabelMap: Record<
+  'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING' | '',
+  '소형 이사' | '가정 이사' | '사무실 이사' | undefined
+> = {
+  SMALL_MOVING: '소형 이사',
+  HOME_MOVING: '가정 이사',
+  OFFICE_MOVING: '사무실 이사',
+  '': undefined,
+};
 
 const ReceivedInfoCard = ({
   estimateRequest,
@@ -42,6 +29,29 @@ const ReceivedInfoCard = ({
   estimateRequest: ReceivedEstimate;
   estimates: ReceivedEstimate['estimates'];
 }) => {
+  const estimateRequestInfoLabels = [
+    {
+      id: 1,
+      label: '이사 유형',
+      value: movingTypeLabelMap[estimateRequest?.movingType ?? ''] ?? '',
+    },
+    {
+      id: 2,
+      label: '출발지',
+      value: estimateRequest.addresses?.[0]?.address ?? '',
+    },
+    {
+      id: 3,
+      label: '도착지',
+      value: estimateRequest.addresses?.[1]?.address ?? '',
+    },
+    {
+      id: 4,
+      label: '이용일',
+      value: estimateRequest.movingDate ?? '',
+    },
+  ];
+
   return (
     <div className="border-line-100 tab:gap-10 tab:flex-col flex items-start gap-15 rounded-[20px] border-[0.5px] bg-gray-50 px-10 py-12 shadow-[-2px_-2px_10px_0_rgba(220,220,220,0.14),2px_2px_10px_0_rgba(220,220,220,0.14)]">
       <div className="tab:w-full flex min-w-[300px] shrink-0 grow-0 basis-auto flex-col gap-10">
