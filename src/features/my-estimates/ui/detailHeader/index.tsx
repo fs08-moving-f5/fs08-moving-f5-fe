@@ -1,11 +1,11 @@
 import Image from 'next/image';
 
-const PendingEstimateDetailHeader = ({ driverImageUrl }: { driverImageUrl: string }) => {
+const PendingEstimateDetailHeader = ({ driverImageUrl, title }: { driverImageUrl: string; title: string }) => {
   return (
     <>
       <header className="w-full bg-white py-8">
         <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] tab:text-2xl mobile:text-xl text-black-500 flex max-w-[1200px] items-center justify-start px-2 text-2xl font-semibold">
-          견적 상세
+          {title}
         </div>
       </header>
       <div className="mobile:pb-[76px] tab:pb-[60px] relative pb-[52px]">

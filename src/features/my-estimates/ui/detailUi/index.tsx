@@ -94,6 +94,7 @@ const EstimateDetailUi = ({
     <div className="w-full bg-white pb-[62px]">
       <PendingEstimateDetailHeader
         driverImageUrl={driverData?.driverProfile?.imageUrl ?? '/img/profile.png'}
+        title='견적 상세'
       />
 
       <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] tab:flex-col mobile:flex-col tab:gap-8 mobile:gap-8 tab:justify-start mobile:justify-start flex w-full max-w-[1200px] flex-row items-start justify-between">
