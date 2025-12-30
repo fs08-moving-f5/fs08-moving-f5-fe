@@ -8,6 +8,7 @@ import { useGetFavoriteDriversQuery } from '@/features/favorites/hooks/queries/u
 import Spinner from '@/shared/ui/spinner';
 import { useIntersectionObserver } from '@/shared/hooks/useIntersectionObserver';
 import type { FavoriteDriver } from '@/features/favorites/services/favorite.service';
+import { useDeleteManyFavoriteDriversMutation } from '@/features/favorites/hooks/mutations/useFavoriteMutation';
 
 const MyFavoritesPageClient = () => {
   const [selectedIds, setSelectedIds] = useState<Set<string | undefined>>(new Set());
@@ -15,12 +16,16 @@ const MyFavoritesPageClient = () => {
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGetFavoriteDriversQuery();
 
+  const { mutate: deleteManyFavoriteDrivers } = useDeleteManyFavoriteDriversMutation();
+
   // TODO: 타입 추론 개선
   const favoriteDrivers: FavoriteDriver[] = (data?.pages.flat() as FavoriteDriver[]) ?? [];
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      const allIds = new Set(favoriteDrivers.map((driver) => driver.id ?? ''));
+      const allIds = new Set(
+        favoriteDrivers.map((driver) => driver.driver?.id).filter((id) => id !== undefined),
+      );
       setSelectedIds(allIds);
     } else {
       setSelectedIds(new Set());
@@ -39,6 +44,11 @@ const MyFavoritesPageClient = () => {
     });
   };
 
+  const handleDeleteManyFavoriteDrivers = () => {
+    deleteManyFavoriteDrivers(Array.from(selectedIds).filter((id) => id !== undefined));
+    setSelectedIds(new Set());
+  };
+
   const { ref } = useIntersectionObserver({
     onIntersect: () => {
       if (hasNextPage && !isFetchingNextPage) {
@@ -48,7 +58,10 @@ const MyFavoritesPageClient = () => {
     enabled: hasNextPage && !isFetchingNextPage,
   });
 
-  const isAllChecked = favoriteDrivers.length > 0 && selectedIds.size === favoriteDrivers.length;
+  const isAllChecked =
+    favoriteDrivers.length > 0 &&
+    favoriteDrivers.every((driver) => driver.driver?.id && selectedIds.has(driver.driver.id)) &&
+    selectedIds.size === favoriteDrivers.filter((driver) => driver.driver?.id).length;
 
   const checkedCount = selectedIds.size;
   const totalCount = favoriteDrivers.length;
@@ -63,6 +76,7 @@ const MyFavoritesPageClient = () => {
           setSelectAll={handleSelectAll}
           checkedCount={checkedCount}
           totalCount={totalCount}
+          onDeleteManyFavoriteDrivers={handleDeleteManyFavoriteDrivers}
         />
         <FavoritesCardContainer
           favoriteDrivers={favoriteDrivers}

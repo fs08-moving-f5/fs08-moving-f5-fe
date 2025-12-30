@@ -27,8 +27,8 @@ const FavoritesCardContainer = ({
         {favoriteDrivers.map((favoriteDriver) => (
           <FindDriver
             key={favoriteDriver.id}
-            checked={selectedIds.has(favoriteDriver.id ?? '')}
-            onCheckChange={() => onToggleCheck(favoriteDriver.id ?? '')}
+            checked={selectedIds.has(favoriteDriver.driver?.id ?? '')}
+            onCheckChange={() => onToggleCheck(favoriteDriver.driver?.id ?? '')}
             title={favoriteDriver.driver?.driverProfile?.shortIntro ?? ''}
             description={favoriteDriver.driver?.driverProfile?.description ?? ''}
             driverName={favoriteDriver.driver?.name ?? ''}
