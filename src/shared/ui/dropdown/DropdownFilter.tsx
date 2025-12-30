@@ -57,7 +57,7 @@ export default function DropdownFilter({ title = '', list = [], onClick }: Dropd
       ? 'grid grid-cols-2 mobile:w-[150px] w-[328px] divide-x divide-[var(--color-grayScale-200)]'
       : 'grid grid-cols-1 mobile:w-[106px] w-[160px]';
   const listStyle = `text-[#262524] ${listGrid}`;
-  //화면 확대 시 witdh 유동적이지 않음 (오류)
+  //화면 확대 시 width 유동적이지 않음 (오류)
   return (
     <div ref={dropdownRef} className="z-10 h-fit w-fit shrink-0 select-none">
       <div className="relative flex h-fit w-fit">
@@ -90,7 +90,10 @@ export default function DropdownFilter({ title = '', list = [], onClick }: Dropd
                 >
                   <button
                     value={text}
-                    onClick={onClick}
+                    onClick={(e) => {
+                      onClick?.(e);
+                      setOpen(false);
+                    }}
                     className="flex h-full w-fit cursor-pointer items-center justify-start hover:text-[var(--color-primary-orange-400)]"
                   >
                     {text}

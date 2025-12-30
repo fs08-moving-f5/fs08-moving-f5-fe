@@ -21,7 +21,15 @@ const Like = ({
 
   return (
     <div className="mobile:gap-1 tab:gap-1 flex items-center gap-1.5">
-      <button onClick={onLikeClick} type="button" aria-label="좋아요" className="cursor-pointer">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onLikeClick?.();
+        }}
+        type="button"
+        aria-label="좋아요"
+        className="cursor-pointer"
+      >
         <Image
           src={isLiked ? '/icons/like-on.svg' : '/icons/like-off.svg'}
           alt="Like Icon"
