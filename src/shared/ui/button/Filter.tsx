@@ -1,9 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
+import FilterModal from '../modal/FilterModal';
+import { Filters } from '@/views/driver/my/requests/DriverEstimateRequestPage';
 
-const Filter = () => {
+type FilterProps = {
+  filters: Filters;
+  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+};
+
+const Filter = ({ filters, setFilters }: FilterProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const toggleFilter = () => {
@@ -16,13 +23,17 @@ const Filter = () => {
   return (
     <div>
       <button
+        type="button"
+        aria-label="필터"
         className={`flex items-center justify-center border p-[4px] ${borderColor} cursor-pointer rounded-[8px] bg-[var(--color-grayScale-50)] transition hover:bg-[var(--color-grayScale-100)]`}
         onClick={toggleFilter}
       >
         <Image src={iconSrc} alt="filter icon" width={24} height={24} />
       </button>
 
-      {open && <div>필터 모달</div>}
+      {open && (
+        <FilterModal filters={filters} setFilters={setFilters} onClose={() => setOpen(false)} />
+      )}
     </div>
   );
 };

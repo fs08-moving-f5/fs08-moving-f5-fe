@@ -2,16 +2,23 @@
 
 import { useState } from 'react';
 import { Button, LikeButton, Clip, ShareButton, Filter, CheckBox } from '@/shared/ui/button/index';
+import { FrontMovingType, FrontFilter } from '@/features/driver-estimate/types/driverEstimate';
 
 export type Filters = {
-  circleBoolean: boolean;
-  squareBoolean: boolean;
+  keyword: string;
+  movingTypes: FrontMovingType[];
+  onlyDesignated: boolean;
+  onlyServiceable: boolean;
+  sort: FrontFilter;
 };
 
 const ButtonPage = () => {
   const [filters, setFilters] = useState<Filters>({
-    circleBoolean: false,
-    squareBoolean: false,
+    keyword: '',
+    movingTypes: [],
+    onlyDesignated: false,
+    onlyServiceable: false,
+    sort: 'Latest',
   });
 
   return (
@@ -91,20 +98,20 @@ const ButtonPage = () => {
             <ShareButton size="sm" platform="facebook" />
           </div>
           <div className="flex gap-[8px]">
-            <Filter />
+            <Filter filters={filters} setFilters={setFilters} />
 
             <CheckBox
               shape="circle"
-              checked={filters.circleBoolean}
+              checked={filters.onlyDesignated}
               onChange={(checked: boolean) =>
-                setFilters((prev) => ({ ...prev, circleBoolean: checked }))
+                setFilters((prev) => ({ ...prev, onlyDesignated: checked }))
               }
             />
             <CheckBox
               shape="square"
-              checked={filters.squareBoolean}
+              checked={filters.onlyServiceable}
               onChange={(checked: boolean) =>
-                setFilters((prev) => ({ ...prev, squareBoolean: checked }))
+                setFilters((prev) => ({ ...prev, onlyServiceable: checked }))
               }
             />
           </div>
