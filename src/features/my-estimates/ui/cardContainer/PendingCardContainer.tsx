@@ -6,7 +6,7 @@ import { EstimateWait } from '@/shared/ui/card';
 import {
   useDeleteFavoriteMutation,
   useFavoriteMutation,
-} from '@/features/my-estimates/hooks/mutations/useFavoriteMutation';
+} from '@/features/favorites/hooks/mutations/useFavoriteMutation';
 import QUERY_KEY from '@/features/my-estimates/constants/queryKey';
 import type { PendingEstimate } from '@/features/my-estimates/services/estimate.service';
 
