@@ -6,6 +6,8 @@ import type {
   UpdateUserProfileRequest,
   CreateDriverProfileRequest,
   UpdateDriverProfileRequest,
+  MyPageData,
+  ReviewListData,
 } from '../types/types';
 
 // ========== 유저 프로필 API ==========
@@ -71,5 +73,29 @@ export const updateDriverProfile = async (
  */
 export const getMyProfile = async (): Promise<UserProfile | DriverProfile> => {
   const response = await api.get<UserProfile | DriverProfile>('profile/me');
+  return response.data;
+};
+
+// ========== 마이페이지 API ==========
+
+/**
+ * 드라이버 마이페이지 전체 데이터 조회
+ */
+export const getMyPageData = async (): Promise<MyPageData> => {
+  const response = await api.get<MyPageData>('my-page');
+  return response.data;
+};
+
+/**
+ * 드라이버 마이페이지 리뷰 목록 조회 (페이지네이션)
+ */
+export const getMyPageReviews = async ({
+  page = 1,
+  limit = 10,
+}: {
+  page?: number;
+  limit?: number;
+}): Promise<ReviewListData> => {
+  const response = await api.get<ReviewListData>(`my-page/reviews?page=${page}&limit=${limit}`);
   return response.data;
 };
