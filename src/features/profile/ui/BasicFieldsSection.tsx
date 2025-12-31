@@ -7,7 +7,12 @@ interface BasicFieldsSectionProps {
   currentPassword: string;
   newPassword: string;
   confirmNewPassword: string;
-  errors: Partial<Record<'name' | 'email' | 'phone' | 'currentPassword' | 'newPassword' | 'confirmNewPassword', string>>;
+  errors: Partial<
+    Record<
+      'name' | 'email' | 'phone' | 'currentPassword' | 'newPassword' | 'confirmNewPassword',
+      string
+    >
+  >;
   onNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPhoneChange: (e: React.ChangeEvent<HTMLInputElement>) => void;

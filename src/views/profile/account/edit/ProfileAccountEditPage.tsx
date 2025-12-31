@@ -33,7 +33,9 @@ export default function ProfileAccountEditPage({ userType }: ProfileAccountEditP
       <div className="tab:px-4 mobile:px-4 mx-auto max-w-[1200px] px-6 py-10">
         <div className="mx-auto max-w-[744px]">
           <div className="rounded-lg bg-red-50 p-6 text-center">
-            <p className="text-red-600">{error instanceof Error ? error.message : '프로필을 찾을 수 없습니다.'}</p>
+            <p className="text-red-600">
+              {error instanceof Error ? error.message : '프로필을 찾을 수 없습니다.'}
+            </p>
           </div>
         </div>
       </div>
@@ -68,9 +70,7 @@ export default function ProfileAccountEditPage({ userType }: ProfileAccountEditP
           <Button onClick={handleCancel} variant="outlined">
             취소
           </Button>
-          <Button disabled>
-            수정하기
-          </Button>
+          <Button disabled>수정하기</Button>
         </div>
       </div>
     </div>

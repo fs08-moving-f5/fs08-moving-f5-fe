@@ -70,21 +70,23 @@ function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
 
         <ProfileImageSection imageUrl={imageUrl} onImageUpload={handleImageUpload} />
 
-        {!isDriver && <BasicFieldsSection
-          name={accountProfileData.name}
-          email={accountProfileData.email}
-          phone={accountProfileData.phone}
-          currentPassword=""
-          newPassword=""
-          confirmNewPassword=""
-          errors={errors}
-          onNameChange={handleNameChange}
-          onEmailChange={handleEmailChange}
-          onPhoneChange={handlePhoneChange}
-          onCurrentPasswordChange={() => {}}
-          onNewPasswordChange={() => {}}
-          onConfirmNewPasswordChange={() => {}}
-        />}
+        {!isDriver && (
+          <BasicFieldsSection
+            name={accountProfileData.name}
+            email={accountProfileData.email}
+            phone={accountProfileData.phone}
+            currentPassword=""
+            newPassword=""
+            confirmNewPassword=""
+            errors={errors}
+            onNameChange={handleNameChange}
+            onEmailChange={handleEmailChange}
+            onPhoneChange={handlePhoneChange}
+            onCurrentPasswordChange={() => {}}
+            onNewPasswordChange={() => {}}
+            onConfirmNewPasswordChange={() => {}}
+          />
+        )}
 
         {isDriver && (
           <DriverFieldsSection
