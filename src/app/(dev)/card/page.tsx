@@ -51,7 +51,7 @@ export default function CardTestPage() {
           experience="7년"
           moveCount="3342건"
           likeCount={136}
-          movingType="small"
+          movingTypeArray={['small']}
           isLiked={false}
         />
 
@@ -64,7 +64,7 @@ export default function CardTestPage() {
           experience="2년"
           moveCount="42건"
           likeCount={421}
-          movingType="home"
+          movingTypeArray={['home', 'office']}
           isLiked={true}
         />
 

@@ -48,8 +48,13 @@ export const api = {
       .json<ApiResponse<T>>();
   },
 
-  delete: async <T>(url: string, options?: Options): Promise<ApiResponse<T>> => {
-    return apiClient.delete(url, options).json<ApiResponse<T>>();
+  delete: async <T>(url: string, data?: unknown, options?: Options): Promise<ApiResponse<T>> => {
+    return apiClient
+      .delete(url, {
+        ...options,
+        json: data,
+      })
+      .json<ApiResponse<T>>();
   },
 };
 

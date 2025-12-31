@@ -6,7 +6,7 @@ import { useState, useMemo } from 'react';
 import {
   useDeleteFavoriteMutation,
   useFavoriteMutation,
-} from '../../hooks/mutations/useFavoriteMutation';
+} from '../../../favorites/hooks/mutations/useFavoriteMutation';
 import QUERY_KEY from '../../constants/queryKey';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
