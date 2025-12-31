@@ -4,11 +4,7 @@ interface DriverFieldsSectionProps {
   career: string;
   shortIntro: string;
   description: string;
-  errors: {
-    career: string;
-    shortIntro: string;
-    description: string;
-  };
+  errors: Partial<Record<'career' | 'shortIntro' | 'description', string>>;
   onCareerChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onShortIntroChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onDescriptionChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;

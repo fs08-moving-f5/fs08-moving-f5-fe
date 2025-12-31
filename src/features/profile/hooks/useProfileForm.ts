@@ -15,11 +15,7 @@ import {
   PROFILE_VALIDATION_PATTERNS,
 } from '../constants/validation.constants';
 
-interface ProfileEditFormErrors {
-  career: string;
-  shortIntro: string;
-  description: string;
-}
+type ProfileEditFormErrors = Partial<Record<string, string>>;
 
 /**
  * 프로필 폼 로직을 관리하는 Hook
@@ -32,6 +28,15 @@ export function useProfileForm(
   const isDriver = userType === 'DRIVER';
 
   // 초기값 설정 (페이지 로드시 한번만)
+  const [name, setName] = useState(
+    (initialProfile && 'name' in initialProfile ? initialProfile.name : '') || '',
+  );
+  const [email, setEmail] = useState(
+    (initialProfile && 'email' in initialProfile ? initialProfile.email : '') || '',
+  );
+  const [phone, setPhone] = useState(
+    (initialProfile && 'phone' in initialProfile ? initialProfile.phone : '') || '',
+  );
   const [selectedServices, setSelectedServices] = useState<ServiceType[]>(
     initialProfile?.services || [],
   );
@@ -47,11 +52,7 @@ export function useProfileForm(
   const [description, setDescription] = useState(
     initialProfile && 'description' in initialProfile ? initialProfile.description || '' : '',
   );
-  const [errors, setErrors] = useState<ProfileEditFormErrors>({
-    career: '',
-    shortIntro: '',
-    description: '',
-  });
+  const [errors, setErrors] = useState<ProfileEditFormErrors>({});
 
   const { imageUrl, handleImageSelect } = useImageUpload(initialProfile?.imageUrl || null);
   const updateMutation = useUpdateProfileMutation(userType);
@@ -95,6 +96,19 @@ export function useProfileForm(
     const value = e.target.value;
     setDescription(value);
     setErrors((prev) => ({ ...prev, description: validateDescription(value) }));
+  };
+
+  // 계정 필드 핸들러
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhone(e.target.value);
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -153,7 +167,12 @@ export function useProfileForm(
         onSuccess: () => onSuccess?.(),
       });
     } else {
-      const userData: UpdateUserProfileRequest = baseData;
+      const userData: UpdateUserProfileRequest = {
+        ...baseData,
+        name: name || undefined,
+        email: email || undefined,
+        phone: phone || undefined,
+      };
       updateMutation.mutate(userData, {
         onSuccess: () => onSuccess?.(),
       });
@@ -164,6 +183,9 @@ export function useProfileForm(
 
   return {
     // 상태
+    name,
+    email,
+    phone,
     imageUrl,
     selectedServices,
     selectedRegions,
@@ -176,6 +198,9 @@ export function useProfileForm(
     isDriver,
 
     // 핸들러
+    handleNameChange,
+    handleEmailChange,
+    handlePhoneChange,
     handleCareerChange,
     handleShortIntroChange,
     handleDescriptionChange,

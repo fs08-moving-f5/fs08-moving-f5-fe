@@ -25,6 +25,9 @@ export type ServiceType = 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING';
 export interface UserProfile {
   id: string;
   userId: string;
+  name: string;
+  email: string;
+  phone: string;
   imageUrl?: string | null;
   regions: RegionType[];
   services: ServiceType[];
@@ -36,6 +39,9 @@ export interface UserProfile {
 export interface DriverProfile {
   id: string;
   driverId: string;
+  name: string;
+  email: string;
+  phone: string;
   imageUrl?: string | null;
   career?: string | null;
   shortIntro?: string | null;
@@ -58,6 +64,9 @@ export interface UpdateUserProfileRequest {
   imageUrl?: string | null;
   regions?: RegionType[];
   services?: ServiceType[];
+  name?: string | null;
+  email?: string | null;
+  phone?: string | null;
 }
 
 // 기사 프로필 생성 요청
