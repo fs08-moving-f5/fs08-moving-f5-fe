@@ -45,7 +45,7 @@ const ReviewWrittenUI = () => {
     <main className="flex max-w-[1920px] flex-col justify-center">
       <Tab />
 
-      <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
+      <section className="mt-[10px] mb-[14px] w-full max-w-[1200px] px-[20px] md:mb-[77px] lg:mx-auto lg:mb-[84px]">
         <ReviewList
           data={data.data}
           total={data.total}
