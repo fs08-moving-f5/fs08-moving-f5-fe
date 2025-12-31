@@ -41,7 +41,7 @@ const MyPage = () => {
   const getPercentage = (count: number) => (totalReviews > 0 ? (count / totalReviews) * 100 : 0);
 
   const handleBasicInfoEdit = () => {
-    router.push('/');
+    router.push('/driver/profile/account/edit');
   };
 
   const handleProfileEdit = () => {

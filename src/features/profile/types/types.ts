@@ -67,6 +67,8 @@ export interface UpdateUserProfileRequest {
   name?: string | null;
   email?: string | null;
   phone?: string | null;
+  currentPassword?: string;
+  newPassword?: string;
 }
 
 // 기사 프로필 생성 요청

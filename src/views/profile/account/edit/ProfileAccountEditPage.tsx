@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '@/shared/ui/button';
 import BasicFieldsSection from '@/features/profile/ui/BasicFieldsSection';
-import { useGetProfileQuery } from '@/features/profile/hooks';
+import { useGetProfileQuery, useProfileForm } from '@/features/profile/hooks';
 import type { UserType } from '@/features/auth/types/types';
 
 interface ProfileAccountEditPageProps {
@@ -13,6 +13,24 @@ interface ProfileAccountEditPageProps {
 export default function ProfileAccountEditPage({ userType }: ProfileAccountEditPageProps) {
   const router = useRouter();
   const { data: profile, isLoading, error } = useGetProfileQuery(userType);
+
+  const {
+    name,
+    email,
+    phone,
+    currentPassword,
+    newPassword,
+    confirmNewPassword,
+    errors,
+    isLoading: isUpdating,
+    handleNameChange,
+    handleEmailChange,
+    handlePhoneChange,
+    handleCurrentPasswordChange,
+    handleNewPasswordChange,
+    handleConfirmNewPasswordChange,
+    handleSubmit,
+  } = useProfileForm(userType, profile, { accountEditMode: true });
 
   const handleCancel = () => router.back();
 
@@ -51,26 +69,31 @@ export default function ProfileAccountEditPage({ userType }: ProfileAccountEditP
         </div>
 
         <BasicFieldsSection
-          name={profile.name}
-          email={profile.email}
-          phone={profile.phone}
-          currentPassword=""
-          newPassword=""
-          confirmNewPassword=""
-          errors={{}}
-          onNameChange={() => {}}
-          onEmailChange={() => {}}
-          onPhoneChange={() => {}}
-          onCurrentPasswordChange={() => {}}
-          onNewPasswordChange={() => {}}
-          onConfirmNewPasswordChange={() => {}}
+          name={name}
+          email={email}
+          phone={phone}
+          currentPassword={currentPassword}
+          newPassword={newPassword}
+          confirmNewPassword={confirmNewPassword}
+          errors={errors}
+          onNameChange={handleNameChange}
+          onEmailChange={handleEmailChange}
+          onPhoneChange={handlePhoneChange}
+          onCurrentPasswordChange={handleCurrentPasswordChange}
+          onNewPasswordChange={handleNewPasswordChange}
+          onConfirmNewPasswordChange={handleConfirmNewPasswordChange}
         />
 
         <div className="mobile:mt-8 mt-12 flex gap-3">
           <Button onClick={handleCancel} variant="outlined">
             취소
           </Button>
-          <Button disabled>수정하기</Button>
+          <Button
+            onClick={() => handleSubmit(() => router.back())}
+            disabled={isUpdating}
+          >
+            {isUpdating ? '처리 중...' : '수정하기'}
+          </Button>
         </div>
       </div>
     </div>

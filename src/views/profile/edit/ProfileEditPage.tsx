@@ -24,16 +24,21 @@ interface ProfileEditFormProps {
 
 function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
   const router = useRouter();
-  // 상위에서 전달된 profile을 초기값으로 사용
-  const accountProfileData = profile;
+  // 상위에서 전달된 profile을 초기값으로 사용s
 
   const {
+    name,
+    email,
+    phone,
     imageUrl,
     selectedServices,
     selectedRegions,
     career,
     shortIntro,
     description,
+    currentPassword,
+    newPassword,
+    confirmNewPassword,
     errors,
     isLoading,
     isValid,
@@ -44,6 +49,9 @@ function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
     handleCareerChange,
     handleShortIntroChange,
     handleDescriptionChange,
+    handleCurrentPasswordChange,
+    handleNewPasswordChange,
+    handleConfirmNewPasswordChange,
     handleImageUpload,
     toggleService,
     toggleRegion,
@@ -72,19 +80,19 @@ function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
 
         {!isDriver && (
           <BasicFieldsSection
-            name={accountProfileData.name}
-            email={accountProfileData.email}
-            phone={accountProfileData.phone}
-            currentPassword=""
-            newPassword=""
-            confirmNewPassword=""
+            name={name}
+            email={email}
+            phone={phone}
+            currentPassword={currentPassword}
+            newPassword={newPassword}
+            confirmNewPassword={confirmNewPassword}
             errors={errors}
             onNameChange={handleNameChange}
             onEmailChange={handleEmailChange}
             onPhoneChange={handlePhoneChange}
-            onCurrentPasswordChange={() => {}}
-            onNewPasswordChange={() => {}}
-            onConfirmNewPasswordChange={() => {}}
+            onCurrentPasswordChange={handleCurrentPasswordChange}
+            onNewPasswordChange={handleNewPasswordChange}
+            onConfirmNewPasswordChange={handleConfirmNewPasswordChange}
           />
         )}
 
