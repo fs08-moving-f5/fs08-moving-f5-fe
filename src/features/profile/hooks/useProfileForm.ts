@@ -86,13 +86,15 @@ export function useProfileForm(
 
   const validateEmail = (value: string): string => {
     if (!value) return PROFILE_ERROR_MESSAGES.EMAIL.REQUIRED;
-    if (!PROFILE_VALIDATION_PATTERNS_EXT.EMAIL.test(value)) return PROFILE_ERROR_MESSAGES.EMAIL.INVALID_FORMAT;
+    if (!PROFILE_VALIDATION_PATTERNS_EXT.EMAIL.test(value))
+      return PROFILE_ERROR_MESSAGES.EMAIL.INVALID_FORMAT;
     return '';
   };
 
   const validatePhone = (value: string): string => {
     if (!value) return PROFILE_ERROR_MESSAGES.PHONE.REQUIRED;
-    if (!PROFILE_VALIDATION_PATTERNS_EXT.PHONE.test(value)) return PROFILE_ERROR_MESSAGES.PHONE.INVALID_FORMAT;
+    if (!PROFILE_VALIDATION_PATTERNS_EXT.PHONE.test(value))
+      return PROFILE_ERROR_MESSAGES.PHONE.INVALID_FORMAT;
     return '';
   };
 
@@ -182,7 +184,10 @@ export function useProfileForm(
     setCurrentPassword(v);
     // 새 비밀번호가 있으면 현재 비밀번호도 필수
     if (newPassword && !v) {
-      setErrors((prev) => ({ ...prev, currentPassword: PROFILE_ERROR_MESSAGES.PASSWORD.CURRENT_REQUIRED }));
+      setErrors((prev) => ({
+        ...prev,
+        currentPassword: PROFILE_ERROR_MESSAGES.PASSWORD.CURRENT_REQUIRED,
+      }));
     } else {
       setErrors((prev) => ({ ...prev, currentPassword: '' }));
     }
@@ -306,9 +311,7 @@ export function useProfileForm(
         name: name || undefined,
         email: email || undefined,
         phone: phone || undefined,
-        ...(newPassword && currentPassword
-          ? { currentPassword, newPassword }
-          : {}),
+        ...(newPassword && currentPassword ? { currentPassword, newPassword } : {}),
       };
       updateMutation.mutate(userData, {
         onSuccess: () => {

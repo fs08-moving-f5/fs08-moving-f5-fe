@@ -88,10 +88,7 @@ export default function ProfileAccountEditPage({ userType }: ProfileAccountEditP
           <Button onClick={handleCancel} variant="outlined">
             취소
           </Button>
-          <Button
-            onClick={() => handleSubmit(() => router.back())}
-            disabled={isUpdating}
-          >
+          <Button onClick={() => handleSubmit(() => router.back())} disabled={isUpdating}>
             {isUpdating ? '처리 중...' : '수정하기'}
           </Button>
         </div>
