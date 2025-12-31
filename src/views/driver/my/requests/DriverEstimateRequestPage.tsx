@@ -20,6 +20,7 @@ import { ActiveChip } from '@/shared/ui/chip';
 import SearchBar from '@/shared/ui/input/SearchBar';
 import { CheckBox } from '@/shared/ui/button';
 import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
+import { Filter } from '@/shared/ui/button';
 import RequestList from '@/features/driver-estimate/ui/cardContainer/RequestList';
 import ModalQuetRequest from '@/shared/ui/modal/ModalRequest';
 import { showToast } from '@/shared/ui/sonner';
@@ -140,12 +141,12 @@ const DriverEstimateRequestPage = () => {
 
   return (
     <main className="flex max-w-[1920px] flex-col justify-center">
-      <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
-        <section className="itmes-center w-full self-stretch py-[32px]">
+      <section className="mt-[10px] w-full justify-center">
+        <section className="itmes-center mx-[20px] max-w-[1200px] self-stretch py-[32px] md:mx-[72px] lg:mx-auto">
           <h1 className="text-2xl font-semibold text-[var(--color-black-500)]">받은 요청</h1>
         </section>
 
-        <section className="flex flex-col gap-[40px]">
+        <section className="mx-[20px] flex max-w-[1200px] flex-col justify-center gap-[40px] md:mx-[72px] lg:mx-auto">
           <div className="flex flex-col items-start gap-[24px]">
             {/* 검색 */}
             <SearchBar
@@ -154,7 +155,7 @@ const DriverEstimateRequestPage = () => {
             />
 
             {/* 이사 유형 필터 */}
-            <div className="flex gap-[12px]">
+            <div className="flex hidden gap-[12px] lg:flex">
               <ActiveChip
                 text="소형이사"
                 isActive={filters.movingTypes.includes('small')}
@@ -178,8 +179,8 @@ const DriverEstimateRequestPage = () => {
               전체 {requests.length}건
             </h1>
 
-            <div className="flex justify-between text-base font-normal text-[var(--color-black-500)]">
-              <div className="flex items-center gap-3">
+            <div className="flex justify-end text-base font-normal text-[var(--color-black-500)] lg:justify-between">
+              <div className="flex hidden items-center gap-3 lg:flex">
                 {/* 지정 요청 여부 */}
                 <div className="flex items-center gap-2">
                   <CheckBox
@@ -193,7 +194,7 @@ const DriverEstimateRequestPage = () => {
                 </div>
 
                 {/* 서비스 가능 지역 여부 */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center gap-2">
                   <CheckBox
                     shape="square"
                     checked={filters.onlyServiceable}
@@ -205,17 +206,22 @@ const DriverEstimateRequestPage = () => {
                 </div>
               </div>
 
-              {/* 정렬 드롭다운 */}
-              <DropdownSort
-                listObject={sortListObj}
-                value={filters.sort}
-                setValue={(value) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    sort: value as FrontFilter,
-                  }))
-                }
-              />
+              <div className="flex items-center gap-1">
+                {/* 정렬 드롭다운 */}
+                <DropdownSort
+                  listObject={sortListObj}
+                  value={filters.sort}
+                  setValue={(value) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      sort: value as FrontFilter,
+                    }))
+                  }
+                />
+                <div className="lg:hidden">
+                  <Filter filters={filters} setFilters={setFilters} />
+                </div>
+              </div>
             </div>
           </div>
 

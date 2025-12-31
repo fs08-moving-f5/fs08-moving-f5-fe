@@ -49,14 +49,14 @@ const EstimateListPage = ({ queryKey, queryFn, emptyType, status }: EstimateList
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
-    <main className="flex max-w-[1920px] flex-col justify-center">
+    <main className="flex min-h-screen flex-col justify-center">
       <Tab />
 
-      <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
+      <section className="w-full justify-center">
         {!isLoading && estimates.length === 0 ? (
           <EmptySection type={emptyType} />
         ) : (
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="mb-[14px] grid max-w-[1200px] justify-center gap-6 px-[20px] md:mb-[77px] lg:mx-auto lg:mb-[84px] lg:grid-cols-2">
             {estimates.map((item) => {
               if (item.status === 'rejected') {
                 return (

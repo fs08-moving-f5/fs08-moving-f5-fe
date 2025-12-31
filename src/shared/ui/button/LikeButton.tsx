@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 
 interface LikeButtonProps {
@@ -66,6 +66,8 @@ const LikeButton = ({ size = 'md' }: LikeButtonProps) => {
 
   return (
     <button
+      type="button"
+      aria-label="찜하기"
       className={`${baseStyles} ${getWrapperClasses()}`}
       onClick={handleClick}
       disabled={loading}
