@@ -89,6 +89,11 @@ export interface UpdateDriverProfileRequest {
   description?: string | null;
   regions?: RegionType[];
   services?: ServiceType[];
+  name?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  currentPassword?: string;
+  newPassword?: string;
 }
 
 // ========== 마이페이지 관련 타입 ==========

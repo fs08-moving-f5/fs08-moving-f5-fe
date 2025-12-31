@@ -255,6 +255,76 @@ export function useProfileForm(
     };
 
     if (isDriver) {
+      // 계정 정보 수정 모드와 프로필 수정 모드 구분
+      if (options?.accountEditMode) {
+        // 계정 정보 수정 모드: 기본 필드만 검증
+        const nameError = validateName(name);
+        const emailError = validateEmail(email);
+        const phoneError = validatePhone(phone);
+
+        // 비밀번호 검증 (비밀번호가 입력된 경우에만)
+        const passwordErrors: Record<string, string> = {};
+        if (newPassword || currentPassword || confirmNewPassword) {
+          if (!currentPassword) {
+            passwordErrors.currentPassword = PROFILE_ERROR_MESSAGES.PASSWORD.CURRENT_REQUIRED;
+          }
+          if (newPassword) {
+            const newPasswordError = validatePassword(newPassword);
+            if (newPasswordError) {
+              passwordErrors.newPassword = newPasswordError;
+            }
+          }
+          if (confirmNewPassword) {
+            const confirmError = validateConfirmPassword(confirmNewPassword, newPassword);
+            if (confirmError) {
+              passwordErrors.confirmNewPassword = confirmError;
+            }
+          }
+        }
+
+        setErrors({
+          name: nameError,
+          email: emailError,
+          phone: phoneError,
+          ...passwordErrors,
+        });
+
+        if (nameError || emailError || phoneError || Object.keys(passwordErrors).length > 0) {
+          return;
+        }
+
+        const driverData: UpdateDriverProfileRequest = {
+          name: name || undefined,
+          email: email || undefined,
+          phone: phone || undefined,
+          ...(newPassword && currentPassword ? { currentPassword, newPassword } : {}),
+        };
+        updateMutation.mutate(driverData, {
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: MY_PAGE_QUERY_KEY.MY_PAGE });
+            queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY.MY_PROFILE });
+            queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY.DRIVER_PROFILE });
+            onSuccess?.();
+          },
+        });
+        return;
+      }
+
+      // 프로필 수정 모드: 기사 필드 검증
+      const careerError = validateCareer(career);
+      const shortIntroError = validateShortIntro(shortIntro);
+      const descriptionError = validateDescription(description);
+
+      setErrors({
+        career: careerError,
+        shortIntro: shortIntroError,
+        description: descriptionError,
+      });
+
+      if (careerError || shortIntroError || descriptionError) {
+        return;
+      }
+
       const driverData: UpdateDriverProfileRequest = {
         ...baseData,
         career: career || undefined,
