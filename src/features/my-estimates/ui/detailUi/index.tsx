@@ -14,7 +14,7 @@ import {
   useDeleteFavoriteMutation,
   useConfirmEstimateMutation,
   useFavoriteMutation,
-} from '@/features/my-estimates/hooks/mutations/useFavoriteMutation';
+} from '@/features/favorites/hooks/mutations/useFavoriteMutation';
 import QUERY_KEY from '@/features/my-estimates/constants/queryKey';
 import { useRouter } from 'next/navigation';
 import NonConfirmMessage from '../nonConfirmMessage';
