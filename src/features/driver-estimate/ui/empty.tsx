@@ -13,7 +13,7 @@ const EmptySection = ({ type }: emptyParmas) => {
     <section className="flex w-full flex-col items-center p-45">
       <div className="flex flex-col items-center gap-8">
         <Image src="/img/img-character-empty.svg" alt="empty img" width={260} height={260} />
-        <h1 className="text-2xl font-normal text-[var(--color-gray-400)]">
+        <h1 className="font-normal text-nowrap text-[var(--color-gray-400)] sm:text-lg md:text-lg lg:text-2xl">
           {type === 'request' && '아직 받은 요청이 없어요!'}
           {type === 'confirm' && '아직 작성한 견적이 없어요!'}
           {type === 'reject' && '아직 반려한 견적이 없어요!'}

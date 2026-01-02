@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import Image from 'next/image';
 import { showToast } from '@/shared/ui/sonner';
 
@@ -48,7 +47,12 @@ const Clip = ({ size = 'lg' }: ClipProps) => {
   };
 
   return (
-    <button className={`${baseStyles} ${getWrapperClasses()}`} onClick={handleClick}>
+    <button
+      type="button"
+      aria-label="링크 주소 복사"
+      className={`${baseStyles} ${getWrapperClasses()}`}
+      onClick={handleClick}
+    >
       <Image
         src="/icons/clip.svg"
         alt="clip icon"

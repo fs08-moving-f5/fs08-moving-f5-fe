@@ -6,6 +6,7 @@ import { Clip, ShareButton } from '@/shared/ui/button';
 import { MovingTypeChip } from '@/shared/ui/chip';
 import { getConfirmDetailEstimates } from '@/features/driver-estimate/services/driverEstimate.service';
 import { FrontMovingType } from '@/features/driver-estimate/types/driverEstimate';
+import Spinner from '@/shared/ui/spinner';
 
 const ConfirmDetail = ({ id }: { id: string }) => {
   const { data, isLoading } = useQuery({
@@ -33,17 +34,30 @@ const ConfirmDetail = ({ id }: { id: string }) => {
     office: '사무실 이사',
   };
 
+  //로딩중 바
+  if (isLoading) {
+    return (
+      <main className="flex max-w-[1920px] flex-col justify-center">
+        <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
+          <Spinner isLoading={isLoading} />
+        </section>
+      </main>
+    );
+  }
+
   return (
-    <main className="flex max-w-[1920px] flex-col justify-center">
+    <main className="flex min-h-screen flex-col justify-center">
       <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
         <div className="itmes-center self-stretch py-[32px]">
-          <h1 className="text-2xl font-semibold text-[var(--color-black-500)]">견적 상세</h1>
+          <h1 className="mx-[30px] text-2xl font-semibold text-[var(--color-black-500)] md:mx-[72px] lg:mx-auto">
+            견적 상세
+          </h1>
         </div>
       </section>
 
-      <div className="h-45 w-full bg-[var(--color-primary-orange-400)]"></div>
+      <div className="h-45 w-full bg-[url(/img/myPendingEstimate/bg-img.png)] bg-cover bg-center bg-no-repeat"></div>
 
-      <section className="mx-auto mt-[43px] mb-[190px] flex w-full max-w-[1200px] flex-col gap-[139px] sm:mx-5 sm:mt-[35px] sm:mb-30 md:mx-18 md:mt-[46px] md:mb-[138px] lg:flex-row lg:gap-[139px]">
+      <section className="mx-5 mt-[35px] mb-30 flex w-full max-w-[1200px] flex-col gap-[139px] md:mx-18 md:mt-[46px] md:mb-[138px] lg:mx-auto lg:mt-[43px] lg:mb-[190px] lg:flex-row lg:gap-[139px]">
         <article className="w-[740px]">
           {/* 칩 & 고객 이름 */}
           <div className="flex flex-col gap-5">

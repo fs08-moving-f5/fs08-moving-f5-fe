@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useState } from 'react';
 import Image from 'next/image';
 
 interface CheckBoxProps {
@@ -25,6 +24,7 @@ const CheckBox = ({ shape = 'square', checked, onChange }: CheckBoxProps) => {
   return (
     <button
       type="button"
+      aria-label="체크 박스"
       onClick={() => onChange(!checked)}
       className={`flex items-center justify-center border ${borderColor} ${bgColor} ${wrapperSize} ${radius} cursor-pointer shadow-md transition`}
     >

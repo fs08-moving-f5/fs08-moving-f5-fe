@@ -40,7 +40,7 @@ export default function DropdownProfile({
       ['찜한 기사님', '/user/my/favorites'],
       ['이사 리뷰', '/user/my/reviews/pending'],
     ],
-    driver: [['마이페이지', '/']],
+    driver: [['마이페이지', '/driver/profile']],
   };
 
   const listPosition = {

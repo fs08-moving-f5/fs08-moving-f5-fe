@@ -11,6 +11,7 @@ import {
   ServiceSelectionSection,
   RegionSelectionSection,
 } from '@/features/profile/ui';
+import BasicFieldsSection from '@/features/profile/ui/BasicFieldsSection';
 
 interface ProfileEditPageProps {
   userType: UserType;
@@ -23,21 +24,34 @@ interface ProfileEditFormProps {
 
 function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
   const router = useRouter();
+  // 상위에서 전달된 profile을 초기값으로 사용s
 
   const {
+    name,
+    email,
+    phone,
     imageUrl,
     selectedServices,
     selectedRegions,
     career,
     shortIntro,
     description,
+    currentPassword,
+    newPassword,
+    confirmNewPassword,
     errors,
     isLoading,
     isValid,
     isDriver,
+    handleNameChange,
+    handleEmailChange,
+    handlePhoneChange,
     handleCareerChange,
     handleShortIntroChange,
     handleDescriptionChange,
+    handleCurrentPasswordChange,
+    handleNewPasswordChange,
+    handleConfirmNewPasswordChange,
     handleImageUpload,
     toggleService,
     toggleRegion,
@@ -63,6 +77,24 @@ function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
         </div>
 
         <ProfileImageSection imageUrl={imageUrl} onImageUpload={handleImageUpload} />
+
+        {!isDriver && (
+          <BasicFieldsSection
+            name={name}
+            email={email}
+            phone={phone}
+            currentPassword={currentPassword}
+            newPassword={newPassword}
+            confirmNewPassword={confirmNewPassword}
+            errors={errors}
+            onNameChange={handleNameChange}
+            onEmailChange={handleEmailChange}
+            onPhoneChange={handlePhoneChange}
+            onCurrentPasswordChange={handleCurrentPasswordChange}
+            onNewPasswordChange={handleNewPasswordChange}
+            onConfirmNewPasswordChange={handleConfirmNewPasswordChange}
+          />
+        )}
 
         {isDriver && (
           <DriverFieldsSection
