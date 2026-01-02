@@ -25,6 +25,7 @@ import RequestList from '@/features/driver-estimate/ui/cardContainer/RequestList
 import ModalQuetRequest from '@/shared/ui/modal/ModalRequest';
 import { showToast } from '@/shared/ui/sonner';
 import EmptySection from '@/features/driver-estimate/ui/empty';
+import Spinner from '@/shared/ui/spinner';
 
 const sortListObj = {
   Latest: '요청일 빠른순',
@@ -59,7 +60,7 @@ const DriverEstimateRequestPage = () => {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   // useInfiniteQuery - 무한 스크롤
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery<
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery<
     EstimateRequestResponse, // TQueryFnData
     Error, // TError
     InfiniteData<EstimateRequestResponse>, // TData
@@ -137,6 +138,16 @@ const DriverEstimateRequestPage = () => {
   // 로딩 중 EmptySection 숨기기
   if (!data && isFetchingNextPage) {
     return null;
+  }
+
+  if (isLoading) {
+    return (
+      <main className="flex max-w-[1920px] flex-col justify-center">
+        <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
+          <Spinner isLoading={isLoading} />
+        </section>
+      </main>
+    );
   }
 
   return (

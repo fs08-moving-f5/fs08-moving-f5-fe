@@ -6,6 +6,7 @@ import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import Tab from '@/features/driver-estimate/ui/tab';
 import { EstimateClient } from '@/shared/ui/card';
 import EmptySection from '@/features/driver-estimate/ui/empty';
+import Spinner from '@/shared/ui/spinner';
 
 import {
   EstimateListPageProps,
@@ -47,6 +48,17 @@ const EstimateListPage = ({ queryKey, queryFn, emptyType, status }: EstimateList
     observer.observe(loadMoreRef.current);
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  //로딩중 바
+  if (isLoading) {
+    return (
+      <main className="flex max-w-[1920px] flex-col justify-center">
+        <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
+          <Spinner isLoading={isLoading} />
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="flex min-h-screen flex-col justify-center">

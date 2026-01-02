@@ -7,6 +7,7 @@ import { ReviewWrittenItem } from '@/features/reviews/types/review';
 import { ReviewWritten } from '@/shared/ui/card';
 import ReviewList from '@/features/reviews/ui/ReviewList';
 import EmptySection from '@/features/driver-estimate/ui/empty';
+import Spinner from '@/shared/ui/spinner';
 
 const LIMIT = 10;
 
@@ -25,7 +26,7 @@ const ReviewWrittenUI = () => {
         <Tab />
 
         <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
-          <div className="flex w-full flex-col items-center p-45">불러오는 중...</div>
+          <Spinner isLoading={isLoading} />
         </section>
       </main>
     );
@@ -44,7 +45,7 @@ const ReviewWrittenUI = () => {
     <main className="flex max-w-[1920px] flex-col justify-center">
       <Tab />
 
-      <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
+      <section className="mt-[10px] mb-[14px] w-full max-w-[1200px] px-[20px] md:mb-[77px] lg:mx-auto lg:mb-[84px]">
         <ReviewList
           data={data.data}
           total={data.total}

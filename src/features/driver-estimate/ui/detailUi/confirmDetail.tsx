@@ -6,6 +6,7 @@ import { Clip, ShareButton } from '@/shared/ui/button';
 import { MovingTypeChip } from '@/shared/ui/chip';
 import { getConfirmDetailEstimates } from '@/features/driver-estimate/services/driverEstimate.service';
 import { FrontMovingType } from '@/features/driver-estimate/types/driverEstimate';
+import Spinner from '@/shared/ui/spinner';
 
 const ConfirmDetail = ({ id }: { id: string }) => {
   const { data, isLoading } = useQuery({
@@ -32,6 +33,17 @@ const ConfirmDetail = ({ id }: { id: string }) => {
     home: '가정 이사',
     office: '사무실 이사',
   };
+
+  //로딩중 바
+  if (isLoading) {
+    return (
+      <main className="flex max-w-[1920px] flex-col justify-center">
+        <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
+          <Spinner isLoading={isLoading} />
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="flex min-h-screen flex-col justify-center">
