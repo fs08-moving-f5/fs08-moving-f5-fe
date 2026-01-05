@@ -30,7 +30,9 @@ const MyPageDriverInfoSection = ({ profile }: MyPageDriverInfoSectionProps) => {
         </div>
       </div>
 
-      {profile.shortIntro && <p className="text-black-300 mb-4 font-semibold">{profile.shortIntro}</p>}
+      {profile.shortIntro && (
+        <p className="text-black-300 mb-4 font-semibold">{profile.shortIntro}</p>
+      )}
 
       {profile.description && (
         <p className="mb-4 whitespace-pre-wrap text-gray-700">{profile.description}</p>

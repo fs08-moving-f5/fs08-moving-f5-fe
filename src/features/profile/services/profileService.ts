@@ -50,7 +50,9 @@ export const getDriverProfile = async (): Promise<DriverProfile> => {
 /**
  * 기사 공개 프로필 조회 (기사 찾기 상세용)
  */
-export const getDriverPublicProfile = async (driverId: string): Promise<DriverPublicProfileData> => {
+export const getDriverPublicProfile = async (
+  driverId: string,
+): Promise<DriverPublicProfileData> => {
   const response = await api.get<DriverPublicProfileData>(`profile/driver/${driverId}`);
   return response.data;
 };
