@@ -21,8 +21,8 @@ import ModalConfirm from '@/shared/ui/modal/ModalConfirm';
 import { showToast } from '@/shared/ui/sonner';
 import { useAuthStore } from '@/shared/store/authStore';
 import {
-	getPendingEsitimateRequests,
-	designatePendingEstimateRequest,
+  getPendingEsitimateRequests,
+  designatePendingEstimateRequest,
 } from '@/features/estimateRequest/services/estimateRequest.service';
 
 const FindDriverDetailPage = ({
@@ -32,8 +32,8 @@ const FindDriverDetailPage = ({
   id: string;
   disableFavorite?: boolean;
 }) => {
-	const router = useRouter();
-	const { user, isUserLoaded } = useAuthStore();
+  const router = useRouter();
+  const { user, isUserLoaded } = useAuthStore();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isDesignatedToThisDriver, setIsDesignatedToThisDriver] = useState(false);
   const { data, isLoading } = useGetDriverPublicProfileQuery(id);
@@ -43,7 +43,7 @@ const FindDriverDetailPage = ({
   const addFavoriteMutation = useFavoriteMutation();
   const deleteFavoriteMutation = useDeleteFavoriteMutation();
 
-	const favoriteDisabled = addFavoriteMutation.isPending || deleteFavoriteMutation.isPending;
+  const favoriteDisabled = addFavoriteMutation.isPending || deleteFavoriteMutation.isPending;
 
   type PendingEstimateRequestLite = {
     isDesignated?: boolean;
@@ -121,10 +121,10 @@ const FindDriverDetailPage = ({
   const handleRequestDesignatedEstimate = async () => {
     try {
       if (isDesignatedToThisDriver) return;
-    if (!user) {
-      router.push(`/login/user`);
-      return;
-    }
+      if (!user) {
+        router.push(`/login/user`);
+        return;
+      }
 
       const pendingRes = await getPendingEsitimateRequests();
       const pendingList = Array.isArray(pendingRes.data) ? pendingRes.data : [];
@@ -135,13 +135,15 @@ const FindDriverDetailPage = ({
       }
 
       await designatePendingEstimateRequest(id);
-			setIsDesignatedToThisDriver(true);
-      showToast({ kind: 'success', message: `${data.name} 기사님에게 지정 견적 요청을 보냈습니다.` });
+      setIsDesignatedToThisDriver(true);
+      showToast({
+        kind: 'success',
+        message: `${data.name} 기사님에게 지정 견적 요청을 보냈습니다.`,
+      });
     } catch (err) {
       showToast({
         kind: 'error',
-        message:
-          err instanceof Error ? err.message : '지정 견적 요청에 실패했습니다.',
+        message: err instanceof Error ? err.message : '지정 견적 요청에 실패했습니다.',
       });
     }
   };
@@ -149,7 +151,7 @@ const FindDriverDetailPage = ({
   const handleModalConfirm = () => {
     if (!isUserLoaded) return;
 
-    const requestUrl = "/user/estimates/request";
+    const requestUrl = '/user/estimates/request';
     setIsConfirmOpen(false);
 
     if (!user) {
@@ -193,12 +195,12 @@ const FindDriverDetailPage = ({
                 지정견적을 요청해보세요!
               </span>
               <DriverDetailActionButtons
-				onRequestEstimate={handleRequestDesignatedEstimate}
+                onRequestEstimate={handleRequestDesignatedEstimate}
                 onToggleFavorite={handleToggleFavorite}
                 isFavorited={isFavorited}
                 favoriteDisabled={favoriteDisabled}
                 disableFavorite={disableFavorite}
-				disableRequestEstimate={isDesignatedToThisDriver}
+                disableRequestEstimate={isDesignatedToThisDriver}
               />
               <ShareButtonsSection heading="공유하기" />
             </div>
@@ -212,9 +214,7 @@ const FindDriverDetailPage = ({
         btnText="일반 견적 요청하기"
         isOpen={isConfirmOpen}
         setIsOpen={setIsConfirmOpen}
-        onClick={() =>
-          handleModalConfirm()
-        }
+        onClick={() => handleModalConfirm()}
       />
     </>
   );

@@ -11,7 +11,7 @@ type CreateEstimateRequestResponse =
   paths['/api/estimate-request/user/request']['post']['responses']['200']['content']['application/json'];
 
 type CreateDesignatedEstimateRequestRequest = CreateEstimateRequestRequest & {
-	designatedDriverId: string;
+  designatedDriverId: string;
 };
 
 export async function getPendingEsitimateRequests() {
@@ -24,8 +24,7 @@ export async function createEstimateRequest(data: CreateEstimateRequestRequest) 
 
 // 기존 진행 중(PENDING) 견적 요청을 지정 견적 요청으로 전환
 export async function designatePendingEstimateRequest(designatedDriverId: string) {
-	return await api.post<CreateEstimateRequestResponse>(
-		'estimate-request/user/request/designated',
-		{ designatedDriverId } as unknown as CreateDesignatedEstimateRequestRequest,
-	);
+  return await api.post<CreateEstimateRequestResponse>('estimate-request/user/request/designated', {
+    designatedDriverId,
+  } as unknown as CreateDesignatedEstimateRequestRequest);
 }

@@ -8,7 +8,7 @@ interface DriverDetailActionButtonsProps {
   isFavorited?: boolean;
   favoriteDisabled?: boolean;
   disableFavorite?: boolean;
-	disableRequestEstimate?: boolean;
+  disableRequestEstimate?: boolean;
 }
 
 const DriverDetailActionButtons = ({
@@ -17,7 +17,7 @@ const DriverDetailActionButtons = ({
   isFavorited = false,
   favoriteDisabled = false,
   disableFavorite = false,
-	disableRequestEstimate = false,
+  disableRequestEstimate = false,
 }: DriverDetailActionButtonsProps) => {
   const isFavoriteButtonDisabled = favoriteDisabled || disableFavorite;
 
