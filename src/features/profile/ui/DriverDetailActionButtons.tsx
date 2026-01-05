@@ -8,6 +8,7 @@ interface DriverDetailActionButtonsProps {
   isFavorited?: boolean;
   favoriteDisabled?: boolean;
   disableFavorite?: boolean;
+	disableRequestEstimate?: boolean;
 }
 
 const DriverDetailActionButtons = ({
@@ -16,12 +17,19 @@ const DriverDetailActionButtons = ({
   isFavorited = false,
   favoriteDisabled = false,
   disableFavorite = false,
+	disableRequestEstimate = false,
 }: DriverDetailActionButtonsProps) => {
   const isFavoriteButtonDisabled = favoriteDisabled || disableFavorite;
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <Button size="xl" variant="solid" onClick={onRequestEstimate} aria-label="지정 견적 요청하기">
+      <Button
+        size="xl"
+        variant="solid"
+        onClick={onRequestEstimate}
+        disabled={disableRequestEstimate}
+        aria-label="지정 견적 요청하기"
+      >
         지정 견적 요청하기
       </Button>
 
