@@ -2,11 +2,11 @@
 
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import { Clip, ShareButton } from '@/shared/ui/button';
 import { MovingTypeChip } from '@/shared/ui/chip';
 import { getConfirmDetailEstimates } from '@/features/driver-estimate/services/driverEstimate.service';
 import { FrontMovingType } from '@/features/driver-estimate/types/driverEstimate';
 import Spinner from '@/shared/ui/spinner';
+import ShareButtonsSection from '@/features/driver-estimate/ui/detailUi/ShareButtonsSection';
 
 const ConfirmDetail = ({ id }: { id: string }) => {
   const { data, isLoading } = useQuery({
@@ -140,29 +140,7 @@ const ConfirmDetail = ({ id }: { id: string }) => {
           </div>
         </article>
 
-        {/* 공유 버튼 */}
-        <section className="flex w-full flex-col gap-[22px] lg:w-auto">
-          <h1 className="hidden text-xl font-semibold text-[var(--color-black-500)] lg:block">
-            견적서 공유하기
-          </h1>
-          {/* md, sm */}
-          <h1 className="md:text-2lg block font-semibold text-[var(--color-black-500)] sm:text-lg lg:hidden">
-            나만 알기엔 아쉬운 기사님인가요?
-          </h1>
-
-          <div className="flex gap-4">
-            <Clip size="lg" />
-            <ShareButton
-              size="lg"
-              platform="kakao"
-              kakaoTitle="이 페이지의 제목"
-              kakaoDescription="이 페이지 설명"
-              kakaoImageUrl="https://example.com/thumb.png"
-              kakaoLink="https://example.com/page"
-            />
-            <ShareButton size="lg" platform="facebook" />
-          </div>
-        </section>
+        <ShareButtonsSection heading="견적서 공유하기" />
       </section>
     </main>
   );
