@@ -119,7 +119,7 @@ const ReceivedInfoCard = ({
   ];
 
   return (
-    <div className="border-line-100 tab:gap-10 tab:flex-col flex items-start gap-15 rounded-[20px] border-[0.5px] bg-gray-50 px-10 py-12 shadow-[-2px_-2px_10px_0_rgba(220,220,220,0.14),2px_2px_10px_0_rgba(220,220,220,0.14)]">
+    <div className="border-line-100 tab:gap-10 tab:flex-col flex h-auto items-start gap-15 rounded-[20px] border-[0.5px] bg-gray-50 px-10 py-12 shadow-[-2px_-2px_10px_0_rgba(220,220,220,0.14),2px_2px_10px_0_rgba(220,220,220,0.14)]">
       <div className="tab:w-full flex min-w-[300px] shrink-0 grow-0 basis-auto flex-col gap-10">
         <div className="mobile:justify-center flex items-center justify-between">
           <div className="text-black-400 mobile:text-2lg text-xl font-semibold">견적 정보</div>
@@ -144,7 +144,7 @@ const ReceivedInfoCard = ({
         </div>
       </div>
 
-      <div className="tab:hidden mobile:hidden h-[1160px] w-[1px] bg-[#F2F2F2]" />
+      <div className="tab:hidden mobile:hidden w-[1px] self-stretch bg-[#F2F2F2]" />
 
       <div className="tab:w-full flex grow flex-col gap-5">
         <div className="flex items-center gap-2">
@@ -167,7 +167,7 @@ const ReceivedInfoCard = ({
                 driverImageUrl={estimate.driver?.driverProfile?.imageUrl ?? ''}
                 rating={estimate.driver?.driverProfile?.averageRating ?? 0}
                 reviewCount={estimate.driver?.driverProfile?.reviewCount ?? 0}
-                experience={estimate.driver?.driverProfile?.career ?? ''}
+                experience={`${estimate.driver?.driverProfile?.career ?? 0}년`}
                 moveCount={`${estimate.driver?.driverProfile?.confirmedEstimateCount ?? 0}건`}
                 likeCount={estimate.driver?.driverProfile?.favoriteDriverCount ?? 0}
                 isLiked={estimate.driver?.isFavorite ?? false}

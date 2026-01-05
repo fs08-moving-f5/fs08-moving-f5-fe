@@ -1,4 +1,4 @@
-import EstimateRequestPage from '@/views/EstimateRequestPage';
+import EstimateRequestPage from '@/views/user/estimates/request/EstimateRequestPage';
 
 export default function Page() {
   return <EstimateRequestPage />;

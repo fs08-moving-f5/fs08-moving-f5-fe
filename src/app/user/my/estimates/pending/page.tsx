@@ -1,4 +1,4 @@
-import PendingEstimatesPageClient from '@/views/my/estimates/pending';
+import PendingEstimatesPageClient from '@/views/user/my/estimates/pending';
 
 const PendingEstimatesPage = () => {
   return <PendingEstimatesPageClient />;

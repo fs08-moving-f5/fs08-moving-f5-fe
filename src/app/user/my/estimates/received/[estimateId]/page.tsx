@@ -1,7 +1,7 @@
 'use client';
 
 import { notFound, useParams } from 'next/navigation';
-import ReceivedEstimateDetailPageClient from '@/views/my/estimates/received/estimateId';
+import ReceivedEstimateDetailPageClient from '@/views/user/my/estimates/received/estimateId';
 
 // 3279a51a-1a1d-4d51-b8fa-d149857149d0
 const ReceivedEstimateDetailPage = () => {
