@@ -124,7 +124,7 @@ export function useProfileSetupForm(userType: UserType) {
       if (isDriver) {
         await handleCreateProfile({
           ...baseData,
-          career: career || undefined,
+          career: career ? Number(career) : undefined,
           shortIntro: shortIntro || undefined,
           description: description || undefined,
         });

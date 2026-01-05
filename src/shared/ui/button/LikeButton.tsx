@@ -5,38 +5,47 @@ import Image from 'next/image';
 
 interface LikeButtonProps {
   size?: 'lg' | 'md' | 'sm';
+  liked?: boolean;
+  disabled?: boolean;
+  onClick?: () => void | Promise<void>;
 }
 
-const LikeButton = ({ size = 'md' }: LikeButtonProps) => {
-  const [liked, setLiked] = useState<boolean>(false);
+const LikeButton = ({ size = 'md', liked: likedProp, disabled = false, onClick }: LikeButtonProps) => {
+  const [uncontrolledLiked, setUncontrolledLiked] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleClick = () => {
-    if (loading) return;
+  const isControlled = typeof likedProp === 'boolean';
+  const liked = isControlled ? likedProp : uncontrolledLiked;
+  const isDisabled = disabled || loading;
 
-    setLiked((prev) => !prev);
+  const handleClick = async () => {
+    if (isDisabled) return;
+
+    if (!isControlled) {
+      setUncontrolledLiked((prev) => !prev);
+    }
+
+    if (!onClick) return;
 
     try {
       setLoading(true);
-      // 실제 API 호출
-      // await fetch('/api/like', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ liked: !liked }),
-      // });
+      await onClick();
     } catch (err) {
       console.error(err);
-      setLiked((prev) => !prev);
+      if (!isControlled) {
+        setUncontrolledLiked((prev) => !prev);
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  const baseStyles = `flex items-center justify-center rounded-[16px] border border-[var(--color-line-200)] bg-[var(--color-grayScale-50)] hover:bg-[var(--color-grayScale-100)] transition cursor-pointer`;
+  const baseStyles = `flex items-center justify-center rounded-[16px] border border-[var(--color-line-200)] bg-[var(--color-bg-100)] hover:bg-[var(--color-grayScale-50)] transition cursor-pointer`;
 
   const getWrapperClasses = () => {
     switch (size) {
       case 'lg':
-        return 'max-w-[320px] min-h-[54px] gap-[8px] px-[16px]';
+			return 'w-full min-h-[60px] gap-[8px] px-[16px]';
       case 'md':
         return 'w-[64px] h-[64px] p-[10px]';
       case 'sm':
@@ -45,6 +54,10 @@ const LikeButton = ({ size = 'md' }: LikeButtonProps) => {
         return 'w-[64px] h-[64px] p-[10px]';
     }
   };
+
+  const getDisabledStyles = () => {
+    return isDisabled ? 'cursor-not-allowed bg-gray-200 text-gray-500 opacity-50 hover:bg-gray-200' : '';
+  }
 
   const getIconSize = () => {
     switch (size) {
@@ -68,9 +81,9 @@ const LikeButton = ({ size = 'md' }: LikeButtonProps) => {
     <button
       type="button"
       aria-label="찜하기"
-      className={`${baseStyles} ${getWrapperClasses()}`}
+      className={`${baseStyles} ${getWrapperClasses()} ${getDisabledStyles()}`}
       onClick={handleClick}
-      disabled={loading}
+			disabled={isDisabled}
     >
       <Image
         src={liked ? '/icons/like-on.svg' : '/icons/like-empty.svg'}

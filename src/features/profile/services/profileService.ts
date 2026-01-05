@@ -8,6 +8,7 @@ import type {
   UpdateDriverProfileRequest,
   MyPageData,
   ReviewListData,
+  DriverPublicProfileData,
 } from '../types/types';
 
 // ========== 유저 프로필 API ==========
@@ -43,6 +44,14 @@ export const updateUserProfile = async (data: UpdateUserProfileRequest): Promise
  */
 export const getDriverProfile = async (): Promise<DriverProfile> => {
   const response = await api.get<DriverProfile>('profile/driver');
+  return response.data;
+};
+
+/**
+ * 기사 공개 프로필 조회 (기사 찾기 상세용)
+ */
+export const getDriverPublicProfile = async (driverId: string): Promise<DriverPublicProfileData> => {
+  const response = await api.get<DriverPublicProfileData>(`profile/driver/${driverId}`);
   return response.data;
 };
 
