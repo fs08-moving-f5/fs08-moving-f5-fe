@@ -1,4 +1,4 @@
-import ProfileEditPage from '@/views/profile/edit/ProfileEditPage';
+import ProfileEditPage from '@/views/user/profile/edit/ProfileEditPage';
 
 export default function Page() {
   return <ProfileEditPage userType="USER" />;
