@@ -60,7 +60,9 @@ const FindDriver = ({
     ? 'relative flex flex-col items-start gap-3'
     : 'mobile:gap-3 tab:gap-3 relative flex flex-col items-start gap-4';
 
-  const rowClassName = mobileStyle ? 'flex flex-1 flex-row gap-4' : 'mobile:gap-4 tab:gap-4 flex flex-1 flex-row gap-6';
+  const rowClassName = mobileStyle
+    ? 'flex flex-1 flex-row gap-4'
+    : 'mobile:gap-4 tab:gap-4 flex flex-1 flex-row gap-6';
 
   const profileImageWrapperClassName = mobileStyle ? 'hidden' : 'tab:hidden';
 
@@ -103,9 +105,7 @@ const FindDriver = ({
           </div>
           <section className="flex-1">
             <header>
-              <h3 className={titleClassName}>
-                {title}
-              </h3>
+              <h3 className={titleClassName}>{title}</h3>
               <div className={descriptionWrapperClassName}>
                 <p className={descriptionClassName}>{description}</p>
               </div>

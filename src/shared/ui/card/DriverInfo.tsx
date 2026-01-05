@@ -47,17 +47,15 @@ const DriverInfo = ({
     ? 'flex items-center gap-2'
     : 'mobile:gap-2 tab:gap-3 flex items-center gap-4';
 
-  const profileWrapperClassName = type === 'estimateWait' ? '' : 
-  (mobileStyle ? 'block' : 'tab:block hidden');
+  const profileWrapperClassName =
+    type === 'estimateWait' ? '' : mobileStyle ? 'block' : 'tab:block hidden';
 
   const infoColClassName = mobileStyle
     ? 'flex flex-1 flex-col gap-0.5'
     : 'mobile:gap-0.5 tab:gap-1 flex flex-1 flex-col gap-1';
 
   const topRowClassName =
-    type === 'estimateWait'
-      ? 'flex items-center justify-between gap-3'
-      : 'flex items-center gap-3';
+    type === 'estimateWait' ? 'flex items-center justify-between gap-3' : 'flex items-center gap-3';
 
   const nameRowClassName = mobileStyle
     ? 'flex items-center gap-1'
@@ -67,9 +65,10 @@ const DriverInfo = ({
     ? 'text-black-500 text-md font-semibold'
     : 'text-black-500 mobile:text-md tab:text-md text-lg font-semibold';
 
-  const likeOuterClassName = mobileStyle ? '' : 'tab:ml-auto mobile:ml-0';
+  const likeOuterClassName = mobileStyle ? 'ml-0' : 'tab:ml-auto mobile:ml-0';
 
-  const likeInnerClassName = type === 'estimateWait' ? '' : 'tab:block mobile:hidden hidden';
+  const likeInnerClassName = type === 'estimateWait' ? '' : 
+  mobileStyle ? 'block' : 'tab:block mobile:hidden hidden';
 
   const metaListClassName = mobileStyle
     ? 'flex items-center gap-1 text-xs'
@@ -83,13 +82,17 @@ const DriverInfo = ({
     ? 'flex items-center text-xs font-medium text-[#ababab]'
     : 'mobile:text-xs tab:text-xs flex items-center text-sm font-medium text-[#ababab]';
 
-  const dividerClassName = mobileStyle ? 'mx-0.5 text-[#ababab]' : 'mobile:mx-0.5 tab:mx-0.5 mx-1 text-[#ababab]';
+  const dividerClassName = mobileStyle
+    ? 'mx-0.5 text-[#ababab]'
+    : 'mobile:mx-0.5 tab:mx-0.5 mx-1 text-[#ababab]';
 
   const expGroupClassName = mobileStyle
     ? 'text-black-400 flex items-center gap-1 text-xs font-medium'
     : 'text-black-400 mobile:gap-1 mobile:text-xs tab:gap-1 tab:text-xs flex items-center gap-1.5 text-sm font-medium';
 
-  const likeClassName = mobileStyle ? 'hidden' : 'tab:hidden mobile:hidden absolute right-0 bottom-0';
+  const likeClassName = mobileStyle
+    ? 'hidden'
+    : 'tab:hidden mobile:hidden absolute right-0 bottom-0';
 
   return (
     <section className={rootClassName}>
@@ -113,9 +116,7 @@ const DriverInfo = ({
               width={nameIconSize}
               height={nameIconSize}
             />
-            <strong className={nameTextClassName}>
-              {driverName} 기사님
-            </strong>
+            <strong className={nameTextClassName}>{driverName} 기사님</strong>
           </div>
           {showLikeButton && (
             <div className={likeOuterClassName}>
@@ -140,12 +141,8 @@ const DriverInfo = ({
               height={starIconSize}
               className="mobile:h-4 mobile:w-4 tab:h-4 tab:w-4"
             />
-            <dd className={starDdClassName}>
-              {rating.toFixed(1)}
-            </dd>
-            <dd className={reviewDdClassName}>
-              ({reviewCount})
-            </dd>
+            <dd className={starDdClassName}>{rating.toFixed(1)}</dd>
+            <dd className={reviewDdClassName}>({reviewCount})</dd>
           </div>
           <span className={dividerClassName} aria-hidden="true">
             |
@@ -166,11 +163,7 @@ const DriverInfo = ({
 
       {/* 좋아요 (모바일) */}
       {showLikeButton && (
-        <div
-          className={
-            type === 'estimateWait' ? 'hidden' : likeClassName
-          }
-        >
+        <div className={type === 'estimateWait' ? 'hidden' : likeClassName}>
           <Like
             likeCount={likeCount}
             isLiked={isLiked}
