@@ -67,8 +67,8 @@ const DriverInfo = ({
 
   const likeOuterClassName = mobileStyle ? 'ml-0' : 'tab:ml-auto mobile:ml-0';
 
-  const likeInnerClassName = type === 'estimateWait' ? '' : 
-  mobileStyle ? 'block' : 'tab:block mobile:hidden hidden';
+  const likeInnerClassName =
+    type === 'estimateWait' ? '' : mobileStyle ? 'block' : 'tab:block mobile:hidden hidden';
 
   const metaListClassName = mobileStyle
     ? 'flex items-center gap-1 text-xs'
