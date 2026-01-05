@@ -68,6 +68,20 @@ export default function CardTestPage() {
           isLiked={true}
         />
 
+        <FindDriver
+          title="고객님의 물품을 안전하게 운송해 드립니다."
+          description="이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다."
+          driverName="김코드"
+          rating={5.0}
+          reviewCount={178}
+          experience="1년"
+          moveCount="12건"
+          likeCount={12}
+          movingTypeArray={['small', 'home', 'office', 'assign']}
+          isLiked={false}
+          mobileStyle={true}
+        />
+
         <EstimateWait
           driverName="이사왕"
           driverImageUrl="https://i.namu.wiki/i/QhqqJ7IFrrniG4DQeWlM6-dRuKeEDXY__U7WOuo1JmaP6wg35_Xa3X_ndOJO9ivEHDqj1U3MYwxQRb9jcxUa01FYBz_pi1DWc_-CZMWW4HuO0jin4fImq9ylaNWB_qKk9h0EnxVMQmuXMokNXemfEA.webp"

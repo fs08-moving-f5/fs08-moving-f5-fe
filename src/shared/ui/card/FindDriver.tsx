@@ -1,16 +1,15 @@
 'use client';
 
 import Image from 'next/image';
-import clsx from 'clsx';
 import { useState } from 'react';
 import { MovingTypeChip } from '@/shared/ui/chip';
 import DriverInfo from './DriverInfo';
 import { CheckBox } from '../button';
 
 interface FindDriverProps {
+  mobileStyle?: boolean;
   checked?: boolean;
   onCheckChange?: (checked: boolean) => void;
-  mobStyle?: boolean;
   title: string;
   description: string;
   driverName: string;
@@ -28,9 +27,9 @@ interface FindDriverProps {
 }
 
 const FindDriver = ({
+  mobileStyle = false,
   checked = false,
   onCheckChange = () => {},
-  mobStyle = false,
   title,
   description,
   driverName,
@@ -53,67 +52,33 @@ const FindDriver = ({
     setLiked(!liked);
   };
 
-  const styles = {
-    article: {
-      base: 'w-full max-w-[1200px] rounded-2xl bg-white p-6 shadow-md',
-      mobile: 'mobile:rounded-xl mobile:p-4',
-      mobileForced: 'rounded-xl p-4',
-      tab: 'tab:max-w-[327px] tab:rounded-xl tab:p-5',
-    },
-    container: {
-      base: 'relative flex flex-col items-start gap-4',
-      mobile: 'mobile:gap-3',
-      mobileForced: 'gap-3',
-      tab: 'tab:gap-3',
-    },
-    contentRow: {
-      base: 'flex flex-1 flex-row gap-6',
-      mobile: 'mobile:gap-4',
-      mobileForced: 'gap-4',
-      tab: 'tab:gap-4',
-    },
-    mobileImgWrapper: {
-      base: 'tab:hidden',
-      mobileForced: 'block',
-    },
-    title: {
-      base: 'text-black-500 mb-2 text-xl font-semibold',
-      mobile: 'mobile:mb-1 mobile:text-lg',
-      mobileForced: 'mb-1 text-lg',
-      tab: 'tab:mb-2 tab:text-lg',
-    },
-    descWrapper: {
-      base: 'mobile:hidden tab:block',
-      mobileForced: 'hidden',
-    },
-    desc: {
-      base: 'text-black-200 mb-5 text-lg',
-      tab: 'tab:mb-4 tab:text-md',
-    },
-    hrWrapper: {
-      base: 'hidden mobile:hidden tab:block',
-    },
-    hr: {
-      base: 'border-gray-100',
-      tab: 'tab:mb-4',
-    },
-  };
+  const articleClassName = mobileStyle
+    ? 'w-full max-w-[327px] rounded-xl bg-white p-4 shadow-md'
+    : 'tab:max-w-[327px] mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 w-full max-w-[1200px] rounded-2xl bg-white p-6 shadow-md';
+
+  const containerClassName = mobileStyle
+    ? 'relative flex flex-col items-start gap-3'
+    : 'mobile:gap-3 tab:gap-3 relative flex flex-col items-start gap-4';
+
+  const rowClassName = mobileStyle ? 'flex flex-1 flex-row gap-4' : 'mobile:gap-4 tab:gap-4 flex flex-1 flex-row gap-6';
+
+  const profileImageWrapperClassName = mobileStyle ? 'hidden' : 'tab:hidden';
+
+  const titleClassName = mobileStyle
+    ? 'text-black-500 mb-1 text-lg font-semibold'
+    : 'text-black-500 mobile:mb-1 mobile:text-lg tab:mb-2 tab:text-lg mb-2 text-xl font-semibold';
+
+  const descriptionWrapperClassName = mobileStyle ? 'block' : 'mobile:hidden tab:block';
+
+  const descriptionClassName = mobileStyle
+    ? 'text-black-200 mb-5 text-md'
+    : 'text-black-200 tab:mb-4 tab:text-md mb-5 text-lg';
+
+  const hrClassName = mobileStyle ? 'block' : 'mobile:hidden tab:block';
 
   return (
-    <article
-      className={clsx(
-        styles.article.base,
-        mobStyle ? styles.article.mobileForced : styles.article.mobile,
-        !mobStyle && styles.article.tab,
-      )}
-    >
-      <div
-        className={clsx(
-          styles.container.base,
-          mobStyle ? styles.container.mobileForced : styles.container.mobile,
-          !mobStyle && styles.container.tab,
-        )}
-      >
+    <article className={articleClassName}>
+      <div className={containerClassName}>
         {favoriteCard && (
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-1">
@@ -124,14 +89,8 @@ const FindDriver = ({
             <CheckBox shape="square" checked={checked} onChange={onCheckChange} />
           </div>
         )}
-        <div
-          className={clsx(
-            styles.contentRow.base,
-            mobStyle ? styles.contentRow.mobileForced : styles.contentRow.mobile,
-            !mobStyle && styles.contentRow.tab,
-          )}
-        >
-          <div className={clsx(mobStyle ? styles.mobileImgWrapper.mobileForced : styles.mobileImgWrapper.base)}>
+        <div className={rowClassName}>
+          <div className={profileImageWrapperClassName}>
             <figure>
               <Image
                 src={driverImageUrl ?? '/img/profile.png'}
@@ -144,22 +103,16 @@ const FindDriver = ({
           </div>
           <section className="flex-1">
             <header>
-              <h3
-                className={clsx(
-                  styles.title.base,
-                  mobStyle ? styles.title.mobileForced : styles.title.mobile,
-                  !mobStyle && styles.title.tab,
-                )}
-              >
+              <h3 className={titleClassName}>
                 {title}
               </h3>
-              <div className={clsx(mobStyle ? styles.descWrapper.mobileForced : styles.descWrapper.base)}>
-                <p className={clsx(styles.desc.tab, styles.desc.base)}>{description}</p>
+              <div className={descriptionWrapperClassName}>
+                <p className={descriptionClassName}>{description}</p>
               </div>
             </header>
 
-            <div className={styles.hrWrapper.base}>
-              <hr className={clsx(styles.hr.tab, styles.hr.base)} />
+            <div className={hrClassName}>
+              <hr className="mb-4 border-gray-100" />
             </div>
 
             <DriverInfo
@@ -173,6 +126,7 @@ const FindDriver = ({
               isLiked={liked}
               onLikeClick={handleLikeClick}
               showLikeButton={true}
+              mobileStyle={mobileStyle}
             />
           </section>
         </div>
