@@ -9,4 +9,9 @@ export const getNotificationList = async () => {
   return res.data;
 };
 
+export const readNotification = async (id: string) => {
+  const res = await api.patch(`notifications/${id}`);
+  return res.data;
+};
+
 export type Notification = NonNullable<getNotificationListResponse['data']>[number];

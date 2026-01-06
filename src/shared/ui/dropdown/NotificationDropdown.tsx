@@ -18,7 +18,13 @@ const dropdownPosition = {
   mobile: 'top-[52px] right-[20px]',
 };
 
-const NotificationDropdown = ({ notifications }: { notifications?: Notification[] }) => {
+const NotificationDropdown = ({
+  notifications,
+  handleReadNotification,
+}: {
+  notifications?: Notification[];
+  handleReadNotification: (id: string) => void;
+}) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -77,6 +83,7 @@ const NotificationDropdown = ({ notifications }: { notifications?: Notification[
                   key={notification.id}
                   title={notification.message ?? ''}
                   time={formatDateAgo(notification.createdAt ?? '')}
+                  onClick={() => handleReadNotification(notification.id ?? '')}
                 />
               ))}
           </ul>

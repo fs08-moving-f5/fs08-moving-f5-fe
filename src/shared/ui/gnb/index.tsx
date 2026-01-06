@@ -9,6 +9,8 @@ import { useAuthStore } from '@/shared/store/authStore';
 import { useLogout } from '@/features/auth/hooks/useLogout';
 import { useGetNotificationListQuery } from './notificationQuery';
 import { NotificationDropdown } from '../dropdown';
+import { useReadNotificationMutation } from './notificationMutation';
+import { useQueryClient } from '@tanstack/react-query';
 
 const menuByRole = {
   guest: [{ id: 1, label: '기사님 찾기', href: '/' }],
@@ -44,6 +46,7 @@ const menuByRole = {
 };
 
 const GNB = () => {
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuthStore();
   const { handleLogout } = useLogout();
@@ -51,6 +54,16 @@ const GNB = () => {
   const userRole = user ? (user.type === 'USER' ? 'user' : 'driver') : 'guest';
 
   const { data: notifications } = useGetNotificationListQuery();
+
+  const { mutate: readNotification } = useReadNotificationMutation();
+
+  const handleReadNotification = (id: string) => {
+    readNotification(id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['notification'] });
+      },
+    });
+  };
 
   return (
     <div className="mobile:h-[54px] mobile:py-[10px] tab:py-[19px] tab:px-[72px] mobile:px-[24px] tab:h-[54px] relative z-20 flex h-[88px] w-full items-center justify-between bg-white px-[160px] py-[26px]">
@@ -87,7 +100,10 @@ const GNB = () => {
         )}
         {user && (
           <div className="flex items-center gap-8">
-            <NotificationDropdown notifications={notifications} />
+            <NotificationDropdown
+              notifications={notifications}
+              handleReadNotification={handleReadNotification}
+            />
             <DropdownProfile
               size="md"
               userName={user.name}
@@ -105,7 +121,10 @@ const GNB = () => {
         )}
         {user && (
           <div className="flex items-center gap-6">
-            <NotificationDropdown notifications={notifications} />
+            <NotificationDropdown
+              notifications={notifications}
+              handleReadNotification={handleReadNotification}
+            />
             <DropdownProfile
               size="sm"
               userName={user.name}
