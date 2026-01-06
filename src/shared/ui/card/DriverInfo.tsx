@@ -16,6 +16,7 @@ interface DriverInfoProps {
   showLikeButton?: boolean;
   size?: 'small' | 'medium' | 'large';
   type?: 'findDriver' | 'estimateWait';
+  mobileStyle?: boolean;
 }
 
 interface SimpleDriverInfoProps {
@@ -36,14 +37,66 @@ const DriverInfo = ({
   showLikeButton = true,
   size = 'large',
   type = 'findDriver',
+  mobileStyle = false,
 }: DriverInfoProps) => {
   const imageSize = size === 'large' ? 50 : size === 'medium' ? 40 : 32;
   const nameIconSize = size === 'large' ? 24 : size === 'medium' ? 20 : 18;
   const starIconSize = size === 'large' ? 20 : size === 'medium' ? 18 : 16;
 
+  const rootClassName = mobileStyle
+    ? 'flex items-center gap-2'
+    : 'mobile:gap-2 tab:gap-3 flex items-center gap-4';
+
+  const profileWrapperClassName =
+    type === 'estimateWait' ? '' : mobileStyle ? 'block' : 'tab:block hidden';
+
+  const infoColClassName = mobileStyle
+    ? 'flex flex-1 flex-col gap-0.5'
+    : 'mobile:gap-0.5 tab:gap-1 flex flex-1 flex-col gap-1';
+
+  const topRowClassName =
+    type === 'estimateWait' ? 'flex items-center justify-between gap-3' : 'flex items-center gap-3';
+
+  const nameRowClassName = mobileStyle
+    ? 'flex items-center gap-1'
+    : 'mobile:gap-1 tab:gap-1 flex items-center gap-1.5';
+
+  const nameTextClassName = mobileStyle
+    ? 'text-black-500 text-md font-semibold'
+    : 'text-black-500 mobile:text-md tab:text-md text-lg font-semibold';
+
+  const likeOuterClassName = mobileStyle ? 'ml-0' : 'tab:ml-auto mobile:ml-0';
+
+  const likeInnerClassName =
+    type === 'estimateWait' ? '' : mobileStyle ? 'block' : 'tab:block mobile:hidden hidden';
+
+  const metaListClassName = mobileStyle
+    ? 'flex items-center gap-1 text-xs'
+    : 'mobile:gap-1 mobile:text-xs tab:gap-1 tab:text-xs flex items-center gap-1.5';
+
+  const starDdClassName = mobileStyle
+    ? 'text-black-500 flex items-center text-xs font-medium'
+    : 'text-black-500 mobile:text-xs tab:text-xs flex items-center text-sm font-medium';
+
+  const reviewDdClassName = mobileStyle
+    ? 'flex items-center text-xs font-medium text-[#ababab]'
+    : 'mobile:text-xs tab:text-xs flex items-center text-sm font-medium text-[#ababab]';
+
+  const dividerClassName = mobileStyle
+    ? 'mx-0.5 text-[#ababab]'
+    : 'mobile:mx-0.5 tab:mx-0.5 mx-1 text-[#ababab]';
+
+  const expGroupClassName = mobileStyle
+    ? 'text-black-400 flex items-center gap-1 text-xs font-medium'
+    : 'text-black-400 mobile:gap-1 mobile:text-xs tab:gap-1 tab:text-xs flex items-center gap-1.5 text-sm font-medium';
+
+  const likeClassName = mobileStyle
+    ? 'hidden'
+    : 'tab:hidden mobile:hidden absolute right-0 bottom-0';
+
   return (
-    <section className="mobile:gap-2 tab:gap-3 flex items-center gap-4">
-      <div className={type === 'estimateWait' ? '' : 'tab:block hidden'}>
+    <section className={rootClassName}>
+      <div className={profileWrapperClassName}>
         <figure>
           <Image
             src={driverImageUrl ?? '/img/profile.png'}
@@ -54,28 +107,20 @@ const DriverInfo = ({
           />
         </figure>
       </div>
-      <div className="mobile:gap-0.5 tab:gap-1 flex flex-1 flex-col gap-1">
-        <div
-          className={
-            type === 'estimateWait'
-              ? 'flex items-center justify-between gap-3'
-              : 'flex items-center gap-3'
-          }
-        >
-          <div className="mobile:gap-1 tab:gap-1 flex items-center gap-1.5">
+      <div className={infoColClassName}>
+        <div className={topRowClassName}>
+          <div className={nameRowClassName}>
             <Image
               src="/icons/name.svg"
               alt="Driver Name Icon"
               width={nameIconSize}
               height={nameIconSize}
             />
-            <strong className="text-black-500 mobile:text-md tab:text-md text-lg font-semibold">
-              {driverName} 기사님
-            </strong>
+            <strong className={nameTextClassName}>{driverName} 기사님</strong>
           </div>
           {showLikeButton && (
-            <div className="tab:ml-auto mobile:ml-0">
-              <div className={type === 'estimateWait' ? '' : 'tab:block mobile:hidden hidden'}>
+            <div className={likeOuterClassName}>
+              <div className={likeInnerClassName}>
                 <Like
                   likeCount={likeCount}
                   isLiked={isLiked}
@@ -87,7 +132,7 @@ const DriverInfo = ({
             </div>
           )}
         </div>
-        <dl className="mobile:gap-1 mobile:text-xs tab:gap-1 tab:text-xs flex items-center gap-1.5">
+        <dl className={metaListClassName}>
           <div className="flex items-center gap-1">
             <Image
               src="/icons/star.svg"
@@ -96,24 +141,20 @@ const DriverInfo = ({
               height={starIconSize}
               className="mobile:h-4 mobile:w-4 tab:h-4 tab:w-4"
             />
-            <dd className="text-black-500 mobile:text-xs tab:text-xs flex items-center text-sm font-medium">
-              {rating.toFixed(1)}
-            </dd>
-            <dd className="mobile:text-xs tab:text-xs flex items-center text-sm font-medium text-[#ababab]">
-              ({reviewCount})
-            </dd>
+            <dd className={starDdClassName}>{rating.toFixed(1)}</dd>
+            <dd className={reviewDdClassName}>({reviewCount})</dd>
           </div>
-          <span className="mobile:mx-0.5 tab:mx-0.5 mx-1 text-[#ababab]" aria-hidden="true">
+          <span className={dividerClassName} aria-hidden="true">
             |
           </span>
-          <div className="text-black-400 mobile:gap-1 mobile:text-xs tab:gap-1 tab:text-xs flex items-center gap-1.5 text-sm font-medium">
+          <div className={expGroupClassName}>
             <dt className="text-[#ababab]">경력</dt>
             <dd>{experience}</dd>
           </div>
-          <span className="mobile:mx-0.5 tab:mx-0.5 mx-1 text-[#ababab]" aria-hidden="true">
+          <span className={dividerClassName} aria-hidden="true">
             |
           </span>
-          <div className="text-black-400 mobile:gap-1 mobile:text-xs tab:gap-1 tab:text-xs flex items-center gap-1.5 text-sm font-medium">
+          <div className={expGroupClassName}>
             <dd>{moveCount}</dd>
             <dt className="text-[#ababab]">확정</dt>
           </div>
@@ -122,13 +163,7 @@ const DriverInfo = ({
 
       {/* 좋아요 (모바일) */}
       {showLikeButton && (
-        <div
-          className={
-            type === 'estimateWait'
-              ? 'hidden'
-              : 'tab:hidden mobile:hidden absolute right-0 bottom-0'
-          }
-        >
+        <div className={type === 'estimateWait' ? 'hidden' : likeClassName}>
           <Like
             likeCount={likeCount}
             isLiked={isLiked}
