@@ -1,0 +1,89 @@
+import { useNotificationStore } from '@/shared/store/notificationStore';
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import clsx from 'clsx';
+import NotificationDetail from './NotificationDetail';
+import type { Notification } from '@/shared/ui/gnb/notification.service';
+import { formatDateAgo } from '@/shared/lib/day';
+
+const ic_x = '/icons/x.svg';
+const ic_alarm_unread = '/icons/alarm_unread.svg';
+const ic_alarm = '/icons/alarm.svg';
+
+const dropdownPosition = {
+  default:
+    'absolute flex flex-col rounded-[16px] border border-[var(--color-grayScale-200)] bg-[var(--color-grayScale-50)] px-[16px] py-[10px] shadow-md',
+  desktop:
+    'top-[80px] right-[263px] tab:right-[108px] mobile:right-[20px] w-[359px] tab:w-[312px] mobile:w-[312px]',
+  mobile: 'top-[52px] right-[20px]',
+};
+
+const NotificationDropdown = ({ notifications }: { notifications?: Notification[] }) => {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [setIsOpen]);
+
+  const unreadCount = useNotificationStore((state) => state.unreadCount);
+  const hasUnread = unreadCount > 0;
+
+  return (
+    <div ref={dropdownRef} className="flex h-full items-center">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="mobile:h-6 mobile:w-6 tab:h-6 tab:w-6 flex h-9 w-9 cursor-pointer items-center justify-center hover:brightness-80"
+      >
+        <Image
+          src={hasUnread ? ic_alarm_unread : ic_alarm}
+          alt="ic_alarm"
+          width={36}
+          height={36}
+          className="mobile:h-6 mobile:w-6 tab:h-6 tab:w-6 h-9 w-9"
+        />
+      </button>
+      {isOpen && (
+        <div
+          className={clsx(
+            dropdownPosition.default,
+            dropdownPosition.desktop,
+            'tab:top-[52px] mobile:top-[52px] tab:right-[20px] mobile:right-[20px]',
+          )}
+        >
+          <ul>
+            <li className="flex justify-between px-6 py-[14px]">
+              <span className="text-2lg tab:text-lg mobile:text-lg font-bold">알림</span>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="flex cursor-pointer items-center justify-center hover:brightness-80"
+              >
+                <Image src={ic_x} alt="ic_close" width={24} height={24} />
+              </button>
+            </li>
+            {notifications
+              ?.filter((notification) => !notification.isRead)
+              .map((notification) => (
+                <NotificationDetail
+                  key={notification.id}
+                  title={notification.message ?? ''}
+                  time={formatDateAgo(notification.createdAt ?? '')}
+                />
+              ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default NotificationDropdown;
