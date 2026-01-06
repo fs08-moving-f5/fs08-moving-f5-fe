@@ -95,8 +95,11 @@ export interface ConfirmDetailPageProps {
 export interface GetRequestsUIParams {
   cursor?: string | null;
   take?: number;
-  movingType?: FrontMovingType;
+  movingTypes?: FrontMovingType[];
   sort?: FrontFilter;
+  keyword?: string;
+  onlyDesignated?: boolean;
+  onlyServiceable?: boolean;
 }
 
 export interface GetRequestsParams {

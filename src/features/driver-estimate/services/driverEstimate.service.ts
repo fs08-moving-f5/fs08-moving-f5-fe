@@ -30,18 +30,29 @@ const convertSort: Record<FrontFilter, BackendFilter> = {
 export const getRequests = async ({
   cursor,
   sort,
-  movingType,
-  ...params
+  movingTypes,
+  keyword,
+  onlyDesignated,
+  onlyServiceable,
+  take,
 }: GetRequestsUIParams): Promise<EstimateRequestResponse> => {
+  const searchParams = new URLSearchParams();
+
+  if (sort) searchParams.set('sort', convertSort[sort]);
+  if (keyword) searchParams.set('search', keyword);
+  if (onlyDesignated) searchParams.set('isDesignated', 'true');
+  if (onlyServiceable) searchParams.set('serviceRegionFilter', 'true');
+  if (cursor) searchParams.set('cursor', cursor);
+  if (take) searchParams.set('take', String(take));
+
+  if (movingTypes?.length) {
+    movingTypes.forEach((type) => {
+      searchParams.append('movingTypes', convertMovingTypeToBackend(type) ?? '');
+    });
+  }
+
   const res = await apiClient
-    .get('estimate-request/driver/requests', {
-      searchParams: {
-        ...params,
-        ...(sort && { sort: convertSort[sort] }),
-        ...(movingType && { movingType: convertMovingTypeToBackend(movingType) }),
-        ...(cursor && { cursor }),
-      },
-    })
+    .get('estimate-request/driver/requests', { searchParams })
     .json<{ data: EstimateRequestRaw[] }>();
 
   const list = res.data ?? [];
