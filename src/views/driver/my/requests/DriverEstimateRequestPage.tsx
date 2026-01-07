@@ -60,18 +60,26 @@ const DriverEstimateRequestPage = () => {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   // useInfiniteQuery - 무한 스크롤
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery<
-    EstimateRequestResponse, // TQueryFnData
-    Error, // TError
-    InfiniteData<EstimateRequestResponse>, // TData
-    ['requests', Filters], // TQueryKey
-    string | null // TPageParam
-  >({
-    queryKey: ['requests', filters],
-    queryFn: ({ pageParam }) => getRequests({ cursor: pageParam, ...filters }),
-    initialPageParam: null,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isFetching } =
+    useInfiniteQuery<
+      EstimateRequestResponse, // TQueryFnData
+      Error, // TError
+      InfiniteData<EstimateRequestResponse>, // TData
+      ['requests', string, FrontFilter, boolean, boolean, string], // TQueryKey
+      string | null // TPageParam
+    >({
+      queryKey: [
+        'requests',
+        filters.keyword,
+        filters.sort,
+        filters.onlyDesignated,
+        filters.onlyServiceable,
+        filters.movingTypes.join(','),
+      ],
+      queryFn: ({ pageParam }) => getRequests({ cursor: pageParam, ...filters }),
+      initialPageParam: null,
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    });
 
   const requests = data?.pages.flatMap((page) => page.data) ?? [];
 
@@ -134,11 +142,6 @@ const DriverEstimateRequestPage = () => {
         : [...prev.movingTypes, type],
     }));
   };
-
-  // 로딩 중 EmptySection 숨기기
-  if (!data && isFetchingNextPage) {
-    return null;
-  }
 
   if (isLoading) {
     return (
@@ -236,19 +239,29 @@ const DriverEstimateRequestPage = () => {
             </div>
           </div>
 
-          {requests.length === 0 ? (
-            <EmptySection type="request" />
-          ) : (
-            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
-              <RequestList
-                requests={requests}
-                isFetchingNextPage={isFetchingNextPage}
-                onConfirm={openConfirm}
-                onReject={openReject}
-                loadMoreRef={loadMoreRef}
-              />
-            </div>
-          )}
+          <div>
+            {requests.length === 0 ? (
+              <EmptySection type="request" />
+            ) : (
+              <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
+                <RequestList
+                  requests={requests}
+                  isFetchingNextPage={isFetchingNextPage}
+                  onConfirm={openConfirm}
+                  onReject={openReject}
+                  loadMoreRef={loadMoreRef}
+                />
+              </div>
+            )}
+
+            {isFetching && !isFetchingNextPage && (
+              <div className="pointer-events-none inset-0 flex items-center justify-center">
+                <span className="rounded-md bg-white/80 px-4 py-2 text-sm text-gray-500 shadow">
+                  불러오는 중...
+                </span>
+              </div>
+            )}
+          </div>
         </section>
       </section>
 

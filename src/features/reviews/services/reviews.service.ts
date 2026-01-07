@@ -89,7 +89,7 @@ export const getReviewWritten = async ({
         id: r.id,
         rating: r.rating,
         content: r.content,
-        createdAt: convertDateType3(new Date(r.createdAt)),
+        updatedAt: convertDateType3(new Date(r.updatedAt)),
         driverName: r.driver.name,
         description: r.driver.driverProfile.shortIntro,
         driverImageUrl: r.driver.driverProfile.imageUrl ?? undefined,

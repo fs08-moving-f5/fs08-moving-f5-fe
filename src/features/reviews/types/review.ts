@@ -28,7 +28,7 @@ export interface ReviewWrittenItem {
   movingDate: string;
   rating: number;
   content: string;
-  createdAt: string;
+  updatedAt: string;
 }
 
 export interface OffsetPaginationResponse<T> {
@@ -58,7 +58,7 @@ export interface getReviewWrittenItemRaw {
   id: string;
   rating: number;
   content: string;
-  createdAt: string;
+  updatedAt: string;
   driver: {
     name: string;
     driverProfile: {

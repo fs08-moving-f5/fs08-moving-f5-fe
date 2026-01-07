@@ -1,5 +1,5 @@
 import { apiClient } from '@/shared/api/index';
-import type { paths, components } from '@/shared/types/openapi';
+// import type { paths, components } from '@/shared/types/openapi';
 
 import {
   GetRequestsUIParams,
@@ -44,10 +44,12 @@ export const getRequests = async ({
   if (onlyServiceable) searchParams.set('serviceRegionFilter', 'true');
   if (cursor) searchParams.set('cursor', cursor);
   if (take) searchParams.set('take', String(take));
-
   if (movingTypes?.length) {
     movingTypes.forEach((type) => {
-      searchParams.append('movingTypes', convertMovingTypeToBackend(type) ?? '');
+      const backendType = convertMovingTypeToBackend(type);
+      if (backendType) {
+        searchParams.append('movingTypes', backendType);
+      }
     });
   }
 
