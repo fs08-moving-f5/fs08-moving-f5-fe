@@ -30,7 +30,7 @@ export default function PaginationInfiniteScroll<T extends object | undefined>({
   getApi: ({
     params: { cursor, limit, ...props },
   }: {
-    params: { cursor: string; limit: number };
+    params: { cursor?: string; limit?: number };
   }) => Promise<CursorResponse<T>>;
   ElementNode: ElementType;
   noElementMsg?: string;
@@ -71,7 +71,7 @@ export default function PaginationInfiniteScroll<T extends object | undefined>({
         <div>
           <ul className="flex flex-col" style={{ gap: `${flexGap}px` }}>
             {data?.pages.map((page, idx) =>
-              page.items.map((props, idx2) => (
+              page.items?.map((props, idx2) => (
                 <li key={idx * pageSize + idx2}>
                   <ElementNode {...props} />
                 </li>

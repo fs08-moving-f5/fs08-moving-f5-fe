@@ -1,9 +1,10 @@
 'use client';
 
 import {
-  DriverListType,
-  // getDriverList,
-  // getFavoriteDrivers,
+  getDriverList,
+  getFavoriteDrivers,
+  DriverInfoType,
+  FavoriteDriverInfoType,
 } from '@/features/drivers/services/drivers.service';
 import PagenationInfiniteScroll from '@/features/drivers/ui/Pagenation';
 import { FindDriver } from '@/shared/ui/card';
@@ -103,7 +104,7 @@ export default function DriverFinder() {
           </div>
           <div className="mb-[200px] flex h-full gap-[54px]">
             <div className="scrollbar-hide scroll-mask tab:min-w-0 tab:max-w-full h-full w-full max-w-[820px] min-w-[820px] flex-col overflow-scroll">
-              {/* <PagenationInfiniteScroll<DriverListType>
+              <PagenationInfiniteScroll<DriverInfoType>
                 flexGap={20}
                 pageSize={10}
                 getApi={getDriverList}
@@ -114,18 +115,18 @@ export default function DriverFinder() {
                 }}
                 ElementNode={DriverCard}
                 noElementMsg="조건에 해당하는 기사님이 없습니다."
-              /> */}
+              />
             </div>
             <div className="tab:hidden flex flex-col gap-[16px]">
               <h2 className="text-start text-[20px] leading-[32px] font-[600]">찜한 기사님</h2>
               <div className="scrollbar-hide scroll-mask mb-[200px] h-full w-full max-w-[820px] flex-col overflow-scroll">
-                {/* <PagenationInfiniteScroll<DriverListType>
+                <PagenationInfiniteScroll<FavoriteDriverInfoType>
                   flexGap={20}
                   pageSize={10}
                   getApi={getFavoriteDrivers}
                   ElementNode={DriverCard}
                   noElementMsg="찜한 기사님이 없습니다."
-                /> */}
+                />
               </div>
             </div>
           </div>
