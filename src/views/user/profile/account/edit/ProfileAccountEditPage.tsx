@@ -17,7 +17,8 @@ export default function ProfileAccountEditPage({ userType }: ProfileAccountEditP
   const { data: profile, isLoading, error } = useGetProfileQuery(userType);
 
   const isProfileNotFound =
-    error instanceof HTTPError && (error.response?.status === 404 || error.response?.status === 410);
+    error instanceof HTTPError &&
+    (error.response?.status === 404 || error.response?.status === 410);
 
   useEffect(() => {
     if (!isProfileNotFound) return;

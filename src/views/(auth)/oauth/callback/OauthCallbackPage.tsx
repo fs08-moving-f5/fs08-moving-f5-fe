@@ -45,7 +45,7 @@ export default function OauthCallbackPage() {
         useAuthStore.getState().setUser(me.data);
         if (me.data.hasProfile === false) {
           router.replace(`/${me.data.type.toLowerCase()}/profile/setup`);
-        }else{
+        } else {
           router.replace('/');
         }
       } catch {
