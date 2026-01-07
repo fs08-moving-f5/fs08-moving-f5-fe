@@ -3,15 +3,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAuthStore } from '@/shared/store/authStore';
+import { useNotificationStore } from '@/shared/store/notificationStore';
+
 import Menu from './Menu';
 import DropdownProfile from '../dropdown/DropdownProfile';
-import { useAuthStore } from '@/shared/store/authStore';
 import { useLogout } from '@/features/auth/hooks/useLogout';
 import { useGetNotificationListQuery } from './notificationQuery';
 import { NotificationDropdown } from '../dropdown';
 import { useReadNotificationMutation } from './notificationMutation';
-import { useQueryClient } from '@tanstack/react-query';
-import { useNotificationStore } from '@/shared/store/notificationStore';
 
 const menuByRole = {
   guest: [{ id: 1, label: '기사님 찾기', href: '/' }],

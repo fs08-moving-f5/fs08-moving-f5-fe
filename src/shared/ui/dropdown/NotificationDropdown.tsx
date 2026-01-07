@@ -1,10 +1,10 @@
-import { useNotificationStore } from '@/shared/store/notificationStore';
-import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import NotificationDetail from './NotificationDetail';
-import type { Notification } from '@/shared/ui/gnb/notification.service';
+import { useNotificationStore } from '@/shared/store/notificationStore';
 import { formatDateAgo } from '@/shared/lib/day';
+import type { Notification } from '@/shared/ui/gnb/notification.service';
+import NotificationDetail from './NotificationDetail';
 
 const ic_x = '/icons/x.svg';
 const ic_alarm_unread = '/icons/alarm_unread.svg';

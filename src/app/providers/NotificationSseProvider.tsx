@@ -1,10 +1,10 @@
 'use client';
 
+import { useRef } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/shared/store/authStore';
 import { useNotificationStore } from '@/shared/store/notificationStore';
 import { useNotificationSse } from '@/shared/hooks/useNotificationSse';
-import { useQueryClient } from '@tanstack/react-query';
-import { useRef } from 'react';
 
 export const NotificationSseProvider = () => {
   const user = useAuthStore((state) => state.user);
