@@ -65,7 +65,7 @@ const ReviewWrittenUI = () => {
               movingDate={item.movingDate}
               rating={item.rating}
               reviewContent={item.content}
-              reviewDate={item.createdAt}
+              reviewDate={item.updatedAt}
             />
           )}
         />

@@ -97,6 +97,8 @@ export interface GetRequestsUIParams {
   take?: number;
   movingType?: FrontMovingType;
   sort?: FrontFilter;
+  keyword?: string;
+  onlyServiceable?: boolean;
 }
 
 export interface GetRequestsParams {
@@ -107,10 +109,7 @@ export interface GetRequestsParams {
 }
 export interface EstimateRequestRaw {
   id: string;
-  user: {
-    id: string;
-    name: string;
-  };
+  name: string;
   movingType: BackendMovingType;
   movingDate: string;
   isDesignated: boolean;
