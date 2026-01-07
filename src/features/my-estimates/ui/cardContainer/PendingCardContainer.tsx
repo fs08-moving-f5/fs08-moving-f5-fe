@@ -60,6 +60,7 @@ const PendingCardContainer = ({
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: QUERY_KEY.PENDING_ESTIMATE });
+          queryClient.invalidateQueries({ queryKey: QUERY_KEY.RECEIVED_ESTIMATE });
           router.push('/user/my/estimates/received');
         },
       },
@@ -74,7 +75,7 @@ const PendingCardContainer = ({
             <EstimateWait
               key={estimate.id}
               driverName={estimate.driver?.name ?? ''}
-              shortIntro={estimate.driver?.driverProfile?.shortIntro ?? ''}
+              shortIntro={estimate.comment ?? ''}
               driverImageUrl={estimate.driver?.driverProfile?.imageUrl ?? ''}
               rating={estimate.driver?.driverProfile?.averageRating ?? 0}
               reviewCount={estimate.driver?.driverProfile?.confirmedEstimateCount ?? 0}

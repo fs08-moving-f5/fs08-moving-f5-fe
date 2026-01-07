@@ -14,12 +14,14 @@ interface FavoritesCardContainerProps {
   favoriteDrivers: FavoriteDriver[];
   selectedIds: Set<string | undefined>;
   onToggleCheck: (id: string | undefined) => void;
+  loadMoreRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const FavoritesCardContainer = ({
   favoriteDrivers,
   selectedIds,
   onToggleCheck,
+  loadMoreRef,
 }: FavoritesCardContainerProps) => {
   return (
     <div className="container-responsive tab:max-w-[600px] mobile:max-w-[327px] max-w-[1200px]">
@@ -47,6 +49,7 @@ const FavoritesCardContainer = ({
           />
         ))}
       </div>
+      <div ref={loadMoreRef} className="h-10" />
     </div>
   );
 };
