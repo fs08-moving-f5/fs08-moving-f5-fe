@@ -5,18 +5,18 @@ import { ElementType, useEffect, useRef } from 'react';
 
 /* 
 아직 useInfiniteQuery의 파라미터들을 이해하지 못했습니다. 
-nextCurosr와 hasNext를 queryFn의 리턴 값으로 설정을 해주었지만, 
+nextCursor와 hasNext를 queryFn의 리턴 값으로 설정을 해주었지만, 
 그게 커서와 남은 리스트가 있는지 여부를 전달하는 조건에 해당하는 건지 감이 안 잡힙니다.
 */
 
 //getApi의 리턴 타입 준수
-export interface CursorResponse<T> extends Response {
+export interface CursorResponse<T> {
   items: T[]; //아이템(요소)
   hasNext?: boolean; //남은 요소가 있는지
   nextCursor?: string; //다음 커서
 }
 
-export default function PagenationInfiniteScroll<T extends Object | undefined>({
+export default function PaginationInfiniteScroll<T extends object | undefined>({
   getApi, //페이지네이션 fetch 함수
   ElementNode, // 받아온 데이터를 전달할 컴포넌트 (ReactNode)
   pageSize = 15, //한번에 불러올 데이터 양

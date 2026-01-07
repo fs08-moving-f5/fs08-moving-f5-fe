@@ -3,6 +3,10 @@ export interface ApiResponse<T = unknown> {
   success?: boolean;
   message?: string;
   data: T;
+  pagination?: {
+    hasNext?: boolean;
+    nextCursor?: string | null;
+  };
 }
 
 // API 에러 타입
