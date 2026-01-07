@@ -35,8 +35,7 @@ export default function DropdownNotification({ size, list }: DropdownNotificatio
     };
   }, [setIsOpen]);
 
-  const unreadCount = useNotificationStore((state) => state.unreadCount);
-  const hasUnread = unreadCount > 0;
+  const hasUnread = useNotificationStore((state) => state.hasUnread);
 
   const listPosition = {
     sm: 'top-[52px] right-[263px] tab:right-[108px] mobile:right-[20px]',
