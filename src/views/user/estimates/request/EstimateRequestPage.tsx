@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
   createEstimateRequest,
@@ -18,6 +19,7 @@ import { showToast } from '@/shared/ui/sonner';
 const img_truck = '/img/img_truck_transparent.png';
 
 export default function EstimateRequestPage() {
+  const router = useRouter();
   const [movingType, setMovingType] = useState<MovingType | null>(null);
   const [date, setDate] = useState<Date | null>(null);
   const [from, setFrom] = useState<AddressParams>();
@@ -30,29 +32,29 @@ export default function EstimateRequestPage() {
   const [pageState, setPageState] = useState<PageState>('failedToLoad');
 
   useEffect(() => {
-    handleload();
-  }, []);
-
-  const handleload = async () => {
-    try {
-      const res = await getPendingEsitimateRequests();
-      //console.log(res.data);
-      if (res.data && Array.isArray(res.data)) {
-        if (res.data.length > 0) {
-          setPageState('pendingExist');
-          console.log('pendingExist');
+    const handleload = async () => {
+      try {
+        const res = await getPendingEsitimateRequests();
+        console.log(res.data);
+        if (res.data && Array.isArray(res.data)) {
+          if (res.data.length > 0) {
+            setPageState('pendingExist');
+            console.log('pendingExist');
+            return;
+          }
+          setPageState('default');
+          console.log('default');
           return;
         }
-        setPageState('default');
-        console.log('default');
-        return;
+        setPageState('failedToLoad');
+      } catch {
+        setPageState('failedToLoad');
+        showToast({ kind: 'error', message: '페이지 로드에 실패했습니다.' });
       }
-      setPageState('failedToLoad');
-    } catch (err) {
-      setPageState('failedToLoad');
-      showToast({ kind: 'error', message: '페이지 로드에 실패했습니다.' });
-    }
-  };
+    };
+
+    handleload();
+  }, []);
 
   const handleRequset = async () => {
     try {
@@ -64,6 +66,7 @@ export default function EstimateRequestPage() {
           to: to,
         });
         console.log(res.data);
+        router.push('/user/my/estimates/pending');
       } else {
         console.log('모든 견적 요청 양식을 채워주세요!');
       }

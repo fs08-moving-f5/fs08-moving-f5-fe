@@ -43,8 +43,6 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
         <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" />
-        <AppToaster />
-        <NotificationSseProvider />
       </body>
     </html>
   );

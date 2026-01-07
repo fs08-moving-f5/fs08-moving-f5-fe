@@ -2,12 +2,17 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAuthStore } from '@/shared/store/authStore';
+import { useNotificationStore } from '@/shared/store/notificationStore';
+
 import Menu from './Menu';
 import DropdownProfile from '../dropdown/DropdownProfile';
-import DropdownNotification from '../dropdown/DropdownNotification';
-import { useAuthStore } from '@/shared/store/authStore';
 import { useLogout } from '@/features/auth/hooks/useLogout';
+import { useGetNotificationListQuery } from './notificationQuery';
+import { NotificationDropdown } from '../dropdown';
+import { useReadNotificationMutation } from './notificationMutation';
 
 const menuByRole = {
   guest: [{ id: 1, label: '기사님 찾기', href: '/' }],
@@ -42,28 +47,38 @@ const menuByRole = {
   ],
 };
 
-interface Notification {
-  message: [string, string, string];
-  createdAt: Date;
-}
-
-const alarm: Notification[] = [
-  {
-    message: ['김코드 기사님의 ', '소형이사 견적', '이 도착했어요'],
-    createdAt: new Date(),
-  },
-  {
-    message: ['김코드 기사님의 견적이 ', '확정', '되었어요'],
-    createdAt: new Date(),
-  },
-];
-
 const GNB = () => {
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuthStore();
   const { handleLogout } = useLogout();
+  const setHasUnread = useNotificationStore((state) => state.setHasUnread);
+  const hasUnread = useNotificationStore((state) => state.hasUnread);
 
   const userRole = user ? (user.type === 'USER' ? 'user' : 'driver') : 'guest';
+
+  const { data: notifications } = useGetNotificationListQuery();
+
+  const { mutate: readNotification } = useReadNotificationMutation();
+
+  // notifications 목록이 업데이트될 때 hasUnread 상태 동기화
+  useEffect(() => {
+    if (notifications) {
+      const hasUnreadNotifications = notifications.some((notification) => !notification.isRead);
+      // SSE로 받은 값과 다를 수 있으므로 notifications 기반으로도 확인
+      if (hasUnreadNotifications !== hasUnread) {
+        setHasUnread(hasUnreadNotifications);
+      }
+    }
+  }, [notifications, setHasUnread, hasUnread]);
+
+  const handleReadNotification = (id: string) => {
+    readNotification(id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['notification'] });
+      },
+    });
+  };
 
   return (
     <div className="mobile:h-[54px] mobile:py-[10px] tab:py-[19px] tab:px-[72px] mobile:px-[24px] tab:h-[54px] relative z-20 flex h-[88px] w-full items-center justify-between bg-white px-[160px] py-[26px]">
@@ -100,7 +115,10 @@ const GNB = () => {
         )}
         {user && (
           <div className="flex items-center gap-8">
-            <DropdownNotification size="md" list={alarm} />
+            <NotificationDropdown
+              notifications={notifications}
+              handleReadNotification={handleReadNotification}
+            />
             <DropdownProfile
               size="md"
               userName={user.name}
@@ -118,7 +136,10 @@ const GNB = () => {
         )}
         {user && (
           <div className="flex items-center gap-6">
-            <DropdownNotification size="sm" list={alarm} />
+            <NotificationDropdown
+              notifications={notifications}
+              handleReadNotification={handleReadNotification}
+            />
             <DropdownProfile
               size="sm"
               userName={user.name}
