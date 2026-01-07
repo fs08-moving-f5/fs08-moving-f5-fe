@@ -1,5 +1,5 @@
-import DriverFinder from '@/views/drivers/DriverFinder';
+import DriversPageClient from '@/views/drivers';
 
 export default function Page() {
-  return <DriverFinder />;
+  return <DriversPageClient />;
 }

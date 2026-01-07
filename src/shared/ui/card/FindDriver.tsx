@@ -3,11 +3,11 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { MovingTypeChip } from '@/shared/ui/chip';
-import DriverInfo from './DriverInfo';
 import { CheckBox } from '../button';
+import Like from '../like';
 
 interface FindDriverProps {
-  mobileStyle?: boolean;
+  smallStyle?: boolean;
   checked?: boolean;
   onCheckChange?: (checked: boolean) => void;
   title: string;
@@ -19,7 +19,6 @@ interface FindDriverProps {
   experience: string;
   moveCount: string;
   likeCount: number;
-  // movingType?: 'small' | 'home' | 'office' | 'assign';
   movingTypeArray?: ('small' | 'home' | 'office' | 'assign')[];
   favoriteCard?: boolean;
   isLiked?: boolean;
@@ -27,7 +26,7 @@ interface FindDriverProps {
 }
 
 const FindDriver = ({
-  mobileStyle = false,
+  smallStyle = false,
   checked = false,
   onCheckChange = () => {},
   title,
@@ -39,7 +38,6 @@ const FindDriver = ({
   experience,
   moveCount,
   likeCount,
-  // movingType,
   movingTypeArray,
   favoriteCard = false,
   isLiked = false,
@@ -52,45 +50,43 @@ const FindDriver = ({
     setLiked(!liked);
   };
 
-  const articleClassName = mobileStyle
+  const articleClassName = smallStyle
     ? 'w-full max-w-[327px] rounded-xl bg-white p-4 shadow-md'
-    : 'tab:max-w-[327px] mobile:rounded-xl mobile:p-4 tab:rounded-xl tab:p-5 w-full max-w-[1200px] rounded-2xl bg-white p-6 shadow-md';
+    : 'mobile:rounded-xl mobile:p-5 w-full max-w-[1200px] rounded-2xl bg-white p-6 shadow-md';
 
-  const containerClassName = mobileStyle
-    ? 'relative flex flex-col items-start gap-3'
-    : 'mobile:gap-3 tab:gap-3 relative flex flex-col items-start gap-4';
+  const containerClassName = smallStyle
+    ? 'relative flex flex-col items-start gap-3 w-full'
+    : 'mobile:gap-3 relative flex flex-col items-start gap-4 w-full';
 
-  const rowClassName = mobileStyle
-    ? 'flex flex-1 flex-row gap-4'
-    : 'mobile:gap-4 tab:gap-4 flex flex-1 flex-row gap-6';
+  const rowClassName = smallStyle
+    ? 'flex flex-1 flex-row gap-4 w-full'
+    : 'mobile:gap-4 flex flex-1 flex-row gap-6 w-full';
 
-  const profileImageWrapperClassName = mobileStyle ? 'hidden' : 'tab:hidden';
+  const profileImageWrapperClassName = smallStyle ? 'hidden' : 'mobile:hidden block';
 
-  const titleClassName = mobileStyle
+  const titleClassName = smallStyle
     ? 'text-black-500 mb-1 text-lg font-semibold'
-    : 'text-black-500 mobile:mb-1 mobile:text-lg tab:mb-2 tab:text-lg mb-2 text-xl font-semibold';
+    : 'text-black-500 mobile:mb-2 mobile:text-lg mb-2 text-xl font-semibold';
 
-  const descriptionWrapperClassName = mobileStyle ? 'block' : 'mobile:hidden tab:block';
+  const descriptionWrapperClassName = smallStyle ? 'hidden' : 'mobile:block';
 
-  const descriptionClassName = mobileStyle
+  const descriptionClassName = smallStyle
     ? 'text-black-200 mb-5 text-md'
     : 'text-black-200 tab:mb-4 tab:text-md mb-5 text-lg';
 
-  const hrClassName = mobileStyle ? 'block' : 'mobile:hidden tab:block';
+  const hrClassName = smallStyle ? 'hidden' : 'mobile:block hidden';
 
   return (
     <article className={articleClassName}>
       <div className={containerClassName}>
-        {favoriteCard && (
-          <div className="flex w-full items-center justify-between">
-            <div className="flex items-center gap-1">
-              {movingTypeArray?.map((mv) => (
-                <MovingTypeChip key={mv} movingType={mv} />
-              ))}
-            </div>
-            <CheckBox shape="square" checked={checked} onChange={onCheckChange} />
+        <div className="flex w-full items-center justify-between">
+          <div className="flex items-center gap-1">
+            {movingTypeArray?.map((mv) => (
+              <MovingTypeChip key={mv} movingType={mv} />
+            ))}
           </div>
-        )}
+          {favoriteCard && <CheckBox shape="square" checked={checked} onChange={onCheckChange} />}
+        </div>
         <div className={rowClassName}>
           <div className={profileImageWrapperClassName}>
             <figure>
@@ -115,7 +111,7 @@ const FindDriver = ({
               <hr className="mb-4 border-gray-100" />
             </div>
 
-            <DriverInfo
+            <FindDriverInfo
               driverName={driverName}
               driverImageUrl={driverImageUrl}
               rating={rating}
@@ -126,7 +122,7 @@ const FindDriver = ({
               isLiked={liked}
               onLikeClick={handleLikeClick}
               showLikeButton={true}
-              mobileStyle={mobileStyle}
+              smallStyle={smallStyle}
             />
           </section>
         </div>
@@ -136,3 +132,170 @@ const FindDriver = ({
 };
 
 export default FindDriver;
+
+interface FindDriverInfoProps {
+  driverName: string;
+  driverImageUrl?: string;
+  rating: number;
+  reviewCount: number;
+  experience: string;
+  moveCount: string;
+  likeCount?: number;
+  isLiked?: boolean;
+  onLikeClick?: () => void;
+  showLikeButton?: boolean;
+  size?: 'small' | 'medium' | 'large';
+  type?: 'findDriver' | 'estimateWait';
+  smallStyle?: boolean;
+}
+
+const FindDriverInfo = ({
+  driverName,
+  driverImageUrl,
+  rating,
+  reviewCount,
+  experience,
+  moveCount,
+  likeCount = 0,
+  isLiked = false,
+  onLikeClick,
+  showLikeButton = true,
+  size = 'large',
+  type = 'findDriver',
+  smallStyle = false,
+}: FindDriverInfoProps) => {
+  const imageSize = size === 'large' ? 50 : size === 'medium' ? 40 : 32;
+  const nameIconSize = size === 'large' ? 24 : size === 'medium' ? 20 : 18;
+  const starIconSize = size === 'large' ? 20 : size === 'medium' ? 18 : 16;
+
+  const rootClassName = smallStyle
+    ? 'flex items-center gap-2'
+    : 'mobile:gap-3 flex items-center gap-4';
+
+  const profileWrapperClassName =
+    type === 'estimateWait' ? '' : smallStyle ? 'block' : 'mobile:block hidden';
+
+  const infoColClassName = smallStyle
+    ? 'flex flex-1 flex-col gap-0.5'
+    : 'mobile:gap-1 flex flex-1 flex-col gap-1';
+
+  const topRowClassName =
+    type === 'estimateWait' ? 'flex items-center justify-between gap-3' : 'flex items-center gap-3';
+
+  const nameRowClassName = smallStyle
+    ? 'flex items-center gap-1'
+    : 'mobile:gap-1 flex items-center gap-1.5';
+
+  const nameTextClassName = smallStyle
+    ? 'text-black-500 text-md font-semibold'
+    : 'text-black-500 mobile:text-md text-lg font-semibold';
+
+  const likeOuterClassName = smallStyle ? 'ml-0' : 'mobile:ml-auto';
+
+  const likeInnerClassName =
+    type === 'estimateWait' ? '' : smallStyle ? 'block' : 'mobile:block hidden';
+
+  const metaListClassName = smallStyle
+    ? 'flex items-center gap-1 text-xs'
+    : 'mobile:text-xs flex items-center gap-1.5';
+
+  const starDdClassName = smallStyle
+    ? 'text-black-500 flex items-center text-xs font-medium'
+    : 'text-black-500 mobile:text-xs flex items-center text-sm font-medium';
+
+  const reviewDdClassName = smallStyle
+    ? 'flex items-center text-xs font-medium text-[#ababab]'
+    : 'mobile:text-xs flex items-center text-sm font-medium text-[#ababab]';
+
+  const dividerClassName = smallStyle
+    ? 'mx-0.5 text-[#ababab]'
+    : 'mobile:mx-0.5 mx-1 text-[#ababab]';
+
+  const expGroupClassName = smallStyle
+    ? 'text-black-400 flex items-center gap-1 text-xs font-medium'
+    : 'text-black-400 mobile:gap-1 mobile:gap-1 mobile:text-xs flex items-center gap-1.5 text-sm font-medium';
+
+  const likeClassName = smallStyle ? 'hidden' : 'mobile:hidden absolute right-0 bottom-0';
+
+  return (
+    <section className={rootClassName}>
+      <div className={profileWrapperClassName}>
+        <figure>
+          <Image
+            src={driverImageUrl ?? '/img/profile.png'}
+            alt="Driver Img"
+            width={imageSize}
+            height={imageSize}
+            className="h-[50px] w-[50px] rounded-xl object-cover"
+          />
+        </figure>
+      </div>
+      <div className={infoColClassName}>
+        <div className={topRowClassName}>
+          <div className={nameRowClassName}>
+            <Image
+              src="/icons/name.svg"
+              alt="Driver Name Icon"
+              width={nameIconSize}
+              height={nameIconSize}
+            />
+            <strong className={nameTextClassName}>{driverName} 기사님</strong>
+          </div>
+          {showLikeButton && (
+            <div className={likeOuterClassName}>
+              <div className={likeInnerClassName}>
+                <Like
+                  likeCount={likeCount}
+                  isLiked={isLiked}
+                  onLikeClick={onLikeClick}
+                  size={size}
+                  showCount={!smallStyle}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+        <dl className={metaListClassName}>
+          <div className="flex items-center gap-1">
+            <Image
+              src="/icons/star.svg"
+              alt="Star Icon"
+              width={starIconSize}
+              height={starIconSize}
+              className="mobile:h-4 mobile:w-4"
+            />
+            <dd className={starDdClassName}>{rating.toFixed(1)}</dd>
+            <dd className={reviewDdClassName}>({reviewCount})</dd>
+          </div>
+          <span className={dividerClassName} aria-hidden="true">
+            |
+          </span>
+          <div className={expGroupClassName}>
+            <dt className="text-[#ababab]">경력</dt>
+            <dd>{experience}</dd>
+          </div>
+          <span className={dividerClassName} aria-hidden="true">
+            |
+          </span>
+          <div className={expGroupClassName}>
+            <dd>{moveCount}</dd>
+            <dt className="text-[#ababab]">확정</dt>
+          </div>
+        </dl>
+      </div>
+
+      {/* 좋아요 (모바일) */}
+      {showLikeButton && (
+        <div className={type === 'estimateWait' ? 'hidden' : likeClassName}>
+          <Like
+            likeCount={likeCount}
+            isLiked={isLiked}
+            onLikeClick={onLikeClick}
+            size={size}
+            showCount={true}
+          />
+        </div>
+      )}
+    </section>
+  );
+};

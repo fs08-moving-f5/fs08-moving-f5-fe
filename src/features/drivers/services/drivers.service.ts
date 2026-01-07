@@ -21,6 +21,16 @@ export async function getDriverList({ params }: { params: getDriverListParams })
   return result;
 }
 
+export async function getFavoriteDriverList({ params }: { params: getDriverListParams }) {
+  const res = await api.get<getDriverListResponse['data']>('drivers', { searchParams: params });
+  const result: CursorResponse<DriverInfoType> = {
+    items: res.data?.filter((e) => e.isFavorite) || [],
+    hasNext: res.pagination?.hasNext || false,
+    nextCursor: res.pagination?.nextCursor || '',
+  };
+  return result;
+}
+
 type getFavoriteDriversResponse =
   paths['/api/favorite']['get']['responses'][200]['content']['application/json'];
 type getFavoriteDriversParams = paths['/api/favorite']['get']['parameters']['query'];
@@ -35,5 +45,8 @@ export async function getFavoriteDrivers({ params }: { params: getFavoriteDriver
     hasNext: res.pagination?.hasNext || false,
     nextCursor: res.pagination?.nextCursor || '',
   };
+
+  console.log(result.items);
+
   return result;
 }

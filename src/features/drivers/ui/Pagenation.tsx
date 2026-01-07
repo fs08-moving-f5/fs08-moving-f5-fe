@@ -17,6 +17,7 @@ export interface CursorResponse<T> {
 }
 
 export default function PaginationInfiniteScroll<T extends object | undefined>({
+  pageName, //쿼리키 구분용 (페이지네이션 이름)
   getApi, //페이지네이션 fetch 함수
   ElementNode, // 받아온 데이터를 전달할 컴포넌트 (ReactNode)
   pageSize = 15, //한번에 불러올 데이터 양
@@ -24,6 +25,7 @@ export default function PaginationInfiniteScroll<T extends object | undefined>({
   filter,
   noElementMsg = '데이터 없음',
 }: {
+  pageName: string;
   flexGap?: number;
   pageSize?: number;
   filter?: Record<string, string | undefined>;
@@ -45,10 +47,13 @@ export default function PaginationInfiniteScroll<T extends object | undefined>({
     CursorResponse<T>, //queryFn 반환값
     Error //에러 타입
   >({
-    queryKey: ['posts', filter],
+    queryKey: [pageName, filter],
     queryFn: fetchItems, //페이지 파라미터만 전달받기 위해서 등록
     initialPageParam: null, // 첫 커서 값
-    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage.hasNext) return undefined; //이게 hasNext 트리거를 사용하는 방법
+      return lastPage.nextCursor ?? undefined;
+    },
   });
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -68,7 +73,7 @@ export default function PaginationInfiniteScroll<T extends object | undefined>({
   return (
     <div className="flex w-full flex-col items-center" style={{ gap: `${flexGap}px` }}>
       {data && data.pages[0].items.length > 0 ? (
-        <div>
+        <div className="flex flex-col" style={{ gap: `${flexGap}px` }}>
           <ul className="flex flex-col" style={{ gap: `${flexGap}px` }}>
             {data?.pages.map((page, idx) =>
               page.items?.map((props, idx2) => (
@@ -78,12 +83,8 @@ export default function PaginationInfiniteScroll<T extends object | undefined>({
               )),
             )}
           </ul>
-          <div className="flex justify-center rounded-[999px] bg-white shadow-md" ref={loadMoreRef}>
-            {isFetchingNextPage
-              ? '불러오는 중...'
-              : hasNextPage
-                ? '스크롤하면 더 불러옵니다'
-                : '끝'}
+          <div className="flex w-full justify-center" ref={loadMoreRef}>
+            {isFetchingNextPage && '불러오는 중...'}
           </div>
         </div>
       ) : (
