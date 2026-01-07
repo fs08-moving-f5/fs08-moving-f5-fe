@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import Image from 'next/image';
 import { ShareProps } from '@/shared/types/share';
 
@@ -98,7 +97,12 @@ const ShareButton = (props: ShareProps) => {
   };
 
   return (
-    <button className={`${baseStyles} ${getWrapperClasses()} ${bg}`} onClick={onShare}>
+    <button
+      type="button"
+      aria-label={`${props.platform} 공유`}
+      className={`${baseStyles} ${getWrapperClasses()} ${bg}`}
+      onClick={onShare}
+    >
       <Image src={src} alt={alt} width={getIconSize().width} height={getIconSize().height} />
     </button>
   );

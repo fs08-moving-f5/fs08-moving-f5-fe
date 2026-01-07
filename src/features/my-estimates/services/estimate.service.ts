@@ -10,6 +10,9 @@ type PendingEstimateDetailResponse =
 type ConfirmEstimateResponse =
   paths['/api/estimate/{estimateId}/confirm']['post']['responses'][200]['content']['application/json'];
 
+type ReceivedEstimateResponse =
+  paths['/api/estimate/received']['get']['responses'][200]['content']['application/json'];
+
 export const getPendingEstimates = async () => {
   const res = await api.get<PendingEstimateResponse['data']>('estimate/pending');
   return res.data;
@@ -25,5 +28,34 @@ export const confirmEstimate = async ({ estimateId }: { estimateId: string }) =>
   return res.data;
 };
 
+export const getReceivedEstimates = async ({
+  cursor,
+  limit = 15,
+  status,
+}: {
+  cursor?: string;
+  limit: number;
+  status?: 'PENDING' | 'CONFIRMED' | 'REJECTED' | 'CANCELLED';
+}) => {
+  const params = new URLSearchParams();
+
+  params.set('limit', String(limit));
+
+  if (cursor) {
+    params.set('cursor', cursor);
+  }
+
+  if (status) {
+    params.set('status', status);
+  }
+
+  const res = await api.get<ReceivedEstimateResponse>('estimate/received', {
+    searchParams: params,
+  });
+
+  return res.data;
+};
+
 export type PendingEstimate = components['schemas']['PendingEstimate'];
 export type PendingEstimateDetail = components['schemas']['EstimateDetail'];
+export type ReceivedEstimate = components['schemas']['ReceivedEstimate'];

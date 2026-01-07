@@ -6,9 +6,10 @@ import { EstimateWait } from '@/shared/ui/card';
 import {
   useDeleteFavoriteMutation,
   useFavoriteMutation,
-} from '@/features/my-estimates/hooks/mutations/useFavoriteMutation';
+} from '@/features/favorites/hooks/mutations/useFavoriteMutation';
 import QUERY_KEY from '@/features/my-estimates/constants/queryKey';
 import type { PendingEstimate } from '@/features/my-estimates/services/estimate.service';
+import { useConfirmEstimateMutation } from '@/features/my-estimates/hooks/mutations/useEstimateMutations';
 
 const movingTypeMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
@@ -31,6 +32,7 @@ const PendingCardContainer = ({
 
   const { mutate: addFavoriteDriver } = useFavoriteMutation();
   const { mutate: deleteFavoriteDriver } = useDeleteFavoriteMutation();
+  const { mutate: confirmEstimate } = useConfirmEstimateMutation();
 
   const handleLikeClick = ({ driverId, isLiked }: { driverId: string; isLiked: boolean }) => {
     if (isLiked) {
@@ -50,6 +52,18 @@ const PendingCardContainer = ({
 
   const handleDetailClick = (estimateId: string) => {
     router.push(`/user/my/estimates/pending/${estimateId}`);
+  };
+
+  const handleConfirmEstimate = (estimateId: string) => {
+    confirmEstimate(
+      { estimateId },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: QUERY_KEY.PENDING_ESTIMATE });
+          router.push('/user/my/estimates/received');
+        },
+      },
+    );
   };
 
   return (
@@ -78,6 +92,7 @@ const PendingCardContainer = ({
                 })
               }
               onDetailClick={() => handleDetailClick(estimate.id ?? '')}
+              onConfirmClick={() => handleConfirmEstimate(estimate.id ?? '')}
             />
           ))}
         </div>

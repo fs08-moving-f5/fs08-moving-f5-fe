@@ -23,28 +23,11 @@ const StarRating = ({ type = 'get', value, defaultValue = 0, onChange }: StarRat
 
   const displayedRating = isReadOnly ? (value ?? 0) : rating;
 
-  const starElements = stars.map((star) => {
-    const isActive = star <= displayedRating;
-    const src = isActive ? '/icons/star.svg' : '/icons/star-empty.svg';
-
-    return { star, src };
-  });
-
   // const starElements = stars.map((star) => {
-  //   let fill = 0;
+  //   const isActive = star <= displayedRating;
+  //   const src = isActive ? '/icons/star.svg' : '/icons/star-empty.svg';
 
-  //   if (isReadOnly) {
-  //     if (displayedRating >= star)
-  //       fill = 100; // 완전 채움
-  //     else if (displayedRating + 1 > star) {
-  //       const fractional = displayedRating - (star - 1); // 0~1
-  //       fill = Math.max(0, Math.min(100, fractional * 100));
-  //     }
-  //   } else {
-  //     fill = star <= displayedRating ? 100 : 0; // post에서는 기존 방식
-  //   }
-
-  //   return { star, fill };
+  //   return { star, src };
   // });
 
   const handleMouseDown = (star: number) => {
@@ -52,16 +35,14 @@ const StarRating = ({ type = 'get', value, defaultValue = 0, onChange }: StarRat
 
     setIsDragging(true);
 
-    const isActiveStar = displayedRating >= star;
-
-    if (isActiveStar) {
+    if (displayedRating >= star) {
       // 채워진 별을 다시 클릭 → 0으로 리셋
       setRating(0);
       onChange?.(0);
       return;
     }
 
-    setRating((prev) => (prev === star ? 0 : star));
+    setRating(star);
     onChange?.(star);
   };
 
@@ -79,16 +60,23 @@ const StarRating = ({ type = 'get', value, defaultValue = 0, onChange }: StarRat
       onMouseUp={stopDrag}
       onMouseLeave={stopDrag}
     >
-      {starElements.map(({ star, src }) => (
-        <button
-          key={star}
-          className="p-1"
-          onMouseDown={() => handleMouseDown(star)}
-          onMouseMove={() => handleMouseMove(star)}
-        >
-          <Image src={src} alt="star icon" width={size} height={size} />
-        </button>
-      ))}
+      {stars.map((star) => {
+        const isActive = star <= displayedRating;
+        const src = isActive ? '/icons/star.svg' : '/icons/star-empty.svg';
+        return (
+          <button
+            key={star}
+            type="button"
+            className="p-1"
+            aria-label={`${star}점`}
+            aria-pressed={isActive}
+            onMouseDown={() => handleMouseDown(star)}
+            onMouseMove={() => handleMouseMove(star)}
+          >
+            <Image src={src} alt="" width={size} height={size} />
+          </button>
+        );
+      })}
     </div>
   );
 };

@@ -2,10 +2,11 @@
 
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import { Clip, ShareButton } from '@/shared/ui/button';
 import { MovingTypeChip } from '@/shared/ui/chip';
 import { getConfirmDetailEstimates } from '@/features/driver-estimate/services/driverEstimate.service';
 import { FrontMovingType } from '@/features/driver-estimate/types/driverEstimate';
+import Spinner from '@/shared/ui/spinner';
+import ShareButtonsSection from '@/features/driver-estimate/ui/detailUi/ShareButtonsSection';
 
 const ConfirmDetail = ({ id }: { id: string }) => {
   const { data, isLoading } = useQuery({
@@ -33,17 +34,30 @@ const ConfirmDetail = ({ id }: { id: string }) => {
     office: '사무실 이사',
   };
 
+  //로딩중 바
+  if (isLoading) {
+    return (
+      <main className="flex max-w-[1920px] flex-col justify-center">
+        <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
+          <Spinner isLoading={isLoading} />
+        </section>
+      </main>
+    );
+  }
+
   return (
-    <main className="flex max-w-[1920px] flex-col justify-center">
+    <main className="flex min-h-screen flex-col justify-center">
       <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
         <div className="itmes-center self-stretch py-[32px]">
-          <h1 className="text-2xl font-semibold text-[var(--color-black-500)]">견적 상세</h1>
+          <h1 className="mx-[30px] text-2xl font-semibold text-[var(--color-black-500)] md:mx-[72px] lg:mx-auto">
+            견적 상세
+          </h1>
         </div>
       </section>
 
-      <div className="h-45 w-full bg-[var(--color-primary-orange-400)]"></div>
+      <div className="h-45 w-full bg-[url(/img/myPendingEstimate/bg-img.png)] bg-cover bg-center bg-no-repeat"></div>
 
-      <section className="mx-auto mt-[43px] mb-[190px] flex w-full max-w-[1200px] flex-col gap-[139px] sm:mx-5 sm:mt-[35px] sm:mb-30 md:mx-18 md:mt-[46px] md:mb-[138px] lg:flex-row lg:gap-[139px]">
+      <section className="mx-5 mt-[35px] mb-30 flex w-full max-w-[1200px] flex-col gap-[139px] md:mx-18 md:mt-[46px] md:mb-[138px] lg:mx-auto lg:mt-[43px] lg:mb-[190px] lg:flex-row lg:gap-[139px]">
         <article className="w-[740px]">
           {/* 칩 & 고객 이름 */}
           <div className="flex flex-col gap-5">
@@ -126,29 +140,7 @@ const ConfirmDetail = ({ id }: { id: string }) => {
           </div>
         </article>
 
-        {/* 공유 버튼 */}
-        <section className="flex w-full flex-col gap-[22px] lg:w-auto">
-          <h1 className="hidden text-xl font-semibold text-[var(--color-black-500)] lg:block">
-            견적서 공유하기
-          </h1>
-          {/* md, sm */}
-          <h1 className="md:text-2lg block font-semibold text-[var(--color-black-500)] sm:text-lg lg:hidden">
-            나만 알기엔 아쉬운 기사님인가요?
-          </h1>
-
-          <div className="flex gap-4">
-            <Clip size="lg" />
-            <ShareButton
-              size="lg"
-              platform="kakao"
-              kakaoTitle="이 페이지의 제목"
-              kakaoDescription="이 페이지 설명"
-              kakaoImageUrl="https://example.com/thumb.png"
-              kakaoLink="https://example.com/page"
-            />
-            <ShareButton size="lg" platform="facebook" />
-          </div>
-        </section>
+        <ShareButtonsSection heading="견적서 공유하기" />
       </section>
     </main>
   );

@@ -197,10 +197,10 @@ function DriverCard(params: D_Info) {
       reviewCount={params.reviewCount || 0}
       experience={'0년'} //경력 api에서 받기
       moveCount={params.confirmedEstimateCount?.toString() || '0'}
-      movingType={
+      movingTypeArray={
         (params.driverProfile?.services &&
           params.driverProfile?.services.length > 0 &&
-          convertMovingType(params.driverProfile?.services[0])) ||
+          params.driverProfile?.services.map((service) => convertMovingType(service))) ||
         undefined
       } //서비스 여러개 표시할 수 있게
       likeCount={params.favoriteDriverCount || 0}

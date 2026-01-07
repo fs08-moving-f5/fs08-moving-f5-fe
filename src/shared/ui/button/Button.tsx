@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ButtonHTMLAttributes, ReactNode } from 'react';
+import { ButtonHTMLAttributes, ReactNode } from 'react';
 import Image from 'next/image';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -108,6 +108,8 @@ const Button = ({
 
   return (
     <button
+      type="button"
+      aria-label="버튼"
       disabled={disabled}
       className={` ${baseStyles} ${getSizeClasses()} ${variantClasses} ${disabled ? 'opacity-60' : 'hover:opacity-90'} `}
       onClick={onClick}

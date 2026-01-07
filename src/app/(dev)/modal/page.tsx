@@ -61,10 +61,11 @@ export default function Page() {
         type={requestList[requestType]}
         user={{ name: '김가나', role: roleList[userType] }}
         mvInfo={{
-          movingTypes: ['small', 'assign'],
+          movingType: 'small',
+          pickedDriver: true,
           departure: '서울시 중구',
           destination: '경기도 수원시',
-          date: new Date(),
+          date: '2024년 07월 01일 (월)',
         }}
         comment={comment}
         setComment={setComment}

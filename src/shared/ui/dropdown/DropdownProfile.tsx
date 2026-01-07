@@ -36,11 +36,11 @@ export default function DropdownProfile({
   const listObject = {
     guest: [],
     user: [
-      ['프로필 수정', '/'],
-      ['찜한 기사님', '/'],
-      ['이사 리뷰', '/'],
+      ['프로필 수정', '/user/profile/edit'],
+      ['찜한 기사님', '/user/my/favorites'],
+      ['이사 리뷰', '/user/my/reviews/pending'],
     ],
-    driver: [['마이페이지', '/']],
+    driver: [['마이페이지', '/driver/profile']],
   };
 
   const listPosition = {
@@ -111,13 +111,18 @@ export default function DropdownProfile({
                     key={idx}
                     className={`flex items-center justify-start font-[500] hover:text-[var(--color-primary-orange-400)] ${elementText[size]} ${elementSize[size]}`}
                   >
-                    <Link href={e[1]}>{e[0]}</Link>
+                    <Link href={e[1]} onClick={() => setIsOpen(false)}>
+                      {e[0]}
+                    </Link>
                   </li>
                 ))}
             </ul>
           </div>
           <button
-            onClick={logout}
+            onClick={() => {
+              setIsOpen(false);
+              logout?.();
+            }}
             className={`flex cursor-pointer items-center justify-center border-t border-[var(--color-line-100)] ${logoutText[size]}`}
           >
             <span className="text-[#808080] hover:brightness-50">로그아웃</span>

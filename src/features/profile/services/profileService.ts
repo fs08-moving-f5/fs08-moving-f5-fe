@@ -1,0 +1,112 @@
+import { api } from '@/shared/api/client';
+import type {
+  UserProfile,
+  DriverProfile,
+  CreateUserProfileRequest,
+  UpdateUserProfileRequest,
+  CreateDriverProfileRequest,
+  UpdateDriverProfileRequest,
+  MyPageData,
+  ReviewListData,
+  DriverPublicProfileData,
+} from '../types/types';
+
+// ========== 유저 프로필 API ==========
+
+/**
+ * 유저 프로필 조회
+ */
+export const getUserProfile = async (): Promise<UserProfile> => {
+  const response = await api.get<UserProfile>('profile/user');
+  return response.data;
+};
+
+/**
+ * 유저 프로필 생성
+ */
+export const createUserProfile = async (data: CreateUserProfileRequest): Promise<UserProfile> => {
+  const response = await api.post<UserProfile>('profile/user', data);
+  return response.data;
+};
+
+/**
+ * 유저 프로필 수정
+ */
+export const updateUserProfile = async (data: UpdateUserProfileRequest): Promise<UserProfile> => {
+  const response = await api.patch<UserProfile>('profile/user', data);
+  return response.data;
+};
+
+// ========== 기사 프로필 API ==========
+
+/**
+ * 기사 프로필 조회
+ */
+export const getDriverProfile = async (): Promise<DriverProfile> => {
+  const response = await api.get<DriverProfile>('profile/driver');
+  return response.data;
+};
+
+/**
+ * 기사 공개 프로필 조회 (기사 찾기 상세용)
+ */
+export const getDriverPublicProfile = async (
+  driverId: string,
+): Promise<DriverPublicProfileData> => {
+  const response = await api.get<DriverPublicProfileData>(`profile/driver/${driverId}`);
+  return response.data;
+};
+
+/**
+ * 기사 프로필 생성
+ */
+export const createDriverProfile = async (
+  data: CreateDriverProfileRequest,
+): Promise<DriverProfile> => {
+  const response = await api.post<DriverProfile>('profile/driver', data);
+  return response.data;
+};
+
+/**
+ * 기사 프로필 수정
+ */
+export const updateDriverProfile = async (
+  data: UpdateDriverProfileRequest,
+): Promise<DriverProfile> => {
+  const response = await api.patch<DriverProfile>('profile/driver', data);
+  return response.data;
+};
+
+// ========== 공통 프로필 API ==========
+
+/**
+ * 내 프로필 조회 (유저 타입 자동 판별)
+ */
+export const getMyProfile = async (): Promise<UserProfile | DriverProfile> => {
+  const response = await api.get<UserProfile | DriverProfile>('profile/me');
+  return response.data;
+};
+
+// ========== 마이페이지 API ==========
+
+/**
+ * 드라이버 마이페이지 전체 데이터 조회
+ */
+export const getMyPageData = async (): Promise<MyPageData> => {
+  const response = await api.get<MyPageData>('my-page');
+  return response.data;
+};
+
+/**
+ * 드라이버 마이페이지 리뷰 목록 조회 (페이지네이션)
+ */
+export const getMyPageReviews = async ({
+  page = 1,
+  limit = 10,
+}: {
+  page?: number;
+  limit?: number;
+}): Promise<ReviewListData> => {
+  const response = await api.get<ReviewListData>(`my-page/reviews?page=${page}&limit=${limit}`);
+  return response.data;
+};
