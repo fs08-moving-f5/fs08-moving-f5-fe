@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useNotificationStore } from '@/shared/store/notificationStore';
 import { formatDateAgo } from '@/shared/lib/day';
@@ -25,6 +26,7 @@ const NotificationDropdown = ({
   notifications?: Notification[];
   handleReadNotification: (id: string) => void;
 }) => {
+  const queryClient = useQueryClient();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -43,10 +45,18 @@ const NotificationDropdown = ({
 
   const hasUnread = useNotificationStore((state) => state.hasUnread);
 
+  const handleOpenDropdown = () => {
+    setIsOpen(!isOpen);
+
+    if (hasUnread && !isOpen) {
+      queryClient.invalidateQueries({ queryKey: ['notification'] });
+    }
+  };
+
   return (
     <div ref={dropdownRef} className="flex h-full items-center">
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleOpenDropdown}
         className="mobile:h-6 mobile:w-6 tab:h-6 tab:w-6 flex h-9 w-9 cursor-pointer items-center justify-center hover:brightness-80"
       >
         <Image
