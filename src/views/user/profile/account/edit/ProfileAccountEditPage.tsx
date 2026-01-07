@@ -1,6 +1,8 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { HTTPError } from 'ky';
 import { Button } from '@/shared/ui/button';
 import BasicFieldsSection from '@/features/profile/ui/BasicFieldsSection';
 import { useGetProfileQuery, useProfileForm } from '@/features/profile/hooks';
@@ -13,6 +15,16 @@ interface ProfileAccountEditPageProps {
 export default function ProfileAccountEditPage({ userType }: ProfileAccountEditPageProps) {
   const router = useRouter();
   const { data: profile, isLoading, error } = useGetProfileQuery(userType);
+
+  const isProfileNotFound =
+    error instanceof HTTPError && (error.response?.status === 404 || error.response?.status === 410);
+
+  useEffect(() => {
+    if (!isProfileNotFound) return;
+
+    const setupPath = userType === 'USER' ? '/user/profile/setup' : '/driver/profile/setup';
+    router.replace(setupPath);
+  }, [isProfileNotFound, router, userType]);
 
   const {
     name,
@@ -40,6 +52,19 @@ export default function ProfileAccountEditPage({ userType }: ProfileAccountEditP
         <div className="mx-auto max-w-[744px]">
           <div className="flex items-center justify-center py-20">
             <div className="text-lg text-gray-500">프로필 정보를 불러오는 중...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 프로필이 없으면(404) 프로필 등록 페이지로 이동
+  if (isProfileNotFound) {
+    return (
+      <div className="tab:px-4 mobile:px-4 mx-auto max-w-[1200px] px-6 py-10">
+        <div className="mx-auto max-w-[744px]">
+          <div className="flex items-center justify-center py-20">
+            <div className="text-lg text-gray-500">프로필 등록 페이지로 이동 중...</div>
           </div>
         </div>
       </div>

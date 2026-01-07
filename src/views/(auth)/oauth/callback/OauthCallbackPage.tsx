@@ -43,14 +43,17 @@ export default function OauthCallbackPage() {
         }
 
         useAuthStore.getState().setUser(me.data);
+        if (me.data.hasProfile === false) {
+          router.replace(`/${me.data.type.toLowerCase()}/profile/setup`);
+        }else{
+          router.replace('/');
+        }
       } catch {
         storage.remove('accessToken');
         useAuthStore.getState().clearAuth();
+        router.replace('/');
       }
-
       sessionStorage.removeItem('oauthExpectedUsertype');
-
-      router.replace('/');
     };
 
     run();
