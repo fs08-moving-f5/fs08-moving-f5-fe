@@ -29,9 +29,20 @@ export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
   }
 };
 
-export const socialLogin = async (provider: 'google' | 'kakao' | 'naver'): Promise<void> => {
-  // TODO: SNS 로그인 구현
-  console.log(`${provider} 로그인 요청`);
-  // OAuth 리다이렉트 처리
-  // window.location.href = `/api/auth/${provider}`;
+export const socialLogin = async (
+  provider: 'google' | 'kakao' | 'naver',
+  usertype: 'USER' | 'DRIVER',
+): Promise<void> => {
+  const apiBase = process.env.NEXT_PUBLIC_API_URL;
+  if (!apiBase) {
+    throw new Error('NEXT_PUBLIC_API_URL이 설정되어 있지 않습니다.');
+  }
+
+  // 콜백에서 실제 로그인된 타입과 비교하기 위해 저장
+  sessionStorage.setItem('oauthExpectedUsertype', usertype);
+
+  const url = new URL(`auth/oauth/${provider}`, apiBase);
+  url.searchParams.set('type', usertype);
+
+  window.location.href = url.toString();
 };
