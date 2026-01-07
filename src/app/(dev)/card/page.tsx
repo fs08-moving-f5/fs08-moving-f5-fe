@@ -79,7 +79,7 @@ export default function CardTestPage() {
           likeCount={12}
           movingTypeArray={['small', 'home', 'office', 'assign']}
           isLiked={false}
-          mobileStyle={true}
+          smallStyle={true}
         />
 
         <EstimateWait

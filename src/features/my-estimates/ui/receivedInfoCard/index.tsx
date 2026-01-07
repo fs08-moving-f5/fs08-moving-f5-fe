@@ -156,8 +156,9 @@ const ReceivedInfoCard = ({
         <div className="flex flex-col gap-5">
           <DropdownFilter
             title={selectStatus === 'ALL' ? '전체' : '확정견적'}
-            list={['전체', '확정견적']}
-            onClick={handleSelectStatus}
+            listObject={{ 전체: '전체', 확정견적: '확정견적' }}
+            value={selectStatus}
+            setValue={(v) => setSelectStatus(v as 'ALL' | 'CONFIRMED')}
           />
           <div className="flex flex-col gap-2">
             {filteredEstimates?.map((estimate) => (

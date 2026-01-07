@@ -1,7 +1,5 @@
 import { api } from '@/shared/api/client';
-import type { paths, components } from '@/shared/types/openapi';
-
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+import type { paths } from '@/shared/types/openapi';
 
 type getPendingEsitimateRequestsResponse =
   paths['/api/estimate-request/user/pending']['get']['responses']['200']['content']['application/json'];
