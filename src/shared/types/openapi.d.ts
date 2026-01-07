@@ -295,6 +295,51 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/drivers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 드라이버(기사) 목록 조회
+         * @description 등록된 드라이버(기사) 목록을 조회합니다.
+         *     지역, 서비스 유형으로 필터링하고, 기사님 이름으로 검색할 수 있으며, 리뷰 수, 평균 평점, 경력, 확정된 견적 수로 정렬할 수 있습니다.
+         *     커서 기반 페이지네이션을 지원하며, 각 드라이버 정보에는 프로필, 경력, 찜하기 수, 확정된 견적 수, 리뷰 평균 평점, 리뷰 총 개수가 포함됩니다.
+         *
+         *     **쿼리 파라미터:**
+         *     - `region` (선택): 지역 필터. 소문자로 입력 (예: seoul, gyeonggi)
+         *     - `service` (선택): 서비스 필터 (SMALL_MOVING, HOME_MOVING, OFFICE_MOVING)
+         *     - `sort` (선택): 정렬 기준 (review, rating, career, confirmed-estimate)
+         *     - `search` (선택): 기사님 이름 검색. 이름에 포함된 문자열로 검색합니다.
+         *     - `cursor` (선택): 다음 페이지 조회를 위한 커서 값. 이전 응답의 `pagination.nextCursor` 값을 사용합니다.
+         *     - `limit` (선택): 조회할 항목 수. 기본값은 15입니다.
+         *
+         *     **사용 예시:**
+         *     - 전체 드라이버 조회: `GET /api/drivers?limit=15`
+         *     - 서울 지역 필터: `GET /api/drivers?region=seoul&limit=15`
+         *     - 가정 이사 서비스 필터: `GET /api/drivers?service=HOME_MOVING&limit=15`
+         *     - 평균 평점 정렬: `GET /api/drivers?sort=rating&limit=15`
+         *     - 이름 검색: `GET /api/drivers?search=홍길동&limit=15`
+         *     - 복합 필터 및 정렬: `GET /api/drivers?region=seoul&service=HOME_MOVING&sort=rating&limit=15`
+         *     - 검색과 필터 조합: `GET /api/drivers?region=seoul&search=홍길동&limit=15`
+         *     - 다음 페이지: `GET /api/drivers?cursor=123e4567-e89b-12d3-a456-426614174000&limit=15`
+         *
+         *     **참고사항:**
+         *     - 로그인하지 않은 사용자도 조회 가능하지만, `isFavorite` 필드는 항상 `false`로 반환됩니다.
+         *     - 로그인한 사용자의 경우, 자신이 찜한 드라이버는 `isFavorite: true`로 표시됩니다.
+         *     - 필터 조건에 맞는 드라이버가 없으면 빈 배열이 반환됩니다.
+         */
+        get: operations["getDrivers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/estimate/pending": {
         parameters: {
             query?: never;
@@ -528,13 +573,14 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    /**
-                     * @example {
-                     *       "price": 300000,
-                     *       "comment": "합리적인 가격으로 진행 가능합니다."
-                     *     }
-                     */
-                    "application/json": unknown;
+                    "application/json": {
+                        /** @example req_1 */
+                        estimateRequestId: string;
+                        /** @example 300000 */
+                        price: number;
+                        /** @example 합리적인 가격으로 진행 가능합니다. */
+                        comment: string;
+                    };
                 };
             };
             responses: {
@@ -671,12 +717,12 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    /**
-                     * @example {
-                     *       "rejectReason": "일정이 맞지 않습니다."
-                     *     }
-                     */
-                    "application/json": unknown;
+                    "application/json": {
+                        /** @example req_1 */
+                        estimateRequestId: string;
+                        /** @example 일정이 맞지 않습니다. */
+                        rejectReason: string;
+                    };
                 };
             };
             responses: {
@@ -1172,8 +1218,11 @@ export interface paths {
                                 id?: string;
                                 /** @example 홍길동 */
                                 name?: string;
-                                /** @example HOME */
-                                movingType?: string;
+                                /**
+                                 * @example HOME_MOVING
+                                 * @enum {string}
+                                 */
+                                movingType?: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
                                 /**
                                  * Format: date-time
                                  * @example 2024-12-01T00:00:00.000Z
@@ -1225,7 +1274,7 @@ export interface paths {
         put?: never;
         /**
          * 견적 요청 (유저)
-         * @description 유저가 새로운 견적 요청을 생성합니다. - form, to는 카카오 우편번호 API의 Address 타입 마이너 버전입니다.
+         * @description 유저가 새로운 견적 요청을 생성합니다. - from, to는 카카오 우편번호 API의 Address 타입 마이너 버전입니다.
          */
         post: {
             parameters: {
@@ -1237,7 +1286,11 @@ export interface paths {
             requestBody: {
                 content: {
                     "application/json": {
-                        movingType: string;
+                        /**
+                         * @example HOME_MOVING
+                         * @enum {string}
+                         */
+                        movingType: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
                         /** Format: date-time */
                         movingDate: string;
                         from: {
@@ -1290,8 +1343,11 @@ export interface paths {
                                 id?: string;
                                 /** @example 홍길동 */
                                 name?: string;
-                                /** @example HOME */
-                                movingType?: string;
+                                /**
+                                 * @example HOME_MOVING
+                                 * @enum {string}
+                                 */
+                                movingType?: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
                                 /**
                                  * Format: date-time
                                  * @example 2024-12-01T00:00:00.000Z
@@ -1324,6 +1380,84 @@ export interface paths {
                 };
                 /** @description 유저 인증 실패 */
                 401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 이미 진행 중인 견적 요청 존재 */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/estimate-request/user/request/designated": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 지정 견적 요청 (유저)
+         * @description 유저가 특정 기사에게 지정 견적 요청을 생성합니다.
+         *     - designatedDriverId: 지정할 기사(User) id
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        movingType: string;
+                        /** Format: date-time */
+                        movingDate: string;
+                        /** @example uuid-driver-user-id */
+                        designatedDriverId: string;
+                        from: Record<string, never>;
+                        to: Record<string, never>;
+                    };
+                };
+            };
+            responses: {
+                /** @description 지정 견적 요청 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 필수 데이터 누락 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 유저 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 지정 기사 정보 없음 */
+                404: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -1415,6 +1549,173 @@ export interface paths {
          *     존재하지 않는 즐겨찾기인 경우에도 성공으로 처리됩니다 (removed: false 반환).
          */
         delete: operations["deleteFavoriteDriver"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/my-page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 드라이버 마이페이지 전체 데이터 조회
+         * @description 로그인한 드라이버의 프로필, 활동 현황, 리뷰 분포를 조회합니다
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 마이페이지 데이터 조회 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: components["schemas"]["MyPageData"];
+                        };
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example false */
+                            success?: boolean;
+                            /** @example 인증이 필요합니다 */
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description 권한 없음 (드라이버가 아닌 경우) */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example false */
+                            success?: boolean;
+                            /** @example 드라이버만 접근할 수 있습니다 */
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description 드라이버를 찾을 수 없음 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example false */
+                            success?: boolean;
+                            /** @example 드라이버를 찾을 수 없습니다 */
+                            message?: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/my-page/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 드라이버 마이페이지 리뷰 목록 조회
+         * @description 로그인한 드라이버의 리뷰 목록을 페이지네이션하여 조회합니다
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description 페이지 번호
+                     * @example 1
+                     */
+                    page?: number;
+                    /**
+                     * @description 페이지당 아이템 수
+                     * @example 10
+                     */
+                    limit?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 리뷰 목록 조회 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: components["schemas"]["MyPageReviewsResponse"];
+                        };
+                    };
+                };
+                /** @description 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example false */
+                            success?: boolean;
+                            /** @example 인증이 필요합니다 */
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description 권한 없음 (드라이버가 아닌 경우) */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example false */
+                            success?: boolean;
+                            /** @example 드라이버만 접근할 수 있습니다 */
+                            message?: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -2421,6 +2722,156 @@ export interface components {
              */
             stack?: string | null;
         };
+        DriverProfileInfo: {
+            /**
+             * Format: uuid
+             * @description 드라이버 프로필 ID
+             * @example 123e4567-e89b-12d3-a456-426614174003
+             */
+            id?: string;
+            /**
+             * Format: uri
+             * @description 프로필 이미지 URL
+             * @example https://example.com/image.jpg
+             */
+            imageUrl?: string | null;
+            /**
+             * @description 짧은 소개
+             * @example 안전하고 신속한 이사를 약속드립니다
+             */
+            shortIntro?: string | null;
+            /**
+             * @description 상세 설명
+             * @example 10년 이상의 경력을 가진 전문 이사 기사입니다.
+             */
+            description?: string | null;
+            /**
+             * @description 가능 지역 목록
+             * @example [
+             *       "서울",
+             *       "경기",
+             *       "인천"
+             *     ]
+             */
+            regions?: ("서울" | "경기" | "인천" | "강원" | "충북" | "충남" | "대전" | "세종" | "전북" | "전남" | "광주" | "경북" | "경남" | "대구" | "부산" | "울산" | "제주")[];
+            /**
+             * @description 제공 서비스 목록
+             * @example [
+             *       "HOME_MOVING",
+             *       "OFFICE_MOVING"
+             *     ]
+             */
+            services?: ("SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING")[];
+            /**
+             * @description 경력 (년)
+             * @example 5
+             */
+            career?: number | null;
+            /**
+             * @description 확정된 견적 수 (작업 진행 건수)
+             * @example 150
+             */
+            confirmedEstimateCount?: number;
+            /**
+             * @description 찜하기 수
+             * @example 45
+             */
+            favoriteDriverCount?: number;
+            /**
+             * @description 리뷰 평점 평균 (소수점 첫째 자리까지)
+             * @example 4.5
+             */
+            averageRating?: number | null;
+            /**
+             * @description 리뷰 총 개수
+             * @example 120
+             */
+            reviewCount?: number;
+            /**
+             * Format: date-time
+             * @description 생성 일시
+             * @example 2024-01-10T09:00:00Z
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 수정 일시
+             * @example 2024-01-15T10:00:00Z
+             */
+            updatedAt?: string;
+        };
+        DriverListItem: {
+            /**
+             * Format: uuid
+             * @description 드라이버(기사) ID
+             * @example 123e4567-e89b-12d3-a456-426614174001
+             */
+            id?: string;
+            /**
+             * @description 드라이버 이름
+             * @example 홍길동
+             */
+            name?: string;
+            /** @description 드라이버 프로필 정보 (프로필이 없는 경우 null) */
+            driverProfile?: components["schemas"]["DriverProfileInfo"] | null;
+            /**
+             * @description 드라이버 경력 (년)
+             * @example 10
+             */
+            career?: number | null;
+            /**
+             * @description 해당 드라이버를 찜한 사용자 수
+             * @example 45
+             */
+            favoriteDriverCount?: number;
+            /**
+             * @description 확정된 견적 수 (작업 진행 건수)
+             * @example 150
+             */
+            confirmedEstimateCount?: number;
+            /**
+             * Format: float
+             * @description 리뷰 평균 평점 (소수점 첫째 자리까지, 리뷰가 없으면 null)
+             * @example 4.5
+             */
+            averageRating?: number | null;
+            /**
+             * @description 리뷰 총 개수
+             * @example 120
+             */
+            reviewCount?: number;
+            /**
+             * @description 현재 사용자가 해당 드라이버를 찜했는지 여부 (로그인하지 않은 경우 false)
+             * @example true
+             */
+            isFavorite?: boolean;
+        };
+        PaginationInfo: {
+            /**
+             * @description 다음 페이지 존재 여부
+             * @example true
+             */
+            hasNext?: boolean;
+            /**
+             * Format: uuid
+             * @description 다음 페이지 커서 (다음 페이지가 없으면 null)
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            nextCursor?: string | null;
+        };
+        ApiResponse: {
+            /**
+             * @description 요청 성공 여부
+             * @example true
+             */
+            success?: boolean;
+            /** @description 응답 데이터 */
+            data?: unknown;
+            /** @description 페이지네이션 정보 */
+            pagination?: unknown;
+            /** @description 응답 메시지 */
+            message?: string | null;
+        };
         Estimate: {
             /**
              * Format: uuid
@@ -2528,10 +2979,10 @@ export interface components {
              */
             imageUrl?: string | null;
             /**
-             * @description 경력
-             * @example 10년 이상 이사 경력
+             * @description 경력 (년)
+             * @example 10
              */
-            career?: string | null;
+            career?: number | null;
             /**
              * @description 한줄 소개
              * @example 친절하고 신속한 이사 서비스를 제공합니다
@@ -2656,6 +3107,11 @@ export interface components {
              */
             price?: number | null;
             /**
+             * @description 견적 코멘트
+             * @example 합리적인 가격으로 진행 가능합니다.
+             */
+            comment?: string | null;
+            /**
              * @description 견적 상태
              * @example PENDING
              * @enum {string}
@@ -2728,6 +3184,11 @@ export interface components {
              * @example 500000
              */
             price?: number | null;
+            /**
+             * @description 견적 코멘트
+             * @example 합리적인 가격으로 진행 가능합니다.
+             */
+            comment?: string | null;
             /**
              * @description 견적 상태
              * @example CONFIRMED
@@ -2930,17 +3391,6 @@ export interface components {
                 name?: string;
             };
         };
-        ApiResponse: {
-            /**
-             * @description 요청 성공 여부
-             * @example true
-             */
-            success?: boolean;
-            /** @description 응답 데이터 */
-            data?: unknown;
-            /** @description 응답 메시지 */
-            message?: string | null;
-        };
         ValidationErrorResponse: {
             /** @description 검증 실패 메시지 */
             message?: string;
@@ -3002,74 +3452,6 @@ export interface components {
              */
             updatedAt?: string;
         };
-        DriverProfileInfo: {
-            /**
-             * Format: uuid
-             * @description 드라이버 프로필 ID
-             * @example 123e4567-e89b-12d3-a456-426614174003
-             */
-            id?: string;
-            /**
-             * @description 프로필 이미지 URL
-             * @example https://example.com/image.jpg
-             */
-            imageUrl?: string | null;
-            /**
-             * @description 경력 정보
-             * @example 5년차 전문 이사 기사
-             */
-            career?: string | null;
-            /**
-             * @description 짧은 소개
-             * @example 안전하고 신속한 이사를 약속드립니다
-             */
-            shortIntro?: string | null;
-            /**
-             * @description 상세 설명
-             * @example 10년 이상의 경력을 가진 전문 이사 기사입니다.
-             */
-            description?: string | null;
-            /**
-             * @description 제공 서비스 목록
-             * @example [
-             *       "HOME_MOVING",
-             *       "OFFICE_MOVING"
-             *     ]
-             */
-            services?: ("SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING")[];
-            /**
-             * @description 확정된 견적 수 (작업 진행 건수)
-             * @example 150
-             */
-            confirmedEstimateCount?: number;
-            /**
-             * @description 찜하기 수
-             * @example 45
-             */
-            favoriteDriverCount?: number;
-            /**
-             * @description 리뷰 평점 평균 (소수점 첫째 자리까지)
-             * @example 4.5
-             */
-            averageRating?: number | null;
-            /**
-             * @description 리뷰 총 개수
-             * @example 120
-             */
-            reviewCount?: number;
-            /**
-             * Format: date-time
-             * @description 생성 일시
-             * @example 2024-01-10T09:00:00Z
-             */
-            createdAt?: string;
-            /**
-             * Format: date-time
-             * @description 수정 일시
-             * @example 2024-01-15T10:00:00Z
-             */
-            updatedAt?: string;
-        };
         FavoriteDriverWithDetails: {
             /**
              * Format: uuid
@@ -3114,25 +3496,163 @@ export interface components {
                 reviews?: components["schemas"]["ReviewInfo"][];
             };
         };
-        PaginationInfo: {
-            /**
-             * @description 다음 페이지 존재 여부
-             * @example true
-             */
-            hasNext?: boolean;
-            /**
-             * Format: uuid
-             * @description 다음 페이지 커서 (다음 페이지가 없으면 null)
-             * @example 123e4567-e89b-12d3-a456-426614174000
-             */
-            nextCursor?: string | null;
-        };
         DeleteResponse: {
             /**
              * @description 삭제 성공 여부
              * @example true
              */
             removed?: boolean;
+        };
+        MyPageData: {
+            profile?: {
+                /**
+                 * Format: uuid
+                 * @description 드라이버 ID
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
+                id?: string;
+                /**
+                 * @description 드라이버 이름
+                 * @example 김코드
+                 */
+                name?: string;
+                /**
+                 * Format: uri
+                 * @description 프로필 이미지 URL
+                 * @example https://example.com/profile.jpg
+                 */
+                imageUrl?: string | null;
+                /**
+                 * @description 경력 (년)
+                 * @example 7
+                 */
+                career?: number | null;
+                /**
+                 * @description 한줄 소개
+                 * @example 친절하고 신속한 이사 서비스를 제공합니다
+                 */
+                shortIntro?: string | null;
+                /**
+                 * @description 상세 설명
+                 * @example 고객님의 물품을 소중하고 안전하게 운송하여 드립니다...
+                 */
+                description?: string | null;
+                /**
+                 * @description 제공 서비스 목록
+                 * @example [
+                 *       "SMALL_MOVING",
+                 *       "HOME_MOVING"
+                 *     ]
+                 */
+                services?: ("SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING")[];
+                /**
+                 * @description 서비스 가능 지역
+                 * @example [
+                 *       "서울",
+                 *       "경기"
+                 *     ]
+                 */
+                regions?: ("서울" | "경기" | "인천" | "강원" | "충북" | "충남" | "대전" | "세종" | "전북" | "전남" | "광주" | "경북" | "경남" | "대구" | "부산" | "울산" | "제주")[];
+            };
+            activity?: {
+                /**
+                 * @description 완료된 이사 건수
+                 * @example 334
+                 */
+                completedCount?: number;
+                /**
+                 * Format: float
+                 * @description 평균 별점
+                 * @example 5
+                 */
+                averageRating?: number;
+                /**
+                 * @description 경력 (년)
+                 * @example 7
+                 */
+                career?: number | null;
+            };
+            reviewDistribution?: {
+                /**
+                 * @description 1점 리뷰 개수
+                 * @example 0
+                 */
+                1?: number;
+                /**
+                 * @description 2점 리뷰 개수
+                 * @example 0
+                 */
+                2?: number;
+                /**
+                 * @description 3점 리뷰 개수
+                 * @example 0
+                 */
+                3?: number;
+                /**
+                 * @description 4점 리뷰 개수
+                 * @example 8
+                 */
+                4?: number;
+                /**
+                 * @description 5점 리뷰 개수
+                 * @example 170
+                 */
+                5?: number;
+            };
+        };
+        MyPageReview: {
+            /**
+             * Format: uuid
+             * @description 리뷰 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            id?: string;
+            /**
+             * @description 별점
+             * @example 5
+             */
+            rating?: number | null;
+            /**
+             * @description 리뷰 내용
+             * @example 토탈데포 정말 친절하시고 물건도 잘 옮겨주셨어요~~
+             */
+            content?: string | null;
+            /**
+             * Format: date-time
+             * @description 리뷰 작성 일시
+             * @example 2024-07-01T00:00:00Z
+             */
+            createdAt?: string;
+            /**
+             * @description 리뷰 작성자 이름
+             * @example kim****
+             */
+            userName?: string;
+        };
+        MyPageReviewsResponse: {
+            reviews?: components["schemas"]["MyPageReview"][];
+            pagination?: {
+                /**
+                 * @description 현재 페이지 번호
+                 * @example 1
+                 */
+                currentPage?: number;
+                /**
+                 * @description 전체 페이지 수
+                 * @example 18
+                 */
+                totalPages?: number;
+                /**
+                 * @description 전체 리뷰 개수
+                 * @example 178
+                 */
+                totalItems?: number;
+                /**
+                 * @description 페이지당 아이템 수
+                 * @example 10
+                 */
+                itemsPerPage?: number;
+            };
         };
         Notification: {
             /**
@@ -3287,10 +3807,10 @@ export interface components {
              */
             imageUrl?: string;
             /**
-             * @description 경력
-             * @example 10년 이상 이사 경력
+             * @description 경력 (년)
+             * @example 10
              */
-            career?: string;
+            career?: number;
             /**
              * @description 한줄 소개
              * @example 친절하고 신속한 이사 서비스를 제공합니다
@@ -3327,10 +3847,10 @@ export interface components {
              */
             imageUrl?: string | null;
             /**
-             * @description 경력
-             * @example 10년 이상 이사 경력
+             * @description 경력 (년)
+             * @example 10
              */
-            career?: string | null;
+            career?: number | null;
             /**
              * @description 한줄 소개
              * @example 친절하고 신속한 이사 서비스를 제공합니다
@@ -3365,6 +3885,50 @@ export interface components {
     responses: never;
     parameters: {
         /**
+         * @description 지역 필터 (소문자로 입력)
+         *     가능한 값: seoul(서울), gyeonggi(경기), incheon(인천), gangwon(강원), chungbuk(충북), chungnam(충남), daejeon(대전), sejong(세종), jeonbuk(전북), jeonnam(전남), gwangju(광주), gyeongbuk(경북), gyeongnam(경남), daegu(대구), busan(부산), ulsan(울산), jeju(제주)
+         *     해당 지역에서 서비스를 제공하는 드라이버만 조회됩니다.
+         * @example seoul
+         */
+        regionQuery: "seoul" | "gyeonggi" | "incheon" | "gangwon" | "chungbuk" | "chungnam" | "daejeon" | "sejong" | "jeonbuk" | "jeonnam" | "gwangju" | "gyeongbuk" | "gyeongnam" | "daegu" | "busan" | "ulsan" | "jeju";
+        /**
+         * @description 서비스 필터
+         *     가능한 값: SMALL_MOVING(소형 이사), HOME_MOVING(가정 이사), OFFICE_MOVING(사무실 이사)
+         *     해당 서비스를 제공하는 드라이버만 조회됩니다.
+         * @example HOME_MOVING
+         */
+        serviceQuery: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
+        /**
+         * @description 정렬 기준
+         *     - review: 리뷰 수 내림차순
+         *     - rating: 평균 평점 내림차순
+         *     - career: 경력 내림차순
+         *     - confirmed-estimate: 확정된 견적 수 내림차순
+         *     기본값: 정렬 없음 (등록 순서)
+         * @example rating
+         */
+        sortQuery: "review" | "rating" | "career" | "confirmed-estimate";
+        /**
+         * @description 페이지네이션 커서 (다음 페이지 조회 시 사용)
+         *     이전 응답의 pagination.nextCursor 값을 사용하여 다음 페이지를 조회할 수 있습니다.
+         *     첫 페이지 조회 시에는 생략 가능합니다.
+         * @example 123e4567-e89b-12d3-a456-426614174000
+         */
+        cursorQuery: string;
+        /**
+         * @description 조회할 항목 수 (기본값: 10)
+         *     한 번에 가져올 즐겨찾기 항목의 개수를 지정합니다.
+         *     최소값은 1이며, 생략 시 기본값 10이 적용됩니다.
+         * @example 10
+         */
+        limitQuery: number;
+        /**
+         * @description 기사님 이름 검색
+         *     기사님 이름에 포함된 문자열로 검색합니다. 대소문자 구분 없이 검색됩니다.
+         * @example 홍길동
+         */
+        searchQuery: string;
+        /**
          * @description 견적 ID
          * @example 123e4567-e89b-12d3-a456-426614174000
          */
@@ -3374,20 +3938,6 @@ export interface components {
          * @example PENDING
          */
         statusQuery: "PENDING" | "CONFIRMED" | "REJECTED" | "CANCELLED";
-        /**
-         * @description 조회할 항목 수 (기본값: 10)
-         *     한 번에 가져올 즐겨찾기 항목의 개수를 지정합니다.
-         *     최소값은 1이며, 생략 시 기본값 10이 적용됩니다.
-         * @example 10
-         */
-        limitQuery: number;
-        /**
-         * @description 페이지네이션 커서 (다음 페이지 조회 시 사용)
-         *     이전 응답의 pagination.nextCursor 값을 사용하여 다음 페이지를 조회할 수 있습니다.
-         *     첫 페이지 조회 시에는 생략 가능합니다.
-         * @example 123e4567-e89b-12d3-a456-426614174000
-         */
-        cursorQuery: string;
         /**
          * @description 드라이버(기사) ID
          * @example 123e4567-e89b-12d3-a456-426614174002
@@ -3405,6 +3955,99 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    getDrivers: {
+        parameters: {
+            query?: {
+                /**
+                 * @description 지역 필터 (소문자로 입력)
+                 *     가능한 값: seoul(서울), gyeonggi(경기), incheon(인천), gangwon(강원), chungbuk(충북), chungnam(충남), daejeon(대전), sejong(세종), jeonbuk(전북), jeonnam(전남), gwangju(광주), gyeongbuk(경북), gyeongnam(경남), daegu(대구), busan(부산), ulsan(울산), jeju(제주)
+                 *     해당 지역에서 서비스를 제공하는 드라이버만 조회됩니다.
+                 * @example seoul
+                 */
+                region?: components["parameters"]["regionQuery"];
+                /**
+                 * @description 서비스 필터
+                 *     가능한 값: SMALL_MOVING(소형 이사), HOME_MOVING(가정 이사), OFFICE_MOVING(사무실 이사)
+                 *     해당 서비스를 제공하는 드라이버만 조회됩니다.
+                 * @example HOME_MOVING
+                 */
+                service?: components["parameters"]["serviceQuery"];
+                /**
+                 * @description 정렬 기준
+                 *     - review: 리뷰 수 내림차순
+                 *     - rating: 평균 평점 내림차순
+                 *     - career: 경력 내림차순
+                 *     - confirmed-estimate: 확정된 견적 수 내림차순
+                 *     기본값: 정렬 없음 (등록 순서)
+                 * @example rating
+                 */
+                sort?: components["parameters"]["sortQuery"];
+                /**
+                 * @description 기사님 이름 검색
+                 *     기사님 이름에 포함된 문자열로 검색합니다. 대소문자 구분 없이 검색됩니다.
+                 * @example 홍길동
+                 */
+                search?: components["parameters"]["searchQuery"];
+                /**
+                 * @description 페이지네이션 커서 (다음 페이지 조회 시 사용)
+                 *     이전 응답의 pagination.nextCursor 값을 사용하여 다음 페이지를 조회할 수 있습니다.
+                 *     첫 페이지 조회 시에는 생략 가능합니다.
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
+                cursor?: components["parameters"]["cursorQuery"];
+                /**
+                 * @description 조회할 항목 수 (기본값: 10)
+                 *     한 번에 가져올 즐겨찾기 항목의 개수를 지정합니다.
+                 *     최소값은 1이며, 생략 시 기본값 10이 적용됩니다.
+                 * @example 10
+                 */
+                limit?: components["parameters"]["limitQuery"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 성공적으로 드라이버 목록을 조회했습니다. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description 요청 성공 여부
+                         * @example true
+                         */
+                        success?: boolean;
+                        data?: components["schemas"]["DriverListItem"][];
+                        pagination?: components["schemas"]["PaginationInfo"];
+                        /** @description 응답 메시지 */
+                        message?: string | null;
+                    };
+                };
+            };
+            /** @description 잘못된 요청입니다. 쿼리 파라미터 값이 유효하지 않습니다. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     getPendingEstimates: {
         parameters: {
             query?: never;
@@ -3710,9 +4353,16 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponse"] & {
+                    "application/json": {
+                        /**
+                         * @description 요청 성공 여부
+                         * @example true
+                         */
+                        success?: boolean;
                         data?: components["schemas"]["FavoriteDriverWithDetails"][];
                         pagination?: components["schemas"]["PaginationInfo"];
+                        /** @description 응답 메시지 */
+                        message?: string | null;
                     };
                 };
             };
@@ -3764,8 +4414,17 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponse"] & {
+                    "application/json": {
+                        /**
+                         * @description 요청 성공 여부
+                         * @example true
+                         */
+                        success?: boolean;
                         data?: components["schemas"]["DeleteResponse"];
+                        /** @description 페이지네이션 정보 */
+                        pagination?: unknown;
+                        /** @description 응답 메시지 */
+                        message?: string | null;
                     };
                 };
             };
@@ -3819,8 +4478,17 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponse"] & {
+                    "application/json": {
+                        /**
+                         * @description 요청 성공 여부
+                         * @example true
+                         */
+                        success?: boolean;
                         data?: components["schemas"]["FavoriteDriver"];
+                        /** @description 페이지네이션 정보 */
+                        pagination?: unknown;
+                        /** @description 응답 메시지 */
+                        message?: string | null;
                     };
                 };
             };
@@ -3883,8 +4551,17 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponse"] & {
+                    "application/json": {
+                        /**
+                         * @description 요청 성공 여부
+                         * @example true
+                         */
+                        success?: boolean;
                         data?: components["schemas"]["DeleteResponse"];
+                        /** @description 페이지네이션 정보 */
+                        pagination?: unknown;
+                        /** @description 응답 메시지 */
+                        message?: string | null;
                     };
                 };
             };
@@ -3970,8 +4647,17 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponse"] & {
+                    "application/json": {
+                        /**
+                         * @description 요청 성공 여부
+                         * @example true
+                         */
+                        success?: boolean;
                         data?: components["schemas"]["Notification"][];
+                        /** @description 페이지네이션 정보 */
+                        pagination?: unknown;
+                        /** @description 응답 메시지 */
+                        message?: string | null;
                     };
                 };
             };
@@ -4016,8 +4702,17 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponse"] & {
+                    "application/json": {
+                        /**
+                         * @description 요청 성공 여부
+                         * @example true
+                         */
+                        success?: boolean;
                         data?: null;
+                        /** @description 페이지네이션 정보 */
+                        pagination?: unknown;
+                        /** @description 응답 메시지 */
+                        message?: string | null;
                     };
                 };
             };

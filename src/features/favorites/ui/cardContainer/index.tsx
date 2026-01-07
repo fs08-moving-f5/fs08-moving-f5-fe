@@ -14,12 +14,14 @@ interface FavoritesCardContainerProps {
   favoriteDrivers: FavoriteDriver[];
   selectedIds: Set<string | undefined>;
   onToggleCheck: (id: string | undefined) => void;
+  loadMoreRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const FavoritesCardContainer = ({
   favoriteDrivers,
   selectedIds,
   onToggleCheck,
+  loadMoreRef,
 }: FavoritesCardContainerProps) => {
   return (
     <div className="container-responsive tab:max-w-[600px] mobile:max-w-[327px] max-w-[1200px]">
@@ -35,7 +37,7 @@ const FavoritesCardContainer = ({
             driverImageUrl={favoriteDriver.driver?.driverProfile?.imageUrl ?? ''}
             rating={favoriteDriver.driver?.driverProfile?.averageRating ?? 0}
             reviewCount={favoriteDriver.driver?.driverProfile?.reviewCount ?? 0}
-            experience={favoriteDriver.driver?.driverProfile?.career ?? ''}
+            experience={`${favoriteDriver.driver?.driverProfile?.career ?? 0}년`}
             moveCount={`${favoriteDriver.driver?.driverProfile?.confirmedEstimateCount ?? 0}건`}
             likeCount={favoriteDriver.driver?.driverProfile?.favoriteDriverCount ?? 0}
             favoriteCard={true}
@@ -47,6 +49,7 @@ const FavoritesCardContainer = ({
           />
         ))}
       </div>
+      <div ref={loadMoreRef} className="h-10" />
     </div>
   );
 };

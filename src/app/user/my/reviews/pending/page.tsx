@@ -1,4 +1,4 @@
-import ReviewWritableUI from '@/views/reviews/pending/ReviewWritableUI';
+import ReviewWritableUI from '@/views/user/my/reviews/pending/ReviewWritableUI';
 
 const ReviewWritablePage = () => {
   return <ReviewWritableUI />;

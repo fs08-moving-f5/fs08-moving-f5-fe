@@ -43,7 +43,7 @@ export interface DriverProfile {
   email: string;
   phone: string;
   imageUrl?: string | null;
-  career?: string | null;
+  career?: number | null;
   shortIntro?: string | null;
   description?: string | null;
   regions: RegionType[];
@@ -74,7 +74,7 @@ export interface UpdateUserProfileRequest {
 // 기사 프로필 생성 요청
 export interface CreateDriverProfileRequest {
   imageUrl?: string;
-  career?: string;
+  career?: number;
   shortIntro?: string;
   description?: string;
   regions: RegionType[];
@@ -84,7 +84,7 @@ export interface CreateDriverProfileRequest {
 // 기사 프로필 수정 요청
 export interface UpdateDriverProfileRequest {
   imageUrl?: string | null;
-  career?: string | null;
+  career?: number | null;
   shortIntro?: string | null;
   description?: string | null;
   regions?: RegionType[];
@@ -104,7 +104,7 @@ export interface MyPageData {
     id: string;
     name: string;
     imageUrl: string | null;
-    career: string | null;
+    career: number | null;
     shortIntro: string | null;
     description: string | null;
     services: string[];
@@ -114,7 +114,7 @@ export interface MyPageData {
   activity: {
     completedCount: number;
     averageRating: number;
-    career: string | null;
+    career: number | null;
   };
   reviewDistribution: {
     [key: number]: number;
@@ -139,4 +139,23 @@ export interface ReviewListData {
     totalItems: number;
     itemsPerPage: number;
   };
+}
+
+// ========== 기사 찾기 상세(공개 프로필) 관련 타입 ==========
+
+export interface DriverPublicProfileData {
+  id: string;
+  name: string;
+  driverProfile: {
+    id: string;
+    driverId: string;
+    imageUrl: string | null;
+    career: number | null;
+    shortIntro: string | null;
+    description: string | null;
+    regions: string[];
+    services: string[];
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 }

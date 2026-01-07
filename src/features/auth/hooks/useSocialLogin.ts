@@ -12,14 +12,17 @@ export const useSocialLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSocialLogin = async (provider: 'google' | 'kakao' | 'naver') => {
+  const handleSocialLogin = async (
+    provider: 'google' | 'kakao' | 'naver',
+    usertype: 'USER' | 'DRIVER',
+  ) => {
     if (isLoading) return;
 
     setIsLoading(true);
     setError(null);
 
     try {
-      await socialLogin(provider);
+      await socialLogin(provider, usertype);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'SNS 로그인에 실패했습니다.';
       setError(errorMessage);

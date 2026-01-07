@@ -1,4 +1,4 @@
-import ReceivedEstimatesPageClient from '@/views/my/estimates/received';
+import ReceivedEstimatesPageClient from '@/views/user/my/estimates/received';
 
 const ReceivedEstimatesPage = () => {
   return <ReceivedEstimatesPageClient />;

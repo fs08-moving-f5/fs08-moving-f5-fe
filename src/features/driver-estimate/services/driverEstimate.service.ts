@@ -1,5 +1,4 @@
 import { apiClient } from '@/shared/api/index';
-import type { paths, components } from '@/shared/types/openapi';
 
 import {
   GetRequestsUIParams,
@@ -31,41 +30,49 @@ export const getRequests = async ({
   cursor,
   sort,
   movingType,
+  keyword,
+  onlyServiceable,
   ...params
 }: GetRequestsUIParams): Promise<EstimateRequestResponse> => {
+  const searchParams = {
+    ...params,
+    ...(sort && { sort: convertSort[sort] }),
+    ...(movingType && { movingType: convertMovingTypeToBackend(movingType) }),
+    ...(keyword && { search: keyword }),
+    ...(onlyServiceable !== undefined && { serviceRegionFilter: onlyServiceable }),
+    ...(cursor && { cursor }),
+  };
+
   const res = await apiClient
     .get('estimate-request/driver/requests', {
-      searchParams: {
-        ...params,
-        ...(sort && { sort: convertSort[sort] }),
-        ...(movingType && { movingType: convertMovingTypeToBackend(movingType) }),
-        ...(cursor && { cursor }),
-      },
+      searchParams,
     })
     .json<{ data: EstimateRequestRaw[] }>();
 
   const list = res.data ?? [];
 
+  const mappedData = list.map((r) => {
+    const requestTimeSource = r.updatedAt ?? r.createdAt;
+    const convertedMovingType = convertMovingType(r.movingType);
+
+    if (!convertedMovingType) {
+      throw new Error(`Invalid movingType: ${r.movingType}`);
+    }
+
+    return {
+      id: r.id,
+      customerName: r.name,
+      movingType: convertedMovingType,
+      pickedDriver: r.isDesignated,
+      pickupAddress: r.from ? `${r.from.sido} ${r.from.sigungu}` : '',
+      dropoffAddress: r.to ? `${r.to.sido} ${r.to.sigungu}` : '',
+      movingDate: convertDateType1(new Date(r.movingDate)),
+      requestTime: convertDateType2(new Date(requestTimeSource)),
+    };
+  });
+
   return {
-    data: list.map((r) => {
-      const requestTimeSource = r.updatedAt ?? r.createdAt;
-      const movingType = convertMovingType(r.movingType);
-
-      if (!movingType) {
-        throw new Error(`Invalid movingType: ${r.movingType}`);
-      }
-
-      return {
-        id: r.id,
-        customerName: r.user.name,
-        movingType,
-        pickedDriver: r.isDesignated,
-        pickupAddress: r.from ? `${r.from.sido} ${r.from.sigungu}` : '',
-        dropoffAddress: r.to ? `${r.to.sido} ${r.to.sigungu}` : '',
-        movingDate: convertDateType1(new Date(r.movingDate)),
-        requestTime: convertDateType2(new Date(requestTimeSource)),
-      };
-    }),
+    data: mappedData,
     nextCursor: list.length ? list[list.length - 1].id : null,
   };
 };

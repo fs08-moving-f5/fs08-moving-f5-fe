@@ -9,6 +9,7 @@ import {
 } from '@/features/favorites/hooks/mutations/useFavoriteMutation';
 import QUERY_KEY from '@/features/my-estimates/constants/queryKey';
 import type { PendingEstimate } from '@/features/my-estimates/services/estimate.service';
+import { useConfirmEstimateMutation } from '@/features/my-estimates/hooks/mutations/useEstimateMutations';
 
 const movingTypeMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
@@ -31,6 +32,7 @@ const PendingCardContainer = ({
 
   const { mutate: addFavoriteDriver } = useFavoriteMutation();
   const { mutate: deleteFavoriteDriver } = useDeleteFavoriteMutation();
+  const { mutate: confirmEstimate } = useConfirmEstimateMutation();
 
   const handleLikeClick = ({ driverId, isLiked }: { driverId: string; isLiked: boolean }) => {
     if (isLiked) {
@@ -52,6 +54,19 @@ const PendingCardContainer = ({
     router.push(`/user/my/estimates/pending/${estimateId}`);
   };
 
+  const handleConfirmEstimate = (estimateId: string) => {
+    confirmEstimate(
+      { estimateId },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: QUERY_KEY.PENDING_ESTIMATE });
+          queryClient.invalidateQueries({ queryKey: QUERY_KEY.RECEIVED_ESTIMATE });
+          router.push('/user/my/estimates/received');
+        },
+      },
+    );
+  };
+
   return (
     <div className="w-full">
       <div className="container-responsive tab:max-w-[600px] mobile:max-w-[327px] max-w-[1200px] pt-[78px] pb-[112px]">
@@ -60,11 +75,11 @@ const PendingCardContainer = ({
             <EstimateWait
               key={estimate.id}
               driverName={estimate.driver?.name ?? ''}
-              shortIntro={estimate.driver?.driverProfile?.shortIntro ?? ''}
+              shortIntro={estimate.comment ?? ''}
               driverImageUrl={estimate.driver?.driverProfile?.imageUrl ?? ''}
               rating={estimate.driver?.driverProfile?.averageRating ?? 0}
               reviewCount={estimate.driver?.driverProfile?.confirmedEstimateCount ?? 0}
-              experience={estimate.driver?.driverProfile?.career ?? ''}
+              experience={`${estimate.driver?.driverProfile?.career ?? 0}년`}
               moveCount={`${estimate.driver?.driverProfile?.confirmedEstimateCount}건`}
               movingType={movingTypeMap[movingType] ?? undefined}
               pickedDriver={estimate?.isDesignated ?? false}
@@ -78,6 +93,7 @@ const PendingCardContainer = ({
                 })
               }
               onDetailClick={() => handleDetailClick(estimate.id ?? '')}
+              onConfirmClick={() => handleConfirmEstimate(estimate.id ?? '')}
             />
           ))}
         </div>

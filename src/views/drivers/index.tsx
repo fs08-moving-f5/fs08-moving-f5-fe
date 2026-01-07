@@ -1,0 +1,229 @@
+'use client';
+
+import {
+  getDriverList,
+  getFavoriteDrivers,
+  DriverInfoType,
+  FavoriteDriverInfoType,
+} from '@/features/drivers/services/drivers.service';
+import PagenationInfiniteScroll from '@/features/drivers/ui/Pagenation';
+import { FindDriver } from '@/shared/ui/card';
+import DropdownFilter from '@/shared/ui/dropdown/DropdownFilter';
+import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
+import SearchBar from '@/shared/ui/input/SearchBar';
+import { useState } from 'react';
+
+export default function DriversPageClient() {
+  const regionDict = {
+    all: '전체',
+    seoul: '서울',
+    gyeonggi: '경기',
+    incheon: '인천',
+    gangwon: '강원',
+    chungbuk: '충북',
+    chungnam: '충남',
+    daejeon: '대전',
+    sejong: '세종',
+    jeonbuk: '전북',
+    jeonnam: '전남',
+    gwangju: '광주',
+    gyeongbuk: '경북',
+    gyeongnam: '경남',
+    daegu: '대구',
+    busan: '부산',
+    ulsan: '울산',
+    jeju: '제주',
+  };
+
+  const serviceDict = {
+    all: '전체',
+    SMALL_MOVING: '소형이사',
+    HOME_MOVING: '가정이사',
+    OFFICE_MOVING: '사무실이사',
+  };
+
+  const sortDict = {
+    review: '리뷰많은순',
+    rating: '평점높은순',
+    career: '경력많은순',
+    'confirmed-estimate': '확정많은순',
+  };
+
+  type regionType = keyof typeof regionDict;
+  type serviceType = keyof typeof serviceDict;
+  type sortType = keyof typeof sortDict;
+
+  const [region, setRegion] = useState<regionType>('all');
+  const [service, setService] = useState<serviceType>('all');
+  const [sort, setSort] = useState<sortType>('review');
+  const [keyword, setKeyword] = useState('');
+
+  return (
+    <div className="flex h-[100vh] w-full flex-col items-center">
+      <div className="tab:px-[72px] mobile:px-[24px] flex h-full w-full max-w-[1200px] flex-col">
+        <div className="py-[32px]">
+          <h1 className="text-start text-[24px] leading-[32px] font-[600]">기사님 찾기</h1>
+        </div>
+        <div className="flex h-full w-full flex-col items-start gap-[38px]">
+          <div className="tab:max-w-full flex w-full max-w-[820px] flex-col gap-[38px]">
+            <SearchBar widthFull={true} onSubmit={(value: string) => setKeyword(value)} />
+            <div className="flex w-full justify-between">
+              <div className="flex h-fit w-fit items-center gap-[25px]">
+                <div className="flex w-fit gap-[12px]">
+                  <DropdownFilter
+                    title="지역"
+                    listObject={regionDict}
+                    value={region}
+                    setValue={(v) => setRegion(v as regionType)}
+                  />
+                  <DropdownFilter
+                    title="서비스"
+                    listObject={serviceDict}
+                    value={service}
+                    setValue={(v) => setService(v as serviceType)}
+                  />
+                </div>
+                <button
+                  onClick={() => {
+                    setRegion('all');
+                    setService('all');
+                    setSort('review');
+                    setKeyword('');
+                  }}
+                  className="tab:hidden cursor-pointer border-none text-[16px] leading-[26px] font-[500] text-[var(--color-gray-300)] hover:brightness-50"
+                >
+                  초기화
+                </button>
+              </div>
+              <DropdownSort
+                listObject={sortDict}
+                value={sort}
+                setValue={(v) => setSort(v as sortType)}
+              />
+            </div>
+          </div>
+          <div className="mb-[200px] flex h-full gap-[54px]">
+            <div className="scrollbar-hide scroll-mask tab:min-w-0 tab:max-w-full h-full w-full max-w-[820px] min-w-[820px] flex-col overflow-scroll py-[16px]">
+              <PagenationInfiniteScroll<DriverInfoType>
+                pageName="driver_list"
+                flexGap={20}
+                pageSize={10}
+                getApi={getDriverList}
+                filter={{
+                  region: region === 'all' ? undefined : region,
+                  service: service === 'all' ? undefined : service,
+                  sort,
+                }}
+                ElementNode={DriverCard}
+                noElementMsg="조건에 해당하는 기사님이 없습니다."
+              />
+            </div>
+            <div className="tab:hidden flex flex-col gap-[16px]">
+              <h2 className="text-start text-[20px] leading-[32px] font-[600]">찜한 기사님</h2>
+              <div className="scrollbar-hide scroll-mask mb-[200px] h-full w-full max-w-[820px] flex-col overflow-scroll py-[16px]">
+                {/* <PagenationInfiniteScroll<FavoriteDriverInfoType>
+                  flexGap={20}
+                  pageSize={10}
+                  getApi={getFavoriteDrivers}
+                  ElementNode={DriverCard}
+                  noElementMsg="찜한 기사님이 없습니다."
+                /> */}
+                <PagenationInfiniteScroll<FavoriteDriverInfoType>
+                  pageName="favorite_driver_list"
+                  flexGap={16}
+                  pageSize={10}
+                  getApi={getFavoriteDrivers} //getFavoriteDriverList
+                  ElementNode={FavoriteDriverCard}
+                  noElementMsg="찜한 기사님이 없습니다."
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DriverCard(params: DriverInfoType) {
+  const convertMovingType = (
+    v: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
+  ): 'small' | 'home' | 'office' => {
+    switch (v) {
+      case 'SMALL_MOVING':
+        return 'small';
+      case 'HOME_MOVING':
+        return 'home';
+      case 'OFFICE_MOVING':
+        return 'office';
+    }
+  };
+
+  const handleClickLike = async () => {};
+
+  return (
+    <FindDriver
+      title={params.driverProfile?.shortIntro || '제목 없음'}
+      description={params.driverProfile?.description || '설명 없음'}
+      driverName={params.name || '이름 없음'}
+      //driverImageUrl={params.driverProfile?.imageUrl}
+      rating={params.averageRating || 0}
+      reviewCount={params.reviewCount || 0}
+      experience={`${params.career || 0}년`}
+      moveCount={params.confirmedEstimateCount?.toString() || '0'}
+      movingTypeArray={
+        (params.driverProfile?.services &&
+          params.driverProfile?.services.length > 0 &&
+          params.driverProfile?.services.map((service) => convertMovingType(service))) ||
+        undefined
+      } //서비스 여러개 표시할 수 있게
+      likeCount={params.favoriteDriverCount || 0}
+      isLiked={params.isFavorite}
+      likeFunction={handleClickLike}
+    />
+  );
+}
+
+function FavoriteDriverCard(params: FavoriteDriverInfoType) {
+  const convertMovingType = (
+    v: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
+  ): 'small' | 'home' | 'office' => {
+    switch (v) {
+      case 'SMALL_MOVING':
+        return 'small';
+      case 'HOME_MOVING':
+        return 'home';
+      case 'OFFICE_MOVING':
+        return 'office';
+    }
+  };
+
+  const handleClickLike = async () => {};
+
+  // const rating =
+  //   (params.driver?.reviews?.reduce((acc, v) => acc + (v.rating || 0), 0) ?? 0) /
+  //   (params.driver?.reviews?.length ?? 1);
+
+  return (
+    <FindDriver
+      title={params.driver?.driverProfile?.shortIntro || '제목 없음'}
+      description={params.driver?.driverProfile?.description || '설명 없음'}
+      driverName={params.driver?.name || '이름 없음'}
+      //driverImageUrl={params.driverProfile?.imageUrl}
+      rating={params.driver?.driverProfile?.averageRating || 0}
+      reviewCount={params.driver?.driverProfile?.reviewCount || 0}
+      experience={`${params.driver?.driverProfile?.career || 0}년`}
+      moveCount={params.driver?.driverProfile?.confirmedEstimateCount?.toString() || '0'}
+      movingTypeArray={
+        (params.driver?.driverProfile?.services &&
+          params.driver?.driverProfile?.services.length > 0 &&
+          params.driver?.driverProfile?.services.map((service) => convertMovingType(service))) ||
+        undefined
+      } //서비스 여러개 표시할 수 있게
+      likeCount={params.driver?.driverProfile?.favoriteDriverCount || 0}
+      isLiked={true}
+      // likeFunction={handleClickLike}
+      smallStyle={true}
+    />
+  );
+}

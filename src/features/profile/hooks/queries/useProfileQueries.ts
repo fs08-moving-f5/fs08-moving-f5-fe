@@ -1,6 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import PROFILE_QUERY_KEY from '../../constants/queryKey';
-import { getUserProfile, getDriverProfile, getMyProfile } from '../../services/profileService';
+import {
+  getUserProfile,
+  getDriverProfile,
+  getMyProfile,
+  getDriverPublicProfile,
+} from '../../services/profileService';
 import type { UserType } from '@/features/auth/types/types';
 
 /**
@@ -22,6 +27,17 @@ export const useGetDriverProfileQuery = (enabled = true) => {
     queryKey: PROFILE_QUERY_KEY.DRIVER_PROFILE,
     queryFn: getDriverProfile,
     enabled,
+  });
+};
+
+/**
+ * 기사 공개 프로필 조회 Query Hook (기사 찾기 상세용)
+ */
+export const useGetDriverPublicProfileQuery = (driverId: string, enabled = true) => {
+  return useQuery({
+    queryKey: PROFILE_QUERY_KEY.DRIVER_PUBLIC_PROFILE(driverId),
+    queryFn: () => getDriverPublicProfile(driverId),
+    enabled: enabled && Boolean(driverId),
   });
 };
 

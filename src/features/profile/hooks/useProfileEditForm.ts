@@ -31,7 +31,11 @@ export function useProfileEditForm(
     initialProfile?.regions || [],
   );
   const [career, setCareer] = useState(
-    initialProfile && 'career' in initialProfile ? initialProfile.career || '' : '',
+    initialProfile && 'career' in initialProfile
+      ? initialProfile.career !== null && initialProfile.career !== undefined
+        ? String(initialProfile.career)
+        : ''
+      : '',
   );
   const [shortIntro, setShortIntro] = useState(
     initialProfile && 'shortIntro' in initialProfile ? initialProfile.shortIntro || '' : '',
@@ -148,7 +152,7 @@ export function useProfileEditForm(
       if (isDriver) {
         await handleUpdateProfile({
           ...baseData,
-          career: career || undefined,
+          career: career ? Number(career) : undefined,
           shortIntro: shortIntro || undefined,
           description: description || undefined,
         });

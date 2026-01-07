@@ -1,4 +1,4 @@
-import MyFavoritesPageClient from '@/views/my/favorites';
+import MyFavoritesPageClient from '@/views/user/my/favorites';
 
 const MyFavoritesPage = () => {
   return <MyFavoritesPageClient />;
