@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 
 interface NotificationStore {
-  unreadCount: number;
-  setUnreadCount: (count: number) => void;
+  hasUnread: boolean;
+  setHasUnread: (hasUnread: boolean) => void;
 }
 
 export const useNotificationStore = create<NotificationStore>((set) => ({
-  unreadCount: 0,
-  setUnreadCount: (count) => set({ unreadCount: count }),
+  hasUnread: false,
+  setHasUnread: (hasUnread) => set({ hasUnread }),
 }));

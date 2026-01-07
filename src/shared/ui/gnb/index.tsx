@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Menu from './Menu';
 import DropdownProfile from '../dropdown/DropdownProfile';
 import { useAuthStore } from '@/shared/store/authStore';
@@ -11,6 +11,7 @@ import { useGetNotificationListQuery } from './notificationQuery';
 import { NotificationDropdown } from '../dropdown';
 import { useReadNotificationMutation } from './notificationMutation';
 import { useQueryClient } from '@tanstack/react-query';
+import { useNotificationStore } from '@/shared/store/notificationStore';
 
 const menuByRole = {
   guest: [{ id: 1, label: '기사님 찾기', href: '/' }],
@@ -50,12 +51,25 @@ const GNB = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuthStore();
   const { handleLogout } = useLogout();
+  const setHasUnread = useNotificationStore((state) => state.setHasUnread);
+  const hasUnread = useNotificationStore((state) => state.hasUnread);
 
   const userRole = user ? (user.type === 'USER' ? 'user' : 'driver') : 'guest';
 
   const { data: notifications } = useGetNotificationListQuery();
 
   const { mutate: readNotification } = useReadNotificationMutation();
+
+  // notifications 목록이 업데이트될 때 hasUnread 상태 동기화
+  useEffect(() => {
+    if (notifications) {
+      const hasUnreadNotifications = notifications.some((notification) => !notification.isRead);
+      // SSE로 받은 값과 다를 수 있으므로 notifications 기반으로도 확인
+      if (hasUnreadNotifications !== hasUnread) {
+        setHasUnread(hasUnreadNotifications);
+      }
+    }
+  }, [notifications, setHasUnread, hasUnread]);
 
   const handleReadNotification = (id: string) => {
     readNotification(id, {

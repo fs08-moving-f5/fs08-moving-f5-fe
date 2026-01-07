@@ -82,7 +82,8 @@ export default function DatePicker({ size = 'md', date, setDate }: DatePickerPro
         locale={ko}
         dateFormat="yyyy-MM-dd"
         selected={date}
-        onChange={(selectDate) => selectDate && handleChange(selectDate)}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onChange={(selectDate: any) => selectDate && handleChange(selectDate)}
         onMonthChange={handleMonthChange}
         showMonthYearPicker={monthMode}
         inline

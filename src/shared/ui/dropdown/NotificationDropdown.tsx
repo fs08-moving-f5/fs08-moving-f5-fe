@@ -41,8 +41,7 @@ const NotificationDropdown = ({
     };
   }, [setIsOpen]);
 
-  const unreadCount = useNotificationStore((state) => state.unreadCount);
-  const hasUnread = unreadCount > 0;
+  const hasUnread = useNotificationStore((state) => state.hasUnread);
 
   return (
     <div ref={dropdownRef} className="flex h-full items-center">
@@ -63,10 +62,10 @@ const NotificationDropdown = ({
           className={clsx(
             dropdownPosition.default,
             dropdownPosition.desktop,
-            'tab:top-[52px] mobile:top-[52px] tab:right-[20px] mobile:right-[20px]',
+            'tab:top-[52px] mobile:top-[52px] tab:right-[20px] mobile:right-[20px] tab:min-h-[160px] mobile:min-h-[160px] min-h-[250px]',
           )}
         >
-          <ul>
+          <ul className="h-full w-full">
             <li className="flex justify-between px-6 py-[14px]">
               <span className="text-2lg tab:text-lg mobile:text-lg font-bold">알림</span>
               <button
@@ -76,16 +75,25 @@ const NotificationDropdown = ({
                 <Image src={ic_x} alt="ic_close" width={24} height={24} />
               </button>
             </li>
-            {notifications
-              ?.filter((notification) => !notification.isRead)
-              .map((notification) => (
-                <NotificationDetail
-                  key={notification.id}
-                  title={notification.message ?? ''}
-                  time={formatDateAgo(notification.createdAt ?? '')}
-                  onClick={() => handleReadNotification(notification.id ?? '')}
-                />
-              ))}
+            {notifications?.length === 0 && (
+              <li className="flex h-full items-center justify-center text-center">
+                <span className="text-2lg tab:text-lg mobile:text-lg font-normal">
+                  알림이 없습니다.
+                </span>
+              </li>
+            )}
+            {notifications &&
+              notifications.length > 0 &&
+              notifications
+                ?.filter((notification) => !notification.isRead)
+                .map((notification) => (
+                  <NotificationDetail
+                    key={notification.id}
+                    title={notification.message ?? ''}
+                    time={formatDateAgo(notification.createdAt ?? '')}
+                    onClick={() => handleReadNotification(notification.id ?? '')}
+                  />
+                ))}
           </ul>
         </div>
       )}
