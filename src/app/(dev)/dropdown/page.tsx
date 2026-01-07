@@ -9,37 +9,50 @@ import GNB from '@/shared/ui/gnb';
 import { useState } from 'react';
 
 export default function Page() {
-  const legion = ['전체', '소형이사', '가정이사', '사무실이사'];
-  const legion2 = [
-    '전체',
-    '서울',
-    '경기',
-    '인천',
-    '강원',
-    '충북',
-    '충남',
-    '세종',
-    '대전',
-    '전북',
-    '전남',
-    '경북',
-    '경남',
-  ];
-
-  const [fillterValue, setFillterValue] = useState('');
-  const handleClickFillter = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setFillterValue(e.currentTarget.value);
+  const regionDict = {
+    all: '전체',
+    seoul: '서울',
+    gyeonggi: '경기',
+    incheon: '인천',
+    gangwon: '강원',
+    chungbuk: '충북',
+    chungnam: '충남',
+    daejeon: '대전',
+    sejong: '세종',
+    jeonbuk: '전북',
+    jeonnam: '전남',
+    gwangju: '광주',
+    gyeongbuk: '경북',
+    gyeongnam: '경남',
+    daegu: '대구',
+    busan: '부산',
+    ulsan: '울산',
+    jeju: '제주',
   };
+
+  const serviceDict = {
+    all: '전체',
+    SMALL_MOVING: '소형이사',
+    HOME_MOVING: '가정이사',
+    OFFICE_MOVING: '사무실이사',
+  };
+
+  const sortDict = {
+    review: '리뷰많은순',
+    rating: '평점높은순',
+    career: '경력많은순',
+    'confirmed-estimate': '확정많은순',
+  };
+
+  type regionType = keyof typeof regionDict;
+  type serviceType = keyof typeof serviceDict;
+  type sortType = keyof typeof sortDict;
+
+  const [region, setRegion] = useState<regionType>('all');
+  const [service, setService] = useState<serviceType>('all');
+  const [sort, setSort] = useState<sortType>('review');
+
   const [date, setDate] = useState<Date | null>(null);
-
-  type sortList = 'MostReviews' | 'HighestRating' | 'MostExperience' | 'MostConfirmations';
-  const [sortValue, setSortValue] = useState('HighestRating');
-  const sortListObj = {
-    MostReviews: '리뷰 많은순',
-    HighestRating: '평점 높은순',
-    MostExperience: '경력 많은순',
-    MostConfirmations: '확정 많은순',
-  };
 
   return (
     <div>
@@ -48,16 +61,28 @@ export default function Page() {
         <div className="flex flex-col gap-[10px]">
           <div className="flex gap-[12px]">
             <div>
-              <span>선택된 필터 값: {fillterValue}</span>
               <div className="flex gap-[12px]">
-                <DropdownFilter title="지역" list={legion2} onClick={handleClickFillter} />
-                <DropdownFilter title="서비스" list={legion} onClick={handleClickFillter} />
+                <DropdownFilter
+                  title="지역"
+                  listObject={regionDict}
+                  value={region}
+                  setValue={(v) => setRegion(v as regionType)}
+                />
+                <DropdownFilter
+                  title="서비스"
+                  listObject={serviceDict}
+                  value={service}
+                  setValue={(v) => setService(v as serviceType)}
+                />
               </div>
             </div>
             <div className="flex flex-col">
-              <span>value: {sortValue}</span>
               <div className="flex gap-[8px]">
-                <DropdownSort listObject={sortListObj} value={sortValue} setValue={setSortValue} />
+                <DropdownSort
+                  listObject={sortDict}
+                  value={sort}
+                  setValue={(v) => setSort(v as sortType)}
+                />
               </div>
             </div>
           </div>

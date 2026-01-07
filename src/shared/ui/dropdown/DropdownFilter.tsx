@@ -10,13 +10,18 @@ const down_icon_md = '/icons/dropdown/ic_chevron_down_md.svg';
 
 interface DropdownFilterProps {
   title: string;
-  list: string[]; /* 선택지 리스트 */
-  onClick?: (
-    e: React.MouseEvent<HTMLButtonElement>,
-  ) => void; /* onClick을 통해 클릭한 선택지를 받아오고 외부 컴포넌트에서 상태 저장 해주세요 */
+  listObject: Record<string, string>; /* 선택지 리스트 */
+  value: string;
+  setValue: (value: string) => void;
 }
 
-export default function DropdownFilter({ title = '', list = [], onClick }: DropdownFilterProps) {
+export default function DropdownFilter({
+  title = '',
+  listObject,
+  value,
+  setValue,
+}: DropdownFilterProps) {
+  const list = Object.keys(listObject);
   if (list.length % 2 === 1) {
     list.push(''); //홀 수개면 짝수 맞춰주기.
   }
@@ -36,6 +41,10 @@ export default function DropdownFilter({ title = '', list = [], onClick }: Dropd
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setValue(e.currentTarget.value);
+  };
 
   const ToggleSize =
     'mobile:h-[36px] mobile:min-w-[78px] w-fit mobile:pl-[14px] mobile:pr-[10px] mobile:py-[6px] mobile:rounded-[8px] mobile:text-[14px] font-[500] h-[50px] min-w-[160px] pl-[20px] pr-[12px] py-[16px] rounded-[12px] text-[16px]';
@@ -83,17 +92,17 @@ export default function DropdownFilter({ title = '', list = [], onClick }: Dropd
         {open && (
           <div className={`${BoxStyle} ${BoxShadow}`}>
             <ul className={listStyle}>
-              {list.map((text, idx) => (
+              {list.map((key, idx) => (
                 <li
                   key={idx}
                   className="mobile:h-[40px] mobile:px-[14px] mobile:text-[14px] h-[60px] px-[20px] text-[16px] font-[500]"
                 >
                   <button
-                    value={text}
-                    onClick={onClick}
-                    className="flex h-full w-fit cursor-pointer items-center justify-start hover:text-[var(--color-primary-orange-400)]"
+                    value={key}
+                    onClick={handleClick}
+                    className={`flex h-full w-fit cursor-pointer items-center justify-start hover:text-[var(--color-primary-orange-400)] ${key === value && 'text-[var(--color-primary-orange-400)]'}`}
                   >
-                    {text}
+                    {listObject[key]}
                   </button>
                 </li>
               ))}

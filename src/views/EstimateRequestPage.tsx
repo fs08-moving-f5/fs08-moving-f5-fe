@@ -36,7 +36,7 @@ export default function EstimateRequestPage() {
   const handleload = async () => {
     try {
       const res = await getPendingEsitimateRequests();
-      console.log(res.data);
+      //console.log(res.data);
       if (res.data && Array.isArray(res.data)) {
         if (res.data.length > 0) {
           setPageState('pendingExist');
