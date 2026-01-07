@@ -306,7 +306,7 @@ export interface paths {
          * 드라이버(기사) 목록 조회
          * @description 등록된 드라이버(기사) 목록을 조회합니다.
          *     지역, 서비스 유형으로 필터링하고, 리뷰 수, 평균 평점, 경력, 확정된 견적 수로 정렬할 수 있습니다.
-         *     커서 기반 페이지네이션을 지원하며, 각 드라이버 정보에는 프로필, 찜하기 수, 확정된 견적 수, 리뷰 평균 평점, 리뷰 총 개수가 포함됩니다.
+         *     커서 기반 페이지네이션을 지원하며, 각 드라이버 정보에는 프로필, 경력, 찜하기 수, 확정된 견적 수, 리뷰 평균 평점, 리뷰 총 개수가 포함됩니다.
          *
          *     **쿼리 파라미터:**
          *     - `region` (선택): 지역 필터. 소문자로 입력 (예: seoul, gyeonggi)
@@ -2733,6 +2733,11 @@ export interface components {
             name?: string;
             /** @description 드라이버 프로필 정보 (프로필이 없는 경우 null) */
             driverProfile?: components["schemas"]["DriverProfileInfo"] | null;
+            /**
+             * @description 드라이버 경력 (년)
+             * @example 10
+             */
+            career?: number | null;
             /**
              * @description 해당 드라이버를 찜한 사용자 수
              * @example 45

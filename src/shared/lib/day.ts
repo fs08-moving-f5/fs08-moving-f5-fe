@@ -24,3 +24,27 @@ export const formatDateWithPeriod = (isoDate: string): string => {
 
   return dayjs.utc(isoDate).tz('Asia/Seoul').format('YYYY.MM.DD');
 };
+
+export const formatDateAgo = (isoDate?: string): string => {
+  if (!isoDate) return '';
+
+  const now = dayjs();
+  const date = dayjs.utc(isoDate).tz('Asia/Seoul');
+  const diffInMinutes = now.diff(date, 'minute');
+  const diffInHours = now.diff(date, 'hour');
+  const diffInDays = now.diff(date, 'day');
+
+  if (diffInMinutes < 60) {
+    return `${Math.max(1, diffInMinutes)}분 전`;
+  }
+
+  if (diffInHours < 24) {
+    return `${diffInHours}시간 전`;
+  }
+
+  if (diffInDays < 2) {
+    return '1일 전';
+  }
+
+  return `${diffInDays}일 전`;
+};
