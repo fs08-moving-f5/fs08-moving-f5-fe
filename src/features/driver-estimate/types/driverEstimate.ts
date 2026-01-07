@@ -95,10 +95,9 @@ export interface ConfirmDetailPageProps {
 export interface GetRequestsUIParams {
   cursor?: string | null;
   take?: number;
-  movingTypes?: FrontMovingType[];
+  movingType?: FrontMovingType;
   sort?: FrontFilter;
   keyword?: string;
-  onlyDesignated?: boolean;
   onlyServiceable?: boolean;
 }
 
@@ -110,10 +109,7 @@ export interface GetRequestsParams {
 }
 export interface EstimateRequestRaw {
   id: string;
-  user: {
-    id: string;
-    name: string;
-  };
+  name: string;
   movingType: BackendMovingType;
   movingDate: string;
   isDesignated: boolean;

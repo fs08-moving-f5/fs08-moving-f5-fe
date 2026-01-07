@@ -60,26 +60,25 @@ const DriverEstimateRequestPage = () => {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   // useInfiniteQuery - 무한 스크롤
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isFetching } =
-    useInfiniteQuery<
-      EstimateRequestResponse, // TQueryFnData
-      Error, // TError
-      InfiniteData<EstimateRequestResponse>, // TData
-      ['requests', string, FrontFilter, boolean, boolean, string], // TQueryKey
-      string | null // TPageParam
-    >({
-      queryKey: [
-        'requests',
-        filters.keyword,
-        filters.sort,
-        filters.onlyDesignated,
-        filters.onlyServiceable,
-        filters.movingTypes.join(','),
-      ],
-      queryFn: ({ pageParam }) => getRequests({ cursor: pageParam, ...filters }),
-      initialPageParam: null,
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-    });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery<
+    EstimateRequestResponse, // TQueryFnData
+    Error, // TError
+    InfiniteData<EstimateRequestResponse>, // TData
+    ['requests', Filters], // TQueryKey
+    string | null // TPageParam
+  >({
+    queryKey: ['requests', filters],
+    queryFn: ({ pageParam }) =>
+      getRequests({
+        cursor: pageParam,
+        sort: filters.sort,
+        ...(filters.movingTypes.length > 0 && { movingType: filters.movingTypes[0] }),
+        ...(filters.keyword && { keyword: filters.keyword }),
+        ...(filters.onlyServiceable && { onlyServiceable: filters.onlyServiceable }),
+      }),
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
 
   const requests = data?.pages.flatMap((page) => page.data) ?? [];
 
@@ -254,7 +253,7 @@ const DriverEstimateRequestPage = () => {
               </div>
             )}
 
-            {isFetching && !isFetchingNextPage && (
+            {isLoading && !isFetchingNextPage && (
               <div className="pointer-events-none inset-0 flex items-center justify-center">
                 <span className="rounded-md bg-white/80 px-4 py-2 text-sm text-gray-500 shadow">
                   불러오는 중...
