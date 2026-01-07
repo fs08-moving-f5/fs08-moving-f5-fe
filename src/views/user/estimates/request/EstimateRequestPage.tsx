@@ -249,7 +249,7 @@ export default function EstimateRequestPage() {
                   </span>
                 </div>
               </div>
-              <Link href={'/'}>
+              <Link href={'/user/my/estimates/pending'}>
                 <div className="tab:hidden w-[181px]">
                   <Button size="md">받은 견적 보러가기</Button>
                 </div>
