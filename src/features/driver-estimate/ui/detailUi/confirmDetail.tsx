@@ -46,7 +46,7 @@ const ConfirmDetail = ({ id }: { id: string }) => {
   }
 
   return (
-    <main className="flex min-h-screen flex-col justify-center">
+    <main className="flex min-h-screen w-full flex-col justify-center">
       <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
         <div className="itmes-center self-stretch py-[32px]">
           <h1 className="mx-[30px] text-2xl font-semibold text-[var(--color-black-500)] md:mx-[72px] lg:mx-auto">
@@ -58,7 +58,7 @@ const ConfirmDetail = ({ id }: { id: string }) => {
       <div className="h-45 w-full bg-[url(/img/myPendingEstimate/bg-img.png)] bg-cover bg-center bg-no-repeat"></div>
 
       <section className="mx-5 mt-[35px] mb-30 flex w-full max-w-[1200px] flex-col gap-[139px] md:mx-18 md:mt-[46px] md:mb-[138px] lg:mx-auto lg:mt-[43px] lg:mb-[190px] lg:flex-row lg:gap-[139px]">
-        <article className="w-[740px]">
+        <article className="w-full lg:w-[740px]">
           {/* 칩 & 고객 이름 */}
           <div className="flex flex-col gap-5">
             <div className="flex flex-wrap gap-2">
