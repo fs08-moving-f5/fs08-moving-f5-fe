@@ -53,6 +53,7 @@ const EstimateDetailUi = ({
       {
         onSuccess: () => {
           router.push('/user/my/estimates/received');
+          queryClient.invalidateQueries({ queryKey: QUERY_KEY.RECEIVED_ESTIMATE });
         },
       },
     );

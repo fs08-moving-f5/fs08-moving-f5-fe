@@ -1,12 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import FavoritesSubHeader from '@/features/favorites/ui/subHeader';
 import FavoritesMenuWrapper from '@/features/favorites/ui/menuWrapper';
 import FavoritesCardContainer from '@/features/favorites/ui/cardContainer';
 import { useGetFavoriteDriversQuery } from '@/features/favorites/hooks/queries/useFavoriteQuery';
 import Spinner from '@/shared/ui/spinner';
-import { useIntersectionObserver } from '@/shared/hooks/useIntersectionObserver';
 import type { FavoriteDriver } from '@/features/favorites/services/favorite.service';
 import { useDeleteManyFavoriteDriversMutation } from '@/features/favorites/hooks/mutations/useFavoriteMutation';
 
@@ -17,6 +16,8 @@ const MyFavoritesPageClient = () => {
     useGetFavoriteDriversQuery();
 
   const { mutate: deleteManyFavoriteDrivers } = useDeleteManyFavoriteDriversMutation();
+
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   // TODO: 타입 추론 개선
   const favoriteDrivers: FavoriteDriver[] = (data?.pages.flat() as FavoriteDriver[]) ?? [];
@@ -49,14 +50,23 @@ const MyFavoritesPageClient = () => {
     setSelectedIds(new Set());
   };
 
-  const { ref } = useIntersectionObserver({
-    onIntersect: () => {
-      if (hasNextPage && !isFetchingNextPage) {
-        fetchNextPage();
-      }
-    },
-    enabled: hasNextPage && !isFetchingNextPage,
-  });
+  // 페이지네이션 - 무한 스크롤
+  useEffect(() => {
+    if (!loadMoreRef.current || !hasNextPage) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { rootMargin: '200px', threshold: 0 },
+    );
+
+    observer.observe(loadMoreRef.current);
+
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   const isAllChecked =
     favoriteDrivers.length > 0 &&
@@ -82,8 +92,8 @@ const MyFavoritesPageClient = () => {
           favoriteDrivers={favoriteDrivers}
           selectedIds={selectedIds}
           onToggleCheck={handleToggleCheck}
+          loadMoreRef={loadMoreRef}
         />
-        {hasNextPage && <div ref={ref} className="h-4" />}
       </div>
     </>
   );
