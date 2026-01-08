@@ -7,6 +7,10 @@ import {
   FavoriteDriverInfoType,
 } from '@/features/drivers/services/drivers.service';
 import PagenationInfiniteScroll from '@/features/drivers/ui/Pagenation';
+import {
+  addFavoriteDriver,
+  deleteFavoriteDriver,
+} from '@/features/favorites/services/favorite.service';
 import { FindDriver } from '@/shared/ui/card';
 import DropdownFilter from '@/shared/ui/dropdown/DropdownFilter';
 import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
@@ -76,10 +80,6 @@ export default function DriversPageClient({
     }
   };
 
-  const handleClickLike = async () => {
-    //좋아요 기능 구현 필요
-  };
-
   const DriverCard = (params: DriverInfoType) => {
     return (
       <Link href={`${router}/${params.id}`}>
@@ -97,10 +97,12 @@ export default function DriversPageClient({
               params.driverProfile?.services.length > 0 &&
               params.driverProfile?.services.map((service) => convertMovingType(service))) ||
             undefined
-          } //서비스 여러개 표시할 수 있게
+          }
           likeCount={params.favoriteDriverCount || 0}
           isLiked={params.isFavorite}
-          likeFunction={handleClickLike}
+          likeFunction={(liked) => {
+            params.id && (liked ? addFavoriteDriver(params.id) : deleteFavoriteDriver(params.id));
+          }}
         />
       </Link>
     );
@@ -128,7 +130,10 @@ export default function DriversPageClient({
           }
           likeCount={params.driver?.driverProfile?.favoriteDriverCount || 0}
           isLiked={true}
-          // likeFunction={handleClickLike}
+          likeFunction={(liked) => {
+            params.driverId &&
+              (liked ? addFavoriteDriver(params.driverId) : deleteFavoriteDriver(params.driverId));
+          }}
           smallStyle={true}
         />
       </Link>

@@ -22,7 +22,7 @@ interface FindDriverProps {
   movingTypeArray?: ('small' | 'home' | 'office' | 'assign')[];
   favoriteCard?: boolean;
   isLiked?: boolean;
-  likeFunction?: () => void;
+  likeFunction?: (liked: boolean) => void;
 }
 
 const FindDriver = ({
@@ -46,7 +46,7 @@ const FindDriver = ({
   const [liked, setLiked] = useState(isLiked);
 
   const handleLikeClick = () => {
-    likeFunction?.();
+    likeFunction?.(!liked);
     setLiked(!liked);
   };
 
