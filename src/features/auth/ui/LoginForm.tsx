@@ -58,6 +58,7 @@ export default function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
         {/* 로그인 버튼 */}
         <Button
           type="submit"
+          aria-label="로그인"
           variant="solid"
           design="primary"
           size="xl"

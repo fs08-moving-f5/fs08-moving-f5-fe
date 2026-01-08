@@ -23,7 +23,7 @@ const EmptySection = ({ type }: emptyParmas) => {
 
         {type === 'written' && (
           <Link href="/user/my/reviews/pending" className="w-full">
-            <Button type="button" aria-label="리뷰 작성 페이지 이동" size="sm">
+            <Button type="button" aria-label="리뷰 작성하러 가기" size="sm">
               리뷰 작성하러 가기
             </Button>
           </Link>
@@ -31,7 +31,7 @@ const EmptySection = ({ type }: emptyParmas) => {
 
         {(type === 'confirm' || type === 'reject') && (
           <Link href="/driver/my/requests" className="w-full">
-            <Button type="button" aria-label="견적 작성 페이지 이동" size="sm">
+            <Button type="button" aria-label="견적 작성하러 가기" size="sm">
               견적 작성하러 가기
             </Button>
           </Link>

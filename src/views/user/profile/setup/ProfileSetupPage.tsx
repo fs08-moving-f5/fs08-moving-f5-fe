@@ -64,7 +64,7 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
         <RegionSelectionSection selectedRegions={selectedRegions} onToggleRegion={toggleRegion} />
 
         <div className="mobile:mt-8 mx-auto mt-12 flex justify-center">
-          <Button onClick={handleSubmit} disabled={!isValid || isLoading}>
+          <Button aria-label="시작하기" onClick={handleSubmit} disabled={!isValid || isLoading}>
             {isLoading ? '처리 중...' : '시작하기'}
           </Button>
         </div>
