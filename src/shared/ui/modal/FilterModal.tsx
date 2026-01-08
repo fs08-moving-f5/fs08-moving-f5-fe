@@ -77,6 +77,8 @@ const FilterModal = ({ filters, setFilters, onClose }: FilterModalProps) => {
           <div className="mb-6 flex flex-col gap-3">
             <div className="flex gap-2">
               <CheckBox
+                shape="square"
+                aria-label="지정 요청 여부 체크"
                 checked={filters.onlyDesignated}
                 onChange={(checked) => setFilters((prev) => ({ ...prev, onlyDesignated: checked }))}
               />
@@ -84,6 +86,8 @@ const FilterModal = ({ filters, setFilters, onClose }: FilterModalProps) => {
             </div>
             <div className="flex gap-2">
               <CheckBox
+                shape="square"
+                aria-label="서비스 가능 지역 여부 체크"
                 checked={filters.onlyServiceable}
                 onChange={(checked) =>
                   setFilters((prev) => ({ ...prev, onlyServiceable: checked }))

@@ -198,6 +198,7 @@ const DriverEstimateRequestPage = () => {
                 <div className="flex items-center gap-2">
                   <CheckBox
                     shape="square"
+                    aria-label="지정 요청 여부 체크"
                     checked={filters.onlyDesignated}
                     onChange={(checked: boolean) =>
                       setFilters((prev) => ({ ...prev, onlyDesignated: checked }))
@@ -210,6 +211,7 @@ const DriverEstimateRequestPage = () => {
                 <div className="flex items-center justify-center gap-2">
                   <CheckBox
                     shape="square"
+                    aria-label="서비스 가능 지역 여부 체크"
                     checked={filters.onlyServiceable}
                     onChange={(checked: boolean) =>
                       setFilters((prev) => ({ ...prev, onlyServiceable: checked }))
