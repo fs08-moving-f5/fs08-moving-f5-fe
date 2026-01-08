@@ -11,9 +11,14 @@ import { FindDriver } from '@/shared/ui/card';
 import DropdownFilter from '@/shared/ui/dropdown/DropdownFilter';
 import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
 import SearchBar from '@/shared/ui/input/SearchBar';
+import Link from 'next/link';
 import { useState } from 'react';
 
-export default function DriversPageClient() {
+export default function DriversPageClient({
+  router,
+}: {
+  router: string; //페이지 절대 경로 (상세페이지 이동 기준 용)
+}) {
   const regionDict = {
     all: '전체',
     seoul: '서울',
@@ -57,6 +62,78 @@ export default function DriversPageClient() {
   const [service, setService] = useState<serviceType>('all');
   const [sort, setSort] = useState<sortType>('review');
   const [keyword, setKeyword] = useState('');
+
+  const convertMovingType = (
+    v: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
+  ): 'small' | 'home' | 'office' => {
+    switch (v) {
+      case 'SMALL_MOVING':
+        return 'small';
+      case 'HOME_MOVING':
+        return 'home';
+      case 'OFFICE_MOVING':
+        return 'office';
+    }
+  };
+
+  const handleClickLike = async () => {
+    //좋아요 기능 구현 필요
+  };
+
+  const DriverCard = (params: DriverInfoType) => {
+    return (
+      <Link href={`${router}/${params.id}`}>
+        <FindDriver
+          title={params.driverProfile?.shortIntro || '제목 없음'}
+          description={params.driverProfile?.description || '설명 없음'}
+          driverName={params.name || '이름 없음'}
+          driverImageUrl={params.driverProfile?.imageUrl || undefined}
+          rating={params.averageRating || 0}
+          reviewCount={params.reviewCount || 0}
+          experience={`${params.career || 0}년`}
+          moveCount={params.confirmedEstimateCount?.toString() || '0'}
+          movingTypeArray={
+            (params.driverProfile?.services &&
+              params.driverProfile?.services.length > 0 &&
+              params.driverProfile?.services.map((service) => convertMovingType(service))) ||
+            undefined
+          } //서비스 여러개 표시할 수 있게
+          likeCount={params.favoriteDriverCount || 0}
+          isLiked={params.isFavorite}
+          likeFunction={handleClickLike}
+        />
+      </Link>
+    );
+  };
+
+  const FavoriteDriverCard = (params: FavoriteDriverInfoType) => {
+    return (
+      <Link href={`${router}/${params.driverId}`}>
+        <FindDriver
+          title={params.driver?.driverProfile?.shortIntro || '제목 없음'}
+          description={params.driver?.driverProfile?.description || '설명 없음'}
+          driverName={params.driver?.name || '이름 없음'}
+          driverImageUrl={params.driver?.driverProfile?.imageUrl || undefined}
+          rating={params.driver?.driverProfile?.averageRating || 0}
+          reviewCount={params.driver?.driverProfile?.reviewCount || 0}
+          experience={`${params.driver?.driverProfile?.career || 0}년`}
+          moveCount={params.driver?.driverProfile?.confirmedEstimateCount?.toString() || '0'}
+          movingTypeArray={
+            (params.driver?.driverProfile?.services &&
+              params.driver?.driverProfile?.services.length > 0 &&
+              params.driver?.driverProfile?.services.map((service) =>
+                convertMovingType(service),
+              )) ||
+            undefined
+          }
+          likeCount={params.driver?.driverProfile?.favoriteDriverCount || 0}
+          isLiked={true}
+          // likeFunction={handleClickLike}
+          smallStyle={true}
+        />
+      </Link>
+    );
+  };
 
   return (
     <div className="flex h-[100vh] w-full flex-col items-center">
@@ -112,6 +189,7 @@ export default function DriversPageClient() {
                 filter={{
                   region: region === 'all' ? undefined : region,
                   service: service === 'all' ? undefined : service,
+                  search: keyword,
                   sort,
                 }}
                 ElementNode={DriverCard}
@@ -121,13 +199,6 @@ export default function DriversPageClient() {
             <div className="tab:hidden flex flex-col gap-[16px]">
               <h2 className="text-start text-[20px] leading-[32px] font-[600]">찜한 기사님</h2>
               <div className="scrollbar-hide scroll-mask mb-[200px] h-full w-full max-w-[820px] flex-col overflow-scroll py-[16px]">
-                {/* <PagenationInfiniteScroll<FavoriteDriverInfoType>
-                  flexGap={20}
-                  pageSize={10}
-                  getApi={getFavoriteDrivers}
-                  ElementNode={DriverCard}
-                  noElementMsg="찜한 기사님이 없습니다."
-                /> */}
                 <PagenationInfiniteScroll<FavoriteDriverInfoType>
                   pageName="favorite_driver_list"
                   flexGap={16}
@@ -142,88 +213,5 @@ export default function DriversPageClient() {
         </div>
       </div>
     </div>
-  );
-}
-
-function DriverCard(params: DriverInfoType) {
-  const convertMovingType = (
-    v: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
-  ): 'small' | 'home' | 'office' => {
-    switch (v) {
-      case 'SMALL_MOVING':
-        return 'small';
-      case 'HOME_MOVING':
-        return 'home';
-      case 'OFFICE_MOVING':
-        return 'office';
-    }
-  };
-
-  const handleClickLike = async () => {};
-
-  return (
-    <FindDriver
-      title={params.driverProfile?.shortIntro || '제목 없음'}
-      description={params.driverProfile?.description || '설명 없음'}
-      driverName={params.name || '이름 없음'}
-      //driverImageUrl={params.driverProfile?.imageUrl}
-      rating={params.averageRating || 0}
-      reviewCount={params.reviewCount || 0}
-      experience={`${params.career || 0}년`}
-      moveCount={params.confirmedEstimateCount?.toString() || '0'}
-      movingTypeArray={
-        (params.driverProfile?.services &&
-          params.driverProfile?.services.length > 0 &&
-          params.driverProfile?.services.map((service) => convertMovingType(service))) ||
-        undefined
-      } //서비스 여러개 표시할 수 있게
-      likeCount={params.favoriteDriverCount || 0}
-      isLiked={params.isFavorite}
-      likeFunction={handleClickLike}
-    />
-  );
-}
-
-function FavoriteDriverCard(params: FavoriteDriverInfoType) {
-  const convertMovingType = (
-    v: 'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
-  ): 'small' | 'home' | 'office' => {
-    switch (v) {
-      case 'SMALL_MOVING':
-        return 'small';
-      case 'HOME_MOVING':
-        return 'home';
-      case 'OFFICE_MOVING':
-        return 'office';
-    }
-  };
-
-  const handleClickLike = async () => {};
-
-  // const rating =
-  //   (params.driver?.reviews?.reduce((acc, v) => acc + (v.rating || 0), 0) ?? 0) /
-  //   (params.driver?.reviews?.length ?? 1);
-
-  return (
-    <FindDriver
-      title={params.driver?.driverProfile?.shortIntro || '제목 없음'}
-      description={params.driver?.driverProfile?.description || '설명 없음'}
-      driverName={params.driver?.name || '이름 없음'}
-      //driverImageUrl={params.driverProfile?.imageUrl}
-      rating={params.driver?.driverProfile?.averageRating || 0}
-      reviewCount={params.driver?.driverProfile?.reviewCount || 0}
-      experience={`${params.driver?.driverProfile?.career || 0}년`}
-      moveCount={params.driver?.driverProfile?.confirmedEstimateCount?.toString() || '0'}
-      movingTypeArray={
-        (params.driver?.driverProfile?.services &&
-          params.driver?.driverProfile?.services.length > 0 &&
-          params.driver?.driverProfile?.services.map((service) => convertMovingType(service))) ||
-        undefined
-      } //서비스 여러개 표시할 수 있게
-      likeCount={params.driver?.driverProfile?.favoriteDriverCount || 0}
-      isLiked={true}
-      // likeFunction={handleClickLike}
-      smallStyle={true}
-    />
   );
 }
