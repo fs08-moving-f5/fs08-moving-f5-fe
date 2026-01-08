@@ -22,7 +22,7 @@ const EstimateConfirmPopup = ({
             <div className="text-black-400 text-2xl font-bold">{formatPrice(price)}</div>
           </div>
           <div className="flex w-full flex-col gap-10">
-            <Button size="md" variant="solid" onClick={onConfirmClick}>
+            <Button aria-label="견적 확정하기" size="md" variant="solid" onClick={onConfirmClick}>
               견적 확정하기
             </Button>
             <div className="w-full">{stroke}</div>

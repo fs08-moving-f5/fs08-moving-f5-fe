@@ -93,6 +93,7 @@ const EstimateClient = (props: EstimateClientProps) => {
         <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-[rgba(4,4,4,0.64)]">
           <p className="mb-4 text-lg font-semibold text-white">이사 완료된 견적이에요</p>
           <Button
+            aria-label="견적 상세보기"
             variant="outlined"
             design="secondary"
             size="xs"

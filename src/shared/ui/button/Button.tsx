@@ -4,16 +4,18 @@ import { ButtonHTMLAttributes, ReactNode } from 'react';
 import Image from 'next/image';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  type?: 'button' | 'submit' | 'reset';
   children: ReactNode;
   variant?: 'solid' | 'outlined';
   design?: 'primary' | 'secondary';
   size?: 'xl' | 'lg' | 'md' | 'sm' | 'xs' | '2xs';
   disabled?: boolean;
   isWriting?: boolean;
-  onClick?: () => void;
+  onClick?: ButtonHTMLAttributes<HTMLButtonElement>['onClick'];
 }
 
 const Button = ({
+  type = 'button',
   children,
   variant = 'solid',
   design = 'primary',
@@ -108,8 +110,7 @@ const Button = ({
 
   return (
     <button
-      type="button"
-      aria-label="버튼"
+      type={type}
       disabled={disabled}
       className={` ${baseStyles} ${getSizeClasses()} ${variantClasses} ${disabled ? 'opacity-60' : 'hover:opacity-90'} `}
       onClick={onClick}

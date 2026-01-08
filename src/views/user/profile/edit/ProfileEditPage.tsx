@@ -118,10 +118,10 @@ function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
         <RegionSelectionSection selectedRegions={selectedRegions} onToggleRegion={toggleRegion} />
 
         <div className="mobile:mt-8 mt-12 flex gap-3">
-          <Button onClick={handleCancel} disabled={isLoading} variant="outlined">
+          <Button aria-label="취소" onClick={handleCancel} disabled={isLoading} variant="outlined">
             취소
           </Button>
-          <Button onClick={onSubmit} disabled={!isValid || isLoading}>
+          <Button aria-label="수정하기" onClick={onSubmit} disabled={!isValid || isLoading}>
             {isLoading ? '처리 중...' : '수정하기'}
           </Button>
         </div>

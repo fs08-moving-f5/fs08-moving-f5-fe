@@ -127,6 +127,7 @@ export default function EstimateRequestPage() {
                   <div className="flex justify-end">
                     <div className="w-[200px] 2xl:hidden">
                       <Button
+                        aria-label="견적 요청하기"
                         size="md"
                         onClick={handleRequset}
                         disabled={!(movingType && date && from && to)}
@@ -139,7 +140,12 @@ export default function EstimateRequestPage() {
               </div>
             </div>
             <div className="absolute right-[84px] bottom-[150px] hidden w-[200px] 2xl:block">
-              <Button size="md" onClick={() => {}} disabled={!(movingType && date && from && to)}>
+              <Button
+                aria-label="견적 요청하기"
+                size="md"
+                onClick={() => {}}
+                disabled={!(movingType && date && from && to)}
+              >
                 견적 요청하기
               </Button>
             </div>
@@ -189,6 +195,7 @@ export default function EstimateRequestPage() {
               <div>
                 {progress !== 0 && (
                   <Button
+                    aria-label="이전"
                     size="sm"
                     variant="outlined"
                     design="primary"
@@ -201,6 +208,7 @@ export default function EstimateRequestPage() {
               <div>
                 {progress === 2 ? (
                   <Button
+                    aria-label="견적 요청하기"
                     size="sm"
                     onClick={handleRequset}
                     disabled={!(movingType && date && from && to)}
@@ -209,6 +217,7 @@ export default function EstimateRequestPage() {
                   </Button>
                 ) : (
                   <Button
+                    aria-label="다음"
                     size="sm"
                     disabled={[movingType, date, from && to][progress] ? false : true}
                     onClick={() => setProgress((prev) => (prev < 2 ? prev + 1 : prev))}
@@ -251,10 +260,14 @@ export default function EstimateRequestPage() {
               </div>
               <Link href={'/user/my/estimates/pending'}>
                 <div className="tab:hidden w-[181px]">
-                  <Button size="md">받은 견적 보러가기</Button>
+                  <Button aria-label="받은 견적 보러가기" size="md">
+                    받은 견적 보러가기
+                  </Button>
                 </div>
                 <div className="tab:block hidden w-[167px]">
-                  <Button size="sm">받은 견적 보러가기</Button>
+                  <Button aria-label="받은 견적 보러가기" size="sm">
+                    받은 견적 보러가기
+                  </Button>
                 </div>
               </Link>
             </div>

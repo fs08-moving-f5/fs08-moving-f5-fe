@@ -101,7 +101,14 @@ export default function SignupForm({ onSubmit }: SignupFormProps) {
 
         {/* 시작하기 버튼 */}
         <div className="w-full pt-4">
-          <Button type="submit" size="xl" variant="solid" design="primary" disabled={!isValid}>
+          <Button
+            type="submit"
+            aria-label="시작하기"
+            size="xl"
+            variant="solid"
+            design="primary"
+            disabled={!isValid}
+          >
             시작하기
           </Button>
         </div>

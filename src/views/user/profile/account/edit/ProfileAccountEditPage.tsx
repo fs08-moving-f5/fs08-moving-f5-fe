@@ -111,10 +111,14 @@ export default function ProfileAccountEditPage({ userType }: ProfileAccountEditP
         />
 
         <div className="mobile:mt-8 mt-12 flex gap-3">
-          <Button onClick={handleCancel} variant="outlined">
+          <Button aria-label="취소" onClick={handleCancel} variant="outlined">
             취소
           </Button>
-          <Button onClick={() => handleSubmit(() => router.back())} disabled={isUpdating}>
+          <Button
+            aria-label="수정하기"
+            onClick={() => handleSubmit(() => router.back())}
+            disabled={isUpdating}
+          >
             {isUpdating ? '처리 중...' : '수정하기'}
           </Button>
         </div>

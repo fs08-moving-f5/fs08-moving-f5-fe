@@ -80,10 +80,11 @@ const RequestReceived = ({
 
         {/* 버튼 영역 */}
         <section className="mobile:flex-col-reverse mobile:gap-2 tab:flex-col tab:gap-2 flex flex-row gap-3">
-          <Button variant="outlined" size="lg" onClick={onRejectClick}>
+          <Button aria-label="반려하기" variant="outlined" size="lg" onClick={onRejectClick}>
             반려하기
           </Button>
           <Button
+            aria-label="견적 보내기"
             variant="solid"
             design="primary"
             size="lg"

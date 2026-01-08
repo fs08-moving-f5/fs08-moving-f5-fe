@@ -23,13 +23,17 @@ const EmptySection = ({ type }: emptyParmas) => {
 
         {type === 'written' && (
           <Link href="/user/my/reviews/pending" className="w-full">
-            <Button size="sm">리뷰 작성하러 가기</Button>
+            <Button type="button" aria-label="리뷰 작성하러 가기" size="sm">
+              리뷰 작성하러 가기
+            </Button>
           </Link>
         )}
 
         {(type === 'confirm' || type === 'reject') && (
           <Link href="/driver/my/requests" className="w-full">
-            <Button size="sm">견적 작성하러 가기</Button>
+            <Button type="button" aria-label="견적 작성하러 가기" size="sm">
+              견적 작성하러 가기
+            </Button>
           </Link>
         )}
       </div>

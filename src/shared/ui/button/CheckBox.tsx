@@ -24,7 +24,6 @@ const CheckBox = ({ shape = 'square', checked, onChange }: CheckBoxProps) => {
   return (
     <button
       type="button"
-      aria-label="체크 박스"
       onClick={() => onChange(!checked)}
       className={`flex items-center justify-center border ${borderColor} ${bgColor} ${wrapperSize} ${radius} cursor-pointer shadow-md transition`}
     >
