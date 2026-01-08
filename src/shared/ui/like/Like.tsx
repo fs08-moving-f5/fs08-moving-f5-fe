@@ -23,6 +23,7 @@ const Like = ({
     <div className="mobile:gap-1 tab:gap-1 flex items-center gap-1.5">
       <button
         onClick={(e) => {
+          e.preventDefault();
           e.stopPropagation();
           onLikeClick?.();
         }}
