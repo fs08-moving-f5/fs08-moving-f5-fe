@@ -100,7 +100,7 @@ const FilterModal = ({ filters, setFilters, onClose }: FilterModalProps) => {
 
         <div className="md:my-8">
           {/* 조회 버튼 */}
-          <Button size="lg" onClick={onClose}>
+          <Button type="button" aria-label="조회하기" size="lg" onClick={onClose}>
             조회하기
           </Button>
         </div>

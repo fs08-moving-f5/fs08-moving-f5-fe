@@ -30,6 +30,7 @@ export default function ModalConfirm({
               {title}
             </span>
             <button
+              type="button"
               onClick={() => setIsOpen(!isOpen)}
               className="cursor-pointer hover:brightness-50"
             >
