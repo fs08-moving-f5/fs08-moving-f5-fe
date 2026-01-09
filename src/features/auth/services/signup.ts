@@ -47,6 +47,8 @@ export const socialLogin = async (
 
   const url = new URL(`auth/oauth/${provider}`, base);
   url.searchParams.set('type', usertype);
+  // 백엔드가 OAuth 콜백 시 이 도메인으로 리다이렉트하도록 전달
+  url.searchParams.set('redirectOrigin', window.location.origin);
 
   window.location.href = url.toString();
 };
