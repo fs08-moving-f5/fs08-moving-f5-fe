@@ -4,6 +4,7 @@ import Pagination from '@/shared/ui/pagination/Pagination';
 import ReviewChart from '@/shared/ui/reviewChart/ReviewChart';
 import { StarRating } from '@/shared/ui/star';
 import Review from '@/shared/ui/card/Review';
+
 import type { MyPageData, ReviewListData } from '@/features/profile/types/types';
 
 interface MyPageReviewsSectionProps {

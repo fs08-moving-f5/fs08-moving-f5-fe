@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@/shared/ui/button';
-import type { UserType } from '@/features/auth/types/types';
 import { useProfileSetupForm } from '@/features/profile/hooks';
 import {
   ProfileSetupHeader,
@@ -10,6 +9,8 @@ import {
   ServiceSelectionSection,
   RegionSelectionSection,
 } from '@/features/profile/ui';
+
+import type { UserType } from '@/features/auth/types/types';
 
 interface ProfileSetupPageProps {
   userType: UserType;

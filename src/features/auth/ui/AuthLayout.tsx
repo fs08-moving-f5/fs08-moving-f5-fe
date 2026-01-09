@@ -1,8 +1,9 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import Image from 'next/image';
-import { UserType } from '../types/types';
+
+import type { UserType } from '../types/types';
 
 interface AuthLayoutProps {
   children: ReactNode;

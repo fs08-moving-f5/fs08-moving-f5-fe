@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createUserProfile, createDriverProfile } from '../services/profileService';
+
 import type {
   CreateUserProfileRequest,
   CreateDriverProfileRequest,

@@ -1,8 +1,7 @@
 import { HTTPError } from 'ky';
 import { api } from '@/shared/api/client';
-import { LoginFormData, LoginResponse, UserType } from '../types/types';
-import { LoginData } from '@/shared/types/user';
 import { useAuthStore } from '@/shared/store/authStore';
+import type { LoginFormData, LoginResponse, UserType } from '../types/types';
 
 /**
  * 로그인 API
@@ -15,7 +14,7 @@ export const loginService = async (
   userType: UserType,
 ): Promise<LoginResponse> => {
   try {
-    const response = await api.post<LoginData>('auth/login', {
+    const response = await api.post<LoginResponse>('auth/login', {
       email: formData.email,
       password: formData.password,
       type: userType,
