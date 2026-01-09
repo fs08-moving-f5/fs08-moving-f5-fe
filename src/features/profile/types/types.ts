@@ -23,7 +23,10 @@ type MergedUserFields = {
 };
 
 // 유저 프로필 (BE 응답에서 User 정보(name/email/phone)가 병합되어 내려옴)
-type UserProfile = Omit<UserProfileBase, 'id' | 'userId' | 'regions' | 'services' | 'createdAt' | 'updatedAt'> &
+type UserProfile = Omit<
+  UserProfileBase,
+  'id' | 'userId' | 'regions' | 'services' | 'createdAt' | 'updatedAt'
+> &
   MergedUserFields & {
     id: string;
     userId: string;
