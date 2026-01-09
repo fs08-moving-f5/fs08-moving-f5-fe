@@ -1,8 +1,6 @@
 import { HTTPError } from 'ky';
 import { api } from '@/shared/api/client';
 import { useAuthStore } from '@/shared/store/authStore';
-
-import type { SignupData } from '@/shared/types/user';
 import type { SignupRequest, SignupResponse } from '../types/types';
 
 /**
@@ -12,7 +10,7 @@ import type { SignupRequest, SignupResponse } from '../types/types';
  */
 export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
   try {
-    const response = await api.post<SignupData>('auth/signup', data);
+    const response = await api.post<SignupResponse>('auth/signup', data);
     const { user, accessToken } = response.data;
 
     useAuthStore.getState().setAuth(user, accessToken);

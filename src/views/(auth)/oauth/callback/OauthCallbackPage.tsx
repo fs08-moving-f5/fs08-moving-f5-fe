@@ -6,7 +6,7 @@ import { useAuthStore } from '@/shared/store/authStore';
 import { api } from '@/shared/api/client';
 import { showToast } from '@/shared/ui/sonner';
 
-import type { UserResponse } from '@/shared/types/user';
+import type { UserResponse } from '@/shared/types/auth';
 
 export default function OauthCallbackPage() {
   const router = useRouter();

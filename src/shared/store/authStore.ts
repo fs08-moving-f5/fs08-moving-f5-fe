@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { storage } from '../lib/storage';
 import { api } from '../api/client';
 
-import type { UserResponse, RefreshData } from '../types/user';
+import type { UserResponse, RefreshData } from '../types/auth';
 
 interface AuthState {
   user: UserResponse | null;
