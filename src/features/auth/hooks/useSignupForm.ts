@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { SignupFormData, SignupFormErrors } from '../types/types';
 import {
   validateFieldOnChange,
   validateSignupFormOnSubmit,
   isFormValid,
 } from '../schema/signupSchema';
+
+import type { SignupFormData, SignupFormErrors } from '../types/types';
 
 /**
  * 회원가입 폼 상태 관리 훅

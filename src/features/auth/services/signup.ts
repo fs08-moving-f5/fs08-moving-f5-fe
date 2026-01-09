@@ -1,8 +1,9 @@
 import { HTTPError } from 'ky';
 import { api } from '@/shared/api/client';
-import { SignupRequest, SignupResponse } from '../types/types';
-import { SignupData } from '@/shared/types/user';
 import { useAuthStore } from '@/shared/store/authStore';
+
+import type { SignupData } from '@/shared/types/user';
+import type { SignupRequest, SignupResponse } from '../types/types';
 
 /**
  * 회원가입 API

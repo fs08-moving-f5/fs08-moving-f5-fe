@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { LoginFormData } from '../types/types';
 import {
   LoginFormErrors,
   validateFieldOnChange,
   validateLoginFormOnSubmit,
   isFormValid,
 } from '../schema/loginSchema';
+
+import type { LoginFormData } from '../types/types';
 
 /**
  * 로그인 폼 상태 관리 훅

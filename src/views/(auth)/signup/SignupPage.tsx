@@ -8,10 +8,10 @@ import {
   SignupHeader,
   useSignup,
   useSocialLogin,
-  type SignupFormData,
-  type UserType,
 } from '@/features/auth';
 import { showToast } from '@/shared/ui/sonner';
+
+import type { SignupFormData, UserType } from '@/features/auth';
 
 export default function SignupPage({ usertype }: { usertype: UserType }) {
   const router = useRouter();
