@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { ServiceType, RegionType } from '../types/types';
-import type { UserType } from '@/features/auth/types/types';
 import { useCreateProfile } from './useCreateProfile';
 import { useImageUpload } from './useImageUpload';
 import {
@@ -9,6 +7,9 @@ import {
   PROFILE_VALIDATION_PATTERNS,
 } from '../constants/validation.constants';
 import { showToast } from '@/shared/ui/sonner';
+
+import type { ServiceType, RegionType } from '../types/types';
+import type { UserType } from '@/features/auth/types/types';
 
 interface ProfileSetupFormErrors {
   career: string;

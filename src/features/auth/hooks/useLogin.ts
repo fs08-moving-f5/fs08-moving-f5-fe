@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { loginService } from '../services/login';
-import { LoginFormData, LoginResponse, UserType } from '../types/types';
+
+import type { LoginFormData, LoginResponse, UserType } from '../types/types';
 
 export function useLogin() {
   const [isLoading, setIsLoading] = useState(false);

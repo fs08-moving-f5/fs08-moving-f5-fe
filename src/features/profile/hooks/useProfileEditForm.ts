@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import type { ServiceType, RegionType, UserProfile, DriverProfile } from '../types/types';
-import type { UserType } from '@/features/auth/types/types';
 import { useUpdateProfile } from './useUpdateProfile';
 import { useImageUpload } from './useImageUpload';
 import {
@@ -9,6 +7,9 @@ import {
   PROFILE_VALIDATION_PATTERNS,
 } from '../constants/validation.constants';
 import { showToast } from '@/shared/ui/sonner';
+
+import type { DriverProfile, RegionType, ServiceType, UserProfile } from '../types/types';
+import type { UserType } from '@/features/auth/types/types';
 
 interface ProfileEditFormErrors {
   career: string;

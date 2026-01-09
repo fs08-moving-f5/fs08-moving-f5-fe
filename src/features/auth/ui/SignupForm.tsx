@@ -5,7 +5,8 @@ import Link from 'next/link';
 import Input from '@/shared/ui/input/Input';
 import Button from '@/shared/ui/button/Button';
 import { useSignupForm } from '../hooks/useSignupForm';
-import { SignupFormData } from '../types/types';
+
+import type { SignupFormData } from '../types/types';
 
 interface SignupFormProps {
   onSubmit: (data: SignupFormData) => void;

@@ -1,5 +1,6 @@
-import { LoginFormData } from '../types/types';
 import { LOGIN_ERROR_MESSAGES, LOGIN_VALIDATION_PATTERNS } from './loginValidation.constants';
+
+import type { LoginFormData } from '../types/types';
 
 // 로그인 폼 에러
 export interface LoginFormErrors {

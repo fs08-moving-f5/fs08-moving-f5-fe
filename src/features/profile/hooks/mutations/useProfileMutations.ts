@@ -7,6 +7,7 @@ import {
 } from '../../services/profileService';
 import PROFILE_QUERY_KEY from '../../constants/queryKey';
 import { showToast } from '@/shared/ui/sonner';
+
 import type { UserType } from '@/features/auth/types/types';
 
 /**

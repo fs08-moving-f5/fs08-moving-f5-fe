@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+
 import type { MyPageData } from '@/features/profile/types/types';
 
 interface MyPageDriverInfoSectionProps {

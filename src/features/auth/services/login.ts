@@ -1,8 +1,9 @@
 import { HTTPError } from 'ky';
 import { api } from '@/shared/api/client';
-import { LoginFormData, LoginResponse, UserType } from '../types/types';
-import { LoginData } from '@/shared/types/user';
 import { useAuthStore } from '@/shared/store/authStore';
+
+import type { LoginData } from '@/shared/types/user';
+import type { LoginFormData, LoginResponse, UserType } from '../types/types';
 
 /**
  * 로그인 API

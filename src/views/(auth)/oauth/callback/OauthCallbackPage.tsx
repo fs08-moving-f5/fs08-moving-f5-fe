@@ -4,8 +4,9 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/shared/store/authStore';
 import { api } from '@/shared/api/client';
-import type { UserResponse } from '@/shared/types/user';
 import { showToast } from '@/shared/ui/sonner';
+
+import type { UserResponse } from '@/shared/types/user';
 
 export default function OauthCallbackPage() {
   const router = useRouter();

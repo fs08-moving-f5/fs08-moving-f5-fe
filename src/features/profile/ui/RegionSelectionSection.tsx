@@ -1,5 +1,6 @@
 import { ActiveChip } from '@/shared/ui/chip';
 import { REGIONS } from '../constants';
+
 import type { RegionType } from '../types/types';
 
 interface RegionSelectionSectionProps {

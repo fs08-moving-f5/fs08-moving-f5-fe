@@ -1,9 +1,10 @@
-import { SignupFormData, SignupFormErrors } from '../types/types';
 import {
   SIGNUP_ERROR_MESSAGES,
   VALIDATION_PATTERNS,
   VALIDATION_RULES,
 } from './signupValidation.constants';
+
+import type { SignupFormData, SignupFormErrors } from '../types/types';
 
 // 이름 검증
 export const validateName = (name: string): string => {
