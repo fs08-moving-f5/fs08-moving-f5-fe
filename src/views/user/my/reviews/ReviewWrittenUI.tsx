@@ -48,30 +48,32 @@ const ReviewWrittenUI = () => {
     <main className="flex max-w-[1920px] flex-col justify-center">
       <Tab />
 
-      <section className="mt-[10px] mb-[14px] w-full max-w-[1200px] px-[20px] md:mb-[77px] lg:mx-auto lg:mb-[84px]">
-        <ReviewList
-          data={list}
-          total={data.total}
-          page={page}
-          limit={LIMIT}
-          onPageChange={setPage}
-          renderItem={(item) => (
-            <ReviewWritten
-              key={item.id}
-              driverName={item.driverName}
-              description={item.description}
-              movingType={item.movingType}
-              pickedDriver={item.pickedDriver}
-              driverImageUrl={item.driverImageUrl}
-              pickupAddress={item.pickupAddress}
-              dropoffAddress={item.dropoffAddress}
-              movingDate={item.movingDate}
-              rating={item.rating}
-              reviewContent={item.content}
-              reviewDate={item.updatedAt}
-            />
-          )}
-        />
+      <section className="w-full justify-center">
+        <div className="mx-auto mb-10 w-full max-w-[1200px] md:mb-10 lg:mb-22">
+          <ReviewList
+            data={list}
+            total={data.total}
+            page={page}
+            limit={LIMIT}
+            onPageChange={setPage}
+            renderItem={(item) => (
+              <ReviewWritten
+                key={item.id}
+                driverName={item.driverName}
+                description={item.description}
+                movingType={item.movingType}
+                pickedDriver={item.pickedDriver}
+                driverImageUrl={item.driverImageUrl}
+                pickupAddress={item.pickupAddress}
+                dropoffAddress={item.dropoffAddress}
+                movingDate={item.movingDate}
+                rating={item.rating}
+                reviewContent={item.content}
+                reviewDate={item.updatedAt}
+              />
+            )}
+          />
+        </div>
       </section>
     </main>
   );

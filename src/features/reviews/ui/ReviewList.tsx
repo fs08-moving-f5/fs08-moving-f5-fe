@@ -15,13 +15,13 @@ function ReviewList<T>({ data, total, page, limit, onPageChange, renderItem }: R
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <>
-      <ul className="flex flex-col gap-6">{data.map(renderItem)}</ul>
+    <div className="mx-auto px-5 md:px-[40px]">
+      <ul className="mx-auto mb-10 flex w-full max-w-[1200px] flex-col items-center gap-6 md:mb-10 lg:mb-22">
+        {data.map(renderItem)}
+      </ul>
 
-      {totalPages > 1 && (
-        <Pagination currentPage={page} totalPages={totalPages} onPageChange={onPageChange} />
-      )}
-    </>
+      <Pagination currentPage={page} totalPages={totalPages} onPageChange={onPageChange} />
+    </div>
   );
 }
 
