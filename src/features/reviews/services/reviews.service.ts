@@ -24,17 +24,16 @@ export const getReviewWritable = async ({
     })
     .json<{
       data: {
-        items: ReviewWritableItemRaw[];
+        estimates: ReviewWritableItemRaw[];
         total: number;
       };
     }>();
 
-  const list = res.data.items ?? [];
+  const list = res.data.estimates ?? [];
 
   return {
     data: list.map((r) => {
       const movingType = convertMovingType(r.movingType);
-
       if (!movingType) {
         throw new Error(`Invalid movingType: ${r.movingType}`);
       }
@@ -42,8 +41,8 @@ export const getReviewWritable = async ({
       return {
         id: r.id,
         driverName: r.driver.name,
-        description: r.driver.driverProfile.shortIntro,
-        driverImageUrl: r.driver.driverProfile.imageUrl ?? undefined,
+        description: r.driver.shortIntro,
+        driverImageUrl: r.driver.imageUrl ?? undefined,
         movingType,
         pickedDriver: r.isDesignated,
         pickupAddress: r.from ? `${r.from.sido} ${r.from.sigungu}` : '',
@@ -70,17 +69,16 @@ export const getReviewWritten = async ({
     })
     .json<{
       data: {
-        items: getReviewWrittenItemRaw[];
+        reviews: getReviewWrittenItemRaw[];
         total: number;
       };
     }>();
 
-  const list = res.data.items ?? [];
+  const list = res.data.reviews ?? [];
 
   return {
     data: list.map((r) => {
       const movingType = convertMovingType(r.movingType);
-
       if (!movingType) {
         throw new Error(`Invalid movingType: ${r.movingType}`);
       }
@@ -91,8 +89,8 @@ export const getReviewWritten = async ({
         content: r.content,
         updatedAt: convertDateType3(new Date(r.updatedAt)),
         driverName: r.driver.name,
-        description: r.driver.driverProfile.shortIntro,
-        driverImageUrl: r.driver.driverProfile.imageUrl ?? undefined,
+        description: r.driver.shortIntro,
+        driverImageUrl: r.driver.imageUrl ?? undefined,
         movingType,
         pickedDriver: r.isDesignated,
         pickupAddress: r.from ? `${r.from.sido} ${r.from.sigungu}` : '',
