@@ -16,6 +16,7 @@ import {
   EstimateConfirmDetailRaw,
 } from '@/features/driver-estimate/types/driverEstimate';
 import { convertDateType1, convertDateType2 } from '@/shared/lib/convertDate';
+import { formatDateAgo } from '@/shared/lib/day';
 import { convertMovingType, convertMovingTypeToBackend } from '@/shared/lib/convertMovingType';
 
 const convertSort: Record<FrontFilter, BackendFilter> = {
@@ -67,7 +68,7 @@ export const getRequests = async ({
       pickupAddress: r.from ? `${r.from.sido} ${r.from.sigungu}` : '',
       dropoffAddress: r.to ? `${r.to.sido} ${r.to.sigungu}` : '',
       movingDate: convertDateType1(new Date(r.movingDate)),
-      requestTime: convertDateType2(new Date(requestTimeSource)),
+      requestTime: formatDateAgo(requestTimeSource),
     };
   });
 
