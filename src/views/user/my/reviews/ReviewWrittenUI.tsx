@@ -14,25 +14,28 @@ const LIMIT = 10;
 const ReviewWrittenUI = () => {
   const [page, setPage] = useState<number>(1);
 
-  const { data, isLoading } = useReviewList<ReviewWrittenItem>({
+  const { data, isPending, isFetching, error } = useReviewList<ReviewWrittenItem>({
     type: 'written',
     page,
     limit: LIMIT,
   });
 
-  if (isLoading) {
+  const list = data?.data ?? [];
+  const hasData = list.length > 0;
+
+  if (isPending) {
     return (
       <main className="flex max-w-[1920px] flex-col justify-center">
         <Tab />
 
         <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
-          <Spinner isLoading={isLoading} />
+          <Spinner isLoading={isPending} />
         </section>
       </main>
     );
   }
 
-  if (!data || data.data.length === 0) {
+  if (!data || !hasData) {
     return (
       <main className="flex max-w-[1920px] flex-col justify-center">
         <Tab />
@@ -47,7 +50,7 @@ const ReviewWrittenUI = () => {
 
       <section className="mt-[10px] mb-[14px] w-full max-w-[1200px] px-[20px] md:mb-[77px] lg:mx-auto lg:mb-[84px]">
         <ReviewList
-          data={data.data}
+          data={list}
           total={data.total}
           page={page}
           limit={LIMIT}
