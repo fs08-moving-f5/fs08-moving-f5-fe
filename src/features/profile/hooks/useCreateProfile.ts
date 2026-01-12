@@ -47,7 +47,6 @@ export const useCreateProfile = (userType: 'USER' | 'DRIVER') => {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : '프로필 생성에 실패했습니다.';
       setError(errorMessage);
-      console.error('Profile creation error:', err);
       return null;
     } finally {
       setIsLoading(false);

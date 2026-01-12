@@ -186,7 +186,6 @@ export function useProfileEditForm(
       showToast({ kind: 'success', message: '프로필이 수정되었습니다.' });
       router.back();
     } catch (error) {
-      console.error('프로필 수정 실패:', error);
       showToast({
         kind: 'error',
         message: error instanceof Error ? error.message : '프로필 수정에 실패했습니다.',
