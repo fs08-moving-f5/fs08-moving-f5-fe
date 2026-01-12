@@ -30,7 +30,6 @@ export const loginService = async (
       qc.getQueryCache().clear();
       qc.getMutationCache().clear();
     } catch (e) {
-      console.error('QueryClient 초기화 실패:', e);
     }
 
     useAuthStore.getState().setAuth(user, accessToken);

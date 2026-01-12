@@ -158,7 +158,6 @@ export function useProfileSetupForm(userType: UserType) {
       showToast({ kind: 'success', message: '프로필이 등록되었습니다.' });
       router.push('/');
     } catch (error) {
-      console.error('프로필 등록 실패:', error);
       showToast({
         kind: 'error',
         message: error instanceof Error ? error.message : '프로필 등록에 실패했습니다.',
