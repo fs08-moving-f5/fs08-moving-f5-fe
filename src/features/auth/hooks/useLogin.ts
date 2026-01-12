@@ -17,7 +17,6 @@ export function useLogin() {
       const result = await loginService(formData, userType);
       return result;
     } catch (error) {
-      console.error('로그인 오류:', error);
       throw error;
     } finally {
       setIsLoading(false);
