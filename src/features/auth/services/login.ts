@@ -29,8 +29,7 @@ export const loginService = async (
       await qc.cancelQueries();
       qc.getQueryCache().clear();
       qc.getMutationCache().clear();
-    } catch (e) {
-    }
+    } catch (e) {}
 
     useAuthStore.getState().setAuth(user, accessToken);
 
