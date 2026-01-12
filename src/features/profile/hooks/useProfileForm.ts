@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useImageUpload } from './useImageUpload';
+import { showToast } from '@/shared/ui/sonner';
 import { useUpdateProfileMutation } from './mutations/useProfileMutations';
 import MY_PAGE_QUERY_KEY from '../constants/myPageQueryKey';
 import PROFILE_QUERY_KEY from '../constants/queryKey';
@@ -71,7 +72,13 @@ export function useProfileForm(
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [errors, setErrors] = useState<ProfileEditFormErrors>({});
 
-  const { imageUrl, handleImageSelect } = useImageUpload(initialProfile?.imageUrl || null);
+  const {
+    imageUrl,
+    uploadedImageKey,
+    isUploading,
+    error: imageUploadError,
+    handleImageSelect,
+  } = useImageUpload(initialProfile?.imageUrl || null, initialProfile?.imageKey || null);
   const updateMutation = useUpdateProfileMutation(userType);
   const queryClient = useQueryClient();
 
@@ -235,6 +242,21 @@ export function useProfileForm(
   const handleSubmit = async (onSuccess?: () => void) => {
     if (!isValid || updateMutation.isPending) return;
 
+    if (isUploading) {
+      showToast({ kind: 'error', message: '이미지 업로드가 완료될 때까지 기다려주세요.' });
+      return;
+    }
+
+    // 기존 프로필 이미지는 BE에서 presigned URL(http/https)로 내려오므로
+    // 새로 업로드(미리보기 data URL)인 경우에만 imageKey를 강제합니다.
+    if (imageUrl && imageUrl.startsWith('data:') && !uploadedImageKey) {
+      showToast({
+        kind: 'error',
+        message: imageUploadError || '이미지 업로드가 완료되지 않았습니다.',
+      });
+      return;
+    }
+
     // 제출 전 validation
     if (isDriver) {
       const careerError = validateCareer(career);
@@ -253,7 +275,7 @@ export function useProfileForm(
     }
 
     const baseData = {
-      imageUrl: imageUrl || undefined,
+      imageUrl: uploadedImageKey || undefined,
       services: selectedServices,
       regions: selectedRegions,
     };

@@ -1,6 +1,7 @@
 import { HTTPError } from 'ky';
 import { api } from '@/shared/api/client';
 import { useAuthStore } from '@/shared/store/authStore';
+import { getQueryClient } from '@/shared/lib/queryClient';
 import type { LoginFormData, LoginResponse, UserType } from '../types/types';
 
 /**
@@ -21,6 +22,17 @@ export const loginService = async (
     });
 
     const { user, accessToken } = response.data;
+
+    // 다른 계정으로 로그인하는 경우를 대비해, 기존 캐시를 먼저 비움
+    try {
+      const qc = getQueryClient();
+      await qc.cancelQueries();
+      qc.getQueryCache().clear();
+      qc.getMutationCache().clear();
+    } catch (e) {
+      console.error('QueryClient 초기화 실패:', e);
+    }
+
     useAuthStore.getState().setAuth(user, accessToken);
 
     return response.data;

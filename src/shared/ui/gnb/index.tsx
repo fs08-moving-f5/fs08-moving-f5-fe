@@ -13,6 +13,7 @@ import { useLogout } from '@/features/auth/hooks/useLogout';
 import { useGetNotificationListQuery } from './notificationQuery';
 import { NotificationDropdown } from '../dropdown';
 import { useReadNotificationMutation } from './notificationMutation';
+import { useGetDriverProfileQuery, useGetUserProfileQuery } from '@/features/profile/hooks/queries/useProfileQueries';
 
 const menuByRole = {
   guest: [{ id: 1, label: '기사님 찾기', href: '/' }],
@@ -56,6 +57,16 @@ const GNB = () => {
   const hasUnread = useNotificationStore((state) => state.hasUnread);
 
   const userRole = user ? (user.type === 'USER' ? 'user' : 'driver') : 'guest';
+
+  const userProfileQuery = useGetUserProfileQuery(Boolean(user) && user?.type === 'USER');
+  const driverProfileQuery = useGetDriverProfileQuery(Boolean(user) && user?.type === 'DRIVER');
+
+  const profileImageUrl =
+    user?.type === 'USER'
+      ? userProfileQuery.data?.imageUrl
+      : user?.type === 'DRIVER'
+        ? driverProfileQuery.data?.imageUrl
+        : null;
 
   const { data: notifications } = useGetNotificationListQuery();
 
@@ -123,6 +134,7 @@ const GNB = () => {
               size="md"
               userName={user.name}
               userType={userRole}
+              profileImageUrl={profileImageUrl}
               logout={handleLogout}
             />
           </div>
@@ -144,6 +156,7 @@ const GNB = () => {
               size="sm"
               userName={user.name}
               userType={userRole}
+              profileImageUrl={profileImageUrl}
               logout={handleLogout}
             />
             <button type="button" onClick={() => setIsOpen(true)}>
