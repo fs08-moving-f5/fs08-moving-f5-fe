@@ -24,7 +24,7 @@ const EstimateRequestButtonWrapper = ({
           height={24}
         />
       </button>
-      <Button variant="solid" size="sm" onClick={onConfirmClick}>
+      <Button aria-label="견적 확정하기" variant="solid" size="sm" onClick={onConfirmClick}>
         견적 확정하기
       </Button>
     </div>

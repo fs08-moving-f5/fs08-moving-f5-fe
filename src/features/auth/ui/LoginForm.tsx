@@ -5,7 +5,8 @@ import Link from 'next/link';
 import Input from '@/shared/ui/input/Input';
 import Button from '@/shared/ui/button/Button';
 import { useLoginForm } from '../hooks/useLoginForm';
-import { LoginFormData } from '../types/types';
+
+import type { LoginFormData } from '../types/types';
 
 interface LoginFormProps {
   onSubmit: (data: LoginFormData) => void;
@@ -58,6 +59,7 @@ export default function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
         {/* 로그인 버튼 */}
         <Button
           type="submit"
+          aria-label="로그인"
           variant="solid"
           design="primary"
           size="xl"

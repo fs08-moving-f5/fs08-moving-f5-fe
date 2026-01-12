@@ -1,5 +1,6 @@
 import { ActiveChip } from '@/shared/ui/chip';
 import { SERVICES } from '../constants';
+
 import type { ServiceType } from '../types/types';
 
 interface ServiceSelectionSectionProps {

@@ -305,13 +305,14 @@ export interface paths {
         /**
          * 드라이버(기사) 목록 조회
          * @description 등록된 드라이버(기사) 목록을 조회합니다.
-         *     지역, 서비스 유형으로 필터링하고, 리뷰 수, 평균 평점, 경력, 확정된 견적 수로 정렬할 수 있습니다.
+         *     지역, 서비스 유형으로 필터링하고, 기사님 이름으로 검색할 수 있으며, 리뷰 수, 평균 평점, 경력, 확정된 견적 수로 정렬할 수 있습니다.
          *     커서 기반 페이지네이션을 지원하며, 각 드라이버 정보에는 프로필, 경력, 찜하기 수, 확정된 견적 수, 리뷰 평균 평점, 리뷰 총 개수가 포함됩니다.
          *
          *     **쿼리 파라미터:**
          *     - `region` (선택): 지역 필터. 소문자로 입력 (예: seoul, gyeonggi)
          *     - `service` (선택): 서비스 필터 (SMALL_MOVING, HOME_MOVING, OFFICE_MOVING)
          *     - `sort` (선택): 정렬 기준 (review, rating, career, confirmed-estimate)
+         *     - `search` (선택): 기사님 이름 검색. 이름에 포함된 문자열로 검색합니다.
          *     - `cursor` (선택): 다음 페이지 조회를 위한 커서 값. 이전 응답의 `pagination.nextCursor` 값을 사용합니다.
          *     - `limit` (선택): 조회할 항목 수. 기본값은 15입니다.
          *
@@ -320,7 +321,9 @@ export interface paths {
          *     - 서울 지역 필터: `GET /api/drivers?region=seoul&limit=15`
          *     - 가정 이사 서비스 필터: `GET /api/drivers?service=HOME_MOVING&limit=15`
          *     - 평균 평점 정렬: `GET /api/drivers?sort=rating&limit=15`
+         *     - 이름 검색: `GET /api/drivers?search=홍길동&limit=15`
          *     - 복합 필터 및 정렬: `GET /api/drivers?region=seoul&service=HOME_MOVING&sort=rating&limit=15`
+         *     - 검색과 필터 조합: `GET /api/drivers?region=seoul&search=홍길동&limit=15`
          *     - 다음 페이지: `GET /api/drivers?cursor=123e4567-e89b-12d3-a456-426614174000&limit=15`
          *
          *     **참고사항:**
@@ -1377,6 +1380,84 @@ export interface paths {
                 };
                 /** @description 유저 인증 실패 */
                 401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 이미 진행 중인 견적 요청 존재 */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/estimate-request/user/request/designated": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 지정 견적 요청 (유저)
+         * @description 유저가 특정 기사에게 지정 견적 요청을 생성합니다.
+         *     - designatedDriverId: 지정할 기사(User) id
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        movingType: string;
+                        /** Format: date-time */
+                        movingDate: string;
+                        /** @example uuid-driver-user-id */
+                        designatedDriverId: string;
+                        from: Record<string, never>;
+                        to: Record<string, never>;
+                    };
+                };
+            };
+            responses: {
+                /** @description 지정 견적 요청 성공 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 필수 데이터 누락 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 유저 인증 실패 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 지정 기사 정보 없음 */
+                404: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -3026,6 +3107,11 @@ export interface components {
              */
             price?: number | null;
             /**
+             * @description 견적 코멘트
+             * @example 합리적인 가격으로 진행 가능합니다.
+             */
+            comment?: string | null;
+            /**
              * @description 견적 상태
              * @example PENDING
              * @enum {string}
@@ -3098,6 +3184,11 @@ export interface components {
              * @example 500000
              */
             price?: number | null;
+            /**
+             * @description 견적 코멘트
+             * @example 합리적인 가격으로 진행 가능합니다.
+             */
+            comment?: string | null;
             /**
              * @description 견적 상태
              * @example CONFIRMED
@@ -3832,6 +3923,12 @@ export interface components {
          */
         limitQuery: number;
         /**
+         * @description 기사님 이름 검색
+         *     기사님 이름에 포함된 문자열로 검색합니다. 대소문자 구분 없이 검색됩니다.
+         * @example 홍길동
+         */
+        searchQuery: string;
+        /**
          * @description 견적 ID
          * @example 123e4567-e89b-12d3-a456-426614174000
          */
@@ -3885,6 +3982,12 @@ export interface operations {
                  * @example rating
                  */
                 sort?: components["parameters"]["sortQuery"];
+                /**
+                 * @description 기사님 이름 검색
+                 *     기사님 이름에 포함된 문자열로 검색합니다. 대소문자 구분 없이 검색됩니다.
+                 * @example 홍길동
+                 */
+                search?: components["parameters"]["searchQuery"];
                 /**
                  * @description 페이지네이션 커서 (다음 페이지 조회 시 사용)
                  *     이전 응답의 pagination.nextCursor 값을 사용하여 다음 페이지를 조회할 수 있습니다.

@@ -6,6 +6,7 @@ import {
   getMyProfile,
   getDriverPublicProfile,
 } from '../../services/profileService';
+
 import type { UserType } from '@/features/auth/types/types';
 
 /**

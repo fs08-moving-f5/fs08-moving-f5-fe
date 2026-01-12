@@ -4,8 +4,9 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthLayout, LoginForm, LoginHeader, SocialLoginButtons } from '@/features/auth/ui';
 import { useLogin, useSocialLogin } from '@/features/auth/hooks';
-import { LoginFormData, UserType } from '@/features/auth/types/types';
 import { showToast } from '@/shared/ui/sonner';
+
+import type { LoginFormData, UserType } from '@/features/auth/types/types';
 
 export default function LoginPage({ usertype }: { usertype: UserType }) {
   const router = useRouter();
@@ -38,7 +39,7 @@ export default function LoginPage({ usertype }: { usertype: UserType }) {
 
   const handleSocial = async (provider: 'google' | 'kakao' | 'naver') => {
     try {
-      await handleSocialLogin(provider);
+      await handleSocialLogin(provider, usertype);
     } catch (error) {
       console.error('SNS 로그인 실패:', error);
       showToast({ kind: 'error', message: 'SNS 로그인에 실패했습니다.' });

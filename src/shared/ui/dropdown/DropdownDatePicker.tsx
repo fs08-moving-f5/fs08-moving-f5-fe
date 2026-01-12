@@ -79,7 +79,7 @@ export default function DropdownDatePicker({ date, setDate }: DropdownDatePicker
       {open && (
         <div className="absolute top-[58px] flex h-fit w-[350px] flex-col items-center gap-[12px] rounded-[12px] border border-[var(--color-grayScale-200)] bg-[var(--color-grayScale-50)] p-[20px_16px_28px_16px] shadow-md">
           <DatePicker size="sm" date={_date} setDate={setDate} />
-          <Button size="sm" disabled={!date} onClick={handleConfirm}>
+          <Button aria-label="선택 완료" size="sm" disabled={!date} onClick={handleConfirm}>
             선택완료
           </Button>
         </div>

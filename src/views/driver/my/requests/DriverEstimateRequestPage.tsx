@@ -68,7 +68,14 @@ const DriverEstimateRequestPage = () => {
     string | null // TPageParam
   >({
     queryKey: ['requests', filters],
-    queryFn: ({ pageParam }) => getRequests({ cursor: pageParam, ...filters }),
+    queryFn: ({ pageParam }) =>
+      getRequests({
+        cursor: pageParam,
+        sort: filters.sort,
+        ...(filters.movingTypes.length > 0 && { movingType: filters.movingTypes[0] }),
+        ...(filters.keyword && { keyword: filters.keyword }),
+        ...(filters.onlyServiceable && { onlyServiceable: filters.onlyServiceable }),
+      }),
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
@@ -135,11 +142,6 @@ const DriverEstimateRequestPage = () => {
     }));
   };
 
-  // 로딩 중 EmptySection 숨기기
-  if (!data && isFetchingNextPage) {
-    return null;
-  }
-
   if (isLoading) {
     return (
       <main className="flex max-w-[1920px] flex-col justify-center">
@@ -196,6 +198,7 @@ const DriverEstimateRequestPage = () => {
                 <div className="flex items-center gap-2">
                   <CheckBox
                     shape="square"
+                    aria-label="지정 요청 여부 체크"
                     checked={filters.onlyDesignated}
                     onChange={(checked: boolean) =>
                       setFilters((prev) => ({ ...prev, onlyDesignated: checked }))
@@ -208,6 +211,7 @@ const DriverEstimateRequestPage = () => {
                 <div className="flex items-center justify-center gap-2">
                   <CheckBox
                     shape="square"
+                    aria-label="서비스 가능 지역 여부 체크"
                     checked={filters.onlyServiceable}
                     onChange={(checked: boolean) =>
                       setFilters((prev) => ({ ...prev, onlyServiceable: checked }))
@@ -236,19 +240,29 @@ const DriverEstimateRequestPage = () => {
             </div>
           </div>
 
-          {requests.length === 0 ? (
-            <EmptySection type="request" />
-          ) : (
-            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
-              <RequestList
-                requests={requests}
-                isFetchingNextPage={isFetchingNextPage}
-                onConfirm={openConfirm}
-                onReject={openReject}
-                loadMoreRef={loadMoreRef}
-              />
-            </div>
-          )}
+          <div>
+            {requests.length === 0 ? (
+              <EmptySection type="request" />
+            ) : (
+              <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
+                <RequestList
+                  requests={requests}
+                  isFetchingNextPage={isFetchingNextPage}
+                  onConfirm={openConfirm}
+                  onReject={openReject}
+                  loadMoreRef={loadMoreRef}
+                />
+              </div>
+            )}
+
+            {isLoading && !isFetchingNextPage && (
+              <div className="pointer-events-none inset-0 flex items-center justify-center">
+                <span className="rounded-md bg-white/80 px-4 py-2 text-sm text-gray-500 shadow">
+                  불러오는 중...
+                </span>
+              </div>
+            )}
+          </div>
         </section>
       </section>
 

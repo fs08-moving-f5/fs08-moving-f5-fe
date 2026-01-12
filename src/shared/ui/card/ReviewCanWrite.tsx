@@ -111,7 +111,13 @@ const ReviewCanWrite = ({
 
           {/* 리뷰 작성하기 버튼 */}
           <div className="w-full">
-            <Button variant="solid" size="2xs" onClick={onWriteReview} disabled={disabled}>
+            <Button
+              aria-label="리뷰 작성하기"
+              variant="solid"
+              size="2xs"
+              onClick={onWriteReview}
+              disabled={disabled}
+            >
               리뷰 작성하기
             </Button>
           </div>
@@ -123,7 +129,13 @@ const ReviewCanWrite = ({
               {formatPrice(estimatedPrice)}원
             </span>
           </div>
-          <Button variant="solid" size="lg" onClick={onWriteReview} disabled={disabled}>
+          <Button
+            aria-label="리뷰 작성하기"
+            variant="solid"
+            size="lg"
+            onClick={onWriteReview}
+            disabled={disabled}
+          >
             리뷰 작성하기
           </Button>
         </div>

@@ -28,7 +28,7 @@ export interface ReviewWrittenItem {
   movingDate: string;
   rating: number;
   content: string;
-  createdAt: string;
+  updatedAt: string;
 }
 
 export interface OffsetPaginationResponse<T> {
@@ -41,11 +41,10 @@ export interface ReviewWritableItemRaw {
   price: number;
   createdAt: string;
   driver: {
+    id: string;
     name: string;
-    driverProfile: {
-      shortIntro: string;
-      imageUrl: string | null;
-    };
+    shortIntro: string;
+    imageUrl: string | null;
   };
   movingDate: string;
   movingType: BackendMovingType;
@@ -58,13 +57,12 @@ export interface getReviewWrittenItemRaw {
   id: string;
   rating: number;
   content: string;
-  createdAt: string;
+  updatedAt: string;
   driver: {
+    id: string;
     name: string;
-    driverProfile: {
-      shortIntro: string;
-      imageUrl: string | null;
-    };
+    shortIntro: string;
+    imageUrl: string | null;
   };
   movingDate: string;
   movingType: BackendMovingType;

@@ -1,8 +1,7 @@
 import { HTTPError } from 'ky';
 import { api } from '@/shared/api/client';
-import { SignupRequest, SignupResponse } from '../types/types';
-import { SignupData } from '@/shared/types/user';
 import { useAuthStore } from '@/shared/store/authStore';
+import type { SignupRequest, SignupResponse } from '../types/types';
 
 /**
  * 회원가입 API
@@ -11,7 +10,7 @@ import { useAuthStore } from '@/shared/store/authStore';
  */
 export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
   try {
-    const response = await api.post<SignupData>('auth/signup', data);
+    const response = await api.post<SignupResponse>('auth/signup', data);
     const { user, accessToken } = response.data;
 
     useAuthStore.getState().setAuth(user, accessToken);
@@ -29,9 +28,26 @@ export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
   }
 };
 
-export const socialLogin = async (provider: 'google' | 'kakao' | 'naver'): Promise<void> => {
-  // TODO: SNS 로그인 구현
-  console.log(`${provider} 로그인 요청`);
-  // OAuth 리다이렉트 처리
-  // window.location.href = `/api/auth/${provider}`;
+export const socialLogin = async (
+  provider: 'google' | 'kakao' | 'naver',
+  usertype: 'USER' | 'DRIVER',
+): Promise<void> => {
+  const apiBase = process.env.NEXT_PUBLIC_API_URL;
+  if (!apiBase) {
+    throw new Error('NEXT_PUBLIC_API_URL이 설정되어 있지 않습니다.');
+  }
+
+  // new URL(relative, base)에서 base가 슬래시로 끝나지 않으면 마지막 세그먼트가 치환될 수 있어
+  // prefixUrl(http://localhost:4000/api) 기준을 확실히 하기 위해 /로 끝나게 정규화
+  const base = apiBase.endsWith('/') ? apiBase : `${apiBase}/`;
+
+  // 콜백에서 실제 로그인된 타입과 비교하기 위해 저장
+  sessionStorage.setItem('oauthExpectedUsertype', usertype);
+
+  const url = new URL(`auth/oauth/${provider}`, base);
+  url.searchParams.set('type', usertype);
+  // 백엔드가 OAuth 콜백 시 이 도메인으로 리다이렉트하도록 전달
+  url.searchParams.set('redirectOrigin', window.location.origin);
+
+  window.location.href = url.toString();
 };

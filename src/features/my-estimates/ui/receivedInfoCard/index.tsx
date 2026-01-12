@@ -175,7 +175,7 @@ const ReceivedInfoCard = ({
                 movingType={movingTypeMap[estimateRequest?.movingType ?? ''] ?? undefined}
                 pickedDriver={estimateRequest?.isDesignated}
                 estimatePrice={estimate.price ?? 0}
-                shortIntro={estimate.driver?.driverProfile?.shortIntro ?? ''}
+                shortIntro={estimate.comment ?? ''}
                 estimateStatus={
                   estimate.status !== 'CONFIRMED'
                     ? estimateStatusMap[estimate.status ?? 'PENDING']

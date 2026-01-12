@@ -8,10 +8,10 @@ import {
   SignupHeader,
   useSignup,
   useSocialLogin,
-  type SignupFormData,
-  type UserType,
 } from '@/features/auth';
 import { showToast } from '@/shared/ui/sonner';
+
+import type { SignupFormData, UserType } from '@/features/auth';
 
 export default function SignupPage({ usertype }: { usertype: UserType }) {
   const router = useRouter();
@@ -38,7 +38,7 @@ export default function SignupPage({ usertype }: { usertype: UserType }) {
 
   const handleSocial = async (provider: 'google' | 'kakao' | 'naver') => {
     try {
-      await handleSocialLogin(provider);
+      await handleSocialLogin(provider, usertype);
     } catch (error) {
       console.error('SNS 로그인 실패:', error);
       showToast({ kind: 'error', message: 'SNS 로그인에 실패했습니다.' });
