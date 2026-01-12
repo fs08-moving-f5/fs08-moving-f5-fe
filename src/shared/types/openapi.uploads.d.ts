@@ -1,6 +1,6 @@
 declare module './openapi' {
   export interface paths {
-    "/api/profile/me/profile-image/presign-put": {
+    '/api/profile/me/profile-image/presign-put': {
       parameters: {
         query?: never;
         header?: never;
@@ -18,7 +18,7 @@ declare module './openapi' {
         };
         requestBody: {
           content: {
-            "application/json": {
+            'application/json': {
               contentType: string;
               fileName?: string;
             };
@@ -30,7 +30,7 @@ declare module './openapi' {
               [name: string]: unknown;
             };
             content: {
-              "application/json": {
+              'application/json': {
                 success?: boolean;
                 data?: {
                   key: string;

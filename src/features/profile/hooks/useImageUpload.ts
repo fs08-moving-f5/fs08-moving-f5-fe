@@ -1,13 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  createProfileImagePutPresign,
-  uploadFileToPresignedUrl,
-} from '../services/uploadService';
-import {
-  ALLOWED_IMAGE_MIME_TYPES,
-} from '../constants/image.constants';
+import { createProfileImagePutPresign, uploadFileToPresignedUrl } from '../services/uploadService';
+import { ALLOWED_IMAGE_MIME_TYPES } from '../constants/image.constants';
 import { transformImageForUpload } from '../utils/transformImage';
 
 /**
@@ -56,10 +51,10 @@ export const useImageUpload = (
     setUploadedImageKey(null);
 
     try {
-      if (!ALLOWED_IMAGE_MIME_TYPES.includes(file.type as (typeof ALLOWED_IMAGE_MIME_TYPES)[number])) {
-        setError(
-          `지원하지 않는 이미지 형식입니다. (${ALLOWED_IMAGE_MIME_TYPES.join(', ')})`,
-        );
+      if (
+        !ALLOWED_IMAGE_MIME_TYPES.includes(file.type as (typeof ALLOWED_IMAGE_MIME_TYPES)[number])
+      ) {
+        setError(`지원하지 않는 이미지 형식입니다. (${ALLOWED_IMAGE_MIME_TYPES.join(', ')})`);
         return;
       }
 

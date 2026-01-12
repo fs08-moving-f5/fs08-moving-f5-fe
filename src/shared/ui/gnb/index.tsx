@@ -13,7 +13,10 @@ import { useLogout } from '@/features/auth/hooks/useLogout';
 import { useGetNotificationListQuery } from './notificationQuery';
 import { NotificationDropdown } from '../dropdown';
 import { useReadNotificationMutation } from './notificationMutation';
-import { useGetDriverProfileQuery, useGetUserProfileQuery } from '@/features/profile/hooks/queries/useProfileQueries';
+import {
+  useGetDriverProfileQuery,
+  useGetUserProfileQuery,
+} from '@/features/profile/hooks/queries/useProfileQueries';
 
 const menuByRole = {
   guest: [{ id: 1, label: '기사님 찾기', href: '/' }],

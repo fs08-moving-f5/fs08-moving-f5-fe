@@ -19,8 +19,13 @@ interface ProfileSetupFormErrors {
 
 export function useProfileSetupForm(userType: UserType) {
   const router = useRouter();
-  const { imageUrl, uploadedImageKey, isUploading, error: imageUploadError, handleImageSelect } =
-    useImageUpload();
+  const {
+    imageUrl,
+    uploadedImageKey,
+    isUploading,
+    error: imageUploadError,
+    handleImageSelect,
+  } = useImageUpload();
   const { handleCreateProfile, isLoading, error } = useCreateProfile(userType);
 
   const [selectedServices, setSelectedServices] = useState<ServiceType[]>([]);
