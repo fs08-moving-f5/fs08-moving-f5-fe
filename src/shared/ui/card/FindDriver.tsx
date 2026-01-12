@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MovingTypeChip } from '@/shared/ui/chip';
 import { CheckBox } from '../button';
 import Like from '../like';
@@ -44,6 +44,10 @@ const FindDriver = ({
   likeFunction,
 }: FindDriverProps) => {
   const [liked, setLiked] = useState(isLiked);
+
+  useEffect(() => {
+    setLiked(isLiked);
+  }, [isLiked]);
 
   const handleLikeClick = () => {
     likeFunction?.(!liked);
