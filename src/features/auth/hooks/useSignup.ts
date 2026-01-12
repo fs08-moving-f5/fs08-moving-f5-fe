@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { signup } from '../services/signup';
-import { SignupFormData, UserType } from '../types/types';
+
+import type { SignupFormData, UserType } from '../types/types';
 
 /**
  * 회원가입 처리 훅
