@@ -7,6 +7,7 @@ interface DropdownProfileProps {
   size: 'sm' | 'md';
   userName: string;
   userType: 'guest' | 'user' | 'driver';
+  profileImageUrl?: string | null;
   logout?: () => void;
 }
 
@@ -14,6 +15,7 @@ export default function DropdownProfile({
   size = 'md',
   userName,
   userType,
+  profileImageUrl,
   logout,
 }: DropdownProfileProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -86,11 +88,11 @@ export default function DropdownProfile({
         className="flex h-fit w-fit cursor-pointer items-center gap-[16px] hover:brightness-95"
       >
         <Image
-          src={ic_profile}
-          alt="ic_profile"
+          src={profileImageUrl || ic_profile}
+          alt="profile"
           width={36}
           height={36}
-          className="tab:h-[24px] tab:w-[24px] h-[36px] w-[36px]"
+          className="tab:h-[24px] tab:w-[24px] h-[36px] w-[36px] rounded-full object-cover"
         />
         <span className="tab:hidden block text-[18px] font-[500]">{userName}</span>
       </button>

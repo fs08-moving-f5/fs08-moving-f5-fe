@@ -19,7 +19,13 @@ interface ProfileSetupFormErrors {
 
 export function useProfileSetupForm(userType: UserType) {
   const router = useRouter();
-  const { imageUrl, handleImageSelect } = useImageUpload();
+  const {
+    imageUrl,
+    uploadedImageKey,
+    isUploading,
+    error: imageUploadError,
+    handleImageSelect,
+  } = useImageUpload();
   const { handleCreateProfile, isLoading, error } = useCreateProfile(userType);
 
   const [selectedServices, setSelectedServices] = useState<ServiceType[]>([]);
@@ -98,6 +104,22 @@ export function useProfileSetupForm(userType: UserType) {
   const handleSubmit = async () => {
     if (!isValid || isLoading) return;
 
+    if (isUploading) {
+      showToast({ kind: 'error', message: '이미지 업로드가 완료될 때까지 기다려주세요.' });
+      return;
+    }
+
+    // 이미지가 선택(미리보기 존재)됐는데 key가 없다면 전송 금지
+    // 새로 업로드(미리보기 data URL)인 경우에만 imageKey를 강제합니다.
+    // 기존 프로필 이미지는 BE에서 presigned URL로 내려오므로 key가 없어도 제출 가능해야 합니다.
+    if (imageUrl && imageUrl.startsWith('data:') && !uploadedImageKey) {
+      showToast({
+        kind: 'error',
+        message: imageUploadError || '이미지 업로드가 완료되지 않았습니다.',
+      });
+      return;
+    }
+
     // 제출 전 validation
     if (isDriver) {
       const careerError = validateCareer(career);
@@ -116,7 +138,7 @@ export function useProfileSetupForm(userType: UserType) {
     }
 
     const baseData = {
-      imageUrl: imageUrl || undefined,
+      imageUrl: uploadedImageKey || undefined,
       services: selectedServices,
       regions: selectedRegions,
     };
