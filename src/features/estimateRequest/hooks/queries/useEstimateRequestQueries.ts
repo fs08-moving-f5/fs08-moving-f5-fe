@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import QUERY_KEY from '../../constants/queryKey';
 import {
   createEstimateRequest,
+  createEstimateRequestWithGeocode,
   getPendingEsitimateRequests,
 } from '../../services/estimateRequest.service';
 import { showToast } from '@/shared/ui/sonner';
@@ -19,7 +20,8 @@ export const useCreateEstimateRequestMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createEstimateRequest,
+    // mutationFn: createEstimateRequest,
+    mutationFn: createEstimateRequestWithGeocode,
     onSuccess: () => {
       //queryClient.invalidateQueries()
       showToast({
