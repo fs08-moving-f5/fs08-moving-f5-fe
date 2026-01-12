@@ -23,7 +23,7 @@ nextCursor와 hasNext를 queryFn의 리턴 값으로 설정을 해주었지만,
  * @param {string} obj.noElementMsg - 불러온 데이터가 없을 시 보여줄 메세지 내용
  */
 export default function PaginationInfiniteScroll<T extends object | undefined>({
-  queryKeyName, //쿼리키 구분용
+  queryKey, //쿼리키 구분용
   filter = {},
   getApi, //페이지네이션 fetch 함수
   ElementNode, // 받아온 데이터를 전달할 컴포넌트 (ReactNode)
@@ -31,7 +31,7 @@ export default function PaginationInfiniteScroll<T extends object | undefined>({
   flexGap = 8, //요소 간 간격
   noElementMsg = '데이터 없음',
 }: {
-  queryKeyName: string;
+  queryKey: string[];
   filter?: Record<string, string | undefined>;
   flexGap?: number;
   pageSize?: number;
@@ -55,7 +55,7 @@ export default function PaginationInfiniteScroll<T extends object | undefined>({
     CursorResponse<T>, //queryFn 반환값
     Error //에러 타입
   >({
-    queryKey: [queryKeyName, filter],
+    queryKey: [queryKey[0], filter],
     queryFn: fetchItems, //페이지 파라미터만 전달받기 위해서 등록
     initialPageParam: null, // 첫 커서 값
     getNextPageParam: (lastPage) => {
