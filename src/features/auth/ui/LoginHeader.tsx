@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { UserType } from '../types/types';
+
+import type { UserType } from '../types/types';
 
 interface LoginHeaderProps {
   usertype: UserType;

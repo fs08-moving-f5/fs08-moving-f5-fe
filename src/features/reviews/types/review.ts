@@ -41,11 +41,10 @@ export interface ReviewWritableItemRaw {
   price: number;
   createdAt: string;
   driver: {
+    id: string;
     name: string;
-    driverProfile: {
-      shortIntro: string;
-      imageUrl: string | null;
-    };
+    shortIntro: string;
+    imageUrl: string | null;
   };
   movingDate: string;
   movingType: BackendMovingType;
@@ -60,11 +59,10 @@ export interface getReviewWrittenItemRaw {
   content: string;
   updatedAt: string;
   driver: {
+    id: string;
     name: string;
-    driverProfile: {
-      shortIntro: string;
-      imageUrl: string | null;
-    };
+    shortIntro: string;
+    imageUrl: string | null;
   };
   movingDate: string;
   movingType: BackendMovingType;

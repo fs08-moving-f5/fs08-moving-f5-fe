@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { UserType } from '@/features/auth/types/types';
+
+import type { UserType } from '@/features/auth/types/types';
 
 interface SignupHeaderProps {
   usertype: UserType;

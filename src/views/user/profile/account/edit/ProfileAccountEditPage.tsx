@@ -6,6 +6,7 @@ import { HTTPError } from 'ky';
 import { Button } from '@/shared/ui/button';
 import BasicFieldsSection from '@/features/profile/ui/BasicFieldsSection';
 import { useGetProfileQuery, useProfileForm } from '@/features/profile/hooks';
+
 import type { UserType } from '@/features/auth/types/types';
 
 interface ProfileAccountEditPageProps {
@@ -46,6 +47,10 @@ export default function ProfileAccountEditPage({ userType }: ProfileAccountEditP
   } = useProfileForm(userType, profile, { accountEditMode: true });
 
   const handleCancel = () => router.back();
+
+  const handleSubmitForm = () => {
+    handleSubmit(() => router.back());
+  };
 
   if (isLoading) {
     return (
@@ -111,10 +116,10 @@ export default function ProfileAccountEditPage({ userType }: ProfileAccountEditP
         />
 
         <div className="mobile:mt-8 mt-12 flex gap-3">
-          <Button onClick={handleCancel} variant="outlined">
+          <Button aria-label="취소" onClick={handleCancel} variant="outlined">
             취소
           </Button>
-          <Button onClick={() => handleSubmit(() => router.back())} disabled={isUpdating}>
+          <Button aria-label="수정하기" onClick={handleSubmitForm} disabled={isUpdating}>
             {isUpdating ? '처리 중...' : '수정하기'}
           </Button>
         </div>

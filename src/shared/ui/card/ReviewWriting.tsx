@@ -132,7 +132,7 @@ const ReviewWriting = ({
       </div>
 
       {/* 제출 버튼 */}
-      <Button onClick={handleSubmit} disabled={isSubmitDisabled} size="xl">
+      <Button aria-label="리뷰 등록" onClick={handleSubmit} disabled={isSubmitDisabled} size="xl">
         리뷰 등록
       </Button>
     </article>

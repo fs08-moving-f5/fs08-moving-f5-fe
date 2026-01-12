@@ -57,7 +57,13 @@ export default function AddressButton({ type, address, setAddress }: AddressButt
         <div className="flex flex-col gap-[12px]">
           <label className="w-fit text-[16px] leading-[26px] font-[500]">{typeName[type]}</label>
           <div className="mobile:max-w-[327px] tab:max-w-[400px] mobile:w-[327px] tab:w-[400px] flex w-[252px] max-w-[252px]">
-            <Button size="sm" variant="outlined" design="primary" onClick={toggleHandler}>
+            <Button
+              aria-label="주소 입력하기"
+              size="sm"
+              variant="outlined"
+              design="primary"
+              onClick={toggleHandler}
+            >
               <div className="h-full w-full px-[24px] py-[16px]">
                 <p className="truncate">
                   {address ? address.address : `${typeName[type]} 선택하기`}

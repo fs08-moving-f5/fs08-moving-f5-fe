@@ -1,8 +1,7 @@
 import { HTTPError } from 'ky';
 import { api } from '@/shared/api/client';
-import { SignupRequest, SignupResponse } from '../types/types';
-import { SignupData } from '@/shared/types/user';
 import { useAuthStore } from '@/shared/store/authStore';
+import type { SignupRequest, SignupResponse } from '../types/types';
 
 /**
  * 회원가입 API
@@ -11,7 +10,7 @@ import { useAuthStore } from '@/shared/store/authStore';
  */
 export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
   try {
-    const response = await api.post<SignupData>('auth/signup', data);
+    const response = await api.post<SignupResponse>('auth/signup', data);
     const { user, accessToken } = response.data;
 
     useAuthStore.getState().setAuth(user, accessToken);
@@ -47,6 +46,8 @@ export const socialLogin = async (
 
   const url = new URL(`auth/oauth/${provider}`, base);
   url.searchParams.set('type', usertype);
+  // 백엔드가 OAuth 콜백 시 이 도메인으로 리다이렉트하도록 전달
+  url.searchParams.set('redirectOrigin', window.location.origin);
 
   window.location.href = url.toString();
 };

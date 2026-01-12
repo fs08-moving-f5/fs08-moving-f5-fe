@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getUserProfile, getDriverProfile } from '../services/profileService';
+
 import type { UserProfile, DriverProfile } from '../types/types';
 
 /**

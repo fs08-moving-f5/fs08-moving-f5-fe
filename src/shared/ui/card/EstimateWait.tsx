@@ -80,10 +80,22 @@ const EstimateWait = ({
           </section>
 
           <footer className="mobile:flex-col-reverse tab:flex-row flex w-full flex-row gap-3">
-            <Button variant="outlined" design="primary" size="sm" onClick={onDetailClick}>
+            <Button
+              aria-label="상세보기"
+              variant="outlined"
+              design="primary"
+              size="sm"
+              onClick={onDetailClick}
+            >
               상세보기
             </Button>
-            <Button variant="solid" design="primary" size="sm" onClick={onConfirmClick}>
+            <Button
+              aria-label="견적 확정하기"
+              variant="solid"
+              design="primary"
+              size="sm"
+              onClick={onConfirmClick}
+            >
               견적 확정하기
             </Button>
           </footer>

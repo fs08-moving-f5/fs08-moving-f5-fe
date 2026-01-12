@@ -4,8 +4,6 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { HTTPError } from 'ky';
 import { Button } from '@/shared/ui/button';
-import type { UserType } from '@/features/auth/types/types';
-import type { UserProfile, DriverProfile } from '@/features/profile/types/types';
 import { useGetProfileQuery, useProfileForm } from '@/features/profile/hooks';
 import {
   ProfileImageSection,
@@ -14,6 +12,9 @@ import {
   RegionSelectionSection,
 } from '@/features/profile/ui';
 import BasicFieldsSection from '@/features/profile/ui/BasicFieldsSection';
+
+import type { UserType } from '@/features/auth/types/types';
+import type { DriverProfile, UserProfile } from '@/features/profile/types/types';
 
 interface ProfileEditPageProps {
   userType: UserType;
@@ -26,7 +27,7 @@ interface ProfileEditFormProps {
 
 function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
   const router = useRouter();
-  // 상위에서 전달된 profile을 초기값으로 사용s
+  // 상위에서 전달된 profile을 초기값으로 사용
 
   const {
     name,
@@ -118,10 +119,10 @@ function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
         <RegionSelectionSection selectedRegions={selectedRegions} onToggleRegion={toggleRegion} />
 
         <div className="mobile:mt-8 mt-12 flex gap-3">
-          <Button onClick={handleCancel} disabled={isLoading} variant="outlined">
+          <Button aria-label="취소" onClick={handleCancel} disabled={isLoading} variant="outlined">
             취소
           </Button>
-          <Button onClick={onSubmit} disabled={!isValid || isLoading}>
+          <Button aria-label="수정하기" onClick={onSubmit} disabled={!isValid || isLoading}>
             {isLoading ? '처리 중...' : '수정하기'}
           </Button>
         </div>
