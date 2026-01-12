@@ -45,7 +45,9 @@ export default function PaginationInfiniteScroll<T extends object | undefined>({
 }) {
   const fetchItems = async ({ pageParam }: { pageParam: unknown }) => {
     const cursor = pageParam && typeof pageParam === 'string' ? pageParam : '';
-    const res = await getApi({ params: { cursor, limit: pageSize, ...filter } });
+    const res = await getApi({
+      params: { limit: pageSize, ...(cursor && { cursor: cursor }), ...filter },
+    });
     return res;
   };
 
