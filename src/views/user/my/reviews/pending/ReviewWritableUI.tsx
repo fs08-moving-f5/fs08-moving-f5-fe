@@ -41,7 +41,7 @@ const ReviewWritableUI = () => {
 
   // 모달 열기
   const handleOpenReviewModal = (item: ReviewWritableItem) => {
-    setSelectedReviewId(item.id);
+    setSelectedReviewId(item.reviewId);
     setSelectedItem(item);
     setContent('');
     setRating(0);
