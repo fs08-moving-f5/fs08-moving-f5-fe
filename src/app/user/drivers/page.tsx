@@ -1,5 +1,5 @@
 import DriversPageClient from '@/views/drivers';
 
 export default function Page() {
-  return <DriversPageClient router="/user/drivers" />;
+  return <DriversPageClient router="/user/drivers" isLoggedIn={true} />;
 }
