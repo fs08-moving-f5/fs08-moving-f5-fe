@@ -2,12 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import {
-  createEstimateRequest,
-  getPendingEsitimateRequests,
-} from '@/features/estimateRequest/services/estimateRequest.service';
 import { AddressParams, MovingType } from '@/features/estimateRequest/types/type';
 import AddressButton from '@/features/estimateRequest/ui/AddressButton';
 import MovingTypeSelect from '@/features/estimateRequest/ui/movingTypeButton';
@@ -15,80 +10,80 @@ import Button from '@/shared/ui/button/Button';
 import DatePicker from '@/shared/ui/datepicker/DatePicker';
 import DropdownDatePicker from '@/shared/ui/dropdown/DropdownDatePicker';
 import { showToast } from '@/shared/ui/sonner';
+import {
+  useCreateEstimateRequestMutation,
+  useGetPendingEstimateRequestsQuery,
+} from '@/features/estimateRequest/hooks/queries/useEstimateRequestQueries';
 
 const img_truck = '/img/img_truck_transparent.png';
 
 export default function EstimateRequestPage() {
-  const router = useRouter();
   const [movingType, setMovingType] = useState<MovingType | null>(null);
   const [date, setDate] = useState<Date | null>(null);
   const [from, setFrom] = useState<AddressParams>();
   const [to, setTo] = useState<AddressParams>();
 
-  const [progress, setProgress] = useState(0);
+  enum FormStep {
+    ONE,
+    TWO,
+    THREE,
+  }
 
-  type PageState = 'default' | 'pendingExist' | 'failedToLoad';
+  const pageStepNums = Object.values(FormStep)
+    .filter((e) => typeof e === 'number')
+    .map((n) => n + 1);
 
-  const [pageState, setPageState] = useState<PageState>('failedToLoad');
+  enum PageState {
+    DEFUALT, //기존 견적 없음 (정상 진행)
+    PENDING_EXIST, //기존 견적 존재
+    FAILED_TO_LOAD, //기존 견적 여부 조회 실패
+  }
+
+  const [step, setStep] = useState<FormStep>(FormStep.ONE);
+  const [pageState, setPageState] = useState<PageState>(PageState.PENDING_EXIST);
+
+  const {
+    data: pendingEstimateRequests,
+    isPending,
+    error,
+    isError,
+  } = useGetPendingEstimateRequestsQuery();
+  //다른 유저로 재로그인해도 값이 바뀌지 않는 문제가 있습니다.
+  //(유저 정보를 쿼리 설정에 추가 해줘야 할까요)
 
   useEffect(() => {
-    const handleload = async () => {
-      try {
-        const res = await getPendingEsitimateRequests();
-        console.log(res.data);
-        if (res.data && Array.isArray(res.data)) {
-          if (res.data.length > 0) {
-            setPageState('pendingExist');
-            console.log('pendingExist');
-            return;
-          }
-          setPageState('default');
-          console.log('default');
-          return;
-        }
-        setPageState('failedToLoad');
-      } catch {
-        setPageState('failedToLoad');
+    if (!isPending) {
+      const data = pendingEstimateRequests?.data;
+      if (isError) {
+        setPageState(PageState.FAILED_TO_LOAD); //기존 견적 여부 조회 실패
         showToast({ kind: 'error', message: '페이지 로드에 실패했습니다.' });
-      }
-    };
-
-    handleload();
-  }, []);
-
-  const handleRequset = async () => {
-    try {
-      if (movingType && date && from && to) {
-        const res = await createEstimateRequest({
-          movingType: movingType,
-          movingDate: date.toISOString(),
-          from: from,
-          to: to,
-        });
-        console.log(res.data);
-        router.push('/user/my/estimates/pending');
       } else {
-        console.log('모든 견적 요청 양식을 채워주세요!');
+        if (data && Array.isArray(data) && data.length > 0) {
+          setPageState(PageState.PENDING_EXIST); //기존 견적 존재
+        } else {
+          setPageState(PageState.DEFUALT); //기존 견적 없음
+        }
       }
-    } catch (err) {
-      showToast({
-        kind: 'error',
-        message: err instanceof Error ? err.message : '견적 요청에 실패했습니다.',
+    }
+  }, [isPending]);
+
+  const createEstimateRequest = useCreateEstimateRequestMutation();
+  const handleRequset = async () => {
+    if (movingType && date && from && to) {
+      createEstimateRequest.mutate({
+        movingType: movingType,
+        movingDate: date.toISOString(),
+        from: from,
+        to: to,
       });
-      if (movingType && date && from && to) {
-        console.log({
-          movingType: movingType,
-          movingDate: date.toISOString(),
-          from: from,
-          to: to,
-        });
-      }
+    } else {
+      showToast({ kind: 'error', message: '견적 요청 양식을 모두 채워주세요!' });
     }
   };
 
   return (
     <div className="flex h-[100vh] min-h-[100vh] w-full flex-col bg-white select-none">
-      {pageState === 'default' && (
+      {pageState === PageState.DEFUALT && (
         <div>
           {/* pc, 태블릿 스타일 */}
           <main className="mobile:hidden relative flex h-full w-full items-center justify-center bg-[var(--color-bg-100)] pb-[100px]">
@@ -154,10 +149,10 @@ export default function EstimateRequestPage() {
           <main className="mobile:flex flex hidden h-full w-full flex-col items-center justify-center bg-white px-[24px] py-[36px]">
             <div className="flex flex-col items-center justify-center gap-[8px]">
               <ul className="flex h-full w-fit items-center gap-[8px]">
-                {[1, 2, 3].map((e, idx) => (
+                {pageStepNums.map((e, idx) => (
                   <li key={idx}>
                     <div
-                      className={`flex h-[20px] w-[20px] items-center justify-center rounded-[10px] ${progress === idx ? 'bg-[var(--color-primary-orange-400)] text-white' : 'bg-[var(--color-grayScale-100)] text-[var(--color-gray-300)]'}`}
+                      className={`flex h-[20px] w-[20px] items-center justify-center rounded-[10px] ${step === idx ? 'bg-[var(--color-primary-orange-400)] text-white' : 'bg-[var(--color-grayScale-100)] text-[var(--color-gray-300)]'}`}
                     >
                       <span className="text-[12px] leading-[20px] font-[600]">{e}</span>
                     </div>
@@ -166,7 +161,7 @@ export default function EstimateRequestPage() {
               </ul>
               <div className="flex flex-col items-center justify-center">
                 <span className="w-fit text-[24px] leading-[32px] font-[700]">
-                  {`${['이사 유형', '이사 예정일', '이사 지역'][progress]}을 선택해주세요`}
+                  {`${['이사 유형', '이사 예정일', '이사 지역'][step]}을 선택해주세요`}
                 </span>
                 <span className="w-fit text-[16px] leading-[26px] font-[400]">
                   {'견적을 요청하면 최대 5개의 견적을 받을 수 있어요 :)'}
@@ -174,17 +169,17 @@ export default function EstimateRequestPage() {
               </div>
             </div>
             <section className="h-[560px] w-full p-0">
-              {progress === 0 && (
+              {step === FormStep.ONE && (
                 <div className="pt-[26px]">
                   <MovingTypeSelect movingType={movingType} setMovingType={setMovingType} />
                 </div>
               )}
-              {progress === 1 && (
+              {step === FormStep.TWO && (
                 <div className="flex w-full items-center justify-center pt-[60px]">
                   <DatePicker size="md" date={date || new Date()} setDate={setDate} />
                 </div>
               )}
-              {progress === 2 && (
+              {step === FormStep.THREE && (
                 <div className="flex w-full flex-col items-center justify-center gap-[24px] pt-[62px]">
                   <AddressButton type="from" address={from} setAddress={setFrom} />
                   <AddressButton type="to" address={to} setAddress={setTo} />
@@ -193,20 +188,20 @@ export default function EstimateRequestPage() {
             </section>
             <div className="grid w-full grid-cols-2 gap-[8px]">
               <div>
-                {progress !== 0 && (
+                {step > FormStep.ONE && (
                   <Button
                     aria-label="이전"
                     size="sm"
                     variant="outlined"
                     design="primary"
-                    onClick={() => setProgress((prev) => (prev > 0 ? prev - 1 : prev))}
+                    onClick={() => setStep((prev) => (prev > 0 ? prev - 1 : prev))}
                   >
                     이전
                   </Button>
                 )}
               </div>
               <div>
-                {progress === 2 ? (
+                {step === FormStep.THREE ? (
                   <Button
                     aria-label="견적 요청하기"
                     size="sm"
@@ -219,8 +214,8 @@ export default function EstimateRequestPage() {
                   <Button
                     aria-label="다음"
                     size="sm"
-                    disabled={[movingType, date, from && to][progress] ? false : true}
-                    onClick={() => setProgress((prev) => (prev < 2 ? prev + 1 : prev))}
+                    disabled={[movingType, date, from && to][step] ? false : true}
+                    onClick={() => setStep((prev) => (prev < 2 ? prev + 1 : prev))}
                   >
                     다음
                   </Button>
@@ -230,7 +225,7 @@ export default function EstimateRequestPage() {
           </main>
         </div>
       )}
-      {pageState === 'pendingExist' && (
+      {pageState === PageState.PENDING_EXIST && (
         <main className="flex h-full w-full flex-col bg-[var(--color-bg-100)]">
           <div className="tab:h-[54px] mobile:h-[74px] flex h-[96px] w-full justify-center bg-white">
             <div className="tab:px-[72px] mobile:px-[24px] flex h-full w-full max-w-[1200px] items-center justify-start">
@@ -274,7 +269,7 @@ export default function EstimateRequestPage() {
           </div>
         </main>
       )}
-      {pageState === 'failedToLoad' && <div></div>}
+      {pageState === PageState.FAILED_TO_LOAD && <div></div>}
     </div>
   );
 }
