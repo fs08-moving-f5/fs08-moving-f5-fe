@@ -44,6 +44,7 @@ const FindDriver = ({
   likeFunction,
 }: FindDriverProps) => {
   const [liked, setLiked] = useState(isLiked);
+  const likeCntView = likeCount - (isLiked ? 1 : 0) + (liked ? 1 : 0);
 
   const handleLikeClick = () => {
     likeFunction?.(!liked);
@@ -118,7 +119,7 @@ const FindDriver = ({
               reviewCount={reviewCount}
               experience={experience}
               moveCount={moveCount}
-              likeCount={likeCount}
+              likeCount={likeCntView}
               isLiked={liked}
               onLikeClick={handleLikeClick}
               showLikeButton={true}

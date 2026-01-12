@@ -1,16 +1,16 @@
 'use client';
 
 import {
+  useAddFavoriteMutation,
+  useDeleteFavoriteMutation,
+} from '@/features/drivers/hooks/mutaions/useFavoriteDriverMutation';
+import {
   getDriverList,
   getFavoriteDrivers,
   DriverInfoType,
   FavoriteDriverInfoType,
 } from '@/features/drivers/services/drivers.service';
-import PagenationInfiniteScroll from '@/features/drivers/ui/Pagenation';
-import {
-  addFavoriteDriver,
-  deleteFavoriteDriver,
-} from '@/features/favorites/services/favorite.service';
+import PagenationInfiniteScroll from '@/features/drivers/ui/Pagination';
 import { FindDriver } from '@/shared/ui/card';
 import DropdownFilter from '@/shared/ui/dropdown/DropdownFilter';
 import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
@@ -20,8 +20,10 @@ import { useState } from 'react';
 
 export default function DriversPageClient({
   router,
+  isLoggedIn,
 }: {
   router: string; //페이지 절대 경로 (상세페이지 이동 기준 용)
+  isLoggedIn: boolean;
 }) {
   const regionDict = {
     all: '전체',
@@ -80,6 +82,16 @@ export default function DriversPageClient({
     }
   };
 
+  const { mutate: addFavoriteDriver } = useAddFavoriteMutation();
+  const { mutate: deleteFavoriteDriver } = useDeleteFavoriteMutation();
+  const handleLikeClick = (driverId: string, isLiked: boolean) => {
+    if (isLiked) {
+      addFavoriteDriver(driverId);
+    } else {
+      deleteFavoriteDriver(driverId);
+    }
+  };
+
   const DriverCard = (params: DriverInfoType) => {
     return (
       <Link href={`${router}/${params.id}`}>
@@ -100,8 +112,8 @@ export default function DriversPageClient({
           }
           likeCount={params.favoriteDriverCount || 0}
           isLiked={params.isFavorite}
-          likeFunction={(liked) => {
-            params.id && (liked ? addFavoriteDriver(params.id) : deleteFavoriteDriver(params.id));
+          likeFunction={(_isLiked) => {
+            params.id && handleLikeClick(params.id, _isLiked);
           }}
         />
       </Link>
@@ -130,9 +142,8 @@ export default function DriversPageClient({
           }
           likeCount={params.driver?.driverProfile?.favoriteDriverCount || 0}
           isLiked={true}
-          likeFunction={(liked) => {
-            params.driverId &&
-              (liked ? addFavoriteDriver(params.driverId) : deleteFavoriteDriver(params.driverId));
+          likeFunction={(_isLiked) => {
+            params.driverId && handleLikeClick(params.driverId, _isLiked);
           }}
           smallStyle={true}
         />
@@ -187,7 +198,7 @@ export default function DriversPageClient({
           <div className="mb-[200px] flex h-full gap-[54px]">
             <div className="scrollbar-hide scroll-mask tab:min-w-0 tab:max-w-full h-full w-full max-w-[820px] min-w-[820px] flex-col overflow-scroll py-[16px]">
               <PagenationInfiniteScroll<DriverInfoType>
-                pageName="driver_list"
+                queryKeyName="driver_list"
                 flexGap={20}
                 pageSize={10}
                 getApi={getDriverList}
@@ -204,14 +215,18 @@ export default function DriversPageClient({
             <div className="tab:hidden flex flex-col gap-[16px]">
               <h2 className="text-start text-[20px] leading-[32px] font-[600]">찜한 기사님</h2>
               <div className="scrollbar-hide scroll-mask mb-[200px] h-full w-full max-w-[820px] flex-col overflow-scroll py-[16px]">
-                <PagenationInfiniteScroll<FavoriteDriverInfoType>
-                  pageName="favorite_driver_list"
-                  flexGap={16}
-                  pageSize={10}
-                  getApi={getFavoriteDrivers} //getFavoriteDriverList
-                  ElementNode={FavoriteDriverCard}
-                  noElementMsg="찜한 기사님이 없습니다."
-                />
+                {isLoggedIn ? (
+                  <PagenationInfiniteScroll<FavoriteDriverInfoType>
+                    queryKeyName="favorite_driver_list"
+                    flexGap={16}
+                    pageSize={10}
+                    getApi={getFavoriteDrivers} //getFavoriteDriverList
+                    ElementNode={FavoriteDriverCard}
+                    noElementMsg="찜한 기사님이 없습니다."
+                  />
+                ) : (
+                  <div className="py-[50px]">로그인이 필요합니다.</div>
+                )}
               </div>
             </div>
           </div>
