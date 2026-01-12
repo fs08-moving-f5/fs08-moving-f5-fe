@@ -1,5 +1,6 @@
 'use client';
 
+import DRIVERS_QUERY_KEY from '@/features/drivers/constants/queryKey';
 import {
   useAddFavoriteMutation,
   useDeleteFavoriteMutation,
@@ -198,7 +199,7 @@ export default function DriversPageClient({
           <div className="mb-[200px] flex h-full gap-[54px]">
             <div className="scrollbar-hide scroll-mask tab:min-w-0 tab:max-w-full h-full w-full max-w-[820px] min-w-[820px] flex-col overflow-scroll py-[16px]">
               <PagenationInfiniteScroll<DriverInfoType>
-                queryKeyName="driver_list"
+                queryKey={DRIVERS_QUERY_KEY.DRIVER}
                 flexGap={20}
                 pageSize={10}
                 getApi={getDriverList}
@@ -217,7 +218,7 @@ export default function DriversPageClient({
               <div className="scrollbar-hide scroll-mask mb-[200px] h-full w-full max-w-[820px] flex-col overflow-scroll py-[16px]">
                 {isLoggedIn ? (
                   <PagenationInfiniteScroll<FavoriteDriverInfoType>
-                    queryKeyName="favorite_driver_list"
+                    queryKey={DRIVERS_QUERY_KEY.FAVORITE_DRIVERS}
                     flexGap={16}
                     pageSize={10}
                     getApi={getFavoriteDrivers} //getFavoriteDriverList
