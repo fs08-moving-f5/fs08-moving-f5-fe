@@ -26,3 +26,8 @@ export async function designatePendingEstimateRequest(designatedDriverId: string
     designatedDriverId,
   } as unknown as CreateDesignatedEstimateRequestRequest);
 }
+
+export const createEstimateRequestWithGeocode = async (data: CreateEstimateRequestRequest) => {
+  const res = await api.post('estimate-request/user/request/geocode', data);
+  return res.data;
+};
