@@ -5,6 +5,7 @@ import {
 
 export interface ReviewWritableItem {
   id: string;
+  reviewId: string;
   driverName: string;
   description?: string;
   movingType: FrontMovingType;
@@ -40,6 +41,7 @@ export interface ReviewWritableItemRaw {
   id: string;
   price: number;
   createdAt: string;
+  reviewId: string;
   driver: {
     id: string;
     name: string;

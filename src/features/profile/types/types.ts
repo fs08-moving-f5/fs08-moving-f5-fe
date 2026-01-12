@@ -34,6 +34,7 @@ type UserProfile = Omit<
     services: ServiceType[];
     createdAt: string;
     updatedAt: string;
+    imageKey?: string | null;
   };
 
 // 기사 프로필 (BE 응답에서 User 정보(name/email/phone)가 병합되어 내려옴)
@@ -48,6 +49,7 @@ type DriverProfile = Omit<
     services: ServiceType[];
     createdAt: string;
     updatedAt: string;
+    imageKey?: string | null;
   };
 
 type MyProfile = UserProfile | DriverProfile;
@@ -56,6 +58,16 @@ type OpenApiCreateUserProfileRequest = components['schemas']['CreateUserProfileR
 type OpenApiUpdateUserProfileRequest = components['schemas']['UpdateUserProfileRequest'];
 type OpenApiCreateDriverProfileRequest = components['schemas']['CreateDriverProfileRequest'];
 type OpenApiUpdateDriverProfileRequest = components['schemas']['UpdateDriverProfileRequest'];
+
+// ========== 프로필 이미지 presign 관련 타입 ==========
+
+type CreateProfileImagePutPresignRequest =
+  paths['/api/profile/me/profile-image/presign-put']['post']['requestBody']['content']['application/json'];
+
+type CreateProfileImagePutPresignResponse =
+  paths['/api/profile/me/profile-image/presign-put']['post']['responses'][200]['content']['application/json'];
+
+type ProfileImagePutPresignData = NonNullable<CreateProfileImagePutPresignResponse['data']>;
 
 // 유저 프로필 생성 요청
 type CreateUserProfileRequest = OpenApiCreateUserProfileRequest;
@@ -154,6 +166,8 @@ interface DriverPublicProfileData {
 }
 
 export type {
+  CreateProfileImagePutPresignRequest,
+  ProfileImagePutPresignData,
   CreateDriverProfileRequest,
   CreateUserProfileRequest,
   DriverProfile,

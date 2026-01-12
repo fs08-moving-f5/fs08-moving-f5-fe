@@ -196,7 +196,7 @@ export interface paths {
         put?: never;
         /**
          * 토큰 갱신
-         * @description 리프레시 토큰을 사용하여 새로운 액세스 토큰과 리프레시 토큰을 발급받습니다.
+         * @description 리프레시 토큰을 사용하여 새로운 액세스 토큰을 발급받습니다.
          */
         post: {
             parameters: {
@@ -340,6 +340,84 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/drivers/me/office": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * 내 사무실 정보 업데이트
+         * @description 현재 로그인한 드라이버(기사)의 사무실 정보를 업데이트합니다.
+         *     주소를 입력하면 자동으로 위도/경도로 변환되어 저장됩니다.
+         *
+         *     **요청 본문:**
+         *     - `officeAddress` (필수): 사무실 주소
+         *     - `officeZoneCode` (선택): 우편번호
+         *     - `officeSido` (선택): 시도
+         *     - `officeSigungu` (선택): 시군구
+         *
+         *     **응답:**
+         *     - 업데이트된 사무실 정보가 반환됩니다.
+         *     - `officeLat`, `officeLng`는 주소를 자동으로 변환한 결과입니다.
+         *     - `officeUpdatedAt`은 업데이트 일시입니다.
+         *
+         *     **에러 처리:**
+         *     - 주소가 없거나 빈 문자열인 경우: 400 Bad Request
+         *     - 주소 변환(geocoding) 실패 시: 500 Internal Server Error
+         *     - 인증되지 않은 사용자: 401 Unauthorized
+         *     - 드라이버가 아닌 사용자: 403 Forbidden
+         */
+        patch: operations["updateDriverOffice"];
+        trace?: never;
+    };
+    "/api/drivers/me/requests/nearby": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 내 사무실 주변 견적 요청 조회
+         * @description 현재 로그인한 드라이버(기사)의 사무실 위치를 기준으로 반경 내의 견적 요청을 조회합니다.
+         *     거리순으로 정렬되어 반환되며, 각 견적 요청에는 출발지 주소, 이사 유형, 이사 예정일, 거리 정보가 포함됩니다.
+         *
+         *     **동작 방식:**
+         *     1. 드라이버의 사무실 위치(위도/경도)를 조회합니다.
+         *     2. 지정된 반경(radiusKm) 내의 견적 요청 출발지를 검색합니다.
+         *     3. 실제 거리를 계산하여 반경 내의 요청만 필터링합니다.
+         *     4. 거리순으로 정렬하여 반환합니다.
+         *
+         *     **쿼리 파라미터:**
+         *     - `radiusKm` (선택): 검색 반경 (킬로미터). 기본값은 20km이며, 최소 0km, 최대 200km까지 설정 가능합니다.
+         *
+         *     **주의사항:**
+         *     - 사무실 주소가 등록되어 있지 않거나 위도/경도가 없는 경우 400 에러가 발생합니다.
+         *     - 먼저 `/api/drivers/me/office` 엔드포인트로 사무실 주소를 등록해야 합니다.
+         *     - 거리는 Haversine 공식을 사용하여 계산됩니다.
+         *
+         *     **사용 예시:**
+         *     - 기본 반경(20km) 조회: `GET /api/drivers/me/requests/nearby`
+         *     - 10km 반경 조회: `GET /api/drivers/me/requests/nearby?radiusKm=10`
+         *     - 50km 반경 조회: `GET /api/drivers/me/requests/nearby?radiusKm=50`
+         */
+        get: operations["getNearbyEstimateRequests"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/estimate/pending": {
         parameters: {
             query?: never;
@@ -375,8 +453,6 @@ export interface paths {
          * 받은 견적 목록 조회
          * @description 현재 사용자가 받은 견적 목록을 조회합니다.
          *     견적 요청(estimateRequest)별로 그룹화되어 반환되며, 각 견적 요청에는 해당하는 견적(estimate) 배열이 포함됩니다.
-         *     status 쿼리 파라미터를 통해 특정 상태의 견적만 필터링할 수 있습니다.
-         *     가능한 상태 값: PENDING, CONFIRMED, REJECTED, CANCELLED (대소문자 구분 없음)
          *     각 견적에는 드라이버 정보, 드라이버의 확정된 견적 수, 찜하기 수, 리뷰 평균 점수가 포함됩니다.
          *     페이지네이션을 지원하며, limit과 cursor 파라미터를 사용하여 페이지 단위로 조회할 수 있습니다.
          *     cursor는 estimateRequest의 ID를 사용하며, PENDING 상태가 아닌 견적 요청만 조회됩니다.
@@ -1274,7 +1350,8 @@ export interface paths {
         put?: never;
         /**
          * 견적 요청 (유저)
-         * @description 유저가 새로운 견적 요청을 생성합니다. - from, to는 카카오 우편번호 API의 Address 타입 마이너 버전입니다.
+         * @description 유저가 새로운 견적 요청을 생성합니다.
+         *     - from, to는 카카오 우편번호 API의 Address 타입 마이너 버전입니다.
          */
         post: {
             parameters: {
@@ -1520,7 +1597,7 @@ export interface paths {
         /**
          * 여러 기사 즐겨찾기 일괄 삭제
          * @description 현재 사용자가 찜한 여러 기사를 한 번에 삭제합니다.
-         *     요청 본문에 삭제할 기사 ID 배열을 전달합니다.
+         *     요청 본문에 삭제할 기사 ID 배열을 포함한 객체를 전달합니다.
          */
         delete: operations["deleteManyFavoriteDrivers"];
         options?: never;
@@ -2319,7 +2396,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** 작성 가능한 리뷰 목록 조회 (일반 유저) */
+        /** 리뷰 작성 가능한 견적 목록 조회 (일반 유저) */
         get: {
             parameters: {
                 query?: {
@@ -2416,7 +2493,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/reviews/write": {
+    "/api/reviews/{reviewId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -2872,6 +2949,74 @@ export interface components {
             /** @description 응답 메시지 */
             message?: string | null;
         };
+        UpdateDriverOfficeRequest: {
+            /**
+             * @description 사무실 주소 (필수)
+             * @example 서울특별시 용산구 한강대로 405
+             */
+            officeAddress: string;
+            /**
+             * @description 우편번호 (선택)
+             * @example 04321
+             */
+            officeZoneCode?: string | null;
+            /**
+             * @description 시도 (선택)
+             * @example 서울특별시
+             */
+            officeSido?: string | null;
+            /**
+             * @description 시군구 (선택)
+             * @example 용산구
+             */
+            officeSigungu?: string | null;
+        };
+        UpdateDriverOfficeResponse: {
+            /**
+             * Format: uuid
+             * @description 드라이버 프로필 ID
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            id?: string;
+            /**
+             * @description 사무실 주소
+             * @example 서울특별시 용산구 한강대로 405
+             */
+            officeAddress?: string | null;
+            /**
+             * @description 우편번호
+             * @example 04321
+             */
+            officeZoneCode?: string | null;
+            /**
+             * @description 시도
+             * @example 서울특별시
+             */
+            officeSido?: string | null;
+            /**
+             * @description 시군구
+             * @example 용산구
+             */
+            officeSigungu?: string | null;
+            /**
+             * Format: float
+             * @description 사무실 위도 (주소 변환 결과)
+             * @example 37.5548375992165
+             */
+            officeLat?: number | null;
+            /**
+             * Format: float
+             * @description 사무실 경도 (주소 변환 결과)
+             * @example 126.971732581232
+             */
+            officeLng?: number | null;
+            /**
+             * Format: date-time
+             * @description 사무실 정보 업데이트 일시
+             * @example 2026-01-12T07:37:17.260Z
+             */
+            officeUpdatedAt?: string | null;
+        };
         Estimate: {
             /**
              * Format: uuid
@@ -3260,7 +3405,7 @@ export interface components {
             createdAt?: string;
             /** @description 주소 정보 목록 */
             addresses?: components["schemas"]["AddressInfo"][];
-            /** @description 해당 견적 요청에 대한 견적 목록 (status 필터가 적용된 경우 해당 상태의 견적만 포함) */
+            /** @description 해당 견적 요청에 대한 견적 목록 */
             estimates?: components["schemas"]["ReceivedEstimateItem"][];
         };
         EstimateDetail: {
@@ -3934,11 +4079,6 @@ export interface components {
          */
         estimateId: string;
         /**
-         * @description 견적 상태 필터 (대소문자 구분 없음)
-         * @example PENDING
-         */
-        statusQuery: "PENDING" | "CONFIRMED" | "REJECTED" | "CANCELLED";
-        /**
          * @description 드라이버(기사) ID
          * @example 123e4567-e89b-12d3-a456-426614174002
          */
@@ -4048,6 +4188,194 @@ export interface operations {
             };
         };
     };
+    updateDriverOffice: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateDriverOfficeRequest"];
+            };
+        };
+        responses: {
+            /** @description 사무실 정보가 성공적으로 업데이트되었습니다. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description 요청 성공 여부
+                         * @example true
+                         */
+                        success?: boolean;
+                        data?: components["schemas"]["UpdateDriverOfficeResponse"];
+                    };
+                };
+            };
+            /** @description 잘못된 요청입니다. 요청 본문이 유효하지 않습니다. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 인증이 필요합니다. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 드라이버 권한이 필요합니다. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    getNearbyEstimateRequests: {
+        parameters: {
+            query?: {
+                /**
+                 * @description 검색 반경 (킬로미터)
+                 *     기본값: 20km
+                 *     최소값: 0km
+                 *     최대값: 200km
+                 * @example 20
+                 */
+                radiusKm?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 성공적으로 주변 견적 요청을 조회했습니다. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description 요청 성공 여부
+                         * @example true
+                         */
+                        success?: boolean;
+                        data?: {
+                            /**
+                             * Format: uuid
+                             * @description 견적 요청 ID
+                             * @example 123e4567-e89b-12d3-a456-426614174000
+                             */
+                            estimateRequestId?: string;
+                            /**
+                             * Format: float
+                             * @description 사무실로부터의 거리 (킬로미터)
+                             * @example 5.2
+                             */
+                            distanceKm?: number;
+                            /**
+                             * @description 이사 유형
+                             * @example HOME_MOVING
+                             * @enum {string}
+                             */
+                            movingType?: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
+                            /**
+                             * Format: date-time
+                             * @description 이사 예정일
+                             * @example 2026-02-01T09:00:00.000Z
+                             */
+                            movingDate?: string;
+                            /**
+                             * Format: date-time
+                             * @description 견적 요청 생성 일시
+                             * @example 2026-01-12T10:00:00.000Z
+                             */
+                            createdAt?: string;
+                            /** @description 출발지 주소 정보 */
+                            fromAddress?: {
+                                /**
+                                 * @description 시도
+                                 * @example 서울특별시
+                                 */
+                                sido?: string;
+                                /**
+                                 * @description 시군구
+                                 * @example 강남구
+                                 */
+                                sigungu?: string;
+                                /**
+                                 * @description 전체 주소
+                                 * @example 서울특별시 강남구 테헤란로 123
+                                 */
+                                address?: string | null;
+                            };
+                        }[];
+                    };
+                };
+            };
+            /** @description 잘못된 요청입니다. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 인증이 필요합니다. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 드라이버 권한이 필요합니다. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description 서버 내부 오류가 발생했습니다. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     getPendingEstimates: {
         parameters: {
             query?: never;
@@ -4099,11 +4427,6 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description 견적 상태 필터 (대소문자 구분 없음)
-                 * @example PENDING
-                 */
-                status?: components["parameters"]["statusQuery"];
-                /**
                  * @description 조회할 항목 수 (기본값: 10)
                  *     한 번에 가져올 즐겨찾기 항목의 개수를 지정합니다.
                  *     최소값은 1이며, 생략 시 기본값 10이 적용됩니다.
@@ -4141,15 +4464,6 @@ export interface operations {
                         /** @description 응답 메시지 */
                         message?: string | null;
                     };
-                };
-            };
-            /** @description 잘못된 요청입니다. status 값이 유효하지 않습니다. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
             /** @description 인증되지 않은 사용자입니다. */
@@ -4404,7 +4718,10 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": string[];
+                "application/json": {
+                    /** @description 삭제할 드라이버 ID 배열 */
+                    driverIds: string[];
+                };
             };
         };
         responses: {
@@ -4428,7 +4745,7 @@ export interface operations {
                     };
                 };
             };
-            /** @description 잘못된 요청입니다. userId가 필요하거나 1개 이상의 driverId가 필요합니다. */
+            /** @description 잘못된 요청입니다. userId가 필요하거나 유효하지 않은 driverId가 포함되어 있습니다. */
             400: {
                 headers: {
                     [name: string]: unknown;

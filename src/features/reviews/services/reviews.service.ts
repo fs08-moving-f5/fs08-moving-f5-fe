@@ -49,6 +49,7 @@ export const getReviewWritable = async ({
         dropoffAddress: r.to ? `${r.to.sido} ${r.to.sigungu}` : '',
         movingDate: convertDateType1(new Date(r.movingDate)),
         estimatedPrice: r.price ?? 0,
+        reviewId: r.reviewId,
       };
     }),
     total: res.data.total,

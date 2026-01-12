@@ -22,13 +22,12 @@ export const useLogout = () => {
         qc.getQueryCache().clear();
         qc.getMutationCache().clear();
       } catch (e) {
-        console.error('QueryClient 초기화 실패:', e);
+        // ignore
       }
 
       showToast({ kind: 'success', message: '로그아웃되었습니다.' });
       router.push('/');
     } catch (error) {
-      console.error('로그아웃 실패:', error);
       // 에러가 발생해도 클라이언트 상태는 초기화
       clearAuth();
       // React Query 초기화 시도 (에러 경로에서도)
@@ -38,7 +37,7 @@ export const useLogout = () => {
         qc.getQueryCache().clear();
         qc.getMutationCache().clear();
       } catch (e) {
-        console.error('QueryClient 초기화 실패:', e);
+        // ignore
       }
       showToast({ kind: 'error', message: '로그아웃 중 오류가 발생했습니다.' });
       router.push('/');
