@@ -3069,6 +3069,29 @@ export interface components {
              */
             services?: ("SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING")[];
             /**
+             * @description 사무실 주소
+             * @example 서울특별시 강남구 테헤란로 123
+             */
+            officeAddress?: string | null;
+            /**
+             * Format: float
+             * @description 사무실 위도
+             * @example 37.5665
+             */
+            officeLat?: number | null;
+            /**
+             * Format: float
+             * @description 사무실 경도
+             * @example 126.978
+             */
+            officeLng?: number | null;
+            /**
+             * Format: date-time
+             * @description 사무실 정보 업데이트 일시
+             * @example 2024-01-15T10:30:00Z
+             */
+            officeUpdatedAt?: string | null;
+            /**
              * @description 경력 (년)
              * @example 5
              */
@@ -4590,6 +4613,18 @@ export interface operations {
                                  * @example 서울특별시 강남구 테헤란로 123
                                  */
                                 address?: string | null;
+                                /**
+                                 * Format: float
+                                 * @description 출발지 위도
+                                 * @example 37.5665
+                                 */
+                                lat?: number;
+                                /**
+                                 * Format: float
+                                 * @description 출발지 경도
+                                 * @example 126.978
+                                 */
+                                lng?: number;
                             };
                         }[];
                     };
