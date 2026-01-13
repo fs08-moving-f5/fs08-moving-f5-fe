@@ -1477,6 +1477,235 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/estimate-request/user/request/geocode": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 견적 요청 생성 (좌표 변환 포함)
+         * @description 유저가 새로운 견적 요청을 생성합니다. 주소를 자동으로 위도/경도로 변환하여 저장합니다.
+         *     - 주소를 입력하면 자동으로 Kakao Geocoding API를 통해 위도/경도로 변환됩니다.
+         *     - 변환된 좌표는 주변 견적 요청 조회 등에 활용됩니다.
+         *     - from, to는 카카오 우편번호 API의 Address 타입 마이너 버전입니다.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /**
+                         * @description 이사 유형
+                         * @example HOME_MOVING
+                         * @enum {string}
+                         */
+                        movingType: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
+                        /**
+                         * Format: date-time
+                         * @description 이사 예정일
+                         * @example 2026-02-01T09:00:00.000Z
+                         */
+                        movingDate: string;
+                        from: {
+                            /**
+                             * @description 전체 주소
+                             * @example 서울 강남구 가로수길 5
+                             */
+                            address: string;
+                            /**
+                             * @description 우편번호
+                             * @example 6035
+                             */
+                            zoneCode: number;
+                            /**
+                             * @description 영문 주소
+                             * @example 5 Garosu-gil, Gangnam-gu, Seoul, Republic of Korea
+                             */
+                            addressEnglish: string;
+                            /**
+                             * @description 시도
+                             * @example 서울
+                             */
+                            sido: string;
+                            /**
+                             * @description 영문 시도
+                             * @example Seoul
+                             */
+                            sidoEnglish: string;
+                            /**
+                             * @description 시군구
+                             * @example 강남구
+                             */
+                            sigungu: string;
+                            /**
+                             * @description 영문 시군구
+                             * @example Gangnam-gu
+                             */
+                            sigunguEnglish: string;
+                        };
+                        to: {
+                            /**
+                             * @description 전체 주소
+                             * @example 부산 해운대구 해운대해변로 264
+                             */
+                            address: string;
+                            /**
+                             * @description 우편번호
+                             * @example 48058
+                             */
+                            zoneCode: number;
+                            /**
+                             * @description 영문 주소
+                             * @example 264 Haeundaehaebyeon-ro, Haeundae-gu, Busan, Republic of Korea
+                             */
+                            addressEnglish: string;
+                            /**
+                             * @description 시도
+                             * @example 부산
+                             */
+                            sido: string;
+                            /**
+                             * @description 영문 시도
+                             * @example Busan
+                             */
+                            sidoEnglish: string;
+                            /**
+                             * @description 시군구
+                             * @example 해운대구
+                             */
+                            sigungu: string;
+                            /**
+                             * @description 영문 시군구
+                             * @example Haeundae-gu
+                             */
+                            sigunguEnglish: string;
+                        };
+                    };
+                };
+            };
+            responses: {
+                /** @description 견적 요청 생성 성공 (좌표 변환 완료) */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /**
+                             * @description 요청 성공 여부
+                             * @example true
+                             */
+                            success?: boolean;
+                            data?: {
+                                /**
+                                 * Format: uuid
+                                 * @description 견적 요청 ID
+                                 * @example 123e4567-e89b-12d3-a456-426614174000
+                                 */
+                                id?: string;
+                                /**
+                                 * @description 유저 이름
+                                 * @example 홍길동
+                                 */
+                                name?: string;
+                                /**
+                                 * @description 이사 유형
+                                 * @example HOME_MOVING
+                                 * @enum {string}
+                                 */
+                                movingType?: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
+                                /**
+                                 * Format: date-time
+                                 * @description 이사 예정일
+                                 * @example 2026-02-01T09:00:00.000Z
+                                 */
+                                movingDate?: string;
+                                /**
+                                 * @description 출발지 주소
+                                 * @example 서울 강남구 가로수길 5
+                                 */
+                                from?: string | null;
+                                /**
+                                 * @description 도착지 주소
+                                 * @example 부산 해운대구 해운대해변로 264
+                                 */
+                                to?: string | null;
+                            };
+                        };
+                    };
+                };
+                /** @description 잘못된 요청입니다. 요청 본문이 유효하지 않습니다. */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @description 에러 메시지 (한국어로 제공되며, 필드명과 함께 표시될 수 있음) */
+                            message?: string;
+                            /** @description HTTP 상태 코드 */
+                            statusCode?: number;
+                            /** @description 에러 이름 */
+                            name?: string;
+                        };
+                    };
+                };
+                /** @description 인증이 필요합니다. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message?: string;
+                            statusCode?: number;
+                            name?: string;
+                        };
+                    };
+                };
+                /** @description 이미 진행 중인 견적 요청이 있습니다. */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message?: string;
+                            statusCode?: number;
+                            name?: string;
+                        };
+                    };
+                };
+                /** @description 서버 내부 오류가 발생했습니다. */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message?: string;
+                            statusCode?: number;
+                            name?: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/estimate-request/user/request/designated": {
         parameters: {
             query?: never;

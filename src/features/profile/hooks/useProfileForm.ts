@@ -21,6 +21,7 @@ import type {
   UpdateDriverProfileRequest,
 } from '../types/types';
 import type { UserType } from '@/features/auth/types/types';
+import type { AddressParams } from '@/features/estimateRequest/types/type';
 
 type ProfileEditFormErrors = Partial<Record<string, string>>;
 
@@ -70,6 +71,7 @@ export function useProfileForm(
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [officeAddress, setOfficeAddress] = useState<AddressParams | undefined>(undefined);
   const [errors, setErrors] = useState<ProfileEditFormErrors>({});
 
   const {
@@ -362,6 +364,22 @@ export function useProfileForm(
           queryClient.invalidateQueries({ queryKey: MY_PAGE_QUERY_KEY.MY_PAGE });
           queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY.MY_PROFILE });
           queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY.DRIVER_PROFILE });
+
+          // TODO: 프로필 수정 성공 후 사무실 주소가 변경되었으면 등록/수정 API 호출
+          // if (isDriver && officeAddress) {
+          //   try {
+          //     await updateDriverOffice({
+          //       officeAddress: officeAddress.address,
+          //       officeZoneCode: officeAddress.zoneCode || null,
+          //       officeSido: officeAddress.sido || null,
+          //       officeSigungu: officeAddress.sigungu || null,
+          //     });
+          //   } catch (error) {
+          //     // 사무실 주소 등록 실패해도 프로필 수정은 완료된 것으로 처리
+          //     console.error('사무실 주소 등록 실패:', error);
+          //   }
+          // }
+
           onSuccess?.();
         },
       });
@@ -435,6 +453,7 @@ export function useProfileForm(
     career,
     shortIntro,
     description,
+    officeAddress,
     currentPassword,
     newPassword,
     confirmNewPassword,
@@ -456,6 +475,7 @@ export function useProfileForm(
     handleImageUpload,
     toggleService,
     toggleRegion,
+    setOfficeAddress,
     handleSubmit,
   };
 }

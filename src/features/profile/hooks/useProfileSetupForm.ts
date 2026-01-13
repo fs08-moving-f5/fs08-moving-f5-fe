@@ -10,6 +10,7 @@ import { showToast } from '@/shared/ui/sonner';
 
 import type { ServiceType, RegionType } from '../types/types';
 import type { UserType } from '@/features/auth/types/types';
+import type { AddressParams } from '@/features/estimateRequest/types/type';
 
 interface ProfileSetupFormErrors {
   career: string;
@@ -33,6 +34,7 @@ export function useProfileSetupForm(userType: UserType) {
   const [career, setCareer] = useState('');
   const [shortIntro, setShortIntro] = useState('');
   const [description, setDescription] = useState('');
+  const [officeAddress, setOfficeAddress] = useState<AddressParams | undefined>(undefined);
   const [errors, setErrors] = useState<ProfileSetupFormErrors>({
     career: '',
     shortIntro: '',
@@ -156,6 +158,22 @@ export function useProfileSetupForm(userType: UserType) {
       }
 
       showToast({ kind: 'success', message: '프로필이 등록되었습니다.' });
+
+      // TODO: 프로필 생성 성공 후 사무실 주소가 있으면 등록 API 호출
+      // if (isDriver && officeAddress) {
+      //   try {
+      //     await updateDriverOffice({
+      //       officeAddress: officeAddress.address,
+      //       officeZoneCode: officeAddress.zoneCode || null,
+      //       officeSido: officeAddress.sido || null,
+      //       officeSigungu: officeAddress.sigungu || null,
+      //     });
+      //   } catch (error) {
+      //     // 사무실 주소 등록 실패해도 프로필 생성은 완료된 것으로 처리
+      //     console.error('사무실 주소 등록 실패:', error);
+      //   }
+      // }
+
       router.push('/');
     } catch (error) {
       showToast({
@@ -175,6 +193,7 @@ export function useProfileSetupForm(userType: UserType) {
     career,
     shortIntro,
     description,
+    officeAddress,
     errors,
     isLoading,
     error,
@@ -188,6 +207,7 @@ export function useProfileSetupForm(userType: UserType) {
     handleImageUpload,
     toggleService,
     toggleRegion,
+    setOfficeAddress,
     handleSubmit,
   };
 }
