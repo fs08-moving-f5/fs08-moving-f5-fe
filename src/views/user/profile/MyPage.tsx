@@ -14,6 +14,7 @@ import {
   MyPageRegionsSection,
   MyPageReviewsSection,
   MyPageServicesSection,
+  MyPageOfficeAddressSection,
 } from '@/features/profile/ui';
 
 const MyPage = () => {
@@ -61,6 +62,7 @@ const MyPage = () => {
             <MyPageActivitySection activity={activity} />
             <MyPageServicesSection services={profile.services} />
             <MyPageRegionsSection regions={profile.regions} />
+            <MyPageOfficeAddressSection address={profile.officeAddress} />
             <MyPageReviewsSection
               averageRating={activity.averageRating}
               reviewDistribution={reviewDistribution}

@@ -15,3 +15,4 @@ export { default as DriverDetailActionButtons } from './DriverDetailActionButton
 
 // 기사님 사무실 주소 섹션
 export { default as DriverOfficeAddressFields } from './DriverOfficeAddressFields';
+export { default as MyPageOfficeAddressSection } from './MyPageOfficeAddressSection';
