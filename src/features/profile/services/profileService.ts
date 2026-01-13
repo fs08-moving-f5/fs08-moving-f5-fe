@@ -1,4 +1,4 @@
-import { api } from '@/shared/api/client';
+import { api, paths } from '@/shared/api/client';
 
 import type {
   UserProfile,
@@ -76,6 +76,22 @@ export const updateDriverProfile = async (
 ): Promise<DriverProfile> => {
   const response = await api.patch<DriverProfile>('profile/driver', data);
   return response.data;
+};
+
+/**
+ * 기사 사무실 주소 등록
+ */
+type UpdateDriverOfficeAddressRequest =
+  paths['/api/drivers/me/office']['patch']['requestBody']['content']['application/json'];
+
+type UpdateDriverOfficeAddressResponse =
+  paths['/api/drivers/me/office']['patch']['responses'][200]['content']['application/json']['data'];
+
+export const updateDriverOfficeAddress = async (
+  data: UpdateDriverOfficeAddressRequest,
+): Promise<UpdateDriverOfficeAddressResponse> => {
+  const res = await api.patch<UpdateDriverOfficeAddressResponse>('drivers/me/office', data);
+  return res.data;
 };
 
 // ========== 공통 프로필 API ==========

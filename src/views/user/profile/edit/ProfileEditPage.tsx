@@ -70,7 +70,11 @@ function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
 
   const onSubmit = () => {
     handleSubmit(() => {
-      router.back();
+      if (isDriver) {
+        router.replace('/driver/profile');
+      } else {
+        router.back();
+      }
     });
   };
 

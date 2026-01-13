@@ -3927,6 +3927,34 @@ export interface components {
                  *     ]
                  */
                 regions?: ("서울" | "경기" | "인천" | "강원" | "충북" | "충남" | "대전" | "세종" | "전북" | "전남" | "광주" | "경북" | "경남" | "대구" | "부산" | "울산" | "제주")[];
+                /**
+                 * @description 즐겨찾기된 횟수
+                 * @example 15
+                 */
+                favoritedCount?: number;
+                /**
+                 * @description 사무실 주소
+                 * @example 서울특별시 강남구 테헤란로 123
+                 */
+                officeAddress?: string | null;
+                /**
+                 * Format: float
+                 * @description 사무실 위도
+                 * @example 37.5665
+                 */
+                officeLat?: number | null;
+                /**
+                 * Format: float
+                 * @description 사무실 경도
+                 * @example 126.978
+                 */
+                officeLng?: number | null;
+                /**
+                 * Format: date-time
+                 * @description 사무실 정보 업데이트 일시
+                 * @example 2024-01-15T10:30:00Z
+                 */
+                officeUpdatedAt?: string | null;
             };
             activity?: {
                 /**

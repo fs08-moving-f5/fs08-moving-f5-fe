@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCreateProfile } from './useCreateProfile';
 import { useImageUpload } from './useImageUpload';
+import { useUpdateDriverOfficeAddressMutation } from './mutations/useProfileMutations';
 import {
   PROFILE_ERROR_MESSAGES,
   PROFILE_VALIDATION_PATTERNS,
@@ -28,6 +29,7 @@ export function useProfileSetupForm(userType: UserType) {
     handleImageSelect,
   } = useImageUpload();
   const { handleCreateProfile, isLoading, error } = useCreateProfile(userType);
+  const { mutate: updateDriverOfficeAddress } = useUpdateDriverOfficeAddressMutation();
 
   const [selectedServices, setSelectedServices] = useState<ServiceType[]>([]);
   const [selectedRegions, setSelectedRegions] = useState<RegionType[]>([]);
@@ -159,20 +161,15 @@ export function useProfileSetupForm(userType: UserType) {
 
       showToast({ kind: 'success', message: '프로필이 등록되었습니다.' });
 
-      // TODO: 프로필 생성 성공 후 사무실 주소가 있으면 등록 API 호출
-      // if (isDriver && officeAddress) {
-      //   try {
-      //     await updateDriverOffice({
-      //       officeAddress: officeAddress.address,
-      //       officeZoneCode: officeAddress.zoneCode || null,
-      //       officeSido: officeAddress.sido || null,
-      //       officeSigungu: officeAddress.sigungu || null,
-      //     });
-      //   } catch (error) {
-      //     // 사무실 주소 등록 실패해도 프로필 생성은 완료된 것으로 처리
-      //     console.error('사무실 주소 등록 실패:', error);
-      //   }
-      // }
+      // 프로필 생성 성공 후 사무실 주소가 있으면 등록 API 호출
+      if (isDriver && officeAddress) {
+        updateDriverOfficeAddress({
+          officeAddress: officeAddress.address,
+          officeZoneCode: officeAddress.zoneCode || null,
+          officeSido: officeAddress.sido || null,
+          officeSigungu: officeAddress.sigungu || null,
+        });
+      }
 
       router.push('/');
     } catch (error) {
@@ -183,7 +180,10 @@ export function useProfileSetupForm(userType: UserType) {
     }
   };
 
-  const isValid = selectedServices.length > 0 && selectedRegions.length > 0;
+  const isValid =
+    selectedServices.length > 0 &&
+    selectedRegions.length > 0 &&
+    (isDriver ? !!officeAddress : true);
 
   return {
     // 상태
