@@ -1,6 +1,6 @@
 import { api } from '@/shared/api/client';
 import { paths } from '@/shared/types/openapi';
-import { CursorResponse } from '../ui/Pagenation';
+import { CursorResponse } from '../types/pagination';
 
 type ElementType<T> = T extends (infer U)[] ? U : never;
 

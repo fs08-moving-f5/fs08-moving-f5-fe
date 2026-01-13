@@ -32,7 +32,6 @@ export const useGetProfile = (userType: 'USER' | 'DRIVER') => {
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : '프로필 조회에 실패했습니다.';
         setError(errorMessage);
-        console.error('Profile fetch error:', err);
       } finally {
         setIsLoading(false);
       }

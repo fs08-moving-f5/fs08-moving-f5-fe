@@ -22,7 +22,14 @@ export function useProfileEditForm(
   initialProfile: UserProfile | DriverProfile | null,
 ) {
   const router = useRouter();
-  const { imageUrl, setImageUrl, handleImageSelect } = useImageUpload();
+  const {
+    imageUrl,
+    uploadedImageKey,
+    isUploading,
+    error: imageUploadError,
+    setImage,
+    handleImageSelect,
+  } = useImageUpload(initialProfile?.imageUrl || null, initialProfile?.imageKey || null);
   const { handleUpdateProfile, isLoading, error } = useUpdateProfile(userType);
 
   const [selectedServices, setSelectedServices] = useState<ServiceType[]>(
@@ -55,9 +62,9 @@ export function useProfileEditForm(
   // initialProfile이 변경될 때만 이미지 URL 업데이트
   useEffect(() => {
     if (initialProfile?.imageUrl) {
-      setImageUrl(initialProfile.imageUrl);
+      setImage({ url: initialProfile.imageUrl, key: initialProfile.imageKey || null });
     }
-  }, [initialProfile, setImageUrl]);
+  }, [initialProfile, setImage]);
 
   // Validation 함수들
   const validateCareer = (value: string): string => {
@@ -126,6 +133,21 @@ export function useProfileEditForm(
   const handleSubmit = async () => {
     if (!isValid || isLoading) return;
 
+    if (isUploading) {
+      showToast({ kind: 'error', message: '이미지 업로드가 완료될 때까지 기다려주세요.' });
+      return;
+    }
+
+    // 기존 프로필 이미지는 BE에서 presigned URL(http/https)로 내려오므로
+    // 새로 업로드(미리보기 data URL)인 경우에만 imageKey를 강제합니다.
+    if (imageUrl && imageUrl.startsWith('data:') && !uploadedImageKey) {
+      showToast({
+        kind: 'error',
+        message: imageUploadError || '이미지 업로드가 완료되지 않았습니다.',
+      });
+      return;
+    }
+
     // 제출 전 validation
     if (isDriver) {
       const careerError = validateCareer(career);
@@ -144,7 +166,7 @@ export function useProfileEditForm(
     }
 
     const baseData = {
-      imageUrl: imageUrl || undefined,
+      imageUrl: uploadedImageKey || undefined,
       services: selectedServices,
       regions: selectedRegions,
     };
@@ -164,7 +186,6 @@ export function useProfileEditForm(
       showToast({ kind: 'success', message: '프로필이 수정되었습니다.' });
       router.back();
     } catch (error) {
-      console.error('프로필 수정 실패:', error);
       showToast({
         kind: 'error',
         message: error instanceof Error ? error.message : '프로필 수정에 실패했습니다.',
