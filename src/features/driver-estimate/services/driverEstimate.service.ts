@@ -116,7 +116,6 @@ export const getConfirmEstimates = async ({
       dropoffAddress: r.to ? `${r.to.sido} ${r.to.sigungu}` : '',
       movingDate: convertDateType1(new Date(r.movingDate)),
       estimatePrice: r.price,
-      isConfirmed: r.status === 'CONFIRMED',
       status: r.type,
     })),
     nextCursor: list.length ? list[list.length - 1].id : null,

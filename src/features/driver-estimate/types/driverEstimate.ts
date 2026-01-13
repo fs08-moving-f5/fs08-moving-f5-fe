@@ -37,7 +37,6 @@ export interface EstimateListPageProps {
   queryKey: readonly unknown[];
   queryFn: (params: { cursor: string | null }) => Promise<EstimateListResponse>;
   emptyType: 'confirm' | 'reject';
-  status: 'completed' | 'rejected';
 }
 
 interface BaseEstimateClientProps {

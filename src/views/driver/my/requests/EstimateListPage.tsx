@@ -13,7 +13,7 @@ import {
   EstimateListResponse,
 } from '@/features/driver-estimate/types/driverEstimate';
 
-const EstimateListPage = ({ queryKey, queryFn, emptyType, status }: EstimateListPageProps) => {
+const EstimateListPage = ({ queryKey, queryFn, emptyType }: EstimateListPageProps) => {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   // useInfiniteQuery - 무한 스크롤
@@ -81,7 +81,7 @@ const EstimateListPage = ({ queryKey, queryFn, emptyType, status }: EstimateList
                     movingDate={item.movingDate}
                     movingType={item.movingType}
                     pickedDriver={item.pickedDriver}
-                    status="rejected"
+                    status={item.status}
                   />
                 );
               }
@@ -98,7 +98,7 @@ const EstimateListPage = ({ queryKey, queryFn, emptyType, status }: EstimateList
                   pickedDriver={item.pickedDriver}
                   estimatePrice={item.estimatePrice}
                   isConfirmed={item.isConfirmed}
-                  status={status}
+                  status={item.status}
                 />
               );
             })}

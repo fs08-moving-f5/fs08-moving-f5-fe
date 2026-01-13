@@ -8,7 +8,6 @@ const EstimateConfirmsPage = () => (
     queryKey={['estimate-confirms']}
     queryFn={getRejectEstimates}
     emptyType="reject"
-    status="rejected"
   />
 );
 
