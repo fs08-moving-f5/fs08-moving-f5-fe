@@ -9,21 +9,23 @@ import {
   rejectEstimate,
 } from '@/features/driver-estimate/services/driverEstimate.service';
 import { useModal } from '@/features/driver-estimate/hooks/useModal';
+import { useDriverProfile } from '@/features/driver-estimate/hooks/useDriverProfile';
 import {
   FrontFilter,
   FrontMovingType,
   EstimateRequestResponse,
   toMovingInfo,
 } from '@/features/driver-estimate/types/driverEstimate';
+import { normalizeRegion } from '@/features/driver-estimate/constants/region';
 
 import { ActiveChip } from '@/shared/ui/chip';
 import SearchBar from '@/shared/ui/input/SearchBar';
 import { CheckBox } from '@/shared/ui/button';
 import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
 import { Filter } from '@/shared/ui/button';
-import RequestList from '@/features/driver-estimate/ui/cardContainer/RequestList';
 import ModalQuetRequest from '@/shared/ui/modal/ModalRequest';
 import { showToast } from '@/shared/ui/sonner';
+import RequestList from '@/features/driver-estimate/ui/cardContainer/RequestList';
 import EmptySection from '@/features/driver-estimate/ui/empty';
 import Spinner from '@/shared/ui/spinner';
 
@@ -32,7 +34,6 @@ const sortListObj = {
   Oldest: '요청일 느린순',
   HighestMovingDate: '이사 빠른순',
   LowestMovingDate: '이사 느린순',
-  // HighestRating: '평점 높은순',
 };
 
 export type Filters = {
@@ -60,27 +61,62 @@ const DriverEstimateRequestPage = () => {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   // useInfiniteQuery - 무한 스크롤
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery<
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = useInfiniteQuery<
     EstimateRequestResponse, // TQueryFnData
     Error, // TError
     InfiniteData<EstimateRequestResponse>, // TData
-    ['requests', Filters], // TQueryKey
+    ['requests', { keyword?: string; sort: FrontFilter }], // TQueryKey
     string | null // TPageParam
   >({
-    queryKey: ['requests', filters],
+    queryKey: [
+      'requests',
+      {
+        keyword: filters.keyword,
+        sort: filters.sort,
+      },
+    ],
     queryFn: ({ pageParam }) =>
       getRequests({
         cursor: pageParam,
         sort: filters.sort,
-        ...(filters.movingTypes.length > 0 && { movingType: filters.movingTypes[0] }),
         ...(filters.keyword && { keyword: filters.keyword }),
-        ...(filters.onlyServiceable && { onlyServiceable: filters.onlyServiceable }),
       }),
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 
-  const requests = data?.pages.flatMap((page) => page.data) ?? [];
+  //기사 프로필 - 서비스 가능 지역 정보 불러오기
+  const { data: driverProfile } = useDriverProfile();
+  const driverRegions = driverProfile?.regions ?? [];
+
+  const requests =
+    data?.pages
+      .flatMap((page) => page.data)
+      .filter((item) => {
+        // 이사 유형
+        if (filters.movingTypes.length > 0 && !filters.movingTypes.includes(item.movingType)) {
+          return false;
+        }
+
+        // 지정 견적 요청
+        if (filters.onlyDesignated && !item.pickedDriver) {
+          return false;
+        }
+
+        // 서비스 가능 지역
+        if (filters.onlyServiceable) {
+          const fromRegion = normalizeRegion(item.pickupAddress);
+          const toRegion = normalizeRegion(item.dropoffAddress);
+
+          const matched =
+            (fromRegion && driverRegions.includes(fromRegion)) ||
+            (toRegion && driverRegions.includes(toRegion));
+
+          if (!matched) return false;
+        }
+
+        return true;
+      }) ?? [];
 
   // 페이지네이션 - 무한 스크롤
   useEffect(() => {
@@ -99,6 +135,9 @@ const DriverEstimateRequestPage = () => {
 
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  // 총 n건
+  const total = data?.pages[0]?.total ?? 0;
 
   // 모달 버튼
   const handleSubmit = async () => {
@@ -142,11 +181,11 @@ const DriverEstimateRequestPage = () => {
     }));
   };
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <main className="flex max-w-[1920px] flex-col justify-center">
         <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
-          <Spinner isLoading={isLoading} />
+          <Spinner isLoading={isPending} />
         </section>
       </main>
     );
@@ -188,9 +227,7 @@ const DriverEstimateRequestPage = () => {
           </div>
 
           <div className="flex flex-col gap-[24px]">
-            <h1 className="text-lg font-semibold text-[var(--color-black-500)]">
-              전체 {requests.length}건
-            </h1>
+            <h1 className="text-lg font-semibold text-[var(--color-black-500)]">전체 {total}건</h1>
 
             <div className="flex justify-end text-base font-normal text-[var(--color-black-500)] lg:justify-between">
               <div className="flex hidden items-center gap-3 lg:flex">
@@ -255,7 +292,7 @@ const DriverEstimateRequestPage = () => {
               </div>
             )}
 
-            {isLoading && !isFetchingNextPage && (
+            {isPending && !isFetchingNextPage && (
               <div className="pointer-events-none inset-0 flex items-center justify-center">
                 <span className="rounded-md bg-white/80 px-4 py-2 text-sm text-gray-500 shadow">
                   불러오는 중...

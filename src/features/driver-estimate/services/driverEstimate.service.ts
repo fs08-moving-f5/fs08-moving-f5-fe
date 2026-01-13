@@ -16,7 +16,8 @@ import {
   EstimateConfirmDetailRaw,
 } from '@/features/driver-estimate/types/driverEstimate';
 import { convertDateType1, convertDateType2 } from '@/shared/lib/convertDate';
-import { convertMovingType, convertMovingTypeToBackend } from '@/shared/lib/convertMovingType';
+import { formatDateAgo } from '@/shared/lib/day';
+import { convertMovingType } from '@/shared/lib/convertMovingType';
 
 const convertSort: Record<FrontFilter, BackendFilter> = {
   Latest: 'latest',
@@ -29,17 +30,11 @@ const convertSort: Record<FrontFilter, BackendFilter> = {
 export const getRequests = async ({
   cursor,
   sort,
-  movingType,
   keyword,
-  onlyServiceable,
-  ...params
 }: GetRequestsUIParams): Promise<EstimateRequestResponse> => {
   const searchParams = {
-    ...params,
     ...(sort && { sort: convertSort[sort] }),
-    ...(movingType && { movingType: convertMovingTypeToBackend(movingType) }),
     ...(keyword && { search: keyword }),
-    ...(onlyServiceable !== undefined && { serviceRegionFilter: onlyServiceable }),
     ...(cursor && { cursor }),
   };
 
@@ -47,9 +42,14 @@ export const getRequests = async ({
     .get('estimate-request/driver/requests', {
       searchParams,
     })
-    .json<{ data: EstimateRequestRaw[] }>();
+    .json<{
+      data: {
+        requests: EstimateRequestRaw[];
+        total: number;
+      };
+    }>();
 
-  const list = res.data ?? [];
+  const list = res.data.requests ?? [];
 
   const mappedData = list.map((r) => {
     const requestTimeSource = r.updatedAt ?? r.createdAt;
@@ -67,12 +67,13 @@ export const getRequests = async ({
       pickupAddress: r.from ? `${r.from.sido} ${r.from.sigungu}` : '',
       dropoffAddress: r.to ? `${r.to.sido} ${r.to.sigungu}` : '',
       movingDate: convertDateType1(new Date(r.movingDate)),
-      requestTime: convertDateType2(new Date(requestTimeSource)),
+      requestTime: formatDateAgo(requestTimeSource),
     };
   });
 
   return {
     data: mappedData,
+    total: res.data.total,
     nextCursor: list.length ? list[list.length - 1].id : null,
   };
 };
@@ -115,7 +116,6 @@ export const getConfirmEstimates = async ({
       dropoffAddress: r.to ? `${r.to.sido} ${r.to.sigungu}` : '',
       movingDate: convertDateType1(new Date(r.movingDate)),
       estimatePrice: r.price,
-      isConfirmed: r.status === 'CONFIRMED',
       status: r.type,
     })),
     nextCursor: list.length ? list[list.length - 1].id : null,
