@@ -66,10 +66,16 @@ const DriverEstimateRequestPage = () => {
     EstimateRequestResponse, // TQueryFnData
     Error, // TError
     InfiniteData<EstimateRequestResponse>, // TData
-    ['requests', Filters], // TQueryKey
+    ['requests', { keyword?: string; sort: FrontFilter }], // TQueryKey
     string | null // TPageParam
   >({
-    queryKey: ['requests', filters],
+    queryKey: [
+      'requests',
+      {
+        keyword: filters.keyword,
+        sort: filters.sort,
+      },
+    ],
     queryFn: ({ pageParam }) =>
       getRequests({
         cursor: pageParam,
