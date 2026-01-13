@@ -18,6 +18,7 @@ export interface EstimateRequestItem {
 
 export interface EstimateRequestResponse {
   data: EstimateRequestItem[];
+  total: number;
   nextCursor: string | null;
 }
 
@@ -36,7 +37,6 @@ export interface EstimateListPageProps {
   queryKey: readonly unknown[];
   queryFn: (params: { cursor: string | null }) => Promise<EstimateListResponse>;
   emptyType: 'confirm' | 'reject';
-  status: 'completed' | 'rejected';
 }
 
 interface BaseEstimateClientProps {
