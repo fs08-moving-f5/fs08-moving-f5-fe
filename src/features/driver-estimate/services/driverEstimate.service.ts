@@ -30,17 +30,11 @@ const convertSort: Record<FrontFilter, BackendFilter> = {
 export const getRequests = async ({
   cursor,
   sort,
-  movingType,
   keyword,
-  onlyServiceable,
-  ...params
 }: GetRequestsUIParams): Promise<EstimateRequestResponse> => {
   const searchParams = {
-    ...params,
     ...(sort && { sort: convertSort[sort] }),
-    ...(movingType && { movingType: convertMovingTypeToBackend(movingType) }),
     ...(keyword && { search: keyword }),
-    ...(onlyServiceable !== undefined && { serviceRegionFilter: onlyServiceable }),
     ...(cursor && { cursor }),
   };
 

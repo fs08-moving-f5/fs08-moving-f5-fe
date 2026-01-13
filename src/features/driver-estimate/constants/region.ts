@@ -1,0 +1,20 @@
+export const normalizeRegion = (address: string) => {
+  if (address.includes('서울')) return '서울';
+  if (address.includes('경기')) return '경기';
+  if (address.includes('인천')) return '인천';
+  if (address.includes('대구')) return '대구';
+  if (address.includes('부산')) return '부산';
+  if (address.includes('세종')) return '세종';
+  if (address.includes('광주')) return '광주';
+  if (address.includes('대전')) return '대전';
+  if (address.includes('울산')) return '울산';
+  if (address.includes('강원')) return '강원';
+  if (address.includes('충북')) return '충북';
+  if (address.includes('충남')) return '충남';
+  if (address.includes('전북')) return '전북';
+  if (address.includes('전남')) return '전남';
+  if (address.includes('경북')) return '경북';
+  if (address.includes('경남')) return '경남';
+  if (address.includes('제주')) return '제주';
+  return null;
+};
