@@ -17,7 +17,7 @@ const EstimateListPage = ({ queryKey, queryFn, emptyType, status }: EstimateList
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   // useInfiniteQuery - 무한 스크롤
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery<
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = useInfiniteQuery<
     EstimateListResponse, // TQueryFnData
     Error, // TError
     InfiniteData<EstimateListResponse>, // TData
@@ -50,11 +50,11 @@ const EstimateListPage = ({ queryKey, queryFn, emptyType, status }: EstimateList
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   //로딩중 바
-  if (isLoading) {
+  if (isPending) {
     return (
       <main className="flex max-w-[1920px] flex-col justify-center">
         <section className="mx-auto mt-[10px] w-full max-w-[1200px]">
-          <Spinner isLoading={isLoading} />
+          <Spinner isLoading={isPending} />
         </section>
       </main>
     );
@@ -65,7 +65,7 @@ const EstimateListPage = ({ queryKey, queryFn, emptyType, status }: EstimateList
       <Tab />
 
       <section className="w-full justify-center">
-        {!isLoading && estimates.length === 0 ? (
+        {!isPending && estimates.length === 0 ? (
           <EmptySection type={emptyType} />
         ) : (
           <div className="mb-[14px] grid max-w-[1200px] justify-center gap-6 px-[20px] md:mb-[77px] lg:mx-auto lg:mb-[84px] lg:grid-cols-2">

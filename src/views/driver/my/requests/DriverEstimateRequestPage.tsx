@@ -34,7 +34,6 @@ const sortListObj = {
   Oldest: '요청일 느린순',
   HighestMovingDate: '이사 빠른순',
   LowestMovingDate: '이사 느린순',
-  // HighestRating: '평점 높은순',
 };
 
 export type Filters = {
@@ -86,8 +85,8 @@ const DriverEstimateRequestPage = () => {
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 
+  //기사 프로필 - 서비스 가능 지역 정보 불러오기
   const { data: driverProfile } = useDriverProfile();
-
   const driverRegions = driverProfile?.regions ?? [];
 
   const requests =
@@ -136,6 +135,9 @@ const DriverEstimateRequestPage = () => {
 
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  // 총 n건
+  const total = data?.pages[0]?.total ?? 0;
 
   // 모달 버튼
   const handleSubmit = async () => {
@@ -225,9 +227,7 @@ const DriverEstimateRequestPage = () => {
           </div>
 
           <div className="flex flex-col gap-[24px]">
-            <h1 className="text-lg font-semibold text-[var(--color-black-500)]">
-              전체 {requests.length}건
-            </h1>
+            <h1 className="text-lg font-semibold text-[var(--color-black-500)]">전체 {total}건</h1>
 
             <div className="flex justify-end text-base font-normal text-[var(--color-black-500)] lg:justify-between">
               <div className="flex hidden items-center gap-3 lg:flex">

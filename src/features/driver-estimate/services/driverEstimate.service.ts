@@ -17,7 +17,7 @@ import {
 } from '@/features/driver-estimate/types/driverEstimate';
 import { convertDateType1, convertDateType2 } from '@/shared/lib/convertDate';
 import { formatDateAgo } from '@/shared/lib/day';
-import { convertMovingType, convertMovingTypeToBackend } from '@/shared/lib/convertMovingType';
+import { convertMovingType } from '@/shared/lib/convertMovingType';
 
 const convertSort: Record<FrontFilter, BackendFilter> = {
   Latest: 'latest',
@@ -42,9 +42,14 @@ export const getRequests = async ({
     .get('estimate-request/driver/requests', {
       searchParams,
     })
-    .json<{ data: EstimateRequestRaw[] }>();
+    .json<{
+      data: {
+        requests: EstimateRequestRaw[];
+        total: number;
+      };
+    }>();
 
-  const list = res.data ?? [];
+  const list = res.data.requests ?? [];
 
   const mappedData = list.map((r) => {
     const requestTimeSource = r.updatedAt ?? r.createdAt;
@@ -68,6 +73,7 @@ export const getRequests = async ({
 
   return {
     data: mappedData,
+    total: res.data.total,
     nextCursor: list.length ? list[list.length - 1].id : null,
   };
 };

@@ -18,6 +18,7 @@ export interface EstimateRequestItem {
 
 export interface EstimateRequestResponse {
   data: EstimateRequestItem[];
+  total: number;
   nextCursor: string | null;
 }
 
