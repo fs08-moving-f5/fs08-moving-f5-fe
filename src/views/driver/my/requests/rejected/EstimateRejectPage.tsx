@@ -5,7 +5,7 @@ import { getRejectEstimates } from '@/features/driver-estimate/services/driverEs
 
 const EstimateConfirmsPage = () => (
   <EstimateListPage
-    queryKey={['estimate-confirms']}
+    queryKey={['estimate-rejects']}
     queryFn={getRejectEstimates}
     emptyType="reject"
   />
