@@ -9,6 +9,7 @@ import {
   MyPageRegionsSection,
   MyPageReviewsSection,
   MyPageServicesSection,
+  MyPageOfficeAddressSection,
   DriverDetailActionButtons,
 } from '@/features/profile/ui';
 import { useGetDriverPublicProfileQuery } from '@/features/profile/hooks/queries/useProfileQueries';
@@ -177,6 +178,13 @@ const FindDriverDetailPage = ({
             <MyPageActivitySection activity={activityForSections} />
             <MyPageServicesSection services={profileForSections.services} />
             <MyPageRegionsSection regions={profileForSections.regions} />
+            <MyPageOfficeAddressSection
+              address={
+                driverProfile && 'officeAddress' in driverProfile
+                  ? (driverProfile as { officeAddress?: string | null }).officeAddress
+                  : null
+              }
+            />
             <MyPageReviewsSection
               averageRating={activityForSections.averageRating}
               reviewDistribution={{}}

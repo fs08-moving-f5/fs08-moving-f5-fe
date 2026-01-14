@@ -12,3 +12,7 @@ export { default as MyPageReviewsSection } from './MyPageReviewsSection';
 export { default as MyPageEditButtonsSection } from './MyPageEditButtonsSection';
 
 export { default as DriverDetailActionButtons } from './DriverDetailActionButtons';
+
+// 기사님 사무실 주소 섹션
+export { default as DriverOfficeAddressFields } from './DriverOfficeAddressFields';
+export { default as MyPageOfficeAddressSection } from './MyPageOfficeAddressSection';

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCreateProfile } from './useCreateProfile';
 import { useImageUpload } from './useImageUpload';
+import { useUpdateDriverOfficeAddressMutation } from './mutations/useProfileMutations';
 import {
   PROFILE_ERROR_MESSAGES,
   PROFILE_VALIDATION_PATTERNS,
@@ -10,6 +11,7 @@ import { showToast } from '@/shared/ui/sonner';
 
 import type { ServiceType, RegionType } from '../types/types';
 import type { UserType } from '@/features/auth/types/types';
+import type { AddressParams } from '@/features/estimateRequest/types/type';
 
 interface ProfileSetupFormErrors {
   career: string;
@@ -27,12 +29,14 @@ export function useProfileSetupForm(userType: UserType) {
     handleImageSelect,
   } = useImageUpload();
   const { handleCreateProfile, isLoading, error } = useCreateProfile(userType);
+  const { mutate: updateDriverOfficeAddress } = useUpdateDriverOfficeAddressMutation();
 
   const [selectedServices, setSelectedServices] = useState<ServiceType[]>([]);
   const [selectedRegions, setSelectedRegions] = useState<RegionType[]>([]);
   const [career, setCareer] = useState('');
   const [shortIntro, setShortIntro] = useState('');
   const [description, setDescription] = useState('');
+  const [officeAddress, setOfficeAddress] = useState<AddressParams | undefined>(undefined);
   const [errors, setErrors] = useState<ProfileSetupFormErrors>({
     career: '',
     shortIntro: '',
@@ -156,6 +160,17 @@ export function useProfileSetupForm(userType: UserType) {
       }
 
       showToast({ kind: 'success', message: '프로필이 등록되었습니다.' });
+
+      // 프로필 생성 성공 후 사무실 주소가 있으면 등록 API 호출
+      if (isDriver && officeAddress) {
+        updateDriverOfficeAddress({
+          officeAddress: officeAddress.address,
+          officeZoneCode: officeAddress.zoneCode || null,
+          officeSido: officeAddress.sido || null,
+          officeSigungu: officeAddress.sigungu || null,
+        });
+      }
+
       router.push('/');
     } catch (error) {
       showToast({
@@ -165,7 +180,10 @@ export function useProfileSetupForm(userType: UserType) {
     }
   };
 
-  const isValid = selectedServices.length > 0 && selectedRegions.length > 0;
+  const isValid =
+    selectedServices.length > 0 &&
+    selectedRegions.length > 0 &&
+    (isDriver ? !!officeAddress : true);
 
   return {
     // 상태
@@ -175,6 +193,7 @@ export function useProfileSetupForm(userType: UserType) {
     career,
     shortIntro,
     description,
+    officeAddress,
     errors,
     isLoading,
     error,
@@ -188,6 +207,7 @@ export function useProfileSetupForm(userType: UserType) {
     handleImageUpload,
     toggleService,
     toggleRegion,
+    setOfficeAddress,
     handleSubmit,
   };
 }

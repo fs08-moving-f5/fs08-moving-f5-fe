@@ -8,6 +8,7 @@ import {
   DriverFieldsSection,
   ServiceSelectionSection,
   RegionSelectionSection,
+  DriverOfficeAddressFields,
 } from '@/features/profile/ui';
 
 import type { UserType } from '@/features/auth/types/types';
@@ -24,6 +25,7 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
     career,
     shortIntro,
     description,
+    officeAddress,
     errors,
     isLoading,
     error,
@@ -35,6 +37,7 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
     handleImageUpload,
     toggleService,
     toggleRegion,
+    setOfficeAddress,
     handleSubmit,
   } = useProfileSetupForm(userType);
 
@@ -46,15 +49,17 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
         <ProfileImageSection imageUrl={imageUrl} onImageUpload={handleImageUpload} />
 
         {isDriver && (
-          <DriverFieldsSection
-            career={career}
-            shortIntro={shortIntro}
-            description={description}
-            errors={errors}
-            onCareerChange={handleCareerChange}
-            onShortIntroChange={handleShortIntroChange}
-            onDescriptionChange={handleDescriptionChange}
-          />
+          <>
+            <DriverFieldsSection
+              career={career}
+              shortIntro={shortIntro}
+              description={description}
+              errors={errors}
+              onCareerChange={handleCareerChange}
+              onShortIntroChange={handleShortIntroChange}
+              onDescriptionChange={handleDescriptionChange}
+            />
+          </>
         )}
 
         <ServiceSelectionSection
@@ -63,6 +68,10 @@ export default function ProfileSetupPage({ userType }: ProfileSetupPageProps) {
         />
 
         <RegionSelectionSection selectedRegions={selectedRegions} onToggleRegion={toggleRegion} />
+
+        {isDriver && (
+          <DriverOfficeAddressFields address={officeAddress} setAddress={setOfficeAddress} />
+        )}
 
         <div className="mobile:mt-8 mx-auto mt-12 flex justify-center">
           <Button aria-label="시작하기" onClick={handleSubmit} disabled={!isValid || isLoading}>

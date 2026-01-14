@@ -10,6 +10,7 @@ import {
   DriverFieldsSection,
   ServiceSelectionSection,
   RegionSelectionSection,
+  DriverOfficeAddressFields,
 } from '@/features/profile/ui';
 import BasicFieldsSection from '@/features/profile/ui/BasicFieldsSection';
 
@@ -39,6 +40,7 @@ function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
     career,
     shortIntro,
     description,
+    officeAddress,
     currentPassword,
     newPassword,
     confirmNewPassword,
@@ -58,6 +60,7 @@ function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
     handleImageUpload,
     toggleService,
     toggleRegion,
+    setOfficeAddress,
     handleSubmit,
   } = useProfileForm(userType, profile);
 
@@ -67,7 +70,11 @@ function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
 
   const onSubmit = () => {
     handleSubmit(() => {
-      router.back();
+      if (isDriver) {
+        router.replace('/driver/profile');
+      } else {
+        router.back();
+      }
     });
   };
 
@@ -117,6 +124,10 @@ function ProfileEditForm({ userType, profile }: ProfileEditFormProps) {
         />
 
         <RegionSelectionSection selectedRegions={selectedRegions} onToggleRegion={toggleRegion} />
+
+        {isDriver && (
+          <DriverOfficeAddressFields address={officeAddress} setAddress={setOfficeAddress} />
+        )}
 
         <div className="mobile:mt-8 mt-12 flex gap-3">
           <Button aria-label="취소" onClick={handleCancel} disabled={isLoading} variant="outlined">

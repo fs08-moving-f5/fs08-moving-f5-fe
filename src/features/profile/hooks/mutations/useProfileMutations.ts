@@ -4,6 +4,7 @@ import {
   createDriverProfile,
   updateUserProfile,
   updateDriverProfile,
+  updateDriverOfficeAddress,
 } from '../../services/profileService';
 import PROFILE_QUERY_KEY from '../../constants/queryKey';
 import { showToast } from '@/shared/ui/sonner';
@@ -112,4 +113,24 @@ export const useUpdateProfileMutation = (userType: UserType) => {
   const updateDriver = useUpdateDriverProfileMutation();
 
   return userType === 'USER' ? updateUser : updateDriver;
+};
+
+/**
+ * 기사 사무실 주소 등록 Mutation Hook
+ */
+export const useUpdateDriverOfficeAddressMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateDriverOfficeAddress,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY.DRIVER_PROFILE });
+    },
+    onError: (error: Error) => {
+      showToast({
+        kind: 'error',
+        message: error.message || '사무실 주소 등록에 실패했습니다.',
+      });
+    },
+  });
 };
