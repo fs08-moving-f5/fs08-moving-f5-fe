@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { NearbyRequestList } from '../types';
+import type { NearbyRequestList } from '../types';
 
 type LatLng = {
   lat: number;
@@ -56,15 +56,22 @@ const KakaoMap = ({ center, requests, onSelectRequest }: Props) => {
 
   useEffect(() => {
     if (!mapRef.current) return;
+    if (!window.kakao?.maps) return;
 
     if (officeMarkerRef.current) {
       officeMarkerRef.current.setMap(null);
       officeMarkerRef.current = null;
     }
 
+    const imageSrc = '/markers/office.png';
+    const imageSize = new window.kakao.maps.Size(30, 30);
+    const imageOption = { offset: new window.kakao.maps.Point(15, 15) };
+    const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
     const pos = new window.kakao.maps.LatLng(center.lat, center.lng);
     const marker = new window.kakao.maps.Marker({
       position: pos,
+      image: markerImage,
     });
     marker.setMap(mapRef.current);
 
