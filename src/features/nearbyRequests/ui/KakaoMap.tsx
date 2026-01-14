@@ -86,7 +86,7 @@ const KakaoMap = ({ center, requests, onSelectRequest }: Props) => {
     });
   }, [requests, onSelectRequest]);
 
-  return <div ref={mapDivRef} className="h-[420px] w-full rounded-xl bg-gray-100" />;
+  return <div ref={mapDivRef} className="h-full w-full bg-gray-100" />;
 };
 
 export default KakaoMap;
