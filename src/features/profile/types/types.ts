@@ -50,6 +50,11 @@ type DriverProfile = Omit<
     createdAt: string;
     updatedAt: string;
     imageKey?: string | null;
+    // 사무실 주소 정보 (마이페이지 API 응답에 포함)
+    officeAddress?: string | null;
+    officeZoneCode?: string | null;
+    officeSido?: string | null;
+    officeSigungu?: string | null;
   };
 
 type MyProfile = UserProfile | DriverProfile;

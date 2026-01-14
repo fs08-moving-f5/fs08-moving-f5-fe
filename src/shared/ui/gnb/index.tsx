@@ -28,6 +28,11 @@ const menuByRole = {
     },
     {
       id: 2,
+      label: '내 근처 요청',
+      href: '/driver/my/requests/nearby',
+    },
+    {
+      id: 3,
       label: '내 견적 관리',
       href: '/driver/my/requests/confirmed',
     },

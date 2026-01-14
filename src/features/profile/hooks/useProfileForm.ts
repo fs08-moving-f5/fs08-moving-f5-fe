@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useImageUpload } from './useImageUpload';
 import { showToast } from '@/shared/ui/sonner';
-import { useUpdateProfileMutation } from './mutations/useProfileMutations';
+import {
+  useUpdateDriverOfficeAddressMutation,
+  useUpdateProfileMutation,
+} from './mutations/useProfileMutations';
 import MY_PAGE_QUERY_KEY from '../constants/myPageQueryKey';
 import PROFILE_QUERY_KEY from '../constants/queryKey';
 import {
@@ -21,6 +24,7 @@ import type {
   UpdateDriverProfileRequest,
 } from '../types/types';
 import type { UserType } from '@/features/auth/types/types';
+import type { AddressParams } from '@/features/estimateRequest/types/type';
 
 type ProfileEditFormErrors = Partial<Record<string, string>>;
 
@@ -70,6 +74,28 @@ export function useProfileForm(
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  // 초기 프로필에서 사무실 주소 정보를 가져와서 AddressParams 형식으로 변환
+  const getInitialOfficeAddress = (): AddressParams | undefined => {
+    if (!isDriver || !initialProfile || !('officeAddress' in initialProfile)) {
+      return undefined;
+    }
+    const profile = initialProfile as DriverProfile;
+    if (!profile.officeAddress) {
+      return undefined;
+    }
+    return {
+      zoneCode: profile.officeZoneCode || '',
+      address: profile.officeAddress,
+      addressEnglish: '', // API 응답에 없으면 빈 문자열
+      sido: profile.officeSido || '',
+      sidoEnglish: '', // API 응답에 없으면 빈 문자열
+      sigungu: profile.officeSigungu || '',
+      sigunguEnglish: '', // API 응답에 없으면 빈 문자열
+    };
+  };
+  const [officeAddress, setOfficeAddress] = useState<AddressParams | undefined>(
+    getInitialOfficeAddress(),
+  );
   const [errors, setErrors] = useState<ProfileEditFormErrors>({});
 
   const {
@@ -80,7 +106,15 @@ export function useProfileForm(
     handleImageSelect,
   } = useImageUpload(initialProfile?.imageUrl || null, initialProfile?.imageKey || null);
   const updateMutation = useUpdateProfileMutation(userType);
+  const { mutate: updateDriverOfficeAddress } = useUpdateDriverOfficeAddressMutation();
   const queryClient = useQueryClient();
+
+  // initialProfile이 변경될 때 사무실 주소 초기값 업데이트
+  useEffect(() => {
+    const initialOfficeAddress = getInitialOfficeAddress();
+    setOfficeAddress(initialOfficeAddress);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialProfile, isDriver]);
 
   // Validation 함수들
 
@@ -362,6 +396,17 @@ export function useProfileForm(
           queryClient.invalidateQueries({ queryKey: MY_PAGE_QUERY_KEY.MY_PAGE });
           queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY.MY_PROFILE });
           queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY.DRIVER_PROFILE });
+
+          // 프로필 수정 성공 후 사무실 주소가 있으면 등록/수정 API 호출
+          if (isDriver && officeAddress) {
+            updateDriverOfficeAddress({
+              officeAddress: officeAddress.address,
+              officeZoneCode: officeAddress.zoneCode || null,
+              officeSido: officeAddress.sido || null,
+              officeSigungu: officeAddress.sigungu || null,
+            });
+          }
+
           onSuccess?.();
         },
       });
@@ -422,7 +467,9 @@ export function useProfileForm(
 
   const isValid = options?.accountEditMode
     ? true // 계정 정보 수정 모드에서는 항상 true (제출 시 개별 필드 검증)
-    : selectedServices.length > 0 && selectedRegions.length > 0;
+    : selectedServices.length > 0 &&
+      selectedRegions.length > 0 &&
+      (isDriver ? !!officeAddress : true);
 
   return {
     // 상태
@@ -435,6 +482,7 @@ export function useProfileForm(
     career,
     shortIntro,
     description,
+    officeAddress,
     currentPassword,
     newPassword,
     confirmNewPassword,
@@ -456,6 +504,7 @@ export function useProfileForm(
     handleImageUpload,
     toggleService,
     toggleRegion,
+    setOfficeAddress,
     handleSubmit,
   };
 }

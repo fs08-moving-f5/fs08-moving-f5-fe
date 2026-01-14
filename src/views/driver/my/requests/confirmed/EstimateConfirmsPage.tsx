@@ -8,7 +8,6 @@ const EstimateConfirmsPage = () => (
     queryKey={['estimate-confirms']}
     queryFn={getConfirmEstimates}
     emptyType="confirm"
-    status="completed"
   />
 );
 

@@ -1,6 +1,6 @@
 {
   "css.lint.unknownAtRules": "ignore",
-  "cSpell.words": ["kakao", "Pretendard", "sido", "sigungu"],
+  "cSpell.words": ["dropoff", "kakao", "Pretendard", "Quet", "sido", "sigungu"],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[typescript]": {
