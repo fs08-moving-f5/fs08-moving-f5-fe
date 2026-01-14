@@ -26,15 +26,25 @@ const KakaoMap = ({ center, requests, onSelectRequest }: Props) => {
 
   useEffect(() => {
     if (!mapDivRef.current) return;
-    if (!window.kakao?.maps) return;
     if (mapRef.current) return;
 
-    const mapCenter = new window.kakao.maps.LatLng(center.lat, center.lng);
+    // window.kakao.maps가 준비될 때까지 기다림
+    const initMap = () => {
+      if (!window.kakao?.maps) {
+        // 아직 준비되지 않았으면 잠시 후 다시 시도
+        setTimeout(initMap, 50);
+        return;
+      }
 
-    mapRef.current = new window.kakao.maps.Map(mapDivRef.current, {
-      center: mapCenter,
-      level: 3,
-    });
+      const mapCenter = new window.kakao.maps.LatLng(center.lat, center.lng);
+
+      mapRef.current = new window.kakao.maps.Map(mapDivRef.current, {
+        center: mapCenter,
+        level: 3,
+      });
+    };
+
+    initMap();
   }, [center.lat, center.lng]);
 
   useEffect(() => {

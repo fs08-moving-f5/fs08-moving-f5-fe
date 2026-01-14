@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import KakaoMap from '@/features/nearbyRequests/ui/KakaoMap';
 import { KakaoMapScript } from '@/features/nearbyRequests/ui/KakaoMapScript';
 import {
@@ -42,6 +42,58 @@ const NearbyRequestsClient = () => {
 
   const { data: nearbyRequests = [] } = useGetNearbyQuery(20);
   const { data: myPage } = useGetMyPageQuery();
+
+  // window.kakao.maps가 실제로 준비되었는지 확인하는 함수
+  const checkKakaoMapsReady = () => {
+    return (
+      window.kakao?.maps &&
+      typeof window.kakao.maps.Map === 'function' &&
+      typeof window.kakao.maps.LatLng === 'function' &&
+      typeof window.kakao.maps.Marker === 'function'
+    );
+  };
+
+  // 컴포넌트 마운트 시 스크립트가 이미 로드되어 있는지 확인
+  useEffect(() => {
+    // 다음 틱에서 확인하여 동기적 setState 방지
+    const checkImmediately = setTimeout(() => {
+      if (checkKakaoMapsReady()) {
+        setIsScriptLoaded(true);
+        return;
+      }
+    }, 0);
+
+    // 스크립트가 아직 로드되지 않았으면 주기적으로 확인
+    const interval = setInterval(() => {
+      if (checkKakaoMapsReady()) {
+        setIsScriptLoaded(true);
+        clearInterval(interval);
+      }
+    }, 100);
+
+    // 최대 10초 후 타임아웃
+    const timeout = setTimeout(() => {
+      clearInterval(interval);
+    }, 10000);
+
+    return () => {
+      clearTimeout(checkImmediately);
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, []);
+
+  // window.kakao.maps가 실제로 준비되었는지 확인
+  const handleScriptLoad = () => {
+    const checkReady = () => {
+      if (checkKakaoMapsReady()) {
+        setIsScriptLoaded(true);
+      } else {
+        setTimeout(checkReady, 50);
+      }
+    };
+    checkReady();
+  };
 
   const selectedRequest = useMemo<NearbyRequestItem | null>(() => {
     if (!selectedId) return null;
@@ -113,7 +165,7 @@ const NearbyRequestsClient = () => {
 
   return (
     <div className="relative h-screen w-full">
-      <KakaoMapScript onLoad={() => setIsScriptLoaded(true)} />
+      <KakaoMapScript onLoad={handleScriptLoad} />
 
       {isScriptLoaded && (
         <KakaoMap
