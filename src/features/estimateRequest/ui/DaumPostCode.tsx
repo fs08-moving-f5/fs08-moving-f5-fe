@@ -16,8 +16,8 @@ interface DaumPostcodeProps {
   onClose: (state: PopupState) => void;
 }
 
-export default function DaumPostcode({ onComplete, onClose }: DaumPostcodeProps) {
-  const wrapPef = useRef<HTMLDivElement | null>(null);
+export default function DaumPostCode({ onComplete, onClose }: DaumPostcodeProps) {
+  const wrapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     /* 컴포넌트 레벨에서 처부하려다 그냥 lauout에 넣었습니다 */
@@ -37,11 +37,11 @@ export default function DaumPostcode({ onComplete, onClose }: DaumPostcodeProps)
         width: '100%',
         height: '100%',
         maxSuggestItems: 5,
-      }).embed(wrapPef.current);
+      }).embed(wrapRef.current);
     }
   }, []);
 
-  return <div ref={wrapPef} className="h-[500px] w-full"></div>;
+  return <div ref={wrapRef} className="h-[500px] w-full"></div>;
 }
 
 export interface Address {

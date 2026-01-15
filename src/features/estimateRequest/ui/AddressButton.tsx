@@ -3,7 +3,7 @@
 import Button from '@/shared/ui/button/Button';
 import { useState } from 'react';
 import Image from 'next/image';
-import DaumPostcode, { Address } from './DaumPostCode';
+import DaumPostCode, { Address } from './DaumPostCode';
 import { AddressParams } from '../types/type';
 const ic_x = '/icons/x.svg';
 
@@ -105,7 +105,7 @@ export default function AddressButton({ type, address, setAddress }: AddressButt
                 />
               </button>
             </div>
-            <DaumPostcode onComplete={completeHandler} onClose={closeHandler} />
+            <DaumPostCode onComplete={completeHandler} onClose={closeHandler} />
           </div>
         )}
       </div>

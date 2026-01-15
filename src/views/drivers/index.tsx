@@ -4,14 +4,14 @@ import DRIVERS_QUERY_KEY from '@/features/drivers/constants/queryKey';
 import {
   useAddFavoriteMutation,
   useDeleteFavoriteMutation,
-} from '@/features/drivers/hooks/mutaions/useFavoriteDriverMutation';
+} from '@/features/drivers/hooks/mutations/useFavoriteDriverMutation';
 import {
   getDriverList,
   getFavoriteDrivers,
   DriverInfoType,
   FavoriteDriverInfoType,
 } from '@/features/drivers/services/drivers.service';
-import PagenationInfiniteScroll from '@/features/drivers/ui/Pagination';
+import PaginationInfiniteScroll from '@/features/drivers/ui/Pagination';
 import { FindDriver } from '@/shared/ui/card';
 import DropdownFilter from '@/shared/ui/dropdown/DropdownFilter';
 import DropdownSort from '@/shared/ui/dropdown/DropdownSort';
@@ -198,7 +198,7 @@ export default function DriversPageClient({
           </div>
           <div className="mb-[200px] flex h-full gap-[54px]">
             <div className="scrollbar-hide scroll-mask tab:min-w-0 tab:max-w-full h-full w-full max-w-[820px] min-w-[820px] flex-col overflow-scroll py-[16px]">
-              <PagenationInfiniteScroll<DriverInfoType>
+              <PaginationInfiniteScroll<DriverInfoType>
                 queryKey={DRIVERS_QUERY_KEY.DRIVER}
                 flexGap={20}
                 pageSize={10}
@@ -217,7 +217,7 @@ export default function DriversPageClient({
               <h2 className="text-start text-[20px] leading-[32px] font-[600]">찜한 기사님</h2>
               <div className="scrollbar-hide scroll-mask mb-[200px] h-full w-full max-w-[820px] flex-col overflow-scroll py-[16px]">
                 {isLoggedIn ? (
-                  <PagenationInfiniteScroll<FavoriteDriverInfoType>
+                  <PaginationInfiniteScroll<FavoriteDriverInfoType>
                     queryKey={DRIVERS_QUERY_KEY.FAVORITE_DRIVERS}
                     flexGap={16}
                     pageSize={10}
