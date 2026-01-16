@@ -52,7 +52,7 @@ export default function LoginPage({ usertype }: { usertype: UserType }) {
       <LoginHeader usertype={usertype} />
 
       {/* 로그인 폼 */}
-      <LoginForm onSubmit={handleSubmit} isLoading={isLoading} />
+      <LoginForm onSubmit={handleSubmit} usertype={usertype} isLoading={isLoading} />
 
       {/* SNS 로그인 */}
       <SocialLoginButtons onSocialLogin={handleSocial} />
