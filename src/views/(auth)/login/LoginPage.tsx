@@ -26,7 +26,8 @@ export default function LoginPage({ usertype }: { usertype: UserType }) {
     const oauthError = searchParams.get(EMAIL_VERIFICATION.OAUTH_ERROR_QUERY_KEY);
     if (oauthError === '1') {
       const message =
-        searchParams.get(EMAIL_VERIFICATION.OAUTH_ERROR_MESSAGE_KEY) || 'SNS 로그인에 실패했습니다.';
+        searchParams.get(EMAIL_VERIFICATION.OAUTH_ERROR_MESSAGE_KEY) ||
+        'SNS 로그인에 실패했습니다.';
       showToast({ kind: 'error', message });
       router.replace(`/login/${filteredUsertype}`);
     }
@@ -58,7 +59,10 @@ export default function LoginPage({ usertype }: { usertype: UserType }) {
         return;
       }
 
-      showToast({ kind: 'error', message: error instanceof Error ? error.message : '로그인에 실패했습니다.' });
+      showToast({
+        kind: 'error',
+        message: error instanceof Error ? error.message : '로그인에 실패했습니다.',
+      });
     }
   };
 
