@@ -11,12 +11,12 @@ declare global {
 
 type PopupState = 'FORCE_CLOSE' | 'COMPLETE_CLOSE';
 
-interface DaumPostcodeProps {
+interface DaumPostCodeProps {
   onComplete: (data: Address) => void;
   onClose: (state: PopupState) => void;
 }
 
-export default function DaumPostCode({ onComplete, onClose }: DaumPostcodeProps) {
+export default function DaumPostCode({ onComplete, onClose }: DaumPostCodeProps) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

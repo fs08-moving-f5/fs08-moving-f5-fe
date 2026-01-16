@@ -12,7 +12,7 @@ type CreateDesignatedEstimateRequestRequest = CreateEstimateRequestRequest & {
   designatedDriverId: string;
 };
 
-export async function getPendingEsitimateRequests() {
+export async function getPendingEstimateRequests() {
   return await api.get<getPendingEstimateRequestsResponse>('estimate-request/user/pending');
 }
 
