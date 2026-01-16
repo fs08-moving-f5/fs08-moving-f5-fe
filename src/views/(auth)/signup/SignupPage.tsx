@@ -10,6 +10,7 @@ import {
   useSocialLogin,
 } from '@/features/auth';
 import { showToast } from '@/shared/ui/sonner';
+import { EMAIL_VERIFICATION } from '@/features/auth/constants/emailVerification.constants';
 
 import type { SignupFormData, UserType } from '@/features/auth';
 
@@ -24,9 +25,10 @@ export default function SignupPage({ usertype }: { usertype: UserType }) {
       const result = await handleSignup(data, usertype);
 
       if (result) {
-        showToast({ kind: 'success', message: '회원가입에 성공했습니다!' });
-        // 회원가입 성공 후 프로필 등록 페이지로 이동
-        router.push(`/${filteredUsertype}/profile/setup`);
+        showToast({ kind: 'success', message: EMAIL_VERIFICATION.TOAST_MESSAGE_SENT });
+        router.push(
+          `/login/${filteredUsertype}?${EMAIL_VERIFICATION.REDIRECT_QUERY_KEY}=${EMAIL_VERIFICATION.REDIRECT_QUERY_VALUE_SENT}`,
+        );
       }
     } catch (error) {
       showToast({

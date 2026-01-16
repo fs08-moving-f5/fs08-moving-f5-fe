@@ -1,6 +1,5 @@
 import { HTTPError } from 'ky';
 import { api } from '@/shared/api/client';
-import { useAuthStore } from '@/shared/store/authStore';
 import type { SignupRequest, SignupResponse } from '../types/types';
 
 /**
@@ -11,10 +10,6 @@ import type { SignupRequest, SignupResponse } from '../types/types';
 export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
   try {
     const response = await api.post<SignupResponse>('auth/signup', data);
-    const { user, accessToken } = response.data;
-
-    useAuthStore.getState().setAuth(user, accessToken);
-
     return response.data;
   } catch (error) {
     // ky 에러 처리
@@ -22,7 +17,10 @@ export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
       const errorData = await error.response
         .json()
         .catch(() => ({ message: '회원가입에 실패했습니다.' }));
-      throw new Error(errorData.message || '회원가입에 실패했습니다.');
+
+      const e = new Error(errorData.message || '회원가입에 실패했습니다.');
+      (e as any).name = (errorData as any).name || 'Error';
+      throw e;
     }
     throw new Error('회원가입 중 오류가 발생했습니다.');
   }

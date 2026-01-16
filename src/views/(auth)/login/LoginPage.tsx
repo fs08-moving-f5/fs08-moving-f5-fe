@@ -1,18 +1,36 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { AuthLayout, LoginForm, LoginHeader, SocialLoginButtons } from '@/features/auth/ui';
 import { useLogin, useSocialLogin } from '@/features/auth/hooks';
 import { showToast } from '@/shared/ui/sonner';
+import { EMAIL_VERIFICATION } from '@/features/auth/constants/emailVerification.constants';
 
 import type { LoginFormData, UserType } from '@/features/auth/types/types';
 
 export default function LoginPage({ usertype }: { usertype: UserType }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { handleLogin, isLoading } = useLogin();
   const { handleSocialLogin } = useSocialLogin();
   const filteredUsertype = usertype.toLowerCase();
+
+  React.useEffect(() => {
+    const flag = searchParams.get(EMAIL_VERIFICATION.REDIRECT_QUERY_KEY);
+    if (flag === EMAIL_VERIFICATION.REDIRECT_QUERY_VALUE_SENT) {
+      showToast({ kind: 'info', message: EMAIL_VERIFICATION.TOAST_MESSAGE_SENT });
+      router.replace(`/login/${filteredUsertype}`);
+    }
+
+    const oauthError = searchParams.get(EMAIL_VERIFICATION.OAUTH_ERROR_QUERY_KEY);
+    if (oauthError === '1') {
+      const message =
+        searchParams.get(EMAIL_VERIFICATION.OAUTH_ERROR_MESSAGE_KEY) || 'SNS 로그인에 실패했습니다.';
+      showToast({ kind: 'error', message });
+      router.replace(`/login/${filteredUsertype}`);
+    }
+  }, [filteredUsertype, router, searchParams]);
 
   const handleSubmit = async (data: LoginFormData) => {
     try {
@@ -30,10 +48,17 @@ export default function LoginPage({ usertype }: { usertype: UserType }) {
       }
     } catch (error) {
       console.error('로그인 실패:', error);
-      showToast({
-        kind: 'error',
-        message: error instanceof Error ? error.message : '로그인에 실패했습니다.',
-      });
+
+      if (
+        error instanceof Error &&
+        (error.name === EMAIL_VERIFICATION.ERROR_NAME ||
+          error.message === EMAIL_VERIFICATION.TOAST_MESSAGE_SENT)
+      ) {
+        showToast({ kind: 'info', message: EMAIL_VERIFICATION.TOAST_MESSAGE_SENT });
+        return;
+      }
+
+      showToast({ kind: 'error', message: error instanceof Error ? error.message : '로그인에 실패했습니다.' });
     }
   };
 

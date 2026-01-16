@@ -40,7 +40,10 @@ export const loginService = async (
       const errorData = await error.response
         .json()
         .catch(() => ({ message: '로그인에 실패했습니다.' }));
-      throw new Error(errorData.message || '로그인에 실패했습니다.');
+
+      const e = new Error(errorData.message || '로그인에 실패했습니다.');
+      (e as any).name = (errorData as any).name || 'Error';
+      throw e;
     }
     throw new Error('로그인 중 오류가 발생했습니다.');
   }

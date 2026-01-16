@@ -45,7 +45,10 @@ type AuthUser = Omit<Required<NonNullable<AuthData['user']>>, 'phone'> & {
 };
 
 // 회원가입 응답(data)
-type SignupResponse = Omit<AuthData, 'user'> & { user: AuthUser };
+type SignupResponse = {
+  user: AuthUser;
+  emailVerificationSent: boolean;
+};
 
 // ===== 로그인 타입 =====
 
