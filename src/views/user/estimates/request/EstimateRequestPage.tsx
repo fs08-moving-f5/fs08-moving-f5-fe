@@ -7,7 +7,7 @@ import { AddressParams, MovingType } from '@/features/estimateRequest/types/type
 import AddressButton from '@/features/estimateRequest/ui/AddressButton';
 import MovingTypeSelect from '@/features/estimateRequest/ui/movingTypeButton';
 import Button from '@/shared/ui/button/Button';
-import DatePicker from '@/shared/ui/datepicker/DatePicker';
+import DatePickerCaleder from '@/shared/ui/datepicker/DatePicker';
 import DropdownDatePicker from '@/shared/ui/dropdown/DropdownDatePicker';
 import { showToast } from '@/shared/ui/sonner';
 import {
@@ -176,7 +176,7 @@ export default function EstimateRequestPage() {
               )}
               {step === FormStep.TWO && (
                 <div className="flex w-full items-center justify-center pt-[60px]">
-                  <DatePicker size="md" date={date || new Date()} setDate={setDate} />
+                  <DatePickerCaleder size="md" date={date || new Date()} setDate={setDate} />
                 </div>
               )}
               {step === FormStep.THREE && (

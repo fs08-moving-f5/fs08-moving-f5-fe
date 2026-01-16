@@ -22,7 +22,7 @@ import ModalConfirm from '@/shared/ui/modal/ModalConfirm';
 import { showToast } from '@/shared/ui/sonner';
 import { useAuthStore } from '@/shared/store/authStore';
 import {
-  getPendingEsitimateRequests,
+  getPendingEstimateRequests,
   designatePendingEstimateRequest,
 } from '@/features/estimateRequest/services/estimateRequest.service';
 
@@ -56,7 +56,7 @@ const FindDriverDetailPage = ({
 
     (async () => {
       try {
-        const pendingRes = await getPendingEsitimateRequests();
+        const pendingRes = await getPendingEstimateRequests();
         const pendingList = Array.isArray(pendingRes.data) ? pendingRes.data : [];
         const latest = pendingList[0] as unknown as PendingEstimateRequestLite | undefined;
         const designatedId = latest?.designatedDriverId ?? null;
@@ -127,7 +127,7 @@ const FindDriverDetailPage = ({
         return;
       }
 
-      const pendingRes = await getPendingEsitimateRequests();
+      const pendingRes = await getPendingEstimateRequests();
       const pendingList = Array.isArray(pendingRes.data) ? pendingRes.data : [];
 
       if (pendingList.length === 0) {

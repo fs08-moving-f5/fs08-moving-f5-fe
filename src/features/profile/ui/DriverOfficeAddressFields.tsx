@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import DaumPostcode, { Address } from '@/features/estimateRequest/ui/DaumPostCode';
+import DaumPostCode, { Address } from '@/features/estimateRequest/ui/DaumPostCode';
 import { AddressParams } from '@/features/estimateRequest/types/type';
 
 const ic_x = '/icons/x.svg';
@@ -111,7 +111,7 @@ export default function DriverOfficeAddressFields({
               </button>
             </div>
             <div className="overflow-hidden">
-              <DaumPostcode onComplete={completeHandler} onClose={closeHandler} />
+              <DaumPostCode onComplete={completeHandler} onClose={closeHandler} />
             </div>
           </div>
         )}

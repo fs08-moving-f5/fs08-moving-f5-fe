@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import DetePicker, { ReactDatePickerCustomHeaderProps } from 'react-datepicker';
+import DatePicker, { ReactDatePickerCustomHeaderProps } from 'react-datepicker';
 import { ko } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -16,7 +16,7 @@ interface DatePickerProps {
   setDate: (date: Date) => void;
 }
 
-export default function DatePicker({ size = 'md', date, setDate }: DatePickerProps) {
+export default function DatePickerCalendar({ size = 'md', date, setDate }: DatePickerProps) {
   const buttonIconSize = 24;
   const [month, setMonth] = useState(date.getMonth());
   const [monthMode, setMonthMode] = useState(false);
@@ -78,7 +78,7 @@ export default function DatePicker({ size = 'md', date, setDate }: DatePickerPro
 
   return (
     <div className={`select-none ${style[size].wrapper}`}>
-      <DetePicker
+      <DatePicker
         locale={ko}
         dateFormat="yyyy-MM-dd"
         selected={date}
