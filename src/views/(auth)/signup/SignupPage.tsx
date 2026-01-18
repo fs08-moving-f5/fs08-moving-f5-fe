@@ -24,9 +24,8 @@ export default function SignupPage({ usertype }: { usertype: UserType }) {
       const result = await handleSignup(data, usertype);
 
       if (result) {
-        showToast({ kind: 'success', message: '회원가입에 성공했습니다!' });
-        // 회원가입 성공 후 프로필 등록 페이지로 이동
-        router.push(`/${filteredUsertype}/profile/setup`);
+        // 회원가입 후 자동 로그인하지 않고, 이메일 인증 안내 후 로그인 화면으로 이동
+        router.push(`/login/${filteredUsertype}?emailVerification=sent`);
       }
     } catch (error) {
       showToast({
