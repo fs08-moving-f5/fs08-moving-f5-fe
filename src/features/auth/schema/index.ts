@@ -25,3 +25,10 @@ export {
 } from './loginSchema';
 
 export { LOGIN_ERROR_MESSAGES, LOGIN_VALIDATION_PATTERNS } from './loginValidation.constants';
+
+export {
+  EMAIL_VERIFICATION_MESSAGES,
+  EMAIL_VERIFICATION_QUERY,
+  EMAIL_VERIFICATION_EMAIL_SENT_MESSAGE,
+  EMAIL_VERIFICATION_SUCCESS_MESSAGE,
+} from './emailVerification.constants';
