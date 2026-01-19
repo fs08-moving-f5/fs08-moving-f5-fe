@@ -19,7 +19,7 @@ import {
 } from '@/features/profile/hooks/queries/useProfileQueries';
 
 const menuByRole = {
-  guest: [{ id: 1, label: '기사님 찾기', href: '/' }],
+  guest: [{ id: 1, label: '기사님 찾기', href: '/drivers' }],
   driver: [
     {
       id: 1,
@@ -111,7 +111,7 @@ const GNB = () => {
             className="mobile:w-[88px] tab:w-[88px] mobile:h-[34px] tab:h-[34px]"
           />
         </Link>
-        {user && (
+        {menuByRole[userRole] && menuByRole[userRole].length > 0 && (
           <div className="mobile:hidden tab:hidden flex items-center gap-10">
             {menuByRole[userRole].map((menu) => (
               <Link key={menu.id} href={menu.href} className="text-black-500 text-2lg font-bold">
