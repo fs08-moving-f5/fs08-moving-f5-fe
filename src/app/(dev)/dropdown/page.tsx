@@ -1,6 +1,6 @@
 'use client';
 
-import DatePicker from '@/shared/ui/datepicker/DatePicker';
+import DatePickerCaleder from '@/shared/ui/datepicker/DatePicker';
 import DropdownDatePicker from '@/shared/ui/dropdown/DropdownDatePicker';
 import DropdownFilter from '@/shared/ui/dropdown/DropdownFilter';
 import DropdownProfile from '@/shared/ui/dropdown/DropdownProfile';
@@ -88,8 +88,8 @@ export default function Page() {
           </div>
           <span>날짜 선택됨: {date ? 'true' : 'false'}</span>
           <div className="flex gap-[12px]">
-            <DatePicker size="sm" date={date || new Date()} setDate={setDate} />
-            <DatePicker size="md" date={date || new Date()} setDate={setDate} />
+            <DatePickerCaleder size="sm" date={date || new Date()} setDate={setDate} />
+            <DatePickerCaleder size="md" date={date || new Date()} setDate={setDate} />
           </div>
           <DropdownDatePicker date={date} setDate={setDate} />
         </div>

@@ -3,7 +3,7 @@ import QUERY_KEY from '../../constants/queryKey';
 import {
   createEstimateRequest,
   createEstimateRequestWithGeocode,
-  getPendingEsitimateRequests,
+  getPendingEstimateRequests,
 } from '../../services/estimateRequest.service';
 import { showToast } from '@/shared/ui/sonner';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 export const useGetPendingEstimateRequestsQuery = () => {
   return useQuery({
     queryKey: [QUERY_KEY.PENDING_ESTIMATE_REQUEST],
-    queryFn: getPendingEsitimateRequests,
+    queryFn: getPendingEstimateRequests,
   });
 };
 

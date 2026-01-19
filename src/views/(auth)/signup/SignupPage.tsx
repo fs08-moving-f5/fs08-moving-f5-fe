@@ -51,7 +51,7 @@ export default function SignupPage({ usertype }: { usertype: UserType }) {
       <SignupHeader usertype={usertype} />
 
       {/* 회원가입 폼 */}
-      <SignupForm onSubmit={handleSubmit} />
+      <SignupForm onSubmit={handleSubmit} usertype={usertype} />
 
       {/* SNS 로그인 */}
       <SocialLoginButtons onSocialLogin={handleSocial} />
