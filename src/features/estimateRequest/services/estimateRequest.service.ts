@@ -1,7 +1,7 @@
 import { api } from '@/shared/api/client';
 import type { paths } from '@/shared/types/openapi';
 
-type getPendingEsitimateRequestsResponse =
+type getPendingEstimateRequestsResponse =
   paths['/api/estimate-request/user/pending']['get']['responses']['200']['content']['application/json'];
 type CreateEstimateRequestRequest =
   paths['/api/estimate-request/user/request']['post']['requestBody']['content']['application/json'];
@@ -12,8 +12,8 @@ type CreateDesignatedEstimateRequestRequest = CreateEstimateRequestRequest & {
   designatedDriverId: string;
 };
 
-export async function getPendingEsitimateRequests() {
-  return await api.get<getPendingEsitimateRequestsResponse>('estimate-request/user/pending');
+export async function getPendingEstimateRequests() {
+  return await api.get<getPendingEstimateRequestsResponse>('estimate-request/user/pending');
 }
 
 export async function createEstimateRequest(data: CreateEstimateRequestRequest) {

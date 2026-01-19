@@ -1,6 +1,6 @@
 'use client';
 
-import EstiamteConfirmDetailPage from '@/views/driver/my/requests/confirmed/detail/ConfirmDetailPage';
+import EstimateConfirmDetailPage from '@/views/driver/my/requests/confirmed/detail/ConfirmDetailPage';
 import { useParams, notFound } from 'next/navigation';
 
 const ConfirmsDetailPage = () => {
@@ -14,7 +14,7 @@ const ConfirmsDetailPage = () => {
     return notFound();
   }
 
-  return <EstiamteConfirmDetailPage estimateId={params.id} />;
+  return <EstimateConfirmDetailPage estimateId={params.id} />;
 };
 
 export default ConfirmsDetailPage;
