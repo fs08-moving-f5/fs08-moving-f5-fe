@@ -6,15 +6,17 @@ import Input from '@/shared/ui/input/Input';
 import Button from '@/shared/ui/button/Button';
 import { useLoginForm } from '../hooks/useLoginForm';
 
-import type { LoginFormData } from '../types/types';
+import type { LoginFormData, UserType } from '../types/types';
 
 interface LoginFormProps {
   onSubmit: (data: LoginFormData) => void;
+  usertype: UserType;
   isLoading?: boolean;
 }
 
-export default function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
+export default function LoginForm({ onSubmit, usertype, isLoading }: LoginFormProps) {
   const { formData, errors, handleChange, validateForm, isValid } = useLoginForm();
+  const signupHref = usertype === 'DRIVER' ? '/signup/driver' : '/signup/user';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,7 +74,7 @@ export default function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
       {/* 회원가입 링크 */}
       <div className="mobile:text-md mt-6 text-center text-lg">
         <span className="text-[var(--color-black-200)]">아직 회원이 아니신가요? </span>
-        <Link href="/signup/user" className="font-semibold text-[var(--color-primary-orange-300)]">
+        <Link href={signupHref} className="font-semibold text-[var(--color-primary-orange-300)]">
           회원가입
         </Link>
       </div>
