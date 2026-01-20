@@ -28,6 +28,7 @@ import {
   getPendingEstimateRequests,
   designatePendingEstimateRequest,
 } from '@/features/estimate-request/services/estimateRequest.service';
+import Spinner from '@/shared/ui/spinner';
 
 const FindDriverDetailPage = ({
   id,
@@ -88,10 +89,6 @@ const FindDriverDetailPage = ({
       }
     })();
   }, [id, isUserLoaded, user]);
-
-  if (isLoading) {
-    return <div>로딩 중...</div>;
-  }
 
   if (!data) {
     return <div>데이터를 불러올 수 없습니다.</div>;
@@ -202,6 +199,8 @@ const FindDriverDetailPage = ({
 
   return (
     <>
+      <Spinner isLoading={isLoading} />
+
       <PendingEstimateDetailHeader
         driverImageUrl={profileForSections.imageUrl || '/img/profile.png'}
         title="기사님 프로필"

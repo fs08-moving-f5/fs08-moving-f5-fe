@@ -17,6 +17,7 @@ import {
   useGetDriverProfileQuery,
   useGetUserProfileQuery,
 } from '@/features/profile/hooks/queries/useProfileQueries';
+import { useNotificationActions } from './useNotificationActions';
 
 const menuByRole = {
   guest: [{ id: 1, label: '기사님 찾기', href: '/drivers' }],
@@ -79,6 +80,7 @@ const GNB = () => {
   const { data: notifications } = useGetNotificationListQuery();
 
   const { mutate: readNotification } = useReadNotificationMutation();
+  const { handleNotificationAction } = useNotificationActions();
 
   // notifications 목록이 업데이트될 때 hasUnread 상태 동기화
   useEffect(() => {
@@ -97,6 +99,14 @@ const GNB = () => {
         queryClient.invalidateQueries({ queryKey: ['notification'] });
       },
     });
+
+    const notification = notifications?.find((notif) => notif.id === id);
+    if (notification?.type) {
+      handleNotificationAction({
+        notificationType: notification.type,
+        datajson: notification.datajson,
+      });
+    }
   };
 
   return (

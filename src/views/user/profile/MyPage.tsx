@@ -16,6 +16,7 @@ import {
   MyPageServicesSection,
   MyPageOfficeAddressSection,
 } from '@/features/profile/ui';
+import Spinner from '@/shared/ui/spinner';
 
 const MyPage = () => {
   const router = useRouter();
@@ -27,10 +28,6 @@ const MyPage = () => {
     page: currentPage,
     limit,
   });
-
-  if (isLoadingData) {
-    return <div>로딩 중...</div>;
-  }
 
   if (!myPageData) {
     return <div>데이터를 불러올 수 없습니다.</div>;
@@ -48,6 +45,8 @@ const MyPage = () => {
 
   return (
     <>
+      <Spinner isLoading={isLoadingData} />
+
       {/* 헤더 */}
       <PendingEstimateDetailHeader
         driverImageUrl={profile.imageUrl || '/img/profile.png'}
