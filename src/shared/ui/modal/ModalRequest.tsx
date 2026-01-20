@@ -144,6 +144,13 @@ export default function ModalQuetRequest({
     onSubmit && onSubmit();
   };
 
+  // submit 버튼 disabled 처리
+  const isRejectValid = type !== 'reject' || comment.trim().length >= 10;
+  const isConfirmValid =
+  type !== 'confirm' ||
+  (!!price && price >= 10000 && comment.trim().length >= 10);
+
+
   return (
     <div
       className={`fixed top-0 left-0 z-30 h-full w-full bg-[#00000080] select-none ${isOpen ? 'block' : 'hidden'}`}
@@ -322,7 +329,7 @@ export default function ModalQuetRequest({
               />
             </div>
           </div>
-          <Button type="submit" size="xl">
+          <Button type="submit" size="xl" disabled={!isRejectValid || !isConfirmValid}>
             {submitButton[type]}
           </Button>
         </form>
