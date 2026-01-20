@@ -72,18 +72,18 @@ const ShareButton = (props: ShareProps) => {
 
     const currentUrl = window.location.href;
 
-  window.Kakao.Share.sendDefault({
-    objectType: 'feed',
-    content: {
-      title: kakaoTitle,
-      description: kakaoDescription,
-      imageUrl: kakaoImageUrl,
-      link: {
-        mobileWebUrl: kakaoLink ?? currentUrl,
-        webUrl: kakaoLink ?? currentUrl,
+    window.Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: kakaoTitle,
+        description: kakaoDescription,
+        imageUrl: kakaoImageUrl,
+        link: {
+          mobileWebUrl: kakaoLink ?? currentUrl,
+          webUrl: kakaoLink ?? currentUrl,
+        },
       },
-    },
-  });
+    });
   };
 
   const onShare = () => {

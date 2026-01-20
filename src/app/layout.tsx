@@ -18,13 +18,11 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="ko">
       <body>
@@ -32,14 +30,13 @@ export default function RootLayout({
           src="https://developers.kakao.com/sdk/js/kakao.min.js"
           strategy="beforeInteractive"
         />
-        
+
         <Providers>
           <GNB />
           {children}
 
           <AppToaster />
           <NotificationSseProvider />
-
         </Providers>
         <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" />
       </body>
