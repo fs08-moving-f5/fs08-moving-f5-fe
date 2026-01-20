@@ -9,7 +9,7 @@ interface ActiveChipProps {
   setIsActive: (isActive: boolean) => void;
 }
 
-const ActiveChip = ({ text, isActive, cursorPointer=true, setIsActive }: ActiveChipProps) => {
+const ActiveChip = ({ text, isActive, cursorPointer = true, setIsActive }: ActiveChipProps) => {
   const defaultStyle =
     'flex items-center justify-center py-[10px] px-5 rounded-[100px] text-2lg font-medium tab:py-[6px] tab:px-3 tab:text-md mobile:py-[6px] mobile:px-3 mobile:text-sm';
   const activeStyle =

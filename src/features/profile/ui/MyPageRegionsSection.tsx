@@ -16,7 +16,13 @@ const MyPageRegionsSection = ({ regions }: MyPageRegionsSectionProps) => {
       <h2 className="mb-4 text-lg font-semibold">서비스 가능 지역</h2>
       <div className="flex flex-wrap gap-2">
         {regions.map((region) => (
-          <ActiveChip key={region} text={region} isActive={false} cursorPointer={false} setIsActive={() => {}} />
+          <ActiveChip
+            key={region}
+            text={region}
+            isActive={false}
+            cursorPointer={false}
+            setIsActive={() => {}}
+          />
         ))}
       </div>
     </section>

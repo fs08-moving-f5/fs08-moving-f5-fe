@@ -18,7 +18,7 @@ export default function SocialLoginButtons({ onSocialLogin }: SocialLoginButtons
         <button
           type="button"
           onClick={() => onSocialLogin('google')}
-          className="cursor-pointer flex h-[56px] w-[56px] items-center justify-center rounded-full bg-white shadow-md transition hover:shadow-lg"
+          className="flex h-[56px] w-[56px] cursor-pointer items-center justify-center rounded-full bg-white shadow-md transition hover:shadow-lg"
         >
           <Image src="/icons/social/ic-google.svg" alt="Google" width={56} height={56} />
         </button>
@@ -27,7 +27,7 @@ export default function SocialLoginButtons({ onSocialLogin }: SocialLoginButtons
         <button
           type="button"
           onClick={() => onSocialLogin('kakao')}
-          className="cursor-pointer flex h-[56px] w-[56px] items-center justify-center rounded-full shadow-md transition hover:shadow-lg"
+          className="flex h-[56px] w-[56px] cursor-pointer items-center justify-center rounded-full shadow-md transition hover:shadow-lg"
         >
           <Image src="/icons/social/ic-kakao.svg" alt="Kakao" width={56} height={56} />
         </button>
@@ -36,7 +36,7 @@ export default function SocialLoginButtons({ onSocialLogin }: SocialLoginButtons
         <button
           type="button"
           onClick={() => onSocialLogin('naver')}
-          className="cursor-pointer flex h-[56px] w-[56px] items-center justify-center rounded-full shadow-md transition hover:shadow-lg"
+          className="flex h-[56px] w-[56px] cursor-pointer items-center justify-center rounded-full shadow-md transition hover:shadow-lg"
         >
           <Image src="/icons/social/ic-naver.svg" alt="Naver" width={56} height={56} />
         </button>
