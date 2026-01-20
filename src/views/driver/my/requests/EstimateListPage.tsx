@@ -61,7 +61,7 @@ const EstimateListPage = ({ queryKey, queryFn, emptyType }: EstimateListPageProp
   }
 
   return (
-    <main className="flex min-h-screen flex-col justify-center">
+    <main className="flex max-w-[1920px] flex-col justify-center">
       <Tab />
 
       <section className="w-full justify-center">
