@@ -23,6 +23,7 @@ interface FindDriverProps {
   favoriteCard?: boolean;
   isLiked?: boolean;
   likeFunction?: (liked: boolean) => void;
+  alwaysShowLike?: boolean;
 }
 
 const FindDriver = ({
@@ -41,6 +42,7 @@ const FindDriver = ({
   movingTypeArray,
   favoriteCard = false,
   isLiked = false,
+  alwaysShowLike = false,
   likeFunction,
 }: FindDriverProps) => {
   const [liked, setLiked] = useState(isLiked);
@@ -50,8 +52,10 @@ const FindDriver = ({
   }, [isLiked]);
 
   const handleLikeClick = () => {
-    likeFunction?.(!liked);
-    setLiked(!liked);
+    if (!alwaysShowLike) {
+      likeFunction?.(!liked);
+      setLiked(!liked);
+    }
   };
 
   const articleClassName = smallStyle
@@ -124,7 +128,7 @@ const FindDriver = ({
               moveCount={moveCount}
               likeCount={likeCount}
               isLiked={liked}
-              onLikeClick={handleLikeClick}
+              onLikeClick={alwaysShowLike ? undefined : handleLikeClick}
               showLikeButton={true}
               smallStyle={smallStyle}
             />
