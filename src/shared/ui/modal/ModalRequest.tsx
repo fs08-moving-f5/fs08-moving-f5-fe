@@ -1,10 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { z } from 'zod';
+
 import Button from '../button/Button';
 import { MovingTypeChip } from '../chip';
 import Input from '../input/Input';
 import TextArea from '../input/TextArea';
+import {showToast} from '@/shared/ui/sonner'
 
 import Image from 'next/image';
 import StarRating from '../reviewChart/StarRating';
@@ -45,6 +48,23 @@ interface ModalQuetRequestProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }
+
+const rejectSchema = z.object({
+  comment: z
+    .string()
+    .min(10, '반려 사유는 최소 10자 이상 입력해주세요.'),
+});
+
+const confirmSchema = z.object({
+  price: z
+    .number()
+    .min(10000, '견적가는 최소 10,000원 이상이어야 합니다.')
+    .max(100000000, '견적가는 너무 큽니다.'),
+  comment: z
+    .string()
+    .min(10, '코멘트는 최소 10자 이상 입력해주세요.'),
+});
+
 
 export default function ModalQuetRequest({
   type,
@@ -139,17 +159,40 @@ export default function ModalQuetRequest({
     review: 'hidden',
   };
 
+  const MESSAGE_BY_TYPE = {
+    reject: '반려 사유를 10자 이상 입력해주세요.',
+    confirm: '견적가와 코멘트를 올바르게 입력해주세요.',
+    review: '평점과 리뷰 내용을 확인해주세요.',
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit && onSubmit();
+    
+    try {
+      if (type === 'reject') {
+        rejectSchema.parse({ comment });
+      }
+  
+      if (type === 'confirm') {
+        confirmSchema.parse({
+          price,
+          comment,
+        });
+      }
+  
+      onSubmit && onSubmit();
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        showToast({kind: 'warning', message: MESSAGE_BY_TYPE[type] })
+        return;
+      }
+    }
   };
 
   // submit 버튼 disabled 처리
   const isRejectValid = type !== 'reject' || comment.trim().length >= 10;
   const isConfirmValid =
-  type !== 'confirm' ||
-  (!!price && price >= 10000 && comment.trim().length >= 10);
-
+    type !== 'confirm' || (!!price && price >= 10000 && comment.trim().length >= 10);
 
   return (
     <div
