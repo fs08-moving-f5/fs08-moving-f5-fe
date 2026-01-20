@@ -9,15 +9,28 @@ interface Props {
   totalPages: number;
   onPageChange: (page: number) => void;
   maxVisiblePages?: number;
+  /**
+   * 페이지 변경 시 화면을 top으로 스크롤할지 여부
+   * @default true
+   */
+  scrollToTop?: boolean;
 }
 
-const Pagination = ({ currentPage, totalPages, onPageChange, maxVisiblePages = 5 }: Props) => {
+const Pagination = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+  maxVisiblePages = 5,
+  scrollToTop = true,
+}: Props) => {
   const pages = getPageNumbers(currentPage, totalPages, maxVisiblePages);
 
   const move = (page: number) => {
     if (page < 1 || page > totalPages || page === currentPage) return;
     onPageChange(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (scrollToTop) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
