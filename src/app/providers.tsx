@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/shared/store/authStore';
 import { getQueryClient } from '@/shared/lib/queryClient';
+import { initKakao } from '@/shared/lib/initKakao';
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   const initAuth = useAuthStore((state) => state.initAuth);
@@ -12,6 +13,8 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     initAuth();
+
+    initKakao();
   }, [initAuth]);
 
   return (
