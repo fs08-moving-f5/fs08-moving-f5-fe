@@ -24,7 +24,7 @@ import type {
   UpdateDriverProfileRequest,
 } from '../types/types';
 import type { UserType } from '@/features/auth/types/types';
-import type { AddressParams } from '@/features/estimateRequest/types/type';
+import type { AddressParams } from '@/features/estimate-request/types/type';
 
 type ProfileEditFormErrors = Partial<Record<string, string>>;
 

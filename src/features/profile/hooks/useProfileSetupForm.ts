@@ -11,7 +11,7 @@ import { showToast } from '@/shared/ui/sonner';
 
 import type { ServiceType, RegionType } from '../types/types';
 import type { UserType } from '@/features/auth/types/types';
-import type { AddressParams } from '@/features/estimateRequest/types/type';
+import type { AddressParams } from '@/features/estimate-request/types/type';
 
 interface ProfileSetupFormErrors {
   career: string;
