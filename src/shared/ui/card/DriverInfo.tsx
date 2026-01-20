@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Like from '@/shared/ui/like';
+import ProfileImage from './ProfileImage';
 
 interface DriverInfoProps {
   driverName: string;
@@ -98,8 +99,8 @@ const DriverInfo = ({
     <section className={rootClassName}>
       <div className={profileWrapperClassName}>
         <figure>
-          <Image
-            src={driverImageUrl ?? '/img/profile.png'}
+          <ProfileImage
+            src={driverImageUrl}
             alt="Driver Img"
             width={imageSize}
             height={imageSize}

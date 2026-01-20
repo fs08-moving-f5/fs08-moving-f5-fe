@@ -18,6 +18,8 @@ export const PROFILE_ERROR_MESSAGES = {
   },
   CAREER: {
     INVALID_FORMAT: '숫자만 입력해주세요.',
+    MIN_VALUE: '경력은 1년 이상으로 입력해주세요.',
+    MAX_VALUE: '경력은 99년 이하로 입력해주세요.',
   },
   SHORT_INTRO: {
     MIN_LENGTH: '8자 이상 입력해주세요.',
@@ -47,6 +49,8 @@ export const PROFILE_VALIDATION_PATTERNS_EXT = {
 export const PROFILE_VALIDATION_RULES = {
   NAME_MIN_LENGTH: 2,
   NAME_MAX_LENGTH: 10,
+  CAREER_MIN: 1,
+  CAREER_MAX: 99,
 } as const;
 
 export const PROFILE_VALIDATION_PATTERNS = {

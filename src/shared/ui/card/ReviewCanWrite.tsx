@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { SimpleDriverInfo } from './DriverInfo';
+import ProfileImage from './ProfileImage';
 
 import { MovingTypeChip } from '@/shared/ui/chip';
 import Button from '@/shared/ui/button/Button';
@@ -49,8 +50,8 @@ const ReviewCanWrite = ({
           {/* 기사님 프로필 이미지 */}
           <div className="mobile:flex-row-reverse mobile:justify-between flex gap-6">
             <figure className="mobile:h-20 mobile:w-20 tab:h-20 tab:w-20 h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl">
-              <Image
-                src={driverImageUrl || '/img/profile.png'}
+              <ProfileImage
+                src={driverImageUrl}
                 alt={`${driverName} 프로필`}
                 width={96}
                 height={96}
