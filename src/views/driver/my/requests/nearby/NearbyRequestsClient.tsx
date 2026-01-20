@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import KakaoMap from '@/features/nearbyRequests/ui/KakaoMap';
 import { KakaoMapScript } from '@/features/nearbyRequests/ui/KakaoMapScript';
 import {
@@ -40,8 +40,20 @@ const NearbyRequestsClient = () => {
   const [price, setPrice] = useState<number>();
   const [comment, setComment] = useState<string>('');
 
-  const { data: nearbyRequests = [] } = useGetNearbyQuery(20);
+  const { data: nearbyRequests = [], isError: isNearbyRequestsError } = useGetNearbyQuery(20);
   const { data: myPage } = useGetMyPageQuery();
+
+  const hasToastedError = useRef<boolean>(false);
+
+  useEffect(() => {
+    if (isNearbyRequestsError && !hasToastedError.current) {
+      hasToastedError.current = true;
+      showToast({
+        kind: 'warning',
+        message: `주변 요청을 불러오는 중 오류가 발생했습니다. 사무실 주소를 확인해 주세요.`,
+      });
+    }
+  }, [isNearbyRequestsError]);
 
   // window.kakao.maps가 실제로 준비되었는지 확인하는 함수
   const checkKakaoMapsReady = () => {

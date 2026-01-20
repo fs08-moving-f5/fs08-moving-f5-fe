@@ -57,7 +57,10 @@ const PendingEstimatesPageClient = () => {
           </div>
         ) : estimateData?.length === 0 ? (
           <div className="tab:min-h-[657px] mobile:min-h-[417px] flex min-h-[900px] w-full items-center justify-center">
-            <EmptyData />
+            <EmptyData
+              message="기사님들이 열심히 확인 중이에요"
+              subMessage="곧 견적이 도착할 거예요!"
+            />
           </div>
         ) : (
           <PendingCardContainer

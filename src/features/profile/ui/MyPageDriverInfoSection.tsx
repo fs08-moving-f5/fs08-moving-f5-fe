@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import ProfileImage from '@/shared/ui/card/ProfileImage';
 
 import type { MyPageData } from '@/features/profile/types/types';
 
@@ -12,7 +13,7 @@ const MyPageDriverInfoSection = ({ profile }: MyPageDriverInfoSectionProps) => {
   return (
     <section className="mb-8">
       <div className="flex flex-row items-center gap-2">
-        <Image
+        <ProfileImage
           src={profile.imageUrl || '/img/profile.png'}
           alt="profileImg"
           width={80}

@@ -1,3 +1,4 @@
+import ProfileImage from '@/shared/ui/card/ProfileImage';
 import Image from 'next/image';
 
 const PendingEstimateDetailHeader = ({
@@ -28,7 +29,7 @@ const PendingEstimateDetailHeader = ({
         {hasImg && (
           <div className="button-0 tab:top-[78.5px] mobile:top-[61px] absolute top-[90px] right-0 left-0">
             <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] max-w-[1200px]">
-              <Image
+              <ProfileImage
                 src={driverImageUrl}
                 alt="driverImg"
                 width={134}

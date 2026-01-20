@@ -173,9 +173,9 @@ const DriverEstimateRequestPage = () => {
       await queryClient.invalidateQueries({
         queryKey: ['requests'],
       });
-  
+
       handleCloseModal();
-  
+
       showToast({
         kind: 'success',
         message: '요청이 정상적으로 처리되었습니다.',

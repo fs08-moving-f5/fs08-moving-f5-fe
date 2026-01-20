@@ -43,7 +43,7 @@ const RequestReceived = ({
 
         {/* 고객 이름 */}
         <section>
-          <h3 className="mobile:text-lg tab:text-lg text-black-500 text-xl font-semibold">
+          <h3 className="mobile:text-lg tab:text-lg text-black-500 truncate text-xl font-semibold">
             {customerName} 고객님
           </h3>
         </section>
@@ -52,27 +52,27 @@ const RequestReceived = ({
 
         {/* 이사 정보 */}
         <section className="mobile:text-sm tab:text-sm text-black-300 text-md flex flex-row flex-wrap justify-between gap-6">
-          <div className="flex flex-row flex-wrap items-end gap-2">
-            <div className="flex flex-col items-start gap-2">
+          <div className="flex min-w-0 flex-row flex-wrap items-end gap-2">
+            <div className="flex min-w-0 flex-col items-start gap-2">
               <span className="text-grayScale-500 mobile:text-sm tab:text-sm text-md w-16 flex-shrink-0">
                 출발지
               </span>
-              <span className="text-black-500 flex-1 font-semibold">{pickupAddress}</span>
+              <span className="text-black-500 w-full truncate font-semibold">{pickupAddress}</span>
             </div>
             <Image src="/icons/arrow-right.svg" alt="to" width={16} height={16} className="h-fit" />
-            <div className="flex flex-col items-start gap-2">
+            <div className="flex min-w-0 flex-col items-start gap-2">
               <span className="text-grayScale-500 mobile:text-sm tab:text-sm text-md w-16 flex-shrink-0">
                 도착지
               </span>
-              <span className="text-black-500 flex-1 font-semibold">{dropoffAddress}</span>
+              <span className="text-black-500 w-full truncate font-semibold">{dropoffAddress}</span>
             </div>
           </div>
 
-          <div className="flex flex-col items-start gap-2">
+          <div className="flex min-w-0 flex-col items-start gap-2">
             <span className="text-grayScale-500 mobile:text-sm tab:text-sm text-md w-16 flex-shrink-0">
               이사일
             </span>
-            <span className="text-black-500 flex-1 font-semibold">{movingDate}</span>
+            <span className="text-black-500 w-full truncate font-semibold">{movingDate}</span>
           </div>
         </section>
 

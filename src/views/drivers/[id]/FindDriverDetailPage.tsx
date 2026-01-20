@@ -12,7 +12,10 @@ import {
   MyPageOfficeAddressSection,
   DriverDetailActionButtons,
 } from '@/features/profile/ui';
-import { useGetDriverPublicProfileQuery } from '@/features/profile/hooks/queries/useProfileQueries';
+import {
+  useGetDriverPublicProfileQuery,
+  useGetDriverPublicReviewsQuery,
+} from '@/features/profile/hooks/queries/useProfileQueries';
 import ShareButtonsSection from '@/features/driver-estimate/ui/detailUi/ShareButtonsSection';
 import {
   useDeleteFavoriteMutation,
@@ -37,9 +40,27 @@ const FindDriverDetailPage = ({
   const { user, isUserLoaded } = useAuthStore();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isDesignatedToThisDriver, setIsDesignatedToThisDriver] = useState(false);
+  const [reviewPaging, setReviewPaging] = useState<{ driverId: string; page: number }>(() => ({
+    driverId: id,
+    page: 1,
+  }));
+  const reviewLimit = 5;
   const { data, isLoading } = useGetDriverPublicProfileQuery(id);
+  const currentReviewPage = reviewPaging.driverId === id ? reviewPaging.page : 1;
+  const handleChangeReviewPage = (page: number) => setReviewPaging({ driverId: id, page });
+  const { data: publicReviewsData, isLoading: isLoadingReviews } = useGetDriverPublicReviewsQuery({
+    driverId: id,
+    page: currentReviewPage,
+    limit: reviewLimit,
+  });
   const [favoriteByDriverId, setFavoriteByDriverId] = useState<Record<string, boolean>>({});
+  const [favoritedDeltaByDriverId, setFavoritedDeltaByDriverId] = useState<Record<string, number>>(
+    {},
+  );
   const isFavorited = favoriteByDriverId[id] ?? false;
+  const baseFavoritedCount = data?.favoritedCount ?? 0;
+  const favoritedDelta = favoritedDeltaByDriverId[id] ?? 0;
+  const favoritedCount = Math.max(0, baseFavoritedCount + favoritedDelta);
 
   const addFavoriteMutation = useFavoriteMutation();
   const deleteFavoriteMutation = useDeleteFavoriteMutation();
@@ -87,12 +108,12 @@ const FindDriverDetailPage = ({
     description: driverProfile?.description ?? null,
     services: driverProfile?.services ?? [],
     regions: driverProfile?.regions ?? [],
-    favoritedCount: 0,
+    favoritedCount,
   };
 
   const activityForSections = {
     completedCount: 0,
-    averageRating: 0,
+    averageRating: publicReviewsData?.averageRating ?? 0,
     career: driverProfile?.career ?? null,
   };
 
@@ -101,21 +122,37 @@ const FindDriverDetailPage = ({
 
     if (isFavorited) {
       deleteFavoriteMutation.mutate(id, {
-        onSuccess: () =>
+        onSuccess: () => {
           setFavoriteByDriverId((prev) => ({
             ...prev,
             [id]: false,
-          })),
+          }));
+          setFavoritedDeltaByDriverId((prev) => {
+            const next = (prev[id] ?? 0) - 1;
+            return {
+              ...prev,
+              [id]: next,
+            };
+          });
+        },
       });
       return;
     }
 
     addFavoriteMutation.mutate(id, {
-      onSuccess: () =>
+      onSuccess: () => {
         setFavoriteByDriverId((prev) => ({
           ...prev,
           [id]: true,
-        })),
+        }));
+        setFavoritedDeltaByDriverId((prev) => {
+          const next = (prev[id] ?? 0) + 1;
+          return {
+            ...prev,
+            [id]: next,
+          };
+        });
+      },
     });
   };
 
@@ -187,11 +224,11 @@ const FindDriverDetailPage = ({
             />
             <MyPageReviewsSection
               averageRating={activityForSections.averageRating}
-              reviewDistribution={{}}
-              reviewsData={undefined}
-              isLoadingReviews={false}
-              currentPage={1}
-              onChangePage={() => {}}
+              reviewDistribution={publicReviewsData?.reviewDistribution ?? {}}
+              reviewsData={publicReviewsData?.reviewsData}
+              isLoadingReviews={isLoadingReviews}
+              currentPage={currentReviewPage}
+              onChangePage={handleChangeReviewPage}
             />
           </div>
 
@@ -210,7 +247,7 @@ const FindDriverDetailPage = ({
                 disableFavorite={disableFavorite}
                 disableRequestEstimate={isDesignatedToThisDriver}
               />
-              <ShareButtonsSection heading="공유하기" />
+              <ShareButtonsSection id={id} heading="공유하기" />
             </div>
           </div>
         </div>

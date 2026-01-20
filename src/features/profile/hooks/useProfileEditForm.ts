@@ -5,6 +5,7 @@ import { useImageUpload } from './useImageUpload';
 import {
   PROFILE_ERROR_MESSAGES,
   PROFILE_VALIDATION_PATTERNS,
+  PROFILE_VALIDATION_RULES,
 } from '../constants/validation.constants';
 import { showToast } from '@/shared/ui/sonner';
 
@@ -24,11 +25,11 @@ export function useProfileEditForm(
   const router = useRouter();
   const {
     imageUrl,
-    uploadedImageKey,
     isUploading,
     error: imageUploadError,
     setImage,
     handleImageSelect,
+    uploadPendingImage,
   } = useImageUpload(initialProfile?.imageUrl || null, initialProfile?.imageKey || null);
   const { handleUpdateProfile, isLoading, error } = useUpdateProfile(userType);
 
@@ -68,9 +69,24 @@ export function useProfileEditForm(
 
   // Validation 함수들
   const validateCareer = (value: string): string => {
-    if (value && !PROFILE_VALIDATION_PATTERNS.NUMBER_ONLY.test(value)) {
+    if (!value) return '';
+    if (!PROFILE_VALIDATION_PATTERNS.NUMBER_ONLY.test(value)) {
       return PROFILE_ERROR_MESSAGES.CAREER.INVALID_FORMAT;
     }
+
+    const numericValue = Number(value);
+    if (!Number.isFinite(numericValue)) {
+      return PROFILE_ERROR_MESSAGES.CAREER.INVALID_FORMAT;
+    }
+
+    if (numericValue < PROFILE_VALIDATION_RULES.CAREER_MIN) {
+      return PROFILE_ERROR_MESSAGES.CAREER.MIN_VALUE;
+    }
+
+    if (numericValue > PROFILE_VALIDATION_RULES.CAREER_MAX) {
+      return PROFILE_ERROR_MESSAGES.CAREER.MAX_VALUE;
+    }
+
     return '';
   };
 
@@ -138,12 +154,11 @@ export function useProfileEditForm(
       return;
     }
 
-    // 기존 프로필 이미지는 BE에서 presigned URL(http/https)로 내려오므로
-    // 새로 업로드(미리보기 data URL)인 경우에만 imageKey를 강제합니다.
-    if (imageUrl && imageUrl.startsWith('data:') && !uploadedImageKey) {
+    const imageKeyForSubmit = await uploadPendingImage();
+    if (imageUrl && imageUrl.startsWith('data:') && !imageKeyForSubmit) {
       showToast({
         kind: 'error',
-        message: imageUploadError || '이미지 업로드가 완료되지 않았습니다.',
+        message: imageUploadError || '이미지 업로드에 실패했습니다.',
       });
       return;
     }
@@ -166,7 +181,7 @@ export function useProfileEditForm(
     }
 
     const baseData = {
-      imageUrl: uploadedImageKey || undefined,
+      imageUrl: imageKeyForSubmit || undefined,
       services: selectedServices,
       regions: selectedRegions,
     };

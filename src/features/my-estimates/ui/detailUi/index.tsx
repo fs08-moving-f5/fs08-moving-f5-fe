@@ -10,14 +10,11 @@ import EstimateConfirmPopup from '@/features/my-estimates/ui/estimateInfo/Estima
 import { useGetPendingEstimateDetailQuery } from '@/features/my-estimates/hooks/queries/useEstimateQueries';
 import { formatDateWithPeriod, formatDateWithWeekday } from '@/shared/lib/day';
 import IconWrapper from '@/features/my-estimates/ui/estimateInfo/IconWrapper';
-import {
-  useDeleteFavoriteMutation,
-  useConfirmEstimateMutation,
-  useFavoriteMutation,
-} from '@/features/favorites/hooks/mutations/useFavoriteMutation';
-import QUERY_KEY from '@/features/my-estimates/constants/queryKey';
+import { useConfirmEstimateMutation } from '@/features/my-estimates/hooks/mutations/useEstimateMutations';
 import { useRouter } from 'next/navigation';
 import NonConfirmMessage from '../nonConfirmMessage';
+import MY_ESTIMATES_QUERY_KEY from '@/features/my-estimates/constants/queryKey';
+import { useHandleFavorite } from '@/shared/hooks/useFavorite';
 
 const movingTypeKoreanMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
@@ -43,8 +40,7 @@ const EstimateDetailUi = ({
   const estimateReqData = pendingEstimateDetail?.estimateRequest;
   const driverData = pendingEstimateDetail?.driver;
 
-  const { mutate: addFavoriteDriver } = useFavoriteMutation();
-  const { mutate: deleteFavoriteDriver } = useDeleteFavoriteMutation();
+  const handleLikeClick = useHandleFavorite();
   const { mutate: confirmEstimate } = useConfirmEstimateMutation();
 
   const handleConfirmEstimate = () => {
@@ -53,36 +49,10 @@ const EstimateDetailUi = ({
       {
         onSuccess: () => {
           router.push('/user/my/estimates/received');
-          queryClient.invalidateQueries({ queryKey: QUERY_KEY.RECEIVED_ESTIMATE });
+          queryClient.invalidateQueries({ queryKey: MY_ESTIMATES_QUERY_KEY.RECEIVED_ESTIMATE });
         },
       },
     );
-  };
-
-  const handleLikeClick = ({ driverId, isLiked }: { driverId: string; isLiked: boolean }) => {
-    if (isLiked) {
-      deleteFavoriteDriver(driverId, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: QUERY_KEY.PENDING_ESTIMATE,
-          });
-          queryClient.invalidateQueries({
-            queryKey: QUERY_KEY.PENDING_ESTIMATE_DETAIL(estimateId),
-          });
-        },
-      });
-    } else {
-      addFavoriteDriver(driverId, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: QUERY_KEY.PENDING_ESTIMATE,
-          });
-          queryClient.invalidateQueries({
-            queryKey: QUERY_KEY.PENDING_ESTIMATE_DETAIL(estimateId),
-          });
-        },
-      });
-    }
   };
 
   const stroke = <div className="h-[1px] w-full bg-[#F2F2F2]" />;

@@ -137,7 +137,7 @@ const ConfirmDetail = ({ id }: { id: string }) => {
             </div>
           </article>
 
-          <ShareButtonsSection heading="견적서 공유하기" />
+          <ShareButtonsSection id={id} heading="견적서 공유하기" />
         </section>
       </section>
     </main>

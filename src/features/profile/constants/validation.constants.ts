@@ -18,6 +18,8 @@ export const PROFILE_ERROR_MESSAGES = {
   },
   CAREER: {
     INVALID_FORMAT: '숫자만 입력해주세요.',
+    MIN_VALUE: '경력은 1년 이상으로 입력해주세요.',
+    MAX_VALUE: '경력은 99년 이하로 입력해주세요.',
   },
   SHORT_INTRO: {
     MIN_LENGTH: '8자 이상 입력해주세요.',
@@ -31,6 +33,7 @@ export const PROFILE_ERROR_MESSAGES = {
     INVALID_FORMAT: '비밀번호는 영문, 숫자, 특수문자를 포함해야 합니다.',
     MISMATCH: '새 비밀번호와 확인 비밀번호가 일치하지 않습니다.',
     CURRENT_REQUIRED: '현재 비밀번호를 입력해주세요.',
+    CURRENT_INVALID: '현재 비밀번호가 올바르지 않습니다.',
   },
 } as const;
 
@@ -46,6 +49,8 @@ export const PROFILE_VALIDATION_PATTERNS_EXT = {
 export const PROFILE_VALIDATION_RULES = {
   NAME_MIN_LENGTH: 2,
   NAME_MAX_LENGTH: 10,
+  CAREER_MIN: 1,
+  CAREER_MAX: 99,
 } as const;
 
 export const PROFILE_VALIDATION_PATTERNS = {
