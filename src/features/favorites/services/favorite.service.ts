@@ -1,14 +1,12 @@
 import { api } from '@/shared/api/client';
 import type { components, paths } from '@/shared/types/openapi';
+import type { GetFavoriteDriversResponse } from '../types';
 
 type FavoriteResponse =
   paths['/api/favorite/driver/{driverId}']['post']['responses'][201]['content']['application/json'];
 
 type DeleteFavoriteResponse =
   paths['/api/favorite/driver/{driverId}']['delete']['responses'][200]['content']['application/json'];
-
-type GetFavoriteDriversResponse =
-  paths['/api/favorite']['get']['responses'][200]['content']['application/json'];
 
 type DeleteManyFavoriteDriversResponse =
   paths['/api/favorite/driver']['delete']['responses'][200]['content']['application/json'];
@@ -36,7 +34,12 @@ export const getFavoriteDrivers = async ({
       limit,
     },
   });
-  return res.data;
+
+  return {
+    data: res.data,
+    count: res.count,
+    pagination: res.pagination,
+  };
 };
 
 export const deleteManyFavoriteDrivers = async (driverIds: string[]) => {

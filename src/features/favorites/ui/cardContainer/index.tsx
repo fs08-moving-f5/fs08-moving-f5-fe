@@ -46,6 +46,9 @@ const FavoritesCardContainer = ({
                 (service) => movingTypeMap[service],
               ) ?? undefined
             }
+            isLiked={true}
+            likeFunction={() => {}}
+            alwaysShowLike={true}
           />
         ))}
       </div>
