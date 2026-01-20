@@ -16,8 +16,6 @@ const ic_x = '/icons/x.svg';
 const ic_arrow_right = '/icons/arrow-right.svg';
 const ic_name = '/icons/name.svg';
 const img_profile = '/img/profile.png';
-const ic_star = '/icons/star.svg';
-const ic_star_empty = '/icons/star-empty.svg';
 
 interface User {
   name: string;

@@ -247,37 +247,43 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/auth/me": {
+    "/api/auth/email/verify": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
+        get?: never;
+        put?: never;
         /**
-         * 현재 로그인한 유저 정보 조회
-         * @description JWT 토큰을 통해 현재 로그인한 사용자의 정보를 조회합니다.
+         * 이메일 인증 완료 처리
+         * @description 이메일 인증 링크에서 받은 토큰을 검증하고, 유저의 이메일 인증 상태를 완료로 변경합니다.
          */
-        get: {
+        post: {
             parameters: {
                 query?: never;
                 header?: never;
                 path?: never;
                 cookie?: never;
             };
-            requestBody?: never;
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["VerifyEmailRequest"];
+                };
+            };
             responses: {
-                /** @description 유저 정보 조회 성공 */
+                /** @description 이메일 인증 처리 성공 */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["UserResponse"];
+                        "application/json": components["schemas"]["VerifyEmailResponse"];
                     };
                 };
-                /** @description 인증 필요 */
-                401: {
+                /** @description 토큰이 유효하지 않거나 만료됨 */
+                400: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -287,8 +293,6 @@ export interface paths {
                 };
             };
         };
-        put?: never;
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -388,7 +392,15 @@ export interface paths {
         /**
          * 내 사무실 주변 견적 요청 조회
          * @description 현재 로그인한 드라이버(기사)의 사무실 위치를 기준으로 반경 내의 견적 요청을 조회합니다.
-         *     거리순으로 정렬되어 반환되며, 각 견적 요청에는 출발지 주소, 이사 유형, 이사 예정일, 거리 정보가 포함됩니다.
+         *     거리순으로 정렬되어 반환되며, 각 견적 요청에는 다음 정보가 포함됩니다:
+         *     - 출발지 주소 (시도, 시군구, 전체 주소, 위도/경도)
+         *     - 도착지 주소 (시도, 시군구, 전체 주소)
+         *     - 이사 유형 (SMALL_MOVING, HOME_MOVING, OFFICE_MOVING)
+         *     - 이사 예정일
+         *     - 지정 드라이버 여부 (isDesignated)
+         *     - 견적 요청 작성자 정보 (사용자 ID, 이름)
+         *     - 사무실로부터의 거리 (킬로미터)
+         *     - 견적 요청 생성 일시
          *
          *     **동작 방식:**
          *     1. 드라이버의 사무실 위치(위도/경도)를 조회합니다.
@@ -521,8 +533,6 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    movingType?: "SMALL_MOVING" | "HOME_MOVING" | "OFFICE_MOVING";
-                    serviceRegionFilter?: boolean;
                     search?: string;
                     sort?: "latest" | "oldest" | "moving-latest" | "moving-oldest";
                     cursor?: string;
@@ -543,25 +553,28 @@ export interface paths {
                         /**
                          * @example {
                          *       "success": true,
-                         *       "data": [
-                         *         {
-                         *           "id": "req_1",
-                         *           "name": "홍길동",
-                         *           "movingType": "HOME_MOVING",
-                         *           "movingDate": "2025-01-01T00:00:00.000Z",
-                         *           "isDesignated": false,
-                         *           "createdAt": "2024-12-01T10:00:00.000Z",
-                         *           "updatedAt": "2024-12-01T10:00:00.000Z",
-                         *           "from": {
-                         *             "sido": "서울",
-                         *             "sigungu": "강남구"
-                         *           },
-                         *           "to": {
-                         *             "sido": "경기",
-                         *             "sigungu": "성남시"
+                         *       "data": {
+                         *         "requests": [
+                         *           {
+                         *             "id": "req_1",
+                         *             "name": "홍길동",
+                         *             "movingType": "HOME_MOVING",
+                         *             "movingDate": "2025-01-01T00:00:00.000Z",
+                         *             "isDesignated": false,
+                         *             "createdAt": "2024-12-01T10:00:00.000Z",
+                         *             "updatedAt": "2024-12-01T10:00:00.000Z",
+                         *             "from": {
+                         *               "sido": "서울",
+                         *               "sigungu": "강남구"
+                         *             },
+                         *             "to": {
+                         *               "sido": "경기",
+                         *               "sigungu": "성남시"
+                         *             }
                          *           }
-                         *         }
-                         *       ]
+                         *         ],
+                         *         "total": 10
+                         *       }
                          *     }
                          */
                         "application/json": unknown;
@@ -650,8 +663,6 @@ export interface paths {
             requestBody: {
                 content: {
                     "application/json": {
-                        /** @example req_1 */
-                        estimateRequestId: string;
                         /** @example 300000 */
                         price: number;
                         /** @example 합리적인 가격으로 진행 가능합니다. */
@@ -794,8 +805,6 @@ export interface paths {
             requestBody: {
                 content: {
                     "application/json": {
-                        /** @example req_1 */
-                        estimateRequestId: string;
                         /** @example 일정이 맞지 않습니다. */
                         rejectReason: string;
                     };
@@ -923,7 +932,11 @@ export interface paths {
         /** 확정 견적 목록 조회 (기사) */
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    sort?: "latest";
+                    cursor?: string;
+                    take?: number;
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
@@ -946,6 +959,7 @@ export interface paths {
                          *           "status": "CONFIRMED",
                          *           "createdAt": "2025-01-01T00:00:00.000Z",
                          *           "isCompleted": false,
+                         *           "type": "normal",
                          *           "user": {
                          *             "id": "user_10",
                          *             "name": "박영희"
@@ -1159,7 +1173,11 @@ export interface paths {
         /** 반려 견적 목록 조회 (기사) */
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    sort?: "latest";
+                    cursor?: string;
+                    take?: number;
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
@@ -1194,7 +1212,7 @@ export interface paths {
                          *             "sido": "인천",
                          *             "sigungu": "연수구"
                          *           },
-                         *           "isRejected": true
+                         *           "type": "rejected"
                          *         }
                          *       ]
                          *     }
@@ -2547,12 +2565,15 @@ export interface paths {
                          *       "data": {
                          *         "reviews": [
                          *           {
+                         *             "id": "rev_1",
                          *             "rating": 5,
                          *             "content": "아주 만족스러운 이사였습니다.",
                          *             "createdAt": "2025-01-01T10:00:00.000Z",
                          *             "driver": {
+                         *               "id": "drv_1",
                          *               "name": "김기사",
-                         *               "shortIntro": "10년 경력 기사입니다."
+                         *               "shortIntro": "10년 경력 기사입니다.",
+                         *               "imageUrl": null
                          *             },
                          *             "movingType": "HOME_MOVING",
                          *             "movingDate": "2025-01-10T00:00:00.000Z",
@@ -2652,9 +2673,11 @@ export interface paths {
                          *         "estimates": [
                          *           {
                          *             "id": "est_1",
+                         *             "reviewId": "rev_1",
                          *             "price": 300000,
                          *             "createdAt": "2025-01-01T09:00:00.000Z",
                          *             "driver": {
+                         *               "id": "drv_2",
                          *               "name": "이기사",
                          *               "shortIntro": "친절한 이사 전문가"
                          *             },
@@ -2740,19 +2763,19 @@ export interface paths {
             parameters: {
                 query?: never;
                 header?: never;
-                path?: never;
+                path: {
+                    reviewId: string;
+                };
                 cookie?: never;
             };
             requestBody: {
                 content: {
-                    /**
-                     * @example {
-                     *       "estimateId": "est_1",
-                     *       "rating": 5,
-                     *       "content": "기사님이 정말 친절했습니다."
-                     *     }
-                     */
-                    "application/json": unknown;
+                    "application/json": {
+                        /** @example 5 */
+                        rating?: number;
+                        /** @example 기사님이 정말 친절했습니다. */
+                        content?: string;
+                    };
                 };
             };
             responses: {
@@ -3028,6 +3051,26 @@ export interface components {
              */
             stack?: string | null;
         };
+        VerifyEmailRequest: {
+            /**
+             * @description 이메일 인증 토큰(JWT)
+             * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+             */
+            token: string;
+        };
+        VerifyEmailResponse: {
+            /** @example true */
+            success?: boolean;
+            data?: {
+                /** @example 이메일 인증이 완료되었습니다. */
+                message?: string;
+                /**
+                 * @example USER
+                 * @enum {string}
+                 */
+                userType?: "USER" | "DRIVER";
+            };
+        };
         DriverProfileInfo: {
             /**
              * Format: uuid
@@ -3196,10 +3239,15 @@ export interface components {
             success?: boolean;
             /** @description 응답 데이터 */
             data?: unknown;
-            /** @description 페이지네이션 정보 */
+            /** @description 페이지네이션 정보 (페이지네이션이 있는 경우) */
             pagination?: unknown;
             /** @description 응답 메시지 */
             message?: string | null;
+            /**
+             * @description 전체 항목 수 (페이지네이션이 있는 경우)
+             * @example 25
+             */
+            count?: number | null;
         };
         UpdateDriverOfficeRequest: {
             /**
@@ -3892,6 +3940,63 @@ export interface components {
                 /** @description 리뷰 목록 */
                 reviews?: components["schemas"]["ReviewInfo"][];
             };
+        };
+        GetFavoriteDriversResponse: {
+            /**
+             * @description 요청 성공 여부
+             * @example true
+             */
+            success: boolean;
+            /**
+             * @example [
+             *       {
+             *         "id": "123e4567-e89b-12d3-a456-426614174000",
+             *         "userId": "123e4567-e89b-12d3-a456-426614174001",
+             *         "driverId": "123e4567-e89b-12d3-a456-426614174002",
+             *         "createdAt": "2024-01-15T10:30:00Z",
+             *         "driver": {
+             *           "id": "123e4567-e89b-12d3-a456-426614174002",
+             *           "name": "홍길동",
+             *           "driverProfile": {
+             *             "id": "123e4567-e89b-12d3-a456-426614174003",
+             *             "imageUrl": "https://example.com/image.jpg",
+             *             "career": 5,
+             *             "shortIntro": "안전하고 신속한 이사를 약속드립니다",
+             *             "description": "10년 이상의 경력을 가진 전문 이사 기사입니다.",
+             *             "services": [
+             *               "HOME_MOVING",
+             *               "OFFICE_MOVING"
+             *             ],
+             *             "confirmedEstimateCount": 150,
+             *             "favoriteDriverCount": 45,
+             *             "averageRating": 4.5,
+             *             "reviewCount": 120,
+             *             "createdAt": "2024-01-10T09:00:00Z",
+             *             "updatedAt": "2024-01-15T10:00:00Z"
+             *           },
+             *           "reviews": [
+             *             {
+             *               "id": "123e4567-e89b-12d3-a456-426614174004",
+             *               "rating": 5
+             *             }
+             *           ]
+             *         }
+             *       }
+             *     ]
+             */
+            data: components["schemas"]["FavoriteDriverWithDetails"][];
+            /**
+             * @description 전체 찜한 기사 수
+             * @example 25
+             */
+            count: number;
+            /**
+             * @example {
+             *       "hasNext": true,
+             *       "nextCursor": "123e4567-e89b-12d3-a456-426614174005"
+             *     }
+             */
+            pagination: components["schemas"]["PaginationInfo"];
         };
         DeleteResponse: {
             /**
@@ -4591,6 +4696,25 @@ export interface operations {
                              */
                             movingDate?: string;
                             /**
+                             * @description 지정 드라이버 여부
+                             * @example false
+                             */
+                            isDesignated?: boolean;
+                            /** @description 견적 요청 작성자 정보 */
+                            user?: {
+                                /**
+                                 * Format: uuid
+                                 * @description 사용자 ID
+                                 * @example 123e4567-e89b-12d3-a456-426614174000
+                                 */
+                                id?: string;
+                                /**
+                                 * @description 사용자 이름
+                                 * @example 홍길동
+                                 */
+                                name?: string;
+                            };
+                            /**
                              * Format: date-time
                              * @description 견적 요청 생성 일시
                              * @example 2026-01-12T10:00:00.000Z
@@ -4625,6 +4749,24 @@ export interface operations {
                                  * @example 126.978
                                  */
                                 lng?: number;
+                            };
+                            /** @description 도착지 주소 정보 */
+                            toAddress?: {
+                                /**
+                                 * @description 도착지 시도
+                                 * @example 서울특별시
+                                 */
+                                sido?: string;
+                                /**
+                                 * @description 도착지 시군구
+                                 * @example 송파구
+                                 */
+                                sigungu?: string;
+                                /**
+                                 * @description 도착지 전체 주소
+                                 * @example 서울특별시 송파구 올림픽로 300
+                                 */
+                                address?: string;
                             };
                         }[];
                     };
@@ -4964,11 +5106,14 @@ export interface operations {
                          * @description 요청 성공 여부
                          * @example true
                          */
-                        success?: boolean;
-                        data?: components["schemas"]["FavoriteDriverWithDetails"][];
-                        pagination?: components["schemas"]["PaginationInfo"];
-                        /** @description 응답 메시지 */
-                        message?: string | null;
+                        success: boolean;
+                        data: components["schemas"]["FavoriteDriverWithDetails"][];
+                        /**
+                         * @description 전체 찜한 기사 수
+                         * @example 25
+                         */
+                        count: number;
+                        pagination: components["schemas"]["PaginationInfo"];
                     };
                 };
             };
@@ -5030,10 +5175,6 @@ export interface operations {
                          */
                         success?: boolean;
                         data?: components["schemas"]["DeleteResponse"];
-                        /** @description 페이지네이션 정보 */
-                        pagination?: unknown;
-                        /** @description 응답 메시지 */
-                        message?: string | null;
                     };
                 };
             };
@@ -5094,10 +5235,6 @@ export interface operations {
                          */
                         success?: boolean;
                         data?: components["schemas"]["FavoriteDriver"];
-                        /** @description 페이지네이션 정보 */
-                        pagination?: unknown;
-                        /** @description 응답 메시지 */
-                        message?: string | null;
                     };
                 };
             };
@@ -5167,10 +5304,6 @@ export interface operations {
                          */
                         success?: boolean;
                         data?: components["schemas"]["DeleteResponse"];
-                        /** @description 페이지네이션 정보 */
-                        pagination?: unknown;
-                        /** @description 응답 메시지 */
-                        message?: string | null;
                     };
                 };
             };
