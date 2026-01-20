@@ -156,6 +156,7 @@ type ReviewListData = {
 interface DriverPublicProfileData {
   id: string;
   name: string;
+  favoritedCount: number;
   driverProfile: {
     id: string;
     driverId: string;
