@@ -29,6 +29,7 @@ export const useSignup = () => {
         phone: data.phone,
         password: data.password,
         type: userType, // 백엔드는 'type' 필드를 받음
+        frontendOrigin: window.location.origin,
       };
 
       // 백엔드 응답: { user: UserResponse, accessToken: string }
