@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { HTTPError } from 'ky';
 import {
   createUserProfile,
   createDriverProfile,
@@ -7,6 +8,7 @@ import {
   updateDriverOfficeAddress,
 } from '../../services/profileService';
 import PROFILE_QUERY_KEY from '../../constants/queryKey';
+import { PROFILE_ERROR_MESSAGES } from '../../constants/validation.constants';
 import { showToast } from '@/shared/ui/sonner';
 
 import type { UserType } from '@/features/auth/types/types';
@@ -66,6 +68,13 @@ export const useUpdateUserProfileMutation = () => {
       showToast({ kind: 'success', message: '프로필이 수정되었습니다.' });
     },
     onError: (error: Error) => {
+      if (error instanceof HTTPError && error.response?.status === 401) {
+        showToast({
+          kind: 'error',
+          message: PROFILE_ERROR_MESSAGES.PASSWORD.CURRENT_INVALID,
+        });
+        return;
+      }
       showToast({
         kind: 'error',
         message: error.message || '프로필 수정에 실패했습니다.',
@@ -87,6 +96,13 @@ export const useUpdateDriverProfileMutation = () => {
       showToast({ kind: 'success', message: '프로필이 수정되었습니다.' });
     },
     onError: (error: Error) => {
+      if (error instanceof HTTPError && error.response?.status === 401) {
+        showToast({
+          kind: 'error',
+          message: PROFILE_ERROR_MESSAGES.PASSWORD.CURRENT_INVALID,
+        });
+        return;
+      }
       showToast({
         kind: 'error',
         message: error.message || '프로필 수정에 실패했습니다.',

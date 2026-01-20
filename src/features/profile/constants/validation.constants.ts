@@ -31,6 +31,7 @@ export const PROFILE_ERROR_MESSAGES = {
     INVALID_FORMAT: '비밀번호는 영문, 숫자, 특수문자를 포함해야 합니다.',
     MISMATCH: '새 비밀번호와 확인 비밀번호가 일치하지 않습니다.',
     CURRENT_REQUIRED: '현재 비밀번호를 입력해주세요.',
+    CURRENT_INVALID: '현재 비밀번호가 올바르지 않습니다.',
   },
 } as const;
 
