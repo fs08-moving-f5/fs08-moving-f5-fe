@@ -24,11 +24,11 @@ export function useProfileEditForm(
   const router = useRouter();
   const {
     imageUrl,
-    uploadedImageKey,
     isUploading,
     error: imageUploadError,
     setImage,
     handleImageSelect,
+    uploadPendingImage,
   } = useImageUpload(initialProfile?.imageUrl || null, initialProfile?.imageKey || null);
   const { handleUpdateProfile, isLoading, error } = useUpdateProfile(userType);
 
@@ -138,12 +138,11 @@ export function useProfileEditForm(
       return;
     }
 
-    // 기존 프로필 이미지는 BE에서 presigned URL(http/https)로 내려오므로
-    // 새로 업로드(미리보기 data URL)인 경우에만 imageKey를 강제합니다.
-    if (imageUrl && imageUrl.startsWith('data:') && !uploadedImageKey) {
+    const imageKeyForSubmit = await uploadPendingImage();
+    if (imageUrl && imageUrl.startsWith('data:') && !imageKeyForSubmit) {
       showToast({
         kind: 'error',
-        message: imageUploadError || '이미지 업로드가 완료되지 않았습니다.',
+        message: imageUploadError || '이미지 업로드에 실패했습니다.',
       });
       return;
     }
@@ -166,7 +165,7 @@ export function useProfileEditForm(
     }
 
     const baseData = {
-      imageUrl: uploadedImageKey || undefined,
+      imageUrl: imageKeyForSubmit || undefined,
       services: selectedServices,
       regions: selectedRegions,
     };

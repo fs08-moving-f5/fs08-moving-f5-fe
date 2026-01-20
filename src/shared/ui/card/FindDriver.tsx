@@ -80,7 +80,7 @@ const FindDriver = ({
 
   const descriptionClassName = smallStyle
     ? 'text-black-200 mb-5 text-md'
-    : 'text-black-200 tab:mb-4 tab:text-md mb-5 text-lg';
+    : 'text-black-200 mobile:mb-4 mobile:text-md mb-5 text-lg';
 
   const hrClassName = smallStyle ? 'hidden' : 'mobile:block hidden';
 

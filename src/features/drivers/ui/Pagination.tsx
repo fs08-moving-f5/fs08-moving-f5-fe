@@ -81,11 +81,11 @@ export default function PaginationInfiniteScroll<T extends object | undefined>({
   return (
     <div className="flex w-full flex-col items-center" style={{ gap: `${flexGap}px` }}>
       {data && data.pages[0].items.length > 0 ? (
-        <div className="flex flex-col" style={{ gap: `${flexGap}px` }}>
-          <ul className="flex flex-col" style={{ gap: `${flexGap}px` }}>
+        <div className="flex w-full flex-col" style={{ gap: `${flexGap}px` }}>
+          <ul className="flex w-full flex-col" style={{ gap: `${flexGap}px` }}>
             {data?.pages.map((page, idx) =>
               page.items?.map((props, idx2) => (
-                <li key={idx * pageSize + idx2}>
+                <li className="w-full" key={idx * pageSize + idx2}>
                   <ElementNode {...props} />
                 </li>
               )),
