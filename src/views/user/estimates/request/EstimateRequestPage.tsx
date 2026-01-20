@@ -3,9 +3,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { AddressParams, MovingType } from '@/features/estimateRequest/types/type';
-import AddressButton from '@/features/estimateRequest/ui/AddressButton';
-import MovingTypeSelect from '@/features/estimateRequest/ui/movingTypeButton';
+import { AddressParams, MovingType } from '@/features/estimate-request/types/type';
+import AddressButton from '@/features/estimate-request/ui/AddressButton';
+import MovingTypeSelect from '@/features/estimate-request/ui/movingTypeButton';
 import Button from '@/shared/ui/button/Button';
 import DatePickerCaleder from '@/shared/ui/datepicker/DatePicker';
 import DropdownDatePicker from '@/shared/ui/dropdown/DropdownDatePicker';
@@ -13,7 +13,7 @@ import { showToast } from '@/shared/ui/sonner';
 import {
   useCreateEstimateRequestMutation,
   useGetPendingEstimateRequestsQuery,
-} from '@/features/estimateRequest/hooks/queries/useEstimateRequestQueries';
+} from '@/features/estimate-request/hooks/queries/useEstimateRequestQueries';
 
 const img_truck = '/img/img_truck_transparent.png';
 

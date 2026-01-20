@@ -27,7 +27,7 @@ import { useAuthStore } from '@/shared/store/authStore';
 import {
   getPendingEstimateRequests,
   designatePendingEstimateRequest,
-} from '@/features/estimateRequest/services/estimateRequest.service';
+} from '@/features/estimate-request/services/estimateRequest.service';
 
 const FindDriverDetailPage = ({
   id,

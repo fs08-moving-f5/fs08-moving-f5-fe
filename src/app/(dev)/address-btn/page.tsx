@@ -1,7 +1,7 @@
 'use client';
 
-import AddressButton from '@/features/estimateRequest/ui/AddressButton';
-import { AddressParams } from '@/features/estimateRequest/types/type';
+import AddressButton from '@/features/estimate-request/ui/AddressButton';
+import { AddressParams } from '@/features/estimate-request/types/type';
 import { useState } from 'react';
 
 export default function Page() {
