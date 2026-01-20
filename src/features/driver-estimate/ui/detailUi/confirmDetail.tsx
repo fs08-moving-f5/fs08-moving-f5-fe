@@ -48,7 +48,7 @@ const ConfirmDetail = ({ id }: { id: string }) => {
   return (
     <main className="flex max-w-[1920px] flex-col justify-center">
       <section className="mx-auto mt-[10px] w-full justify-center">
-        <section className="itmes-center max-w-[1200px] self-stretch px-[20px] py-[32px] md:px-[72px] lg:mx-auto">
+        <section className="items-center max-w-[1200px] self-stretch px-[20px] py-[32px] md:px-[72px] lg:mx-auto">
           <h1 className="text-2xl font-semibold text-[var(--color-black-500)]">견적 상세</h1>
         </section>
 
@@ -91,45 +91,34 @@ const ConfirmDetail = ({ id }: { id: string }) => {
             <hr className="border-line-200 mt-[27px] mb-[30px]" />
 
             {/* 견적 정보 */}
-            <div className="flex flex-col gap-7">
-              <h3 className="mobile:text-lg tab:text-xl text-xl font-semibold text-[var(--color-black-400)]">
-                견적 정보
-              </h3>
-
-              <div className="mobile:text-md tab:text-md text-lg">
-                <div className="flex gap-[23px]">
-                  <span className="text-grayScale-500 w-[90px] flex-shrink-0 font-semibold">
-                    견적 요청일
-                  </span>
-                  <strong>{requestTime}</strong>
+            <div className="mt-[30px] flex flex-col gap-7">
+              <div className="text-black-400 text-xl font-semibold">견적 정보</div>
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-[23px]">
+                  <div className="w-[90px] text-lg font-normal text-gray-300">견적 요청일</div>
+                  <div className="text-black-400 text-lg font-semibold">{requestTime}</div>
                 </div>
 
-                <div className="flex gap-[23px]">
-                  <span className="text-grayScale-500 w-[90px] flex-shrink-0 font-semibold">
-                    서비스
-                  </span>
-                  <strong>{movingType && MOVING_TYPE_LABEL[movingType]}</strong>
+                <div className="flex items-center gap-[23px]">
+                  <div className="w-[90px] text-lg font-normal text-gray-300">서비스</div>
+                  <div className="text-black-400 text-lg font-semibold">
+                    {movingType && MOVING_TYPE_LABEL[movingType]}
+                  </div>
                 </div>
 
-                <div className="flex gap-[23px]">
-                  <span className="text-grayScale-500 w-[90px] flex-shrink-0 font-semibold">
-                    이용일
-                  </span>
-                  <strong>{movingDate}</strong>
+                <div className="flex items-center gap-[23px]">
+                  <div className="w-[90px] text-lg font-normal text-gray-300">이용일</div>
+                  <div className="text-black-400 text-lg font-semibold">{movingDate}</div>
                 </div>
 
-                <div className="flex gap-[23px]">
-                  <span className="text-grayScale-500 w-[90px] flex-shrink-0 font-semibold">
-                    출발지
-                  </span>
-                  <strong>{pickupAddress}</strong>
+                <div className="flex items-center gap-[23px]">
+                  <div className="w-[90px] text-lg font-normal text-gray-300">출발지</div>
+                  <div className="text-black-400 text-lg font-semibold">{pickupAddress}</div>
                 </div>
 
-                <div className="flex gap-[23px]">
-                  <span className="text-grayScale-500 w-[90px] flex-shrink-0 font-semibold">
-                    도착지
-                  </span>
-                  <strong>{dropoffAddress}</strong>
+                <div className="flex items-center gap-[23px]">
+                  <div className="w-[90px] text-lg font-normal text-gray-300">도착지</div>
+                  <div className="text-black-400 text-lg font-semibold">{dropoffAddress}</div>
                 </div>
               </div>
 
