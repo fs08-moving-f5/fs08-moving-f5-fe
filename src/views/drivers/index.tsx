@@ -95,7 +95,7 @@ export default function DriversPageClient({
 
   const DriverCard = (params: DriverInfoType) => {
     return (
-      <Link href={`${router}/${params.id}`}>
+      <Link href={`${router}/${params.id}`} className="block w-full">
         <FindDriver
           title={params.driverProfile?.shortIntro || '제목 없음'}
           description={params.driverProfile?.description || '설명 없음'}
@@ -123,7 +123,7 @@ export default function DriversPageClient({
 
   const FavoriteDriverCard = (params: FavoriteDriverInfoType) => {
     return (
-      <Link href={`${router}/${params.driverId}`}>
+      <Link href={`${router}/${params.driverId}`} className="block w-full">
         <FindDriver
           title={params.driver?.driverProfile?.shortIntro || '제목 없음'}
           description={params.driver?.driverProfile?.description || '설명 없음'}
@@ -196,7 +196,7 @@ export default function DriversPageClient({
               />
             </div>
           </div>
-          <div className="mb-[200px] flex h-full gap-[54px]">
+          <div className="mb-[200px] flex h-full w-full gap-[54px]">
             <div className="scrollbar-hide scroll-mask tab:min-w-0 tab:max-w-full h-full w-full max-w-[820px] min-w-[820px] flex-col overflow-scroll py-[16px]">
               <PaginationInfiniteScroll<DriverInfoType>
                 queryKey={DRIVERS_QUERY_KEY.DRIVER}
