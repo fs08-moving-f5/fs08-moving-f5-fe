@@ -4,7 +4,7 @@ function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 1000 * 60 * 5, // 5분
+        staleTime: 1000 * 60 * 1, // 1분
         gcTime: 1000 * 60 * 30, // 30분 (구 cacheTime)
         refetchOnWindowFocus: false,
         retry: 1,

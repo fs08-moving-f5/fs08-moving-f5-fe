@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import QUERY_KEY from '../../constants/queryKey';
+import MY_ESTIMATES_QUERY_KEY from '@/features/my-estimates/constants/queryKey';
 import {
   createEstimateRequest,
   createEstimateRequestWithGeocode,
@@ -24,6 +25,7 @@ export const useCreateEstimateRequestMutation = () => {
     mutationFn: createEstimateRequestWithGeocode,
     onSuccess: () => {
       //queryClient.invalidateQueries()
+      queryClient.invalidateQueries({ queryKey: MY_ESTIMATES_QUERY_KEY.PENDING_ESTIMATE });
       showToast({
         kind: 'success',
         message: '견적 요청에 성공했습니다.',

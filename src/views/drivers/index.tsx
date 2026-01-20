@@ -1,10 +1,7 @@
 'use client';
 
 import DRIVERS_QUERY_KEY from '@/features/drivers/constants/queryKey';
-import {
-  useAddFavoriteMutation,
-  useDeleteFavoriteMutation,
-} from '@/features/drivers/hooks/mutations/useFavoriteDriverMutation';
+import { useHandleFavorite } from '@/shared/hooks/useFavorite';
 import {
   getDriverList,
   getFavoriteDrivers,
@@ -83,15 +80,7 @@ export default function DriversPageClient({
     }
   };
 
-  const { mutate: addFavoriteDriver } = useAddFavoriteMutation();
-  const { mutate: deleteFavoriteDriver } = useDeleteFavoriteMutation();
-  const handleLikeClick = (driverId: string, isLiked: boolean) => {
-    if (isLiked) {
-      addFavoriteDriver(driverId);
-    } else {
-      deleteFavoriteDriver(driverId);
-    }
-  };
+  const handleLikeClick = useHandleFavorite();
 
   const DriverCard = (params: DriverInfoType) => {
     return (
@@ -114,7 +103,9 @@ export default function DriversPageClient({
           likeCount={params.favoriteDriverCount || 0}
           isLiked={params.isFavorite}
           likeFunction={(_isLiked) => {
-            params.id && handleLikeClick(params.id, _isLiked);
+            if (params.id) {
+              handleLikeClick({ driverId: params.id, isLiked: !_isLiked });
+            }
           }}
         />
       </Link>
@@ -144,7 +135,9 @@ export default function DriversPageClient({
           likeCount={params.driver?.driverProfile?.favoriteDriverCount || 0}
           isLiked={true}
           likeFunction={(_isLiked) => {
-            params.driverId && handleLikeClick(params.driverId, _isLiked);
+            if (params.driverId) {
+              handleLikeClick({ driverId: params.driverId, isLiked: !_isLiked });
+            }
           }}
           smallStyle={true}
         />
