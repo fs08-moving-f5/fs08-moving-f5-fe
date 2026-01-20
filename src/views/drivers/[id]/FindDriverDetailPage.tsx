@@ -54,7 +54,13 @@ const FindDriverDetailPage = ({
     limit: reviewLimit,
   });
   const [favoriteByDriverId, setFavoriteByDriverId] = useState<Record<string, boolean>>({});
+  const [favoritedDeltaByDriverId, setFavoritedDeltaByDriverId] = useState<Record<string, number>>(
+    {},
+  );
   const isFavorited = favoriteByDriverId[id] ?? false;
+  const baseFavoritedCount = data?.favoritedCount ?? 0;
+  const favoritedDelta = favoritedDeltaByDriverId[id] ?? 0;
+  const favoritedCount = Math.max(0, baseFavoritedCount + favoritedDelta);
 
   const addFavoriteMutation = useFavoriteMutation();
   const deleteFavoriteMutation = useDeleteFavoriteMutation();
@@ -102,7 +108,7 @@ const FindDriverDetailPage = ({
     description: driverProfile?.description ?? null,
     services: driverProfile?.services ?? [],
     regions: driverProfile?.regions ?? [],
-    favoritedCount: 0,
+    favoritedCount,
   };
 
   const activityForSections = {
@@ -116,21 +122,37 @@ const FindDriverDetailPage = ({
 
     if (isFavorited) {
       deleteFavoriteMutation.mutate(id, {
-        onSuccess: () =>
+        onSuccess: () => {
           setFavoriteByDriverId((prev) => ({
             ...prev,
             [id]: false,
-          })),
+          }));
+          setFavoritedDeltaByDriverId((prev) => {
+            const next = (prev[id] ?? 0) - 1;
+            return {
+              ...prev,
+              [id]: next,
+            };
+          });
+        },
       });
       return;
     }
 
     addFavoriteMutation.mutate(id, {
-      onSuccess: () =>
+      onSuccess: () => {
         setFavoriteByDriverId((prev) => ({
           ...prev,
           [id]: true,
-        })),
+        }));
+        setFavoritedDeltaByDriverId((prev) => {
+          const next = (prev[id] ?? 0) + 1;
+          return {
+            ...prev,
+            [id]: next,
+          };
+        });
+      },
     });
   };
 
