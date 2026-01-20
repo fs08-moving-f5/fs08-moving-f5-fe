@@ -39,6 +39,7 @@ export default function DropdownSort({ listObject, value, setValue }: DropdoownS
   };
   const handleSelectClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setValue(e.currentTarget.value);
+    setOpen(false);
   };
 
   return (
@@ -55,11 +56,11 @@ export default function DropdownSort({ listObject, value, setValue }: DropdoownS
           <ul className="flex h-fit w-full flex-col rounded-[8px] border border-[var(--color-grayScale-200)] bg-[var(--color-grayScale-50)] shadow-md">
             {listObject &&
               Object.keys(listObject).map((key, idx) => (
-                <li key={idx} className={buttonSize}>
+                <li key={idx} className={`${buttonSize} hover:bg-[var(--color-grayScale-200)] translation-all duration-100`}>
                   <button
                     value={key}
                     onClick={handleSelectClick}
-                    className="flex h-full w-full cursor-pointer items-center justify-start hover:brightness-200"
+                    className="flex h-full w-full cursor-pointer items-center justify-start hover:brightness-20"
                   >
                     {listObject[key]}
                   </button>
