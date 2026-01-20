@@ -65,7 +65,6 @@ const MyFavoritesPageClient = () => {
     selectedIds.size === favoriteDrivers.filter((driver) => driver.driver?.id).length;
 
   const checkedCount = selectedIds.size;
-  const totalCount = favoriteDrivers.length;
 
   return (
     <>
@@ -76,7 +75,7 @@ const MyFavoritesPageClient = () => {
           selectAll={isAllChecked}
           setSelectAll={handleSelectAll}
           checkedCount={checkedCount}
-          totalCount={totalCount}
+          totalCount={data?.pages[0]?.count ?? 0}
           onDeleteManyFavoriteDrivers={handleDeleteManyFavoriteDrivers}
         />
         <FavoritesCardContainer
