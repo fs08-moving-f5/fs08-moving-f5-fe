@@ -3,6 +3,7 @@ export interface ApiResponse<T = unknown> {
   success?: boolean;
   message?: string;
   data: T;
+  count?: number;
   pagination?: {
     hasNext?: boolean;
     nextCursor?: string | null;

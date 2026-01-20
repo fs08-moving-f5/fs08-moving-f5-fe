@@ -6,9 +6,9 @@ import FavoritesMenuWrapper from '@/features/favorites/ui/menuWrapper';
 import FavoritesCardContainer from '@/features/favorites/ui/cardContainer';
 import { useGetFavoriteDriversQuery } from '@/features/favorites/hooks/queries/useFavoriteQuery';
 import Spinner from '@/shared/ui/spinner';
-import type { FavoriteDriver } from '@/features/favorites/services/favorite.service';
 import { useDeleteManyFavoriteDriversMutation } from '@/features/favorites/hooks/mutations/useFavoriteMutation';
 import { useObserver } from '@/shared/hooks/useObserver';
+import type { GetFavoriteDriversData } from '@/features/favorites/types';
 
 const MyFavoritesPageClient = () => {
   const [selectedIds, setSelectedIds] = useState<Set<string | undefined>>(new Set());
@@ -20,7 +20,9 @@ const MyFavoritesPageClient = () => {
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  const favoriteDrivers: FavoriteDriver[] = data?.pages.flatMap((page) => page.data ?? []) ?? [];
+  // TODO: 타입 추론 개선
+  const favoriteDrivers: GetFavoriteDriversData[] =
+    data?.pages.flatMap((page) => (page.data as unknown as GetFavoriteDriversData[]) ?? []) ?? [];
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
