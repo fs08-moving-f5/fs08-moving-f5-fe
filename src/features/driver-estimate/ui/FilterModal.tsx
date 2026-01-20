@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react';
 import Image from 'next/image';
-import { Button, CheckBox } from '../button';
-import { ActiveChip } from '../chip';
+import { Button, CheckBox } from '@/shared/ui/button';
+import { ActiveChip } from '@/shared/ui/chip';
 import { Filters } from '@/views/driver/my/requests/DriverEstimateRequestPage';
 
 type FilterModalProps = {

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import FilterModal from '../modal/FilterModal';
+import FilterModal from '@/features/driver-estimate/ui/FilterModal';
 import { Filters } from '@/views/driver/my/requests/DriverEstimateRequestPage';
 
 type FilterProps = {
