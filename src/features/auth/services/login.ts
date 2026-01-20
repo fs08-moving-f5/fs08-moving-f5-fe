@@ -19,6 +19,7 @@ export const loginService = async (
       email: formData.email,
       password: formData.password,
       type: userType,
+      frontendOrigin: window.location.origin,
     });
 
     const { user, accessToken } = response.data;
