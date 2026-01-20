@@ -52,10 +52,10 @@ const MyFavoritesPageClient = () => {
 
   useObserver({
     targetRef: loadMoreRef,
-    onIntersect: fetchNextPage, 
+    onIntersect: fetchNextPage,
     enabled: Boolean(hasNextPage) && !isFetchingNextPage,
     rootMargin: '200px',
-  })
+  });
 
   const isAllChecked =
     favoriteDrivers.length > 0 &&

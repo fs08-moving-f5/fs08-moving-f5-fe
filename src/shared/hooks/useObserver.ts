@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, RefObject, useRef } from "react";
+import { useEffect, RefObject, useRef } from 'react';
 
 interface UseObserverParams {
   targetRef: RefObject<Element | null>;
@@ -25,7 +25,7 @@ export const useObserver = ({
 
   useEffect(() => {
     const target = targetRef.current;
-    
+
     if (!enabled || !target) return;
 
     const observer = new IntersectionObserver(
@@ -33,10 +33,12 @@ export const useObserver = ({
         const entry = entries[0];
 
         if (entry?.isIntersecting) onIntersectRef.current();
-      }, 
+      },
       {
-        root: null, rootMargin, threshold
-      }
+        root: null,
+        rootMargin,
+        threshold,
+      },
     );
 
     observer.observe(target);

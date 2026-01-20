@@ -24,10 +24,10 @@ const ReceivedEstimatesPageClient = () => {
 
   useObserver({
     targetRef: loadMoreRef,
-    onIntersect: fetchNextPage, 
+    onIntersect: fetchNextPage,
     enabled: Boolean(hasNextPage) && !isFetchingNextPage,
     rootMargin: '200px',
-  })
+  });
 
   return (
     <>
