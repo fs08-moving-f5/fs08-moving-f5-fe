@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
+import { useQueryClient, useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 
 import {
   getRequests,
@@ -59,6 +59,8 @@ const DriverEstimateRequestPage = () => {
   const { isOpen, type, selected, openConfirm, openReject, close } = useModal();
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  const queryClient = useQueryClient();
 
   // useInfiniteQuery - 무한 스크롤
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = useInfiniteQuery<
@@ -139,6 +141,13 @@ const DriverEstimateRequestPage = () => {
   // 총 n건
   const total = data?.pages[0]?.total ?? 0;
 
+  // 모달 닫기
+  const handleCloseModal = () => {
+    setComment('');
+    setPrice(undefined);
+    close();
+  };
+
   // 모달 버튼
   const handleSubmit = async () => {
     if (!selected || !type) return;
@@ -160,10 +169,18 @@ const DriverEstimateRequestPage = () => {
         });
       }
 
-      close();
+      // 쿼리 무효화
+      await queryClient.invalidateQueries({
+        queryKey: ['requests'],
+      });
+  
+      handleCloseModal();
+  
+      showToast({
+        kind: 'success',
+        message: '요청이 정상적으로 처리되었습니다.',
+      });
     } catch (error) {
-      console.error(error);
-
       showToast({
         kind: 'error',
         message: '요청 처리 중 오류가 발생했습니다.',
@@ -308,7 +325,7 @@ const DriverEstimateRequestPage = () => {
         <ModalQuetRequest
           type={type}
           isOpen={isOpen}
-          setIsOpen={close}
+          setIsOpen={handleCloseModal}
           user={{ name: selected.customerName, role: 'user' }}
           mvInfo={toMovingInfo(selected)}
           price={price}

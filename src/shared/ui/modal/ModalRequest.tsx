@@ -7,7 +7,7 @@ import Button from '../button/Button';
 import { MovingTypeChip } from '../chip';
 import Input from '../input/Input';
 import TextArea from '../input/TextArea';
-import {showToast} from '@/shared/ui/sonner'
+import { showToast } from '@/shared/ui/sonner';
 
 import Image from 'next/image';
 import StarRating from '../reviewChart/StarRating';
@@ -50,9 +50,7 @@ interface ModalQuetRequestProps {
 }
 
 const rejectSchema = z.object({
-  comment: z
-    .string()
-    .min(10, '반려 사유는 최소 10자 이상 입력해주세요.'),
+  comment: z.string().min(10, '반려 사유는 최소 10자 이상 입력해주세요.'),
 });
 
 const confirmSchema = z.object({
@@ -60,11 +58,8 @@ const confirmSchema = z.object({
     .number()
     .min(10000, '견적가는 최소 10,000원 이상이어야 합니다.')
     .max(100000000, '견적가는 너무 큽니다.'),
-  comment: z
-    .string()
-    .min(10, '코멘트는 최소 10자 이상 입력해주세요.'),
+  comment: z.string().min(10, '코멘트는 최소 10자 이상 입력해주세요.'),
 });
-
 
 export default function ModalQuetRequest({
   type,
@@ -167,23 +162,23 @@ export default function ModalQuetRequest({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     try {
       if (type === 'reject') {
         rejectSchema.parse({ comment });
       }
-  
+
       if (type === 'confirm') {
         confirmSchema.parse({
           price,
           comment,
         });
       }
-  
+
       onSubmit && onSubmit();
     } catch (err) {
       if (err instanceof z.ZodError) {
-        showToast({kind: 'warning', message: MESSAGE_BY_TYPE[type] })
+        showToast({ kind: 'warning', message: MESSAGE_BY_TYPE[type] });
         return;
       }
     }
