@@ -190,8 +190,11 @@ export function useProfileForm(
     newPassword: string;
     confirmNewPassword: string;
   }): Record<'currentPassword' | 'newPassword' | 'confirmNewPassword', string> => {
-    const { currentPassword: current, newPassword: nextNew, confirmNewPassword: nextConfirm } =
-      params;
+    const {
+      currentPassword: current,
+      newPassword: nextNew,
+      confirmNewPassword: nextConfirm,
+    } = params;
 
     const nextErrors = {
       currentPassword: '',

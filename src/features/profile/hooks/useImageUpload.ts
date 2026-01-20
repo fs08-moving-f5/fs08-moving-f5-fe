@@ -17,7 +17,7 @@ export const useImageUpload = (
 ) => {
   const [imageUrl, setImageUrl] = useState<string | null>(initialUrl);
   const [uploadedImageKey, setUploadedImageKey] = useState<string | null>(initialKey);
-    const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
