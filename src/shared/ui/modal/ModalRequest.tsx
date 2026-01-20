@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../button/Button';
 import { MovingTypeChip } from '../chip';
 import Input from '../input/Input';
@@ -60,6 +60,15 @@ export default function ModalQuetRequest({
   isOpen,
   setIsOpen,
 }: ModalQuetRequestProps) {
+  // 모달 닫기 -> 입력 초기화
+  useEffect(() => {
+    if (!isOpen) {
+      setComment('');
+      setPrice?.(0);
+      setScore?.(0);
+    }
+  }, [isOpen]);
+
   const handleChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPrice && setPrice(parseInt(e.target.value) ?? 0);
   };
