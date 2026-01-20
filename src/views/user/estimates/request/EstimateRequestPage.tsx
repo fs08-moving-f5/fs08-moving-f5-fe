@@ -143,7 +143,7 @@ export default function EstimateRequestPage() {
                 <Button
                   aria-label="견적 요청하기"
                   size="md"
-                  onClick={() => { }}
+                  onClick={() => {}}
                   disabled={!(movingType && date && from && to)}
                 >
                   견적 요청하기
