@@ -65,7 +65,7 @@ const ReviewWriting = ({
       <div className="flex items-center justify-between gap-4">
         <div className="flex min-w-0 flex-col gap-1">
           <Image src="/icons/name.svg" alt="기사님" width={20} height={20} />
-          <h3 className="text-black-500 mobile:text-md tab:text-lg text-xl truncate font-semibold">
+          <h3 className="text-black-500 mobile:text-md tab:text-lg truncate text-xl font-semibold">
             {driverName} 기사님
           </h3>
         </div>

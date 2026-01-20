@@ -183,12 +183,14 @@ const SimpleDriverInfo = ({ driverName, description }: SimpleDriverInfoProps) =>
     <div className="flex flex-col gap-1">
       <div className="flex min-w-0 gap-2">
         <Image src="/icons/name.svg" alt="Driver Name Icon" width={20} height={20} />
-        <h3 className="text-black-500 mobile:text-lg tab:text-lg text-xl truncate font-semibold">
+        <h3 className="text-black-500 mobile:text-lg tab:text-lg truncate text-xl font-semibold">
           {driverName} 기사님
         </h3>
       </div>
       {description && (
-        <p className="text-grayScale-500 mobile:text-sm tab:text-sm text-md truncate">{description}</p>
+        <p className="text-grayScale-500 mobile:text-sm tab:text-sm text-md truncate">
+          {description}
+        </p>
       )}
     </div>
   );

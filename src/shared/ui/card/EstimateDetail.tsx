@@ -56,7 +56,7 @@ const EstimateDetail = ({
 
           <section className="flex flex-col gap-2">
             <div className="flex min-w-0 items-start justify-between gap-3">
-              <h3 className="mobile:text-lg tab:text-lg text-black-500 text-xl truncate font-semibold">
+              <h3 className="mobile:text-lg tab:text-lg text-black-500 truncate text-xl font-semibold">
                 {shortIntro}
               </h3>
 

@@ -41,7 +41,7 @@ const EstimateClient = (props: EstimateClientProps) => {
 
         {/* 고객 이름 */}
         <section>
-          <h3 className="mobile:text-lg tab:text-lg text-black-500 text-xl truncate font-semibold">
+          <h3 className="mobile:text-lg tab:text-lg text-black-500 truncate text-xl font-semibold">
             {customerName} 고객님
           </h3>
         </section>

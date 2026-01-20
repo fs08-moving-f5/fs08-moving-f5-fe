@@ -108,7 +108,7 @@ const FindDriver = ({
               />
             </figure>
           </div>
-          <section className="flex-1 min-w-0">
+          <section className="min-w-0 flex-1">
             <header>
               <h3 className={titleClassName}>{title}</h3>
               <div className={descriptionWrapperClassName}>
