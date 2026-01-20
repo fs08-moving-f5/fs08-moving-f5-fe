@@ -13,6 +13,11 @@ type GetFavoriteDriversResponse =
 type DeleteManyFavoriteDriversResponse =
   paths['/api/favorite/driver']['delete']['responses'][200]['content']['application/json'];
 
+type GetFavoriteDriversResult = {
+  data: GetFavoriteDriversResponse['data'];
+  pagination: GetFavoriteDriversResponse['pagination'];
+};
+
 export const addFavoriteDriver = async (driverId: string) => {
   const res = await api.post<FavoriteResponse>(`favorite/driver/${driverId}`);
   return res.data;
@@ -29,14 +34,18 @@ export const getFavoriteDrivers = async ({
 }: {
   cursor?: string;
   limit?: number;
-}) => {
-  const res = await api.get<GetFavoriteDriversResponse>(`favorite`, {
+}): Promise<GetFavoriteDriversResult> => {
+  const res = await api.get<GetFavoriteDriversResponse['data']>(`favorite`, {
     searchParams: {
       cursor,
       limit,
     },
   });
-  return res.data;
+
+  return {
+    data: res.data,
+    pagination: res.pagination,
+  };
 };
 
 export const deleteManyFavoriteDrivers = async (driverIds: string[]) => {

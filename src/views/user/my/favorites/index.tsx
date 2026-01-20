@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import FavoritesSubHeader from '@/features/favorites/ui/subHeader';
 import FavoritesMenuWrapper from '@/features/favorites/ui/menuWrapper';
 import FavoritesCardContainer from '@/features/favorites/ui/cardContainer';
@@ -8,6 +8,7 @@ import { useGetFavoriteDriversQuery } from '@/features/favorites/hooks/queries/u
 import Spinner from '@/shared/ui/spinner';
 import type { FavoriteDriver } from '@/features/favorites/services/favorite.service';
 import { useDeleteManyFavoriteDriversMutation } from '@/features/favorites/hooks/mutations/useFavoriteMutation';
+import { useObserver } from '@/shared/hooks/useObserver';
 
 const MyFavoritesPageClient = () => {
   const [selectedIds, setSelectedIds] = useState<Set<string | undefined>>(new Set());
@@ -19,8 +20,7 @@ const MyFavoritesPageClient = () => {
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  // TODO: 타입 추론 개선
-  const favoriteDrivers: FavoriteDriver[] = (data?.pages.flat() as FavoriteDriver[]) ?? [];
+  const favoriteDrivers: FavoriteDriver[] = data?.pages.flatMap((page) => page.data ?? []) ?? [];
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
@@ -50,23 +50,12 @@ const MyFavoritesPageClient = () => {
     setSelectedIds(new Set());
   };
 
-  // 페이지네이션 - 무한 스크롤
-  useEffect(() => {
-    if (!loadMoreRef.current || !hasNextPage) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { rootMargin: '200px', threshold: 0 },
-    );
-
-    observer.observe(loadMoreRef.current);
-
-    return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  useObserver({
+    targetRef: loadMoreRef,
+    onIntersect: fetchNextPage, 
+    enabled: Boolean(hasNextPage) && !isFetchingNextPage,
+    rootMargin: '200px',
+  })
 
   const isAllChecked =
     favoriteDrivers.length > 0 &&
