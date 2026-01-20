@@ -86,8 +86,9 @@ export function useProfileSetupForm(userType: UserType) {
   // 입력 핸들러들
   const handleCareerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setCareer(value);
-    setErrors((prev) => ({ ...prev, career: validateCareer(value) }));
+    const digitsOnly = value.replace(/[^0-9]/g, '');
+    setCareer(digitsOnly);
+    setErrors((prev) => ({ ...prev, career: validateCareer(digitsOnly) }));
   };
 
   const handleShortIntroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
