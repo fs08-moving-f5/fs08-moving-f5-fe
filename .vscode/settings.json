@@ -1,6 +1,14 @@
 {
   "css.lint.unknownAtRules": "ignore",
-  "cSpell.words": ["dropoff", "kakao", "Pretendard", "Quet", "sido", "sigungu"],
+  "cSpell.words": [
+    "datajson",
+    "dropoff",
+    "kakao",
+    "Pretendard",
+    "Quet",
+    "sido",
+    "sigungu"
+  ],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[typescript]": {
