@@ -121,6 +121,7 @@ const ReviewWritableUI = () => {
         <ModalQuetRequest
           type="review"
           user={{ name: selectedItem.driverName, role: 'driver' }}
+          userImageUrl={selectedItem.driverImageUrl}
           mvInfo={{
             movingType: selectedItem.movingType,
             pickedDriver: selectedItem.pickedDriver,
