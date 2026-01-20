@@ -10,6 +10,7 @@ import type {
   MyPageData,
   ReviewListData,
   DriverPublicProfileData,
+  DriverPublicReviewsData,
 } from '../types/types';
 
 // ========== 유저 프로필 API ==========
@@ -56,6 +57,35 @@ export const getDriverPublicProfile = async (
 ): Promise<DriverPublicProfileData> => {
   const response = await api.get<DriverPublicProfileData>(`profile/driver/${driverId}`);
   return response.data;
+};
+
+/**
+ * 기사 공개 리뷰 조회 (기사 찾기 상세용)
+ */
+export const getDriverPublicReviews = async ({
+  driverId,
+  page = 1,
+  limit = 10,
+}: {
+  driverId: string;
+  page?: number;
+  limit?: number;
+}): Promise<DriverPublicReviewsData> => {
+  const res = await api.get<{
+    averageRating: number;
+    reviewDistribution: Record<number, number>;
+    reviews: ReviewListData['reviews'];
+    pagination: ReviewListData['pagination'];
+  }>(`profile/driver/${driverId}/reviews?page=${page}&limit=${limit}`);
+
+  return {
+    averageRating: res.data.averageRating,
+    reviewDistribution: res.data.reviewDistribution,
+    reviewsData: {
+      reviews: res.data.reviews,
+      pagination: res.data.pagination,
+    },
+  };
 };
 
 /**
