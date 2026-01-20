@@ -48,7 +48,7 @@ const ConfirmDetail = ({ id }: { id: string }) => {
   return (
     <main className="flex max-w-[1920px] flex-col justify-center">
       <section className="mx-auto mt-[10px] w-full justify-center">
-        <section className="items-center max-w-[1200px] self-stretch px-[20px] py-[32px] md:px-[72px] lg:mx-auto">
+        <section className="max-w-[1200px] items-center self-stretch px-[20px] py-[32px] md:px-[72px] lg:mx-auto">
           <h1 className="text-2xl font-semibold text-[var(--color-black-500)]">견적 상세</h1>
         </section>
 
