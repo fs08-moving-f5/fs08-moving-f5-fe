@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import FindDriverDetailPage from '@/views/drivers/[id]/FindDriverDetailPage';
-import { getDriverPublicProfile } from '@/features/profile/services/profileService'
+import { getDriverPublicProfile } from '@/features/profile/services/profileService';
 
 type PageProps = {
   params: { id: string };
@@ -12,9 +12,7 @@ export default async function Page({ params }: PageProps) {
 }
 
 // 카카오 공유 메타데이터
-export async function generateMetadata(
-  { params }: PageProps
-): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const driverId = params.id;
 
   const data = await getDriverPublicProfile(driverId);

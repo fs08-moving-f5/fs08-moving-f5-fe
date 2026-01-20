@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import EstimateConfirmDetailPage from '@/views/driver/my/requests/confirmed/detail/ConfirmDetailPage';
-import {getConfirmDetailEstimates} from '@/features/driver-estimate/services/driverEstimate.service'
+import { getConfirmDetailEstimates } from '@/features/driver-estimate/services/driverEstimate.service';
 
 type PageProps = {
   params: { id: string };
@@ -13,9 +13,7 @@ const ConfirmsDetailPage = ({ params }: PageProps) => {
 export default ConfirmsDetailPage;
 
 // 견적 상세 공유 메타데이터
-export async function generateMetadata(
-  { params }: PageProps
-): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const estimateId = params.id;
 
   const data = await getConfirmDetailEstimates(estimateId);
@@ -27,13 +25,7 @@ export async function generateMetadata(
     };
   }
 
-  const {
-    customerName,
-    pickupAddress,
-    dropoffAddress,
-    estimatePrice,
-    movingDate,
-  } = data;
+  const { customerName, pickupAddress, dropoffAddress, estimatePrice, movingDate } = data;
 
   const title = `${customerName} 고객님 견적서 | 무빙`;
   const description = `${pickupAddress} → ${dropoffAddress}, ${estimatePrice.toLocaleString()}원`;

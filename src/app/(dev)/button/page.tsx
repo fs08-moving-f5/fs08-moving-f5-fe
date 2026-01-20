@@ -69,26 +69,17 @@ const ButtonPage = () => {
             <ShareButton
               size="lg"
               platform="kakao"
-              kakaoTitle="이 페이지의 제목"
-              kakaoDescription="이 페이지 설명"
-              kakaoImageUrl="https://example.com/thumb.png"
-              kakaoLink="https://example.com/page"
+              driverId='id-1'
             />
             <ShareButton
               size="md"
               platform="kakao"
-              kakaoTitle="이 페이지의 제목"
-              kakaoDescription="이 페이지 설명"
-              kakaoImageUrl="https://example.com/thumb.png"
-              kakaoLink="https://example.com/page"
+              driverId='id-2'
             />
             <ShareButton
               size="sm"
               platform="kakao"
-              kakaoTitle="이 페이지의 제목"
-              kakaoDescription="이 페이지 설명"
-              kakaoImageUrl="https://example.com/thumb.png"
-              kakaoLink="https://example.com/page"
+              driverId='id-3'
             />
           </div>
 

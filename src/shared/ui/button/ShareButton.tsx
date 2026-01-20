@@ -60,7 +60,7 @@ const ShareButton = (props: ShareProps) => {
   };
 
   const shareKakao = (props: Extract<ShareProps, { platform: 'kakao' }>) => {
-    const { kakaoTitle, kakaoDescription, kakaoImageUrl, kakaoLink } = props;
+    const { driverId } = props;
 
     if (!window.Kakao || !window.Kakao.isInitialized()) {
       showToast({
@@ -70,17 +70,17 @@ const ShareButton = (props: ShareProps) => {
       return;
     }
 
-    const currentUrl = window.location.href;
+    const shareUrl = `${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}/drivers/${driverId}`;
 
     window.Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
-        title: kakaoTitle,
-        description: kakaoDescription,
-        imageUrl: kakaoImageUrl,
+        title: '무빙 기사 프로필',
+        description: '믿을 수 있는 기사의 프로필을 확인하세요',
+        imageUrl: 'img.png',
         link: {
-          mobileWebUrl: kakaoLink ?? currentUrl,
-          webUrl: kakaoLink ?? currentUrl,
+          webUrl: shareUrl,
+          mobileWebUrl: shareUrl,
         },
       },
     });
