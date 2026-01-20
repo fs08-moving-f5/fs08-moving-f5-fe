@@ -225,7 +225,7 @@ const FindDriverDetailPage = ({
                 disableFavorite={disableFavorite}
                 disableRequestEstimate={isDesignatedToThisDriver}
               />
-              <ShareButtonsSection heading="공유하기" />
+              <ShareButtonsSection id={id} heading="공유하기" />
             </div>
           </div>
         </div>

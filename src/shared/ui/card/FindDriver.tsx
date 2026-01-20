@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { MovingTypeChip } from '@/shared/ui/chip';
 import { CheckBox } from '../button';
 import Like from '../like';
+import ProfileImage from './ProfileImage';
 
 interface FindDriverProps {
   smallStyle?: boolean;
@@ -98,8 +99,8 @@ const FindDriver = ({
         <div className={rowClassName}>
           <div className={profileImageWrapperClassName}>
             <figure>
-              <Image
-                src={driverImageUrl ?? '/img/profile.png'}
+              <ProfileImage
+                src={driverImageUrl}
                 alt="Driver Img"
                 width={134}
                 height={134}
@@ -229,8 +230,8 @@ const FindDriverInfo = ({
     <section className={rootClassName}>
       <div className={profileWrapperClassName}>
         <figure>
-          <Image
-            src={driverImageUrl ?? '/img/profile.png'}
+          <ProfileImage
+            src={driverImageUrl}
             alt="Driver Img"
             width={imageSize}
             height={imageSize}

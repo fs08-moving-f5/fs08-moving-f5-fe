@@ -145,9 +145,24 @@ export function useProfileForm(
 
   // 기사 필드 검증
   const validateCareer = (value: string): string => {
-    if (value && !PROFILE_VALIDATION_PATTERNS.NUMBER_ONLY.test(value)) {
+    if (!value) return '';
+    if (!PROFILE_VALIDATION_PATTERNS.NUMBER_ONLY.test(value)) {
       return PROFILE_ERROR_MESSAGES.CAREER.INVALID_FORMAT;
     }
+
+    const numericValue = Number(value);
+    if (!Number.isFinite(numericValue)) {
+      return PROFILE_ERROR_MESSAGES.CAREER.INVALID_FORMAT;
+    }
+
+    if (numericValue < PROFILE_VALIDATION_RULES.CAREER_MIN) {
+      return PROFILE_ERROR_MESSAGES.CAREER.MIN_VALUE;
+    }
+
+    if (numericValue > PROFILE_VALIDATION_RULES.CAREER_MAX) {
+      return PROFILE_ERROR_MESSAGES.CAREER.MAX_VALUE;
+    }
+
     return '';
   };
 

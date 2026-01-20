@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { SimpleDriverInfo } from './DriverInfo';
 import { MovingTypeChip } from '@/shared/ui/chip';
 import { StarRating } from '@/shared/ui/star';
+import ProfileImage from './ProfileImage';
 
 interface ReviewWrittenProps {
   driverName: string;
@@ -44,8 +45,8 @@ const ReviewWritten = ({
           {/* 기사님 프로필 이미지 */}
           <div className="mobile:flex-row-reverse mobile:justify-between flex gap-6">
             <figure className="mobile:h-12 mobile:w-12 h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl">
-              <Image
-                src={driverImageUrl || '/img/profile.png'}
+              <ProfileImage
+                src={driverImageUrl}
                 alt={`${driverName} 프로필`}
                 width={80}
                 height={80}

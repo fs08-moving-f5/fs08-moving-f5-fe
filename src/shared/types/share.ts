@@ -1,10 +1,7 @@
 export type KakaoShareProps = {
   platform: 'kakao';
   size?: 'lg' | 'md' | 'sm';
-  kakaoTitle: string;
-  kakaoDescription?: string;
-  kakaoImageUrl: string;
-  kakaoLink?: string;
+  driverId?: string;
 };
 
 export type FacebookShareProps = {

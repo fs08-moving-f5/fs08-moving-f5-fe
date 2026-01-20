@@ -5,6 +5,7 @@ import { MovingTypeChip } from '@/shared/ui/chip';
 import { StarSelect } from '@/shared/ui/star';
 import Button from '@/shared/ui/button/Button';
 import { useState } from 'react';
+import ProfileImage from './ProfileImage';
 
 interface ReviewWritingProps {
   driverName: string;
@@ -69,8 +70,8 @@ const ReviewWriting = ({
           </h3>
         </div>
         <figure className="mobile:h-12 mobile:w-12 tab:h-14 tab:w-14 h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl">
-          <Image
-            src={driverImageUrl || '/img/profile.png'}
+          <ProfileImage
+            src={driverImageUrl}
             alt={`${driverName} 프로필`}
             width={64}
             height={64}
