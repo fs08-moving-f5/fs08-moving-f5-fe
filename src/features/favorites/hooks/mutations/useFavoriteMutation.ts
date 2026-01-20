@@ -15,7 +15,9 @@ export const useFavoriteMutation = () => {
   return useMutation({
     mutationFn: addFavoriteDriver,
     onSuccess: (_data, driverId) => {
-      queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY.DRIVER_PUBLIC_PROFILE(driverId) });
+      queryClient.invalidateQueries({
+        queryKey: PROFILE_QUERY_KEY.DRIVER_PUBLIC_PROFILE(driverId),
+      });
     },
     onError: () => {
       showToast({ kind: 'error', message: '기사님 찜하기에 실패했습니다.' });
@@ -29,7 +31,9 @@ export const useDeleteFavoriteMutation = () => {
   return useMutation({
     mutationFn: deleteFavoriteDriver,
     onSuccess: (_data, driverId) => {
-      queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY.DRIVER_PUBLIC_PROFILE(driverId) });
+      queryClient.invalidateQueries({
+        queryKey: PROFILE_QUERY_KEY.DRIVER_PUBLIC_PROFILE(driverId),
+      });
     },
     onError: () => {
       showToast({ kind: 'error', message: '기사님 찜하기 취소에 실패했습니다.' });
