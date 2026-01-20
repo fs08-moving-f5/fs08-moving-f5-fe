@@ -56,7 +56,10 @@ export default function DropdownSort({ listObject, value, setValue }: DropdoownS
           <ul className="flex h-fit w-full flex-col rounded-[8px] border border-[var(--color-grayScale-200)] bg-[var(--color-grayScale-50)] shadow-md">
             {listObject &&
               Object.keys(listObject).map((key, idx) => (
-                <li key={idx} className={`${buttonSize} hover:bg-[var(--color-grayScale-200)] translation-all duration-100`}>
+                <li
+                  key={idx}
+                  className={`${buttonSize} translation-all duration-100 hover:bg-[var(--color-grayScale-200)]`}
+                >
                   <button
                     value={key}
                     onClick={handleSelectClick}

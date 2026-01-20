@@ -45,7 +45,7 @@ export default function DropdownFilter({
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setValue(e.currentTarget.value);
-    setButtonText(listObject[e.currentTarget.value]); 
+    setButtonText(listObject[e.currentTarget.value]);
     setOpen(false);
   };
 
@@ -98,12 +98,12 @@ export default function DropdownFilter({
               {list.map((key, idx) => (
                 <li
                   key={idx}
-                  className="mobile:h-[40px] mobile:px-[14px] mobile:text-[14px] h-[60px] px-[20px] text-[16px] font-[500] hover:bg-[var(--color-primary-orange-100)] translation-all duration-100"
+                  className="mobile:h-[40px] mobile:px-[14px] mobile:text-[14px] translation-all h-[60px] px-[20px] text-[16px] font-[500] duration-100 hover:bg-[var(--color-primary-orange-100)]"
                 >
                   <button
                     value={key}
                     onClick={handleClick}
-                    className="flex h-full w-full cursor-pointer items-center justify-start hover:text-[var(--color-primary-orange-400)] translation-all duration-100"
+                    className="translation-all flex h-full w-full cursor-pointer items-center justify-start duration-100 hover:text-[var(--color-primary-orange-400)]"
                   >
                     {listObject[key]}
                   </button>
