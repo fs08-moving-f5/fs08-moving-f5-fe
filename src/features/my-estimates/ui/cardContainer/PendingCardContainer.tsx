@@ -3,13 +3,10 @@
 import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { EstimateWait } from '@/shared/ui/card';
-import {
-  useDeleteFavoriteMutation,
-  useFavoriteMutation,
-} from '@/features/favorites/hooks/mutations/useFavoriteMutation';
-import QUERY_KEY from '@/features/my-estimates/constants/queryKey';
 import type { PendingEstimate } from '@/features/my-estimates/services/estimate.service';
 import { useConfirmEstimateMutation } from '@/features/my-estimates/hooks/mutations/useEstimateMutations';
+import MY_ESTIMATES_QUERY_KEY from '@/features/my-estimates/constants/queryKey';
+import { useHandleFavorite } from '@/shared/hooks/useFavorite';
 
 const movingTypeMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
@@ -30,25 +27,8 @@ const PendingCardContainer = ({
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { mutate: addFavoriteDriver } = useFavoriteMutation();
-  const { mutate: deleteFavoriteDriver } = useDeleteFavoriteMutation();
   const { mutate: confirmEstimate } = useConfirmEstimateMutation();
-
-  const handleLikeClick = ({ driverId, isLiked }: { driverId: string; isLiked: boolean }) => {
-    if (isLiked) {
-      deleteFavoriteDriver(driverId, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: QUERY_KEY.PENDING_ESTIMATE });
-        },
-      });
-    } else {
-      addFavoriteDriver(driverId, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: QUERY_KEY.PENDING_ESTIMATE });
-        },
-      });
-    }
-  };
+  const handleLikeClick = useHandleFavorite();
 
   const handleDetailClick = (estimateId: string) => {
     router.push(`/user/my/estimates/pending/${estimateId}`);
@@ -59,8 +39,8 @@ const PendingCardContainer = ({
       { estimateId },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: QUERY_KEY.PENDING_ESTIMATE });
-          queryClient.invalidateQueries({ queryKey: QUERY_KEY.RECEIVED_ESTIMATE });
+          queryClient.invalidateQueries({ queryKey: MY_ESTIMATES_QUERY_KEY.PENDING_ESTIMATE });
+          queryClient.invalidateQueries({ queryKey: MY_ESTIMATES_QUERY_KEY.RECEIVED_ESTIMATE });
           router.push('/user/my/estimates/received');
         },
       },
