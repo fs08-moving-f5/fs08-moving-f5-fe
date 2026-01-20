@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { ALLOWED_IMAGE_MIME_TYPES } from '../constants/image.constants';
 
 interface ProfileImageSectionProps {
   imageUrl: string | null;
@@ -43,7 +44,7 @@ export default function ProfileImageSection({ imageUrl, onImageUpload }: Profile
           <input
             id="profile-image"
             type="file"
-            accept="image/*"
+            accept={ALLOWED_IMAGE_MIME_TYPES.join(',')}
             className="hidden"
             onChange={onImageUpload}
           />
