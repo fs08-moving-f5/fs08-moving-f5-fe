@@ -74,14 +74,14 @@ const FindDriver = ({
   const profileImageWrapperClassName = smallStyle ? 'hidden' : 'mobile:hidden block';
 
   const titleClassName = smallStyle
-    ? 'text-black-500 mb-1 text-lg font-semibold'
-    : 'text-black-500 mobile:mb-2 mobile:text-lg mb-2 text-xl font-semibold';
+    ? 'text-black-500 mb-1 text-lg truncate font-semibold'
+    : 'text-black-500 mobile:mb-2 mobile:text-lg mb-2 text-xl truncate font-semibold';
 
   const descriptionWrapperClassName = smallStyle ? 'hidden' : 'mobile:block';
 
   const descriptionClassName = smallStyle
     ? 'text-black-200 mb-5 text-md'
-    : 'text-black-200 mobile:mb-4 mobile:text-md mb-5 text-lg';
+    : 'text-black-200 mobile:mb-4 mobile:text-md mb-5 text-lg truncate';
 
   const hrClassName = smallStyle ? 'hidden' : 'mobile:block hidden';
 
@@ -108,7 +108,7 @@ const FindDriver = ({
               />
             </figure>
           </div>
-          <section className="flex-1">
+          <section className="flex-1 min-w-0">
             <header>
               <h3 className={titleClassName}>{title}</h3>
               <div className={descriptionWrapperClassName}>
@@ -192,12 +192,12 @@ const FindDriverInfo = ({
     type === 'estimateWait' ? 'flex items-center justify-between gap-3' : 'flex items-center gap-3';
 
   const nameRowClassName = smallStyle
-    ? 'flex items-center gap-1'
-    : 'mobile:gap-1 flex items-center gap-1.5';
+    ? 'flex min-w-0 items-center gap-1'
+    : 'mobile:gap-1 flex min-w-0 items-center gap-1.5';
 
   const nameTextClassName = smallStyle
-    ? 'text-black-500 text-md font-semibold'
-    : 'text-black-500 mobile:text-md text-lg font-semibold';
+    ? 'text-black-500 text-md truncate font-semibold'
+    : 'text-black-500 mobile:text-md text-lg truncate font-semibold';
 
   const likeOuterClassName = smallStyle ? 'ml-0' : 'mobile:ml-auto';
 

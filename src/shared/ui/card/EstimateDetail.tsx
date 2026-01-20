@@ -55,12 +55,12 @@ const EstimateDetail = ({
           </header>
 
           <section className="flex flex-col gap-2">
-            <div className="flex justify-between">
-              <h3 className="mobile:text-lg tab:text-lg text-black-500 text-xl font-semibold">
+            <div className="flex min-w-0 items-start justify-between gap-3">
+              <h3 className="mobile:text-lg tab:text-lg text-black-500 text-xl truncate font-semibold">
                 {shortIntro}
               </h3>
 
-              <p className="mobile:text-md tab:text-md text-grayScale-500 mobile:hidden text-lg">
+              <p className="mobile:text-md tab:text-md text-grayScale-500 mobile:hidden shrink-0 text-lg">
                 {isConfirmed ? (
                   <span className="text-primary-orange-400 flex items-center gap-1 font-bold">
                     <Image src="/icons/confirm.svg" alt="confirm icon" width={20} height={20} />

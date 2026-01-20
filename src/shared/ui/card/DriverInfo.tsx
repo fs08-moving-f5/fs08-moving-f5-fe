@@ -59,12 +59,12 @@ const DriverInfo = ({
     type === 'estimateWait' ? 'flex items-center justify-between gap-3' : 'flex items-center gap-3';
 
   const nameRowClassName = mobileStyle
-    ? 'flex items-center gap-1'
-    : 'mobile:gap-1 tab:gap-1 flex items-center gap-1.5';
+    ? 'flex min-w-0 items-center gap-1'
+    : 'mobile:gap-1 tab:gap-1 flex min-w-0 items-center gap-1.5';
 
   const nameTextClassName = mobileStyle
-    ? 'text-black-500 text-md font-semibold'
-    : 'text-black-500 mobile:text-md tab:text-md text-lg font-semibold';
+    ? 'text-black-500 text-md truncate font-semibold'
+    : 'text-black-500 mobile:text-md tab:text-md text-lg truncate font-semibold';
 
   const likeOuterClassName = mobileStyle ? 'ml-0' : 'tab:ml-auto mobile:ml-0';
 
@@ -181,14 +181,14 @@ const DriverInfo = ({
 const SimpleDriverInfo = ({ driverName, description }: SimpleDriverInfoProps) => {
   return (
     <div className="flex flex-col gap-1">
-      <div className="flex gap-2">
+      <div className="flex min-w-0 gap-2">
         <Image src="/icons/name.svg" alt="Driver Name Icon" width={20} height={20} />
-        <h3 className="text-black-500 mobile:text-lg tab:text-lg text-xl font-semibold">
+        <h3 className="text-black-500 mobile:text-lg tab:text-lg text-xl truncate font-semibold">
           {driverName} 기사님
         </h3>
       </div>
       {description && (
-        <p className="text-grayScale-500 mobile:text-sm tab:text-sm text-md">{description}</p>
+        <p className="text-grayScale-500 mobile:text-sm tab:text-sm text-md truncate">{description}</p>
       )}
     </div>
   );

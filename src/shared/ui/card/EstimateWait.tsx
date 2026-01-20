@@ -49,7 +49,7 @@ const EstimateWait = ({
           </header>
 
           <section className="flex flex-col gap-2">
-            <h3 className="mobile:text-lg tab:text-lg text-xl font-semibold text-[#1a1a1a]">
+            <h3 className="mobile:text-lg tab:text-lg text-xl truncate font-semibold text-[#1a1a1a]">
               {shortIntro}
             </h3>
 
