@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { SimpleDriverInfo } from './DriverInfo';
+import ProfileImage from './ProfileImage';
 
 import { MovingTypeChip } from '@/shared/ui/chip';
 import Button from '@/shared/ui/button/Button';
@@ -49,8 +50,8 @@ const ReviewCanWrite = ({
           {/* 기사님 프로필 이미지 */}
           <div className="mobile:flex-row-reverse mobile:justify-between flex gap-6">
             <figure className="mobile:h-20 mobile:w-20 tab:h-20 tab:w-20 h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl">
-              <Image
-                src={driverImageUrl || '/img/profile.png'}
+              <ProfileImage
+                src={driverImageUrl}
                 alt={`${driverName} 프로필`}
                 width={96}
                 height={96}
@@ -67,24 +68,24 @@ const ReviewCanWrite = ({
 
           {/* 이사 정보 */}
           <div className="mobile:text-sm tab:text-sm text-black-300 text-md flex flex-row flex-wrap gap-6">
-            <div className="flex flex-col items-start gap-2">
+            <div className="flex min-w-0 flex-col items-start gap-2">
               <span className="text-grayScale-500 mobile:text-sm tab:text-sm text-md w-16 flex-shrink-0">
                 출발지
               </span>
-              <span className="flex-1">{pickupAddress}</span>
+              <span className="w-full truncate">{pickupAddress}</span>
             </div>
-            <div className="flex flex-col items-start gap-2">
+            <div className="flex min-w-0 flex-col items-start gap-2">
               <span className="text-grayScale-500 mobile:text-sm tab:text-sm text-md w-16 flex-shrink-0">
                 도착지
               </span>
-              <span className="flex-1">{dropoffAddress}</span>
+              <span className="w-full truncate">{dropoffAddress}</span>
             </div>
             <div className="border-line-100 border-1"></div>
-            <div className="flex flex-col items-start gap-2">
+            <div className="flex min-w-0 flex-col items-start gap-2">
               <span className="text-grayScale-500 mobile:text-sm tab:text-sm text-md w-16 flex-shrink-0">
                 이사일
               </span>
-              <span className="flex-1">{movingDate}</span>
+              <span className="w-full truncate">{movingDate}</span>
             </div>
             <div className="border-line-100 mobile:hidden border-1"></div>
             {/* 테블릿/모바일 견적 금액 */}

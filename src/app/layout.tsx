@@ -26,22 +26,18 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
+        <Script
+          src="https://developers.kakao.com/sdk/js/kakao.min.js"
+          strategy="beforeInteractive"
+        />
+
         <Providers>
           <GNB />
           {children}
 
           <AppToaster />
           <NotificationSseProvider />
-
-          <Script
-            src="https://developers.kakao.com/sdk/js/kakao.min.js"
-            strategy="afterInteractive"
-          />
         </Providers>
-        <Script
-          src="https://developers.kakao.com/sdk/js/kakao.min.js"
-          strategy="afterInteractive"
-        />
         <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" />
       </body>
     </html>

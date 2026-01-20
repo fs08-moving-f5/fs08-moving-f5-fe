@@ -41,7 +41,6 @@ const Clip = ({ size = 'lg' }: ClipProps) => {
       await navigator.clipboard.writeText(window.location.href);
       showToast({ kind: 'success', message: '링크가 복사되었습니다.' });
     } catch (error) {
-      console.error('클립보드 복사 실패:', error);
       showToast({ kind: 'error', message: '복사에 실패했습니다.' });
     }
   };

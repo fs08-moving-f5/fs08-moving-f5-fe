@@ -7,10 +7,18 @@ import {
 import { showToast } from '@/shared/ui/sonner';
 import { confirmEstimate } from '../../../my-estimates/services/estimate.service';
 import FAVORITES_QUERY_KEY from '../../constants/queryKey';
+import PROFILE_QUERY_KEY from '@/features/profile/constants/queryKey';
 
 export const useFavoriteMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: addFavoriteDriver,
+    onSuccess: (_data, driverId) => {
+      queryClient.invalidateQueries({
+        queryKey: PROFILE_QUERY_KEY.DRIVER_PUBLIC_PROFILE(driverId),
+      });
+    },
     onError: () => {
       showToast({ kind: 'error', message: '기사님 찜하기에 실패했습니다.' });
     },
@@ -18,8 +26,15 @@ export const useFavoriteMutation = () => {
 };
 
 export const useDeleteFavoriteMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: deleteFavoriteDriver,
+    onSuccess: (_data, driverId) => {
+      queryClient.invalidateQueries({
+        queryKey: PROFILE_QUERY_KEY.DRIVER_PUBLIC_PROFILE(driverId),
+      });
+    },
     onError: () => {
       showToast({ kind: 'error', message: '기사님 찜하기 취소에 실패했습니다.' });
     },

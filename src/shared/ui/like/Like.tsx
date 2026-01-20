@@ -25,11 +25,13 @@ const Like = ({
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          onLikeClick?.();
+          if (onLikeClick) {
+            onLikeClick();
+          }
         }}
         type="button"
         aria-label="좋아요"
-        className="cursor-pointer"
+        className={onLikeClick ? 'cursor-pointer' : 'cursor-default'}
       >
         <Image
           src={isLiked ? '/icons/like-on.svg' : '/icons/like-off.svg'}

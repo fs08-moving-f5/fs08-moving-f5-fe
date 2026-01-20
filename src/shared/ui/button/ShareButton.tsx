@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { ShareProps } from '@/shared/types/share';
+import { showToast } from '@/shared/ui/sonner';
 
 const ShareButton = (props: ShareProps) => {
   const { size = 'lg' } = props;
@@ -59,30 +60,27 @@ const ShareButton = (props: ShareProps) => {
   };
 
   const shareKakao = (props: Extract<ShareProps, { platform: 'kakao' }>) => {
-    const { kakaoTitle, kakaoDescription, kakaoImageUrl, kakaoLink } = props;
+    const { driverId } = props;
 
-    if (!window.Kakao) {
-      console.error('Kakao SDK not loaded');
+    if (!window.Kakao || !window.Kakao.isInitialized()) {
+      showToast({
+        kind: 'error',
+        message: '카카오 공유를 사용할 수 없습니다.',
+      });
       return;
     }
 
-    const kakao = window.Kakao;
+    const shareUrl = `${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}/drivers/${driverId}`;
 
-    if (!kakao.isInitialized()) {
-      kakao.init(process.env.NEXT_PUBLIC_KAKAO_KEY ?? '');
-    }
-
-    const currentUrl = window.location.href;
-
-    kakao.Share.sendDefault({
+    window.Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
-        title: kakaoTitle,
-        description: kakaoDescription,
-        imageUrl: kakaoImageUrl,
+        title: '무빙 기사 프로필',
+        description: '믿을 수 있는 기사의 프로필을 확인하세요',
+        imageUrl: 'img.png',
         link: {
-          mobileWebUrl: kakaoLink ?? currentUrl,
-          webUrl: kakaoLink ?? currentUrl,
+          webUrl: shareUrl,
+          mobileWebUrl: shareUrl,
         },
       },
     });

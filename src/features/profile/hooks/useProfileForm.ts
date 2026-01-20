@@ -24,7 +24,7 @@ import type {
   UpdateDriverProfileRequest,
 } from '../types/types';
 import type { UserType } from '@/features/auth/types/types';
-import type { AddressParams } from '@/features/estimateRequest/types/type';
+import type { AddressParams } from '@/features/estimate-request/types/type';
 
 type ProfileEditFormErrors = Partial<Record<string, string>>;
 
@@ -100,10 +100,10 @@ export function useProfileForm(
 
   const {
     imageUrl,
-    uploadedImageKey,
     isUploading,
     error: imageUploadError,
     handleImageSelect,
+    uploadPendingImage,
   } = useImageUpload(initialProfile?.imageUrl || null, initialProfile?.imageKey || null);
   const updateMutation = useUpdateProfileMutation(userType);
   const { mutate: updateDriverOfficeAddress } = useUpdateDriverOfficeAddressMutation();
@@ -145,9 +145,24 @@ export function useProfileForm(
 
   // 기사 필드 검증
   const validateCareer = (value: string): string => {
-    if (value && !PROFILE_VALIDATION_PATTERNS.NUMBER_ONLY.test(value)) {
+    if (!value) return '';
+    if (!PROFILE_VALIDATION_PATTERNS.NUMBER_ONLY.test(value)) {
       return PROFILE_ERROR_MESSAGES.CAREER.INVALID_FORMAT;
     }
+
+    const numericValue = Number(value);
+    if (!Number.isFinite(numericValue)) {
+      return PROFILE_ERROR_MESSAGES.CAREER.INVALID_FORMAT;
+    }
+
+    if (numericValue < PROFILE_VALIDATION_RULES.CAREER_MIN) {
+      return PROFILE_ERROR_MESSAGES.CAREER.MIN_VALUE;
+    }
+
+    if (numericValue > PROFILE_VALIDATION_RULES.CAREER_MAX) {
+      return PROFILE_ERROR_MESSAGES.CAREER.MAX_VALUE;
+    }
+
     return '';
   };
 
@@ -183,6 +198,50 @@ export function useProfileForm(
       return PROFILE_ERROR_MESSAGES.PASSWORD.MISMATCH;
     }
     return '';
+  };
+
+  const computePasswordGroupErrors = (params: {
+    currentPassword: string;
+    newPassword: string;
+    confirmNewPassword: string;
+  }): Record<'currentPassword' | 'newPassword' | 'confirmNewPassword', string> => {
+    const {
+      currentPassword: current,
+      newPassword: nextNew,
+      confirmNewPassword: nextConfirm,
+    } = params;
+
+    const nextErrors = {
+      currentPassword: '',
+      newPassword: '',
+      confirmNewPassword: '',
+    };
+
+    const hasAnyInput = Boolean(current || nextNew || nextConfirm);
+    if (!hasAnyInput) return nextErrors;
+
+    // 4) 현재 비밀번호 없이 새 비밀번호/확인 입력 시 제출 불가
+    if (!current) {
+      nextErrors.currentPassword = PROFILE_ERROR_MESSAGES.PASSWORD.CURRENT_REQUIRED;
+    }
+
+    // 2) 현재 비밀번호가 채워져 있으면 새 비밀번호/확인 입력 필요
+    if (current) {
+      if (!nextNew) nextErrors.newPassword = PROFILE_ERROR_MESSAGES.PASSWORD.REQUIRED;
+      if (!nextConfirm) nextErrors.confirmNewPassword = PROFILE_ERROR_MESSAGES.PASSWORD.REQUIRED;
+    }
+
+    if (nextNew) {
+      const newPasswordError = validatePassword(nextNew);
+      if (newPasswordError) nextErrors.newPassword = newPasswordError;
+    }
+
+    if (nextConfirm) {
+      const confirmError = validateConfirmPassword(nextConfirm, nextNew);
+      if (confirmError) nextErrors.confirmNewPassword = confirmError;
+    }
+
+    return nextErrors;
   };
 
   // 입력 핸들러들
@@ -227,31 +286,34 @@ export function useProfileForm(
   const handleCurrentPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
     setCurrentPassword(v);
-    // 새 비밀번호가 있으면 현재 비밀번호도 필수
-    if (newPassword && !v) {
-      setErrors((prev) => ({
-        ...prev,
-        currentPassword: PROFILE_ERROR_MESSAGES.PASSWORD.CURRENT_REQUIRED,
-      }));
-    } else {
-      setErrors((prev) => ({ ...prev, currentPassword: '' }));
-    }
+    const passwordErrors = computePasswordGroupErrors({
+      currentPassword: v,
+      newPassword,
+      confirmNewPassword,
+    });
+    setErrors((prev) => ({ ...prev, ...passwordErrors }));
   };
 
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
     setNewPassword(v);
-    setErrors((prev) => ({
-      ...prev,
-      newPassword: validatePassword(v),
-      confirmNewPassword: confirmNewPassword ? validateConfirmPassword(confirmNewPassword, v) : '',
-    }));
+    const passwordErrors = computePasswordGroupErrors({
+      currentPassword,
+      newPassword: v,
+      confirmNewPassword,
+    });
+    setErrors((prev) => ({ ...prev, ...passwordErrors }));
   };
 
   const handleConfirmNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
     setConfirmNewPassword(v);
-    setErrors((prev) => ({ ...prev, confirmNewPassword: validateConfirmPassword(v, newPassword) }));
+    const passwordErrors = computePasswordGroupErrors({
+      currentPassword,
+      newPassword,
+      confirmNewPassword: v,
+    });
+    setErrors((prev) => ({ ...prev, ...passwordErrors }));
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -281,16 +343,6 @@ export function useProfileForm(
       return;
     }
 
-    // 기존 프로필 이미지는 BE에서 presigned URL(http/https)로 내려오므로
-    // 새로 업로드(미리보기 data URL)인 경우에만 imageKey를 강제합니다.
-    if (imageUrl && imageUrl.startsWith('data:') && !uploadedImageKey) {
-      showToast({
-        kind: 'error',
-        message: imageUploadError || '이미지 업로드가 완료되지 않았습니다.',
-      });
-      return;
-    }
-
     // 제출 전 validation
     if (isDriver) {
       const careerError = validateCareer(career);
@@ -308,10 +360,18 @@ export function useProfileForm(
       }
     }
 
-    const baseData = {
-      imageUrl: uploadedImageKey || undefined,
-      services: selectedServices,
-      regions: selectedRegions,
+    const uploadImageIfNeeded = async (): Promise<string | null> => {
+      // 파일 선택만 하고 저장을 누르지 않으면 업로드가 발생하지 않도록,
+      // "수정하기" 시점에만 presign 발급 + S3 업로드를 수행합니다.
+      const key = await uploadPendingImage();
+      if (imageUrl && imageUrl.startsWith('data:') && !key) {
+        showToast({
+          kind: 'error',
+          message: imageUploadError || '이미지 업로드에 실패했습니다.',
+        });
+        return null;
+      }
+      return key;
     };
 
     if (isDriver) {
@@ -322,25 +382,12 @@ export function useProfileForm(
         const emailError = validateEmail(email);
         const phoneError = validatePhone(phone);
 
-        // 비밀번호 검증 (비밀번호가 입력된 경우에만)
-        const passwordErrors: Record<string, string> = {};
-        if (newPassword || currentPassword || confirmNewPassword) {
-          if (!currentPassword) {
-            passwordErrors.currentPassword = PROFILE_ERROR_MESSAGES.PASSWORD.CURRENT_REQUIRED;
-          }
-          if (newPassword) {
-            const newPasswordError = validatePassword(newPassword);
-            if (newPasswordError) {
-              passwordErrors.newPassword = newPasswordError;
-            }
-          }
-          if (confirmNewPassword) {
-            const confirmError = validateConfirmPassword(confirmNewPassword, newPassword);
-            if (confirmError) {
-              passwordErrors.confirmNewPassword = confirmError;
-            }
-          }
-        }
+        const passwordErrors = computePasswordGroupErrors({
+          currentPassword,
+          newPassword,
+          confirmNewPassword,
+        });
+        const hasPasswordErrors = Object.values(passwordErrors).some(Boolean);
 
         setErrors({
           name: nameError,
@@ -349,11 +396,15 @@ export function useProfileForm(
           ...passwordErrors,
         });
 
-        if (nameError || emailError || phoneError || Object.keys(passwordErrors).length > 0) {
+        if (nameError || emailError || phoneError || hasPasswordErrors) {
           return;
         }
 
+        const imageKeyForSubmit = await uploadImageIfNeeded();
+        if (imageKeyForSubmit === null) return;
+
         const driverData: UpdateDriverProfileRequest = {
+          imageUrl: imageKeyForSubmit || undefined,
           name: name || undefined,
           email: email || undefined,
           phone: phone || undefined,
@@ -384,6 +435,15 @@ export function useProfileForm(
       if (careerError || shortIntroError || descriptionError) {
         return;
       }
+
+      const imageKeyForSubmit = await uploadImageIfNeeded();
+      if (imageKeyForSubmit === null) return;
+
+      const baseData = {
+        imageUrl: imageKeyForSubmit || undefined,
+        services: selectedServices,
+        regions: selectedRegions,
+      };
 
       const driverData: UpdateDriverProfileRequest = {
         ...baseData,
@@ -416,25 +476,12 @@ export function useProfileForm(
       const emailError = validateEmail(email);
       const phoneError = validatePhone(phone);
 
-      // 비밀번호 검증 (비밀번호가 입력된 경우에만)
-      const passwordErrors: Record<string, string> = {};
-      if (newPassword || currentPassword || confirmNewPassword) {
-        if (!currentPassword) {
-          passwordErrors.currentPassword = PROFILE_ERROR_MESSAGES.PASSWORD.CURRENT_REQUIRED;
-        }
-        if (newPassword) {
-          const newPasswordError = validatePassword(newPassword);
-          if (newPasswordError) {
-            passwordErrors.newPassword = newPasswordError;
-          }
-        }
-        if (confirmNewPassword) {
-          const confirmError = validateConfirmPassword(confirmNewPassword, newPassword);
-          if (confirmError) {
-            passwordErrors.confirmNewPassword = confirmError;
-          }
-        }
-      }
+      const passwordErrors = computePasswordGroupErrors({
+        currentPassword,
+        newPassword,
+        confirmNewPassword,
+      });
+      const hasPasswordErrors = Object.values(passwordErrors).some(Boolean);
 
       setErrors((prev) => ({
         ...prev,
@@ -444,9 +491,19 @@ export function useProfileForm(
         ...passwordErrors,
       }));
 
-      if (nameError || emailError || phoneError || Object.keys(passwordErrors).length > 0) {
+      if (nameError || emailError || phoneError || hasPasswordErrors) {
         return;
       }
+
+      const imageKeyForSubmit = await uploadImageIfNeeded();
+      if (imageKeyForSubmit === null) return;
+
+      const baseData = {
+        imageUrl: imageKeyForSubmit || undefined,
+        services: selectedServices,
+        regions: selectedRegions,
+      };
+
       const userData: UpdateUserProfileRequest = {
         ...baseData,
         name: name || undefined,

@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import DaumPostCode, { Address } from '@/features/estimateRequest/ui/DaumPostCode';
-import { AddressParams } from '@/features/estimateRequest/types/type';
+import DaumPostCode, { Address } from '@/features/estimate-request/ui/DaumPostCode';
+import { AddressParams } from '@/features/estimate-request/types/type';
 
 const ic_x = '/icons/x.svg';
 

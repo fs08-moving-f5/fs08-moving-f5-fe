@@ -12,7 +12,10 @@ import {
   MyPageOfficeAddressSection,
   DriverDetailActionButtons,
 } from '@/features/profile/ui';
-import { useGetDriverPublicProfileQuery } from '@/features/profile/hooks/queries/useProfileQueries';
+import {
+  useGetDriverPublicProfileQuery,
+  useGetDriverPublicReviewsQuery,
+} from '@/features/profile/hooks/queries/useProfileQueries';
 import ShareButtonsSection from '@/features/driver-estimate/ui/detailUi/ShareButtonsSection';
 import {
   useDeleteFavoriteMutation,
@@ -24,7 +27,8 @@ import { useAuthStore } from '@/shared/store/authStore';
 import {
   getPendingEstimateRequests,
   designatePendingEstimateRequest,
-} from '@/features/estimateRequest/services/estimateRequest.service';
+} from '@/features/estimate-request/services/estimateRequest.service';
+import Spinner from '@/shared/ui/spinner';
 
 const FindDriverDetailPage = ({
   id,
@@ -37,9 +41,27 @@ const FindDriverDetailPage = ({
   const { user, isUserLoaded } = useAuthStore();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isDesignatedToThisDriver, setIsDesignatedToThisDriver] = useState(false);
+  const [reviewPaging, setReviewPaging] = useState<{ driverId: string; page: number }>(() => ({
+    driverId: id,
+    page: 1,
+  }));
+  const reviewLimit = 5;
   const { data, isLoading } = useGetDriverPublicProfileQuery(id);
+  const currentReviewPage = reviewPaging.driverId === id ? reviewPaging.page : 1;
+  const handleChangeReviewPage = (page: number) => setReviewPaging({ driverId: id, page });
+  const { data: publicReviewsData, isLoading: isLoadingReviews } = useGetDriverPublicReviewsQuery({
+    driverId: id,
+    page: currentReviewPage,
+    limit: reviewLimit,
+  });
   const [favoriteByDriverId, setFavoriteByDriverId] = useState<Record<string, boolean>>({});
+  const [favoritedDeltaByDriverId, setFavoritedDeltaByDriverId] = useState<Record<string, number>>(
+    {},
+  );
   const isFavorited = favoriteByDriverId[id] ?? false;
+  const baseFavoritedCount = data?.favoritedCount ?? 0;
+  const favoritedDelta = favoritedDeltaByDriverId[id] ?? 0;
+  const favoritedCount = Math.max(0, baseFavoritedCount + favoritedDelta);
 
   const addFavoriteMutation = useFavoriteMutation();
   const deleteFavoriteMutation = useDeleteFavoriteMutation();
@@ -68,10 +90,6 @@ const FindDriverDetailPage = ({
     })();
   }, [id, isUserLoaded, user]);
 
-  if (isLoading) {
-    return <div>로딩 중...</div>;
-  }
-
   if (!data) {
     return <div>데이터를 불러올 수 없습니다.</div>;
   }
@@ -87,12 +105,12 @@ const FindDriverDetailPage = ({
     description: driverProfile?.description ?? null,
     services: driverProfile?.services ?? [],
     regions: driverProfile?.regions ?? [],
-    favoritedCount: 0,
+    favoritedCount,
   };
 
   const activityForSections = {
     completedCount: 0,
-    averageRating: 0,
+    averageRating: publicReviewsData?.averageRating ?? 0,
     career: driverProfile?.career ?? null,
   };
 
@@ -101,21 +119,37 @@ const FindDriverDetailPage = ({
 
     if (isFavorited) {
       deleteFavoriteMutation.mutate(id, {
-        onSuccess: () =>
+        onSuccess: () => {
           setFavoriteByDriverId((prev) => ({
             ...prev,
             [id]: false,
-          })),
+          }));
+          setFavoritedDeltaByDriverId((prev) => {
+            const next = (prev[id] ?? 0) - 1;
+            return {
+              ...prev,
+              [id]: next,
+            };
+          });
+        },
       });
       return;
     }
 
     addFavoriteMutation.mutate(id, {
-      onSuccess: () =>
+      onSuccess: () => {
         setFavoriteByDriverId((prev) => ({
           ...prev,
           [id]: true,
-        })),
+        }));
+        setFavoritedDeltaByDriverId((prev) => {
+          const next = (prev[id] ?? 0) + 1;
+          return {
+            ...prev,
+            [id]: next,
+          };
+        });
+      },
     });
   };
 
@@ -165,6 +199,8 @@ const FindDriverDetailPage = ({
 
   return (
     <>
+      <Spinner isLoading={isLoading} />
+
       <PendingEstimateDetailHeader
         driverImageUrl={profileForSections.imageUrl || '/img/profile.png'}
         title="기사님 프로필"
@@ -187,11 +223,11 @@ const FindDriverDetailPage = ({
             />
             <MyPageReviewsSection
               averageRating={activityForSections.averageRating}
-              reviewDistribution={{}}
-              reviewsData={undefined}
-              isLoadingReviews={false}
-              currentPage={1}
-              onChangePage={() => {}}
+              reviewDistribution={publicReviewsData?.reviewDistribution ?? {}}
+              reviewsData={publicReviewsData?.reviewsData}
+              isLoadingReviews={isLoadingReviews}
+              currentPage={currentReviewPage}
+              onChangePage={handleChangeReviewPage}
             />
           </div>
 
@@ -210,7 +246,7 @@ const FindDriverDetailPage = ({
                 disableFavorite={disableFavorite}
                 disableRequestEstimate={isDesignatedToThisDriver}
               />
-              <ShareButtonsSection heading="공유하기" />
+              <ShareButtonsSection id={id} heading="공유하기" />
             </div>
           </div>
         </div>

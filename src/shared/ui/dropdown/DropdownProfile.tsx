@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import ProfileImage from '../card/ProfileImage';
 const ic_profile = '/icons/profile.svg';
 
 interface DropdownProfileProps {
@@ -87,7 +87,7 @@ export default function DropdownProfile({
         onClick={() => setIsOpen(!isOpen)}
         className="flex h-fit w-fit cursor-pointer items-center gap-[16px] hover:brightness-95"
       >
-        <Image
+        <ProfileImage
           src={profileImageUrl || ic_profile}
           alt="profile"
           width={36}

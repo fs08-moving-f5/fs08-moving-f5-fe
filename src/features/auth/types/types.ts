@@ -27,6 +27,7 @@ type OpenApiSignupRequest = components['schemas']['SignupRequest'];
 // UI/백엔드 동작에 맞춰 string으로 오버라이드합니다.
 type SignupRequest = Omit<OpenApiSignupRequest, 'phone'> & {
   phone: string;
+  frontendOrigin?: string;
 };
 
 // 기사 회원가입 요청

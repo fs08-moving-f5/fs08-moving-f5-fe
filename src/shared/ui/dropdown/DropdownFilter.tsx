@@ -26,6 +26,7 @@ export default function DropdownFilter({
     list.push(''); //홀 수개면 짝수 맞춰주기.
   }
   const [open, setOpen] = useState(false);
+  const [buttonText, setButtonText] = useState(title);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,6 +45,8 @@ export default function DropdownFilter({
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setValue(e.currentTarget.value);
+    setButtonText(listObject[e.currentTarget.value]);
+    setOpen(false);
   };
 
   const ToggleSize =
@@ -54,7 +57,7 @@ export default function DropdownFilter({
   };
   const BoxShadow = 'shadow-md';
   // 'shadow-[4px_4px_10px_0_rgba(195,217,242,0.30),4px_4px_10px_0_rgba(195,217,242,0.10)]';
-  const ToggleStyle = `flex items-center justify-center cursor-pointer hover:brightness-95 ${ToggleSize} ${ToggleColor[open ? 'on' : 'off']} ${BoxShadow}`;
+  const ToggleStyle = `flex items-center justify-center cursor-pointer hover:brightness-95 translation-all duration-300 ${ToggleSize} ${ToggleColor[open ? 'on' : 'off']} ${BoxShadow}`;
   const BoxPosition = 'mobile:top-[44px] mobile:rounded-[8px] top-[58px] rounded-[12px]';
   const BoxSize =
     list.length > 5
@@ -72,7 +75,7 @@ export default function DropdownFilter({
       <div className="relative flex h-fit w-fit">
         <button onClick={() => setOpen(!open)} className={ToggleStyle}>
           <div className="flex w-full items-center justify-between gap-[6px]">
-            <span className="h-fit w-fit shrink-0">{title}</span>
+            <span className="h-fit w-fit shrink-0">{buttonText}</span>
             <Image
               src={open ? up_icon_sm : down_icon_sm}
               width={36}
@@ -95,15 +98,12 @@ export default function DropdownFilter({
               {list.map((key, idx) => (
                 <li
                   key={idx}
-                  className="mobile:h-[40px] mobile:px-[14px] mobile:text-[14px] h-[60px] px-[20px] text-[16px] font-[500]"
+                  className="mobile:h-[40px] mobile:px-[14px] mobile:text-[14px] translation-all h-[60px] px-[20px] text-[16px] font-[500] duration-100 hover:bg-[var(--color-primary-orange-100)]"
                 >
                   <button
                     value={key}
-                    onClick={(e) => {
-                      handleClick(e);
-                      setOpen(false);
-                    }}
-                    className="flex h-full w-fit cursor-pointer items-center justify-start hover:text-[var(--color-primary-orange-400)]"
+                    onClick={handleClick}
+                    className="translation-all flex h-full w-full cursor-pointer items-center justify-start duration-100 hover:text-[var(--color-primary-orange-400)]"
                   >
                     {listObject[key]}
                   </button>

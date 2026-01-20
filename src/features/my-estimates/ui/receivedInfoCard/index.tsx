@@ -3,13 +3,8 @@ import DropdownFilter from '@/shared/ui/dropdown/DropdownFilter';
 import { ReceivedEstimate } from '../../services/estimate.service';
 import { formatDateWithPeriod, formatDateWithWeekday } from '@/shared/lib/day';
 import { useState, useMemo } from 'react';
-import {
-  useDeleteFavoriteMutation,
-  useFavoriteMutation,
-} from '../../../favorites/hooks/mutations/useFavoriteMutation';
-import QUERY_KEY from '../../constants/queryKey';
-import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useHandleFavorite } from '@/shared/hooks/useFavorite';
 
 const movingTypeMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING' | '',
@@ -49,16 +44,13 @@ const ReceivedInfoCard = ({
   estimates: ReceivedEstimate['estimates'];
 }) => {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const [selectStatus, setSelectStatus] = useState<'ALL' | 'CONFIRMED'>('ALL');
 
-  const handleSelectStatus = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSelectStatus = (value: string) => {
     const statusMap: Record<'전체' | '확정견적', 'ALL' | 'CONFIRMED'> = {
       전체: 'ALL',
       확정견적: 'CONFIRMED',
     };
-
-    const value = e.currentTarget.value;
 
     if (value === '전체' || value === '확정견적') {
       setSelectStatus(statusMap[value]);
@@ -72,24 +64,7 @@ const ReceivedInfoCard = ({
     return estimates?.filter((estimate) => estimate.status === 'CONFIRMED') ?? [];
   }, [estimates, selectStatus]);
 
-  const { mutate: addFavoriteDriver } = useFavoriteMutation();
-  const { mutate: deleteFavoriteDriver } = useDeleteFavoriteMutation();
-
-  const handleLikeClick = ({ driverId, isLiked }: { driverId: string; isLiked: boolean }) => {
-    if (isLiked) {
-      deleteFavoriteDriver(driverId, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: QUERY_KEY.RECEIVED_ESTIMATE });
-        },
-      });
-    } else {
-      addFavoriteDriver(driverId, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: QUERY_KEY.RECEIVED_ESTIMATE });
-        },
-      });
-    }
-  };
+  const handleLikeClick = useHandleFavorite();
 
   const handleDetailClick = (estimateId: string) => {
     router.push(`/user/my/estimates/received/${estimateId}`);
@@ -158,7 +133,7 @@ const ReceivedInfoCard = ({
             title={selectStatus === 'ALL' ? '전체' : '확정견적'}
             listObject={{ 전체: '전체', 확정견적: '확정견적' }}
             value={selectStatus}
-            setValue={(v) => setSelectStatus(v as 'ALL' | 'CONFIRMED')}
+            setValue={handleSelectStatus}
           />
           <div className="flex flex-col gap-2">
             {filteredEstimates?.map((estimate) => (

@@ -5,6 +5,7 @@ import { MovingTypeChip } from '@/shared/ui/chip';
 import { StarSelect } from '@/shared/ui/star';
 import Button from '@/shared/ui/button/Button';
 import { useState } from 'react';
+import ProfileImage from './ProfileImage';
 
 interface ReviewWritingProps {
   driverName: string;
@@ -62,15 +63,15 @@ const ReviewWriting = ({
 
       {/* 기사님 정보 */}
       <div className="flex items-center justify-between gap-4">
-        <div className="flex flex-col gap-1">
+        <div className="flex min-w-0 flex-col gap-1">
           <Image src="/icons/name.svg" alt="기사님" width={20} height={20} />
-          <h3 className="text-black-500 mobile:text-md tab:text-lg text-xl font-semibold">
+          <h3 className="text-black-500 mobile:text-md tab:text-lg truncate text-xl font-semibold">
             {driverName} 기사님
           </h3>
         </div>
         <figure className="mobile:h-12 mobile:w-12 tab:h-14 tab:w-14 h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl">
-          <Image
-            src={driverImageUrl || '/img/profile.png'}
+          <ProfileImage
+            src={driverImageUrl}
             alt={`${driverName} 프로필`}
             width={64}
             height={64}
@@ -83,26 +84,26 @@ const ReviewWriting = ({
 
       {/* 이사 정보 */}
       <div className="mobile:text-sm tab:text-sm text-black-300 text-md tab:gap-6 mobile:gap-4 flex flex-row flex-wrap gap-10">
-        <div className="flex items-end gap-4">
-          <div className="flex flex-col gap-2">
+        <div className="flex min-w-0 items-end gap-4">
+          <div className="flex min-w-0 flex-col gap-2">
             <span className="text-grayScale-500 mobile:text-sm tab:text-sm text-md w-16 flex-shrink-0">
               출발지
             </span>
-            <span className="flex-1">{pickupAddress}</span>
+            <span className="w-full truncate">{pickupAddress}</span>
           </div>
           <Image src="/icons/arrow-right.svg" alt="to" width={16} height={16} className="h-fit" />
-          <div className="flex flex-col gap-2">
+          <div className="flex min-w-0 flex-col gap-2">
             <span className="text-grayScale-500 mobile:text-sm tab:text-sm text-md w-16 flex-shrink-0">
               도착지
             </span>
-            <span className="flex-1">{dropoffAddress}</span>
+            <span className="w-full truncate">{dropoffAddress}</span>
           </div>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex min-w-0 flex-col gap-2">
           <span className="text-grayScale-500 mobile:text-sm tab:text-sm text-md w-16 flex-shrink-0">
             이사일
           </span>
-          <span className="flex-1">{movingDate}</span>
+          <span className="w-full truncate">{movingDate}</span>
         </div>
       </div>
 

@@ -156,6 +156,7 @@ type ReviewListData = {
 interface DriverPublicProfileData {
   id: string;
   name: string;
+  favoritedCount: number;
   driverProfile: {
     id: string;
     driverId: string;
@@ -170,6 +171,13 @@ interface DriverPublicProfileData {
   } | null;
 }
 
+// 기사 찾기 상세(공개 프로필) - 리뷰(공개) 응답 타입
+type DriverPublicReviewsData = {
+  averageRating: number;
+  reviewDistribution: Record<number, number>;
+  reviewsData: ReviewListData;
+};
+
 export type {
   CreateProfileImagePutPresignRequest,
   ProfileImagePutPresignData,
@@ -177,6 +185,7 @@ export type {
   CreateUserProfileRequest,
   DriverProfile,
   DriverPublicProfileData,
+  DriverPublicReviewsData,
   MyPageData,
   MyProfile,
   RegionType,
