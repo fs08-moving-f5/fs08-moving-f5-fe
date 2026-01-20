@@ -12,7 +12,10 @@ import {
   MyPageOfficeAddressSection,
   DriverDetailActionButtons,
 } from '@/features/profile/ui';
-import { useGetDriverPublicProfileQuery } from '@/features/profile/hooks/queries/useProfileQueries';
+import {
+  useGetDriverPublicProfileQuery,
+  useGetDriverPublicReviewsQuery,
+} from '@/features/profile/hooks/queries/useProfileQueries';
 import ShareButtonsSection from '@/features/driver-estimate/ui/detailUi/ShareButtonsSection';
 import {
   useDeleteFavoriteMutation,
@@ -37,7 +40,19 @@ const FindDriverDetailPage = ({
   const { user, isUserLoaded } = useAuthStore();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isDesignatedToThisDriver, setIsDesignatedToThisDriver] = useState(false);
+  const [reviewPaging, setReviewPaging] = useState<{ driverId: string; page: number }>(() => ({
+    driverId: id,
+    page: 1,
+  }));
+  const reviewLimit = 5;
   const { data, isLoading } = useGetDriverPublicProfileQuery(id);
+  const currentReviewPage = reviewPaging.driverId === id ? reviewPaging.page : 1;
+  const handleChangeReviewPage = (page: number) => setReviewPaging({ driverId: id, page });
+  const { data: publicReviewsData, isLoading: isLoadingReviews } = useGetDriverPublicReviewsQuery({
+    driverId: id,
+    page: currentReviewPage,
+    limit: reviewLimit,
+  });
   const [favoriteByDriverId, setFavoriteByDriverId] = useState<Record<string, boolean>>({});
   const isFavorited = favoriteByDriverId[id] ?? false;
 
@@ -92,7 +107,7 @@ const FindDriverDetailPage = ({
 
   const activityForSections = {
     completedCount: 0,
-    averageRating: 0,
+    averageRating: publicReviewsData?.averageRating ?? 0,
     career: driverProfile?.career ?? null,
   };
 
@@ -187,11 +202,11 @@ const FindDriverDetailPage = ({
             />
             <MyPageReviewsSection
               averageRating={activityForSections.averageRating}
-              reviewDistribution={{}}
-              reviewsData={undefined}
-              isLoadingReviews={false}
-              currentPage={1}
-              onChangePage={() => {}}
+              reviewDistribution={publicReviewsData?.reviewDistribution ?? {}}
+              reviewsData={publicReviewsData?.reviewsData}
+              isLoadingReviews={isLoadingReviews}
+              currentPage={currentReviewPage}
+              onChangePage={handleChangeReviewPage}
             />
           </div>
 

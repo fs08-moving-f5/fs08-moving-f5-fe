@@ -73,6 +73,7 @@ const MyPageReviewsSection = ({
               currentPage={currentPage}
               totalPages={reviewsData.pagination.totalPages}
               onPageChange={onChangePage}
+              scrollToTop={false}
             />
           )}
         </>
