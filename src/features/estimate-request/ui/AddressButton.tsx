@@ -64,7 +64,7 @@ export default function AddressButton({ type, address, setAddress }: AddressButt
               design="primary"
               onClick={toggleHandler}
             >
-              <div className="min-w-0 h-full w-full overflow-hidden px-[24px] py-[16px] text-left">
+              <div className="h-full w-full min-w-0 overflow-hidden px-[24px] py-[16px] text-left">
                 <p className="truncate">
                   {address ? address.address : `${typeName[type]} 선택하기`}
                 </p>
