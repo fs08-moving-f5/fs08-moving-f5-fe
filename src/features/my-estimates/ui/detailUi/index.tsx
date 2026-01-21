@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import NonConfirmMessage from '../nonConfirmMessage';
 import MY_ESTIMATES_QUERY_KEY from '@/features/my-estimates/constants/queryKey';
 import { useHandleFavorite } from '@/shared/hooks/useFavorite';
+import Spinner from '@/shared/ui/spinner';
 
 const movingTypeKoreanMap: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
@@ -35,7 +36,8 @@ const EstimateDetailUi = ({
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { data: pendingEstimateDetail } = useGetPendingEstimateDetailQuery({ estimateId });
+  const { data: pendingEstimateDetail, isLoading: isLoadingPendingEstimateDetail } =
+    useGetPendingEstimateDetailQuery({ estimateId });
 
   const estimateReqData = pendingEstimateDetail?.estimateRequest;
   const driverData = pendingEstimateDetail?.driver;
@@ -62,68 +64,71 @@ const EstimateDetailUi = ({
   시간 입력 필드가 없어서 상세 주소 추가 시 함께 진행
   */
   return (
-    <div className="w-full bg-white pb-[62px]">
-      <PendingEstimateDetailHeader
-        driverImageUrl={driverData?.driverProfile?.imageUrl ?? '/img/profile.png'}
-        title="견적 상세"
-      />
-
-      <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] tab:flex-col mobile:flex-col tab:gap-8 mobile:gap-8 tab:justify-start mobile:justify-start flex w-full max-w-[1200px] flex-row items-start justify-between">
-        <div className="tab:w-full mobile:w-full w-[740px]">
-          <PendingEstimateDriverInfo
-            movingType={estimateReqData?.movingType ?? 'SMALL_MOVING'}
-            isDesignated={estimateReqData?.isDesignated ?? false}
-            shortIntro={driverData?.driverProfile?.shortIntro ?? ''}
-            estimateStatus={pendingEstimateDetail?.status ?? 'PENDING'}
-            driverName={driverData?.name ?? ''}
-            favoriteCount={driverData?.driverProfile?.favoriteDriverCount ?? 0}
-            rating={driverData?.driverProfile?.averageRating ?? 0}
-            career={`${driverData?.driverProfile?.career ?? 0}년`}
-            moveCount={driverData?.driverProfile?.confirmedEstimateCount ?? 0}
-            reviewCount={1}
-            isLiked={driverData?.isFavorite ?? false}
-            onLikeClick={() =>
-              handleLikeClick({
-                driverId: driverData?.id ?? '',
-                isLiked: driverData?.isFavorite ?? false,
-              })
-            }
-          />
-
-          <PendingEstimateInfo
-            price={pendingEstimateDetail?.price ?? 0}
-            requestDate={formatDateWithPeriod(estimateReqData?.createdAt ?? '')}
-            movingType={movingTypeKoreanMap[estimateReqData?.movingType ?? 'SMALL_MOVING']}
-            movingDate={formatDateWithWeekday(estimateReqData?.movingDate ?? '')}
-            fromAddress={estimateReqData?.addresses?.[0]?.address ?? ''}
-            toAddress={estimateReqData?.addresses?.[1]?.address ?? ''}
-          />
-
-          {type === 'received' && pendingEstimateDetail?.status !== 'CONFIRMED' && (
-            <NonConfirmMessage />
-          )}
-        </div>
-        <div className="tab:block mobile:block hidden w-full">{stroke}</div>
-        <IconWrapper type="mobile" />
-        {type === 'pending' && (
-          <EstimateRequestButtonWrapper
-            isLiked={driverData?.isFavorite ?? false}
-            onConfirmClick={handleConfirmEstimate}
-            onLikeClick={() =>
-              handleLikeClick({
-                driverId: driverData?.id ?? '',
-                isLiked: driverData?.isFavorite ?? false,
-              })
-            }
-          />
-        )}
-        <EstimateConfirmPopup
-          price={pendingEstimateDetail?.price ?? 0}
-          type={type}
-          onConfirmClick={handleConfirmEstimate}
+    <>
+      <Spinner isLoading={isLoadingPendingEstimateDetail} />
+      <div className="w-full bg-white pb-[62px]">
+        <PendingEstimateDetailHeader
+          driverImageUrl={driverData?.driverProfile?.imageUrl ?? '/img/profile.png'}
+          title="견적 상세"
         />
+
+        <div className="container-responsive tab:max-w-[600px] mobile:max-w-[335px] tab:flex-col mobile:flex-col tab:gap-8 mobile:gap-8 tab:justify-start mobile:justify-start flex w-full max-w-[1200px] flex-row items-start justify-between">
+          <div className="tab:w-full mobile:w-full w-[740px]">
+            <PendingEstimateDriverInfo
+              movingType={estimateReqData?.movingType ?? 'SMALL_MOVING'}
+              isDesignated={estimateReqData?.isDesignated ?? false}
+              shortIntro={driverData?.driverProfile?.shortIntro ?? ''}
+              estimateStatus={pendingEstimateDetail?.status ?? 'PENDING'}
+              driverName={driverData?.name ?? ''}
+              favoriteCount={driverData?.driverProfile?.favoriteDriverCount ?? 0}
+              rating={driverData?.driverProfile?.averageRating ?? 0}
+              career={`${driverData?.driverProfile?.career ?? 0}년`}
+              moveCount={driverData?.driverProfile?.confirmedEstimateCount ?? 0}
+              reviewCount={1}
+              isLiked={driverData?.isFavorite ?? false}
+              onLikeClick={() =>
+                handleLikeClick({
+                  driverId: driverData?.id ?? '',
+                  isLiked: driverData?.isFavorite ?? false,
+                })
+              }
+            />
+
+            <PendingEstimateInfo
+              price={pendingEstimateDetail?.price ?? 0}
+              requestDate={formatDateWithPeriod(estimateReqData?.createdAt ?? '')}
+              movingType={movingTypeKoreanMap[estimateReqData?.movingType ?? 'SMALL_MOVING']}
+              movingDate={formatDateWithWeekday(estimateReqData?.movingDate ?? '')}
+              fromAddress={estimateReqData?.addresses?.[0]?.address ?? ''}
+              toAddress={estimateReqData?.addresses?.[1]?.address ?? ''}
+            />
+
+            {type === 'received' && pendingEstimateDetail?.status !== 'CONFIRMED' && (
+              <NonConfirmMessage />
+            )}
+          </div>
+          <div className="tab:block mobile:block hidden w-full">{stroke}</div>
+          <IconWrapper type="mobile" />
+          {type === 'pending' && (
+            <EstimateRequestButtonWrapper
+              isLiked={driverData?.isFavorite ?? false}
+              onConfirmClick={handleConfirmEstimate}
+              onLikeClick={() =>
+                handleLikeClick({
+                  driverId: driverData?.id ?? '',
+                  isLiked: driverData?.isFavorite ?? false,
+                })
+              }
+            />
+          )}
+          <EstimateConfirmPopup
+            price={pendingEstimateDetail?.price ?? 0}
+            type={type}
+            onConfirmClick={handleConfirmEstimate}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

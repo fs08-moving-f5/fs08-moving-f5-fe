@@ -25,7 +25,7 @@ export default function DriverFieldsSection({
         <label className="mobile:text-xl mb-4 block text-2xl font-bold">경력</label>
         <Input
           name="career"
-          type="text"
+          type="number"
           value={career}
           onChange={onCareerChange}
           placeholder="경력을 숫자로 입력해주세요 (예: 5)"

@@ -12,7 +12,7 @@ import { showToast } from '@/shared/ui/sonner';
 
 import type { ServiceType, RegionType } from '../types/types';
 import type { UserType } from '@/features/auth/types/types';
-import type { AddressParams } from '@/features/estimateRequest/types/type';
+import type { AddressParams } from '@/features/estimate-request/types/type';
 
 interface ProfileSetupFormErrors {
   career: string;
@@ -86,8 +86,9 @@ export function useProfileSetupForm(userType: UserType) {
   // 입력 핸들러들
   const handleCareerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setCareer(value);
-    setErrors((prev) => ({ ...prev, career: validateCareer(value) }));
+    const digitsOnly = value.replace(/[^0-9]/g, '');
+    setCareer(digitsOnly);
+    setErrors((prev) => ({ ...prev, career: validateCareer(digitsOnly) }));
   };
 
   const handleShortIntroChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -13,6 +13,7 @@ import {
   DriverOfficeAddressFields,
 } from '@/features/profile/ui';
 import BasicFieldsSection from '@/features/profile/ui/BasicFieldsSection';
+import Spinner from '@/shared/ui/spinner';
 
 import type { UserType } from '@/features/auth/types/types';
 import type { DriverProfile, UserProfile } from '@/features/profile/types/types';
@@ -158,17 +159,17 @@ export default function ProfileEditPage({ userType }: ProfileEditPageProps) {
   }, [isProfileNotFound, router, userType]);
 
   // 프로필 로딩 중
-  if (isLoading) {
-    return (
-      <div className="tab:px-4 mobile:px-4 mx-auto max-w-[1200px] px-6 py-10">
-        <div className="mx-auto max-w-[744px]">
-          <div className="flex items-center justify-center py-20">
-            <div className="text-lg text-gray-500">프로필 정보를 불러오는 중...</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="tab:px-4 mobile:px-4 mx-auto max-w-[1200px] px-6 py-10">
+  //       <div className="mx-auto max-w-[744px]">
+  //         <div className="flex items-center justify-center py-20">
+  //           <div className="text-lg text-gray-500">프로필 정보를 불러오는 중...</div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // 프로필이 없으면(404) 프로필 등록 페이지로 이동
   if (isProfileNotFound) {
@@ -199,5 +200,10 @@ export default function ProfileEditPage({ userType }: ProfileEditPageProps) {
   }
 
   // 프로필 로드 완료 후 폼 렌더링
-  return <ProfileEditForm userType={userType} profile={profile} />;
+  return (
+    <>
+      <Spinner isLoading={isLoading} />
+      <ProfileEditForm userType={userType} profile={profile} />
+    </>
+  );
 }

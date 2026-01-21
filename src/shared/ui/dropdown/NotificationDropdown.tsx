@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useNotificationStore } from '@/shared/store/notificationStore';
 import { formatDateAgo } from '@/shared/lib/day';
-import type { Notification } from '@/shared/ui/gnb/notification.service';
+import type { GetNotificationListResponse } from '@/shared/ui/gnb/notification.service';
 import NotificationDetail from './NotificationDetail';
 
 const ic_x = '/icons/x.svg';
@@ -23,7 +23,7 @@ const NotificationDropdown = ({
   notifications,
   handleReadNotification,
 }: {
-  notifications?: Notification[];
+  notifications?: GetNotificationListResponse[];
   handleReadNotification: (id: string) => void;
 }) => {
   const queryClient = useQueryClient();
@@ -31,11 +31,11 @@ const NotificationDropdown = ({
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
-    }
+    };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {

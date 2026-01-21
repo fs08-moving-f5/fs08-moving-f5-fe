@@ -6,6 +6,7 @@ import { HTTPError } from 'ky';
 import { Button } from '@/shared/ui/button';
 import BasicFieldsSection from '@/features/profile/ui/BasicFieldsSection';
 import { useGetProfileQuery, useProfileForm } from '@/features/profile/hooks';
+import Spinner from '@/shared/ui/spinner';
 
 import type { UserType } from '@/features/auth/types/types';
 
@@ -52,17 +53,17 @@ export default function ProfileAccountEditPage({ userType }: ProfileAccountEditP
     handleSubmit(() => router.back());
   };
 
-  if (isLoading) {
-    return (
-      <div className="tab:px-4 mobile:px-4 mx-auto max-w-[1200px] px-6 py-10">
-        <div className="mx-auto max-w-[744px]">
-          <div className="flex items-center justify-center py-20">
-            <div className="text-lg text-gray-500">프로필 정보를 불러오는 중...</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="tab:px-4 mobile:px-4 mx-auto max-w-[1200px] px-6 py-10">
+  //       <div className="mx-auto max-w-[744px]">
+  //         <div className="flex items-center justify-center py-20">
+  //           <div className="text-lg text-gray-500">프로필 정보를 불러오는 중...</div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // 프로필이 없으면(404) 프로필 등록 페이지로 이동
   if (isProfileNotFound) {
@@ -92,38 +93,41 @@ export default function ProfileAccountEditPage({ userType }: ProfileAccountEditP
   }
 
   return (
-    <div className="tab:px-4 mobile:px-4 mx-auto max-w-[1200px] px-6 py-10">
-      <div className="mx-auto max-w-[744px]">
-        <div className="mobile:mb-6 mb-10">
-          <h1 className="mobile:text-2xl mb-2 text-4xl font-bold">기본정보 수정</h1>
-          <p className="mobile:text-md text-lg text-gray-500">계정(기본) 정보를 수정해주세요.</p>
-        </div>
+    <>
+      <Spinner isLoading={isLoading} />
+      <div className="tab:px-4 mobile:px-4 mx-auto max-w-[1200px] px-6 py-10">
+        <div className="mx-auto max-w-[744px]">
+          <div className="mobile:mb-6 mb-10">
+            <h1 className="mobile:text-2xl mb-2 text-4xl font-bold">기본정보 수정</h1>
+            <p className="mobile:text-md text-lg text-gray-500">계정(기본) 정보를 수정해주세요.</p>
+          </div>
 
-        <BasicFieldsSection
-          name={name}
-          email={email}
-          phone={phone}
-          currentPassword={currentPassword}
-          newPassword={newPassword}
-          confirmNewPassword={confirmNewPassword}
-          errors={errors}
-          onNameChange={handleNameChange}
-          onEmailChange={handleEmailChange}
-          onPhoneChange={handlePhoneChange}
-          onCurrentPasswordChange={handleCurrentPasswordChange}
-          onNewPasswordChange={handleNewPasswordChange}
-          onConfirmNewPasswordChange={handleConfirmNewPasswordChange}
-        />
+          <BasicFieldsSection
+            name={name}
+            email={email}
+            phone={phone}
+            currentPassword={currentPassword}
+            newPassword={newPassword}
+            confirmNewPassword={confirmNewPassword}
+            errors={errors}
+            onNameChange={handleNameChange}
+            onEmailChange={handleEmailChange}
+            onPhoneChange={handlePhoneChange}
+            onCurrentPasswordChange={handleCurrentPasswordChange}
+            onNewPasswordChange={handleNewPasswordChange}
+            onConfirmNewPasswordChange={handleConfirmNewPasswordChange}
+          />
 
-        <div className="mobile:mt-8 mt-12 flex gap-3">
-          <Button aria-label="취소" onClick={handleCancel} variant="outlined">
-            취소
-          </Button>
-          <Button aria-label="수정하기" onClick={handleSubmitForm} disabled={isUpdating}>
-            {isUpdating ? '처리 중...' : '수정하기'}
-          </Button>
+          <div className="mobile:mt-8 mt-12 flex gap-3">
+            <Button aria-label="취소" onClick={handleCancel} variant="outlined">
+              취소
+            </Button>
+            <Button aria-label="수정하기" onClick={handleSubmitForm} disabled={isUpdating}>
+              {isUpdating ? '처리 중...' : '수정하기'}
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

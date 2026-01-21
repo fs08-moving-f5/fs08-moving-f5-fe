@@ -26,6 +26,7 @@ const MyPageServicesSection = ({ services }: MyPageServicesSectionProps) => {
                   : '사무실이사'
             }
             isActive={true}
+            cursorPointer={false}
             setIsActive={() => {}}
           />
         ))}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { z } from 'zod';
 
 import Button from '../button/Button';
@@ -11,11 +11,11 @@ import { showToast } from '@/shared/ui/sonner';
 
 import Image from 'next/image';
 import StarRating from '../reviewChart/StarRating';
+import ProfileImage from '../card/ProfileImage';
 
 const ic_x = '/icons/x.svg';
 const ic_arrow_right = '/icons/arrow-right.svg';
 const ic_name = '/icons/name.svg';
-const img_profile = '/img/profile.png';
 
 interface User {
   name: string;
@@ -35,6 +35,7 @@ interface MovingInfo {
 interface ModalQuetRequestProps {
   type: 'confirm' | 'reject' | 'review';
   user: User;
+  userImageUrl?: string | null;
   mvInfo: MovingInfo;
   price?: number;
   comment: string;
@@ -62,6 +63,7 @@ const confirmSchema = z.object({
 export default function ModalQuetRequest({
   type,
   user,
+  userImageUrl,
   mvInfo,
   price,
   comment,
@@ -88,8 +90,6 @@ export default function ModalQuetRequest({
   const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
   };
-  const [hoverScore, setHoverScore] = useState(0);
-  const starList = [0, 0, 0, 0, 0].map((_, idx) => (idx < (score || 0) ? 1 : 0));
 
   const title = {
     confirm: '견적 보내기',
@@ -239,7 +239,7 @@ export default function ModalQuetRequest({
                         {user.name} {roleName[user.role]}님
                       </span>
                     </div>
-                    <Image src={img_profile} alt="img_profile" width={50} height={50} />
+                    <ProfileImage src={userImageUrl} alt="img_profile" width={50} height={50} />
                   </div>
                 ) : (
                   <span>

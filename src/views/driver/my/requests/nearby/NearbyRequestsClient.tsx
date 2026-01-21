@@ -20,6 +20,7 @@ import {
   type EstimateRequestItem,
 } from '@/features/driver-estimate/types/driverEstimate';
 import type { NearbyRequestItem } from '@/features/nearbyRequests/types';
+import Spinner from '@/shared/ui/spinner';
 
 const MOVING_TYPE_MAP: Record<
   'SMALL_MOVING' | 'HOME_MOVING' | 'OFFICE_MOVING',
@@ -40,8 +41,12 @@ const NearbyRequestsClient = () => {
   const [price, setPrice] = useState<number>();
   const [comment, setComment] = useState<string>('');
 
-  const { data: nearbyRequests = [], isError: isNearbyRequestsError } = useGetNearbyQuery(20);
-  const { data: myPage } = useGetMyPageQuery();
+  const {
+    data: nearbyRequests = [],
+    isError: isNearbyRequestsError,
+    isLoading: isLoadingNearbyRequests,
+  } = useGetNearbyQuery(20);
+  const { data: myPage, isLoading: isLoadingMyPage } = useGetMyPageQuery();
 
   const hasToastedError = useRef<boolean>(false);
 
@@ -176,69 +181,72 @@ const NearbyRequestsClient = () => {
   };
 
   return (
-    <div className="relative h-screen w-full">
-      <KakaoMapScript onLoad={handleScriptLoad} />
+    <>
+      <Spinner isLoading={isLoadingNearbyRequests || isLoadingMyPage} />
+      <div className="relative h-screen w-full">
+        <KakaoMapScript onLoad={handleScriptLoad} />
 
-      {isScriptLoaded && (
-        <KakaoMap
-          center={{
-            lat: myPage?.profile?.officeLat ?? DEFAULT_CENTER.lat,
-            lng: myPage?.profile?.officeLng ?? DEFAULT_CENTER.lng,
-          }}
-          requests={nearbyRequests}
-          onSelectRequest={(id) => {
-            setSelectedId(selectedId === id ? null : id);
-          }}
-        />
-      )}
+        {isScriptLoaded && (
+          <KakaoMap
+            center={{
+              lat: myPage?.profile?.officeLat ?? DEFAULT_CENTER.lat,
+              lng: myPage?.profile?.officeLng ?? DEFAULT_CENTER.lng,
+            }}
+            requests={nearbyRequests}
+            onSelectRequest={(id) => {
+              setSelectedId(selectedId === id ? null : id);
+            }}
+          />
+        )}
 
-      {/* 카드 - 모달이 열려있지 않을 때만 표시 */}
-      {selectedRequest && !isModalOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm"
-          onClick={() => setSelectedId(null)}
-        >
-          <div onClick={(e) => e.stopPropagation()}>
-            <RequestReceived
-              customerName={selectedRequest.user.name}
-              movingType={MOVING_TYPE_MAP[selectedRequest.movingType]}
-              pickedDriver={selectedRequest.isDesignated ?? false}
-              pickupAddress={`${selectedRequest.fromAddress.sido} ${selectedRequest.fromAddress.sigungu}`}
-              dropoffAddress={`${selectedRequest.toAddress.sido} ${selectedRequest.toAddress.sigungu}`}
-              movingDate={formatDateWithWeekday(selectedRequest.movingDate)}
-              requestTime={formatDateAgo(selectedRequest.createdAt)}
-              onSendEstimateClick={() => {
-                setSelectedModalType('confirm');
-                setIsModalOpen(true);
-                setPrice(undefined);
-                setComment('');
-              }}
-              onRejectClick={() => {
-                setSelectedModalType('reject');
-                setIsModalOpen(true);
-                setComment('');
-              }}
-            />
+        {/* 카드 - 모달이 열려있지 않을 때만 표시 */}
+        {selectedRequest && !isModalOpen && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm"
+            onClick={() => setSelectedId(null)}
+          >
+            <div onClick={(e) => e.stopPropagation()}>
+              <RequestReceived
+                customerName={selectedRequest.user.name}
+                movingType={MOVING_TYPE_MAP[selectedRequest.movingType]}
+                pickedDriver={selectedRequest.isDesignated ?? false}
+                pickupAddress={`${selectedRequest.fromAddress.sido} ${selectedRequest.fromAddress.sigungu}`}
+                dropoffAddress={`${selectedRequest.toAddress.sido} ${selectedRequest.toAddress.sigungu}`}
+                movingDate={formatDateWithWeekday(selectedRequest.movingDate)}
+                requestTime={formatDateAgo(selectedRequest.createdAt)}
+                onSendEstimateClick={() => {
+                  setSelectedModalType('confirm');
+                  setIsModalOpen(true);
+                  setPrice(undefined);
+                  setComment('');
+                }}
+                onRejectClick={() => {
+                  setSelectedModalType('reject');
+                  setIsModalOpen(true);
+                  setComment('');
+                }}
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* 모달 */}
-      {isModalOpen && convertedRequest && selectedModalType && (
-        <ModalQuetRequest
-          type={selectedModalType}
-          isOpen={isModalOpen}
-          setIsOpen={setIsModalOpen}
-          user={{ name: convertedRequest.customerName, role: 'user' }}
-          mvInfo={toMovingInfo(convertedRequest)}
-          price={price}
-          setPrice={setPrice}
-          comment={comment}
-          setComment={setComment}
-          onSubmit={handleSubmit}
-        />
-      )}
-    </div>
+        {/* 모달 */}
+        {isModalOpen && convertedRequest && selectedModalType && (
+          <ModalQuetRequest
+            type={selectedModalType}
+            isOpen={isModalOpen}
+            setIsOpen={setIsModalOpen}
+            user={{ name: convertedRequest.customerName, role: 'user' }}
+            mvInfo={toMovingInfo(convertedRequest)}
+            price={price}
+            setPrice={setPrice}
+            comment={comment}
+            setComment={setComment}
+            onSubmit={handleSubmit}
+          />
+        )}
+      </div>
+    </>
   );
 };
 
