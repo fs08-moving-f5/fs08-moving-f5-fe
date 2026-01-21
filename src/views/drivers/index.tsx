@@ -196,6 +196,7 @@ export default function DriversPageClient({
                 flexGap={20}
                 pageSize={10}
                 getApi={getDriverList}
+                getItemKey={(item) => item?.id}
                 filter={{
                   region: region === 'all' ? undefined : region,
                   service: service === 'all' ? undefined : service,
@@ -215,6 +216,7 @@ export default function DriversPageClient({
                     flexGap={16}
                     pageSize={10}
                     getApi={getFavoriteDrivers} //getFavoriteDriverList
+                    getItemKey={(item) => item?.driverId}
                     ElementNode={FavoriteDriverCard}
                     noElementMsg="찜한 기사님이 없습니다."
                   />
