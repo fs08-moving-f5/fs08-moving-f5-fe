@@ -116,7 +116,7 @@ const Button = ({
       onClick={onClick}
       {...props}
     >
-      <span>{children}</span>
+      {children}
       {isWriting && (
         <Image
           src="/icons/writing.svg"
