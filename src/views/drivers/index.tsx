@@ -217,6 +217,7 @@ export default function DriversPageClient({
                 flexGap={20}
                 pageSize={10}
                 getApi={getDriverList}
+                getItemKey={(item) => item?.id}
                 filter={{
                   region: region === 'all' ? undefined : region,
                   service: service === 'all' ? undefined : service,
@@ -227,7 +228,6 @@ export default function DriversPageClient({
                 noElementMsg="조건에 해당하는 기사님이 없습니다."
               />
             </div>
-
           </div>
         </div>
       </div>

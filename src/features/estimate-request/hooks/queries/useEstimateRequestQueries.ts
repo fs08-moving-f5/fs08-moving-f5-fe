@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import QUERY_KEY from '../../constants/queryKey';
-import MY_ESTIMATES_QUERY_KEY from '@/features/my-estimates/constants/queryKey';
+import QUERY_KEY_ESTIMATE_REQUEST from '../../constants/queryKey';
+import QUERY_KEY_MY_ESTIMATES from '@/features/my-estimates/constants/queryKey';
+
 import {
   createEstimateRequest,
   createEstimateRequestWithGeocode,
@@ -9,9 +10,12 @@ import {
 import { showToast } from '@/shared/ui/sonner';
 import { useRouter } from 'next/navigation';
 
+const { PENDING_ESTIMATE_REQUEST } = QUERY_KEY_ESTIMATE_REQUEST;
+const { PENDING_ESTIMATE } = QUERY_KEY_MY_ESTIMATES;
+
 export const useGetPendingEstimateRequestsQuery = () => {
   return useQuery({
-    queryKey: [QUERY_KEY.PENDING_ESTIMATE_REQUEST],
+    queryKey: [PENDING_ESTIMATE_REQUEST],
     queryFn: getPendingEstimateRequests,
   });
 };
@@ -24,8 +28,8 @@ export const useCreateEstimateRequestMutation = () => {
     // mutationFn: createEstimateRequest,
     mutationFn: createEstimateRequestWithGeocode,
     onSuccess: () => {
-      //queryClient.invalidateQueries()
-      queryClient.invalidateQueries({ queryKey: MY_ESTIMATES_QUERY_KEY.PENDING_ESTIMATE });
+      queryClient.invalidateQueries({ queryKey: [PENDING_ESTIMATE_REQUEST] });
+      queryClient.invalidateQueries({ queryKey: [PENDING_ESTIMATE] });
       showToast({
         kind: 'success',
         message: '견적 요청에 성공했습니다.',
