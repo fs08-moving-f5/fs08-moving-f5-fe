@@ -27,6 +27,7 @@ export default function PaginationInfiniteScroll<T extends object | undefined>({
   filter = {},
   getApi, //페이지네이션 fetch 함수
   ElementNode, // 받아온 데이터를 전달할 컴포넌트 (ReactNode)
+  getItemKey,
   pageSize = 15, //한번에 불러올 데이터 양
   flexGap = 8, //요소 간 간격
   noElementMsg = '데이터 없음',
@@ -41,6 +42,7 @@ export default function PaginationInfiniteScroll<T extends object | undefined>({
     params: { cursor?: string; limit?: number };
   }) => Promise<CursorResponse<T>>;
   ElementNode: ElementType;
+  getItemKey?: (item: T) => string | number | undefined;
   noElementMsg?: string;
 }) {
   const fetchItems = async ({ pageParam }: { pageParam: unknown }) => {
@@ -85,7 +87,7 @@ export default function PaginationInfiniteScroll<T extends object | undefined>({
           <ul className="flex w-full flex-col" style={{ gap: `${flexGap}px` }}>
             {data?.pages.map((page, idx) =>
               page.items?.map((props, idx2) => (
-                <li className="w-full" key={idx * pageSize + idx2}>
+                <li className="w-full" key={getItemKey?.(props) ?? idx * pageSize + idx2}>
                   <ElementNode {...props} />
                 </li>
               )),
