@@ -146,9 +146,9 @@ export default function DriversPageClient({
   };
 
   return (
-    <div className="flex h-full w-full flex-col items-center relative">
+    <div className="relative flex h-full w-full flex-col items-center">
       <div className="tab:px-[72px] mobile:px-[24px] flex h-full w-full max-w-[1200px] flex-col">
-        <div className="h-fit w-full sticky top-0 z-10 bg-white relative">
+        <div className="relative sticky top-0 z-10 h-fit w-full bg-white">
           <div className="py-[32px]">
             <h1 className="text-start text-[24px] leading-[32px] font-[600]">기사님 찾기</h1>
           </div>
@@ -191,9 +191,9 @@ export default function DriversPageClient({
           </div>
           <div className="h-[24px] w-full bg-white" />
           <div className="pointer-events-none absolute inset-x-0 -bottom-[24px] h-[24px] bg-gradient-to-b from-white to-transparent" />
-          <div className="tab:hidden absolute right-0 flex h-fit flex-col gap-[16px] z-10">
+          <div className="tab:hidden absolute right-0 z-10 flex h-fit flex-col gap-[16px]">
             <h2 className="text-start text-[20px] leading-[32px] font-[600]">찜한 기사님</h2>
-            <div className="scrollbar-hide scroll-mask h-[calc(80vh-250px)] w-full max-w-[820px] flex-col overflow-scroll overscroll-behavior py-[16px]">
+            <div className="scrollbar-hide scroll-mask overscroll-behavior h-[calc(80vh-250px)] w-full max-w-[820px] flex-col overflow-scroll py-[16px]">
               {isLoggedIn ? (
                 <PaginationInfiniteScroll<FavoriteDriverInfoType>
                   queryKey={DRIVERS_QUERY_KEY.FAVORITE_DRIVERS}
@@ -209,7 +209,7 @@ export default function DriversPageClient({
             </div>
           </div>
         </div>
-        <div className="flex h-full w-full flex-col items-start gap-[38px] relative">
+        <div className="relative flex h-full w-full flex-col items-start gap-[38px]">
           <div className="mb-[200px] flex h-full w-full gap-[54px]">
             <div className="scrollbar-hide scroll-mask tab:min-w-0 tab:max-w-full h-auto w-full max-w-[820px] min-w-[820px] flex-col overflow-visible py-[16px]">
               <PaginationInfiniteScroll<DriverInfoType>
