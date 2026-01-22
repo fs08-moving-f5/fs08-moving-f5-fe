@@ -18,7 +18,8 @@ const ReceivedEstimatesPageClient = () => {
   } = useGetReceivedEstimatesQuery();
 
   // TODO: 타입 추론 개선
-  const estimateRequests: ReceivedEstimate[] = (data?.pages?.flat() as ReceivedEstimate[]) ?? [];
+  const estimateRequests: ReceivedEstimate[] =
+    (data?.pages?.flatMap((page) => page.data) as ReceivedEstimate[]) ?? [];
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 

@@ -53,7 +53,10 @@ export const getReceivedEstimates = async ({
     searchParams: params,
   });
 
-  return res.data;
+  return {
+    data: res.data,
+    pagination: res.pagination,
+  };
 };
 
 export type PendingEstimate = components['schemas']['PendingEstimate'];
