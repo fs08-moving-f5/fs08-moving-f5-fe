@@ -65,19 +65,31 @@
 ### Backend
 
 <div align="left">
+  <img src="https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white&style=for-the-badge" height="30" alt="nodejs logo"  />
+  <img width="12" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&style=for-the-badge" height="30" alt="typescript logo"  />
+  <img width="12" />
   <img src="https://img.shields.io/badge/Express-000000?logo=express&logoColor=white&style=for-the-badge" height="30" alt="express logo"  />
   <img width="12" />
   <img src="https://img.shields.io/badge/Prisma-2D3748?logo=prisma&logoColor=white&style=for-the-badge" height="30" alt="prisma logo"  />
   <img width="12" />
   <img src="https://img.shields.io/badge/PostgreSQL-316192?logo=postgresql&logoColor=white&style=for-the-badge" height="30" alt="postgresql logo"  />
   <img width="12" />
-  <img src="https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white&style=for-the-badge" height="30" alt="ubuntu logo"  />
+  <img src="https://img.shields.io/badge/Redis-DC382D?logo=redis&logoColor=white&style=for-the-badge" height="30" alt="redis logo"  />
+  <img width="12" />
+  <img src="https://img.shields.io/badge/JWT-000000?logo=jsonwebtokens&logoColor=white&style=for-the-badge" height="30" alt="jwt logo"  />
+  <img width="12" />
+  <img src="https://img.shields.io/badge/Passport-34E27A?logo=passport&logoColor=white&style=for-the-badge" height="30" alt="passport logo"  />
+  <img width="12" />
+  <img src="https://img.shields.io/badge/Swagger-85EA2D?logo=swagger&logoColor=black&style=for-the-badge" height="30" alt="swagger logo"  />
+  <img width="12" />
+  <img src="https://img.shields.io/badge/AWS S3-569A31?logo=amazons3&logoColor=white&style=for-the-badge" height="30" alt="aws s3 logo"  />
   <img width="12" />
   <img src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white&style=for-the-badge" height="30" alt="docker logo"  />
   <img width="12" />
   <img src="https://img.shields.io/badge/Nginx-009639?logo=nginx&logoColor=white&style=for-the-badge" height="30" alt="nginx logo"  />
   <img width="12" />
-  <img src="https://img.shields.io/badge/AWS S3-569A31?logo=amazons3&logoColor=white&style=for-the-badge" height="30" alt="aws s3 logo"  />
+  <img src="https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white&style=for-the-badge" height="30" alt="ubuntu logo"  />
 </div>
 
 ### Collaboration Tools
