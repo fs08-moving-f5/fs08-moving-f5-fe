@@ -30,7 +30,7 @@ interface FindDriverProps {
 const FindDriver = ({
   smallStyle = false,
   checked = false,
-  onCheckChange = () => {},
+  onCheckChange = () => { },
   title,
   description,
   driverName,

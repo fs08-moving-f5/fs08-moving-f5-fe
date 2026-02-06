@@ -190,8 +190,8 @@ export default function DriversPageClient({
             </div>
           </div>
           <div className="h-[24px] w-full bg-white" />
-          <div className="pointer-events-none absolute inset-x-0 -bottom-[24px] h-[24px] bg-gradient-to-b from-white to-transparent" />
-          <div className="tab:hidden absolute right-0 z-10 flex h-fit flex-col gap-[16px]">
+          <div className="pointer-events-none absolute inset-x-0-bottom-[24px] h-[24px] bg-gradient-to-b from-white to-transparent" />
+          <div className="tab:hidden absolute right-0 z-10 flex h-fit flex-col gap-[16px] w-[327px]">
             <h2 className="text-start text-[20px] leading-[32px] font-[600]">찜한 기사님</h2>
             <div className="scrollbar-hide scroll-mask overscroll-behavior h-[calc(80vh-250px)] w-full max-w-[820px] flex-col overflow-scroll py-[16px]">
               {isLoggedIn ? (
@@ -200,6 +200,7 @@ export default function DriversPageClient({
                   flexGap={16}
                   pageSize={10}
                   getApi={getFavoriteDrivers} //getFavoriteDriverList
+                  getItemKey={(item) => item?.driverId ?? item?.driver?.id}
                   ElementNode={FavoriteDriverCard}
                   noElementMsg="찜한 기사님이 없습니다."
                 />
