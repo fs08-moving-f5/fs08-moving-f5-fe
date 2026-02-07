@@ -47,7 +47,7 @@ const FavoritesCardContainer = ({
               ) ?? undefined
             }
             isLiked={true}
-            likeFunction={() => {}}
+            likeFunction={() => { }}
             alwaysShowLike={true}
           />
         ))}
