@@ -190,8 +190,8 @@ export default function DriversPageClient({
             </div>
           </div>
           <div className="h-[24px] w-full bg-white" />
-          <div className="pointer-events-none absolute inset-x-0-bottom-[24px] h-[24px] bg-gradient-to-b from-white to-transparent" />
-          <div className="tab:hidden absolute right-0 z-10 flex h-fit flex-col gap-[16px] w-[327px]">
+          <div className="inset-x-0-bottom-[24px] pointer-events-none absolute h-[24px] bg-gradient-to-b from-white to-transparent" />
+          <div className="tab:hidden absolute right-0 z-10 flex h-fit w-[327px] flex-col gap-[16px]">
             <h2 className="text-start text-[20px] leading-[32px] font-[600]">찜한 기사님</h2>
             <div className="scrollbar-hide scroll-mask overscroll-behavior h-[calc(80vh-250px)] w-full max-w-[820px] flex-col overflow-scroll py-[16px]">
               {isLoggedIn ? (
